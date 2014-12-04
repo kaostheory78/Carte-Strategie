@@ -1,0 +1,41 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.5.4	//
+!_TAG_REVISION_NAME	MCHPTags	//
+!_TAG_REVISION_VERSION	6.0.1	//
+FNOSC_FRC	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\main.c	66;"	v	line:66
+FWDTEN_OFF	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\main.c	73;"	v	line:73
+POSCMD_XT	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\main.c	67;"	v	line:67
+STACK_OVER_FLOW::0	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\main.c	53;"	d	line:53	file:
+STACK_UNDER_FLOW::1	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\main.c	54;"	d	line:54	file:
+_AddressError	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	61;"	p	line:61	file:	signature:(void)
+_AddressError	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	86;"	f	line:86	signature:(void)
+_AltAddressError	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	145;"	f	line:145	signature:(void)
+_AltAddressError	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	67;"	p	line:67	file:	signature:(void)
+_AltDMACError	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	163;"	f	line:163	signature:(void)
+_AltDMACError	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	70;"	p	line:70	file:	signature:(void)
+_AltMathError	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	157;"	f	line:157	signature:(void)
+_AltMathError	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	69;"	p	line:69	file:	signature:(void)
+_AltOscillatorFail	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	139;"	f	line:139	signature:(void)
+_AltOscillatorFail	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	66;"	p	line:66	file:	signature:(void)
+_AltStackError	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	151;"	f	line:151	signature:(void)
+_AltStackError	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	68;"	p	line:68	file:	signature:(void)
+_DMACError	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	120;"	f	line:120	signature:(void)
+_DMACError	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	64;"	p	line:64	file:	signature:(void)
+_MathError	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	114;"	f	line:114	signature:(void)
+_MathError	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	63;"	p	line:63	file:	signature:(void)
+_OscillatorFail	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	60;"	p	line:60	file:	signature:(void)
+_OscillatorFail	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	80;"	f	line:80	signature:(void)
+_StackError	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	62;"	p	line:62	file:	signature:(void)
+_StackError	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	91;"	f	line:91	signature:(void)
+_createStkOflow	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\createStkErr.s	59;"	l	line:59
+_createStkUflow	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\createStkErr.s	85;"	l	line:85
+_getErrLoc	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\getErrLoc.s	75;"	l	line:75
+errLoc	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	57;"	v	line:57
+getErrLoc	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\traps.c	56;"	p	line:56	file:	signature:(void)
+main	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\main.c	77;"	f	line:77	signature:(void)
+oflow_loop	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\createStkErr.s	71;"	l	line:71
+uflow_loop	C:\@code\tbaa_examples\CE107_Stack_Error_Trap_tbaa\src\createStkErr.s	97;"	l	line:97

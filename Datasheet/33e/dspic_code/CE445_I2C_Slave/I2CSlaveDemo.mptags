@@ -1,0 +1,25 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.5.4	//
+!_TAG_REVISION_NAME	MCHPTags	//
+!_TAG_REVISION_VERSION	6.0.1	//
+ALTI2C1_OFF	C:\@code\tbaa_examples\CE145_I2C_Slave_tbaa\src\Main.c	67;"	v	line:67
+AddrFlag	C:\@code\tbaa_examples\CE145_I2C_Slave_tbaa\h\I2CSlaveDrv.h	60;"	m	line:60	struct:FlagType
+DataFlag	C:\@code\tbaa_examples\CE145_I2C_Slave_tbaa\h\I2CSlaveDrv.h	61;"	m	line:61	struct:FlagType
+FNOSC_FRC	C:\@code\tbaa_examples\CE145_I2C_Slave_tbaa\src\Main.c	58;"	v	line:58
+FWDTEN_OFF	C:\@code\tbaa_examples\CE145_I2C_Slave_tbaa\src\Main.c	65;"	v	line:65
+Flag	C:\@code\tbaa_examples\CE145_I2C_Slave_tbaa\src\I2CSlaveDrv.c	56;"	v	line:56
+FlagType	C:\@code\tbaa_examples\CE145_I2C_Slave_tbaa\h\I2CSlaveDrv.h	58;"	s	line:58
+POSCMD_NONE	C:\@code\tbaa_examples\CE145_I2C_Slave_tbaa\src\Main.c	59;"	v	line:59
+RAMBuffer	C:\@code\tbaa_examples\CE145_I2C_Slave_tbaa\src\I2CSlaveDrv.c	54;"	v	line:54
+RAMPtr	C:\@code\tbaa_examples\CE145_I2C_Slave_tbaa\src\I2CSlaveDrv.c	55;"	v	line:55
+Temp	C:\@code\tbaa_examples\CE145_I2C_Slave_tbaa\src\I2CSlaveDrv.c	86;"	l	line:86
+_SI2C1Interrupt	C:\@code\tbaa_examples\CE145_I2C_Slave_tbaa\h\I2CSlaveDrv.h	54;"	p	line:54	signature:(void)
+_SI2C1Interrupt	C:\@code\tbaa_examples\CE145_I2C_Slave_tbaa\src\I2CSlaveDrv.c	84;"	f	line:84	signature:(void)
+i	C:\@code\tbaa_examples\CE145_I2C_Slave_tbaa\src\Main.c	73;"	l	line:73
+i2c1_init	C:\@code\tbaa_examples\CE145_I2C_Slave_tbaa\h\I2CSlaveDrv.h	53;"	p	line:53	signature:(void)
+i2c1_init	C:\@code\tbaa_examples\CE145_I2C_Slave_tbaa\src\I2CSlaveDrv.c	61;"	f	line:61	signature:(void)
+main	C:\@code\tbaa_examples\CE145_I2C_Slave_tbaa\src\Main.c	71;"	f	line:71	signature:(void)

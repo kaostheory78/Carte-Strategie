@@ -1,0 +1,36 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.5.4	//
+!_TAG_REVISION_NAME	MCHPTags	//
+!_TAG_REVISION_VERSION	6.0.1	//
+FNOSC_FRC	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\main.c	67;"	v	line:67
+FWDTEN_OFF	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\main.c	74;"	v	line:74
+POSCMD_NONE	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\main.c	68;"	v	line:68
+_AddressError	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	65;"	p	line:65	file:	signature:(void)
+_AddressError	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	90;"	f	line:90	signature:(void)
+_AltAddressError	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	134;"	f	line:134	signature:(void)
+_AltAddressError	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	71;"	p	line:71	file:	signature:(void)
+_AltDMACError	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	152;"	f	line:152	signature:(void)
+_AltDMACError	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	74;"	p	line:74	file:	signature:(void)
+_AltMathError	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	146;"	f	line:146	signature:(void)
+_AltMathError	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	73;"	p	line:73	file:	signature:(void)
+_AltOscillatorFail	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	128;"	f	line:128	signature:(void)
+_AltOscillatorFail	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	70;"	p	line:70	file:	signature:(void)
+_AltStackError	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	140;"	f	line:140	signature:(void)
+_AltStackError	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	72;"	p	line:72	file:	signature:(void)
+_DMACError	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	109;"	f	line:109	signature:(void)
+_DMACError	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	68;"	p	line:68	file:	signature:(void)
+_MathError	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	103;"	f	line:103	signature:(void)
+_MathError	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	67;"	p	line:67	file:	signature:(void)
+_OscillatorFail	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	64;"	p	line:64	file:	signature:(void)
+_OscillatorFail	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	84;"	f	line:84	signature:(void)
+_StackError	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	66;"	p	line:66	file:	signature:(void)
+_StackError	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	96;"	f	line:96	signature:(void)
+_getErrLoc	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\getErrLoc.s	78;"	l	line:78
+addrPtr	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\main.c	95;"	v	line:95
+errLoc	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	61;"	v	line:61
+getErrLoc	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\traps.c	60;"	p	line:60	file:	signature:(void)
+main	C:\@code\tbaa_examples\CE105_Address_Error_Trap\src\main.c	98;"	f	line:98	signature:(void)

@@ -1,0 +1,53 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.5.4	//
+!_TAG_REVISION_NAME	MCHPTags	//
+!_TAG_REVISION_VERSION	6.0.1	//
+ACCA_COV::0	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\main.c	62;"	d	line:62	file:
+ACCA_OV::0	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\main.c	60;"	d	line:60	file:
+ACCB_COV::0	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\main.c	63;"	d	line:63	file:
+ACCB_OV::0	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\main.c	61;"	d	line:61	file:
+ACCSHT_ERR::0	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\main.c	58;"	d	line:58	file:
+DIV0_ERR::1	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\main.c	59;"	d	line:59	file:
+FNOSC_FRC	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\main.c	75;"	v	line:75
+FWDTEN_OFF	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\main.c	82;"	v	line:82
+POSCMD_XT	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\main.c	76;"	v	line:76
+_AddressError	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	69;"	p	line:69	file:	signature:(void)
+_AddressError	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	94;"	f	line:94	signature:(void)
+_AltAddressError	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	185;"	f	line:185	signature:(void)
+_AltAddressError	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	75;"	p	line:75	file:	signature:(void)
+_AltDMACError	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	203;"	f	line:203	signature:(void)
+_AltDMACError	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	78;"	p	line:78	file:	signature:(void)
+_AltMathError	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	197;"	f	line:197	signature:(void)
+_AltMathError	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	77;"	p	line:77	file:	signature:(void)
+_AltOscillatorFail	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	179;"	f	line:179	signature:(void)
+_AltOscillatorFail	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	74;"	p	line:74	file:	signature:(void)
+_AltStackError	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	191;"	f	line:191	signature:(void)
+_AltStackError	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	76;"	p	line:76	file:	signature:(void)
+_DMACError	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	160;"	f	line:160	signature:(void)
+_DMACError	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	72;"	p	line:72	file:	signature:(void)
+_MathError	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	105;"	f	line:105	signature:(void)
+_MathError	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	71;"	p	line:71	file:	signature:(void)
+_OscillatorFail	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	68;"	p	line:68	file:	signature:(void)
+_OscillatorFail	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	88;"	f	line:88	signature:(void)
+_StackError	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	70;"	p	line:70	file:	signature:(void)
+_StackError	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	99;"	f	line:99	signature:(void)
+_createAccShtError	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\createMathErr.s	66;"	l	line:66
+_createAccaCoflow	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\createMathErr.s	155;"	l	line:155
+_createAccaOflow	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\createMathErr.s	107;"	l	line:107
+_createAccbCoflow	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\createMathErr.s	182;"	l	line:182
+_createAccbOflow	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\createMathErr.s	130;"	l	line:130
+_createDiv0Error	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\createMathErr.s	85;"	l	line:85
+_getErrLoc	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\getErrLoc.s	76;"	l	line:76
+accACovfl	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	64;"	v	line:64
+accAOvfl	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	64;"	v	line:64
+accBCovfl	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	65;"	v	line:65
+accBOvfl	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	65;"	v	line:65
+div0Err	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	66;"	v	line:66
+errLoc	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	62;"	v	line:62
+getErrLoc	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	61;"	p	line:61	file:	signature:(void)
+main	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\main.c	86;"	f	line:86	signature:(void)
+sftAccErr	C:\@code\CVS_repository\33E Code Examples\CE106_Math_Error_Trap\src\traps.c	66;"	v	line:66

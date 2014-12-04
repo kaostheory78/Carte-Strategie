@@ -1,0 +1,29 @@
+
+- Unused IO configured as ouput to alow state
+
+***** PAGE0 *************************************
+CO_ALIM
+ALIM_22V
+ALIM_AX12
+ALIM_3.3V
++5
+
+***** PAGE1 *************************************
+C1_CHB (RPI43)
+C1_CHA (RPI17)
+C1_Index (RP109)
+C2_CHB (RPI41)
+C2_CHA (RPI40
+C2_Index (RPI42)
+
+***** PAGE2 *************************************
+***** PAGE3 *************************************
+CTS_DEBUG (RPI30)
+RTS_DEBUG (RP101)
+UART_TX (RP100)
+UART_RX (RPI32)
+TX_AX12 (RPI18)
+RX_AX12 (RPI19)
+
+
+
