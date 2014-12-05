@@ -1,7 +1,17 @@
+/******************************************************************************/
+/************** Carte principale Robot 1 : DSPIC33FJ128MC804*******************/
+/******************************************************************************/
+/* Fichier 	: sserv.c
+ * Auteur  	: Quentin
+ * Revision	: 1.0
+ * Date		: 08/11/2014
+ *******************************************************************************
+ *
+ *
+ ******************************************************************************/
+
 #include "system.h"
 
-
-//l'asserv c'est cool =D=D=D
 
 /******************************************************************************/
 /*************************** Variables Globales *******************************/
@@ -146,21 +156,7 @@ void asserv()
         asserv_orientation();
 
     DISTANCE.theorique += VITESSE.theorique;
-    ERREUR_DISTANCE.actuelle = DISTANCE.theorique - DISTANCE.actuelle;
-
-   /* if (DISTANCE.actuelle <  100000    && test == 0)
-    {
-        VITESSE.theorique += VITESSE.acceleration;
-
-    }
-    else
-    {
-        //delay_ms(3000);
-        test = 1;
-        VITESSE.theorique -= VITESSE.acceleration;
-    }*/
-
-    //VITESSE.theorique += VITESSE.acceleration;
+    ERREUR_DISTANCE.actuelle = DISTANCE.theorique - VITESSE.actuelle;
         
 
     init_commande_moteur();
