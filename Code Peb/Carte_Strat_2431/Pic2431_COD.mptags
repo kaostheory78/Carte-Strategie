@@ -1,0 +1,571 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.5.4	//
+!_TAG_REVISION_NAME	MCHPTags	//
+!_TAG_REVISION_VERSION	6.0.1	//
+ACT_CUL_ROBOT_AVANCER::13	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	99;"	d	line:99
+ACT_CUL_ROBOT_BAS::11	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	97;"	d	line:97
+ACT_CUL_ROBOT_LEVE::10	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	96;"	d	line:96
+ACT_CUL_ROBOT_MOITIER::12	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	98;"	d	line:98
+ACT_CUL_ROBOT_MONT_COL::14	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	100;"	d	line:100
+ACT_EPIS_2B::5	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	90;"	d	line:90
+ACT_EPIS_BD::7	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	92;"	d	line:92
+ACT_EPIS_BG::6	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	91;"	d	line:91
+ACT_EPIS_LARGAGE::8	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	94;"	d	line:94
+ACT_ORANGE_COL_BLEU::2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	87;"	d	line:87
+ACT_ORANGE_COL_JAUNE::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	86;"	d	line:86
+ACT_ORANGE_LARGAGE::9	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	95;"	d	line:95
+ACT_ORANGE_LAT_BLEU::4	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	89;"	d	line:89
+ACT_ORANGE_LAT_JAUNE::3	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	88;"	d	line:88
+ACT_TOMATE_BD::7	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	93;"	d	line:93
+AFF_DEBUG_AIDE::2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	19;"	d	line:19
+AFF_DEBUG_ROBOT::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	18;"	d	line:18
+AFF_DEBUG_STANDBY::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	17;"	d	line:17
+AJUST_RAPPORT_ROUES_FOLLES::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	106;"	d	line:106
+ANGLE_1::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	72;"	d	line:72
+ANGLE_2::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	73;"	d	line:73
+ANGLE_3::2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	74;"	d	line:74
+ANGLE_DEPART_THETA::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	80;"	d	line:80
+ATTENTE::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	62;"	d	line:62
+ATTENTE_FIN_TIMEOUT::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	28;"	d	line:28
+AUTOM_AVEC_ATTENTE::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	47;"	d	line:47
+AUTOM_SANS_ATTENTE::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	46;"	d	line:46
+ActionAutomatisme	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	67;"	f	line:67	signature:(int type, int attente_ou_pas)
+ActionAutomatisme	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	211;"	p	line:211	signature:(int type, int attente_ou_pas)
+ActionAutomatismeBalise2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	314;"	p	line:314	file:
+ActionAutomatismeBalise2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	320;"	p	line:320	file:
+ActionAutomatismeBalise2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	95;"	f	line:95	signature:(char autom)
+ActionAutomatismeBalise2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	213;"	p	line:213	signature:(char autom)
+Adv	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	175;"	v	line:175
+Asserv	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	216;"	v	line:216
+Asservissement	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	27;"	f	line:27	signature:(void)
+Asservissement	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	220;"	p	line:220	signature:(void)
+Attente	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	991;"	f	line:991	signature:(INT_US32B timeout_final)
+Attente	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	245;"	p	line:245	signature:(INT_US32B timeout_final)
+BLEU::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	71;"	d	line:71
+BUF_I2C_LENGTH_EMI::31	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	119;"	d	line:119
+BUF_I2C_LENGTH_REC::31	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	118;"	d	line:118
+COEF_1::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	76;"	d	line:76
+COEF_2::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	77;"	d	line:77
+COEF_3::2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	78;"	d	line:78
+COEF_SAT_VIT_1::0.3	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	98;"	d	line:98
+COEF_SAT_VIT_2::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	99;"	d	line:99
+COEF_SAT_VIT_3::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	100;"	d	line:100
+COMM_STAT::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.h	40;"	d	line:40
+CORRECTION_NB_IMP_CODEUR::2.769252071	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	60;"	d	line:60
+COUPURE_AUTOM::255	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	101;"	d	line:101
+CallageDepart	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	353;"	f	line:353	signature:(void)
+CallageDepart	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	225;"	p	line:225	signature:(void)
+DATA_LEN::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	92;"	d	line:92
+DATA_OFFS::2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	93;"	d	line:93
+DEBUG::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\compil_cod.h	31;"	d	line:31
+DEBUG_ERR_HTR::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\compil_cod.h	19;"	d	line:19
+DIAM_ROUE_COD::40.4	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	61;"	d	line:61
+DISTANCE_1::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	68;"	d	line:68
+DISTANCE_2::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	69;"	d	line:69
+DISTANCE_3::2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	70;"	d	line:70
+DUREE_PHASE_TRAITEMENT::25	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	83;"	d	line:83
+Diagonal_1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	266;"	f	line:266	signature:(void)
+Diagonal_1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	217;"	p	line:217	signature:(void)
+Diagonal_2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	294;"	f	line:294	signature:(void)
+Diagonal_2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	219;"	p	line:219	signature:(void)
+ERHTR_DEP_HTR_1::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	127;"	d	line:127
+ERHTR_DEP_HTR_2::2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	128;"	d	line:128
+ERHTR_DEP_HTR_3::3	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	129;"	d	line:129
+ERHTR_DEP_HTR_4::4	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	130;"	d	line:130
+ERHTR_PHASE::9	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	126;"	d	line:126
+ERPSP_RD::2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	133;"	d	line:133
+ERPSP_WR::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	132;"	d	line:132
+EjectionBalles	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	311;"	f	line:311	signature:(void)
+EjectionBalles	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	221;"	p	line:221	signature:(void)
+FLOAT_S32B::float	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	27;"	d	line:27
+FORCE_SUR_ANGLE_ACTUEL::10000	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	40;"	d	line:40
+FREQ_MULT::(XTAL_FREQ)/(4MHZ)	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\delay.h	47;"	d	line:47
+FinMatch	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	391;"	f	line:391	signature:(void)
+FinMatch	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	229;"	p	line:229	signature:(void)
+Flag	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	132;"	m	line:132
+Full	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	41;"	m	line:41	file:
+Full	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	50;"	m	line:50	file:
+Full	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	59;"	m	line:59	file:
+Full	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	118;"	m	line:118
+Full	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	157;"	m	line:157
+Full	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	165;"	m	line:165
+Full	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	173;"	m	line:173
+GestionToucheUART1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\reglages_carte.c	31;"	f	line:31	signature:(void)
+GestionToucheUART1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\reglages_carte.h	21;"	p	line:21	signature:(void)
+H	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	39;"	m	line:39	file:
+H	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	48;"	m	line:48	file:
+H	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	57;"	m	line:57	file:
+H	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	116;"	m	line:116
+H	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	155;"	m	line:155
+H	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	163;"	m	line:163
+H	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	171;"	m	line:171
+HI_ISR	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.c	270;"	f	line:270	signature:(void)
+HI_ISR	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.h	48;"	p	line:48	signature:(void)
+HTR_OUT::RC3	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	31;"	d	line:31
+HTR_TIMER_1::49910	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	66;"	d	line:66
+HTR_TIMER_2::49910	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	67;"	d	line:67
+HTR_TIMER_3::49910	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	68;"	d	line:68
+HTR_TIMER_4::49910	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	69;"	d	line:69
+HTR_TIMER_NONE::00000	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	65;"	d	line:65
+I2CBusState	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.h	79;"	p	line:79	signature:(unsigned char i2c_addr, unsigned char i2c_rw, unsigned char i2c_offset, unsigned char i2c_nbdata, unsigned char i2c_mode)
+INT0_Handler	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.c	141;"	f	line:141	signature:(void)
+INT0_Handler	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.h	27;"	p	line:27	signature:(void)
+INT_S16B::signedint	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	23;"	d	line:23
+INT_S32B::signedlonglong	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	24;"	d	line:24
+INT_S64B::signedlonglong	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	26;"	d	line:26
+INT_US32B::unsignedlonglong	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	25;"	d	line:25
+InitPositionRobot	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	205;"	f	line:205	signature:(int x_mm, int y_mm, int theta_deg, int numero_init)
+InitPositionRobot	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.h	20;"	p	line:20	signature:(int x_mm, int y_mm, int theta_deg, int numero_init)
+JAUNE::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	72;"	d	line:72
+KD::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	66;"	d	line:66
+KD_ANGLE_1::150	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	94;"	d	line:94
+KD_ANGLE_2::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	95;"	d	line:95
+KD_ANGLE_3::100	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	96;"	d	line:96
+KD_DISTANCE_1::0.5	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	86;"	d	line:86
+KD_DISTANCE_2::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	87;"	d	line:87
+KD_DISTANCE_3::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	88;"	d	line:88
+KD_VITESSE::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	104;"	d	line:104
+KP::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	65;"	d	line:65
+KP_ANGLE_1::10	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	90;"	d	line:90
+KP_ANGLE_2::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	91;"	d	line:91
+KP_ANGLE_3::30	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	92;"	d	line:92
+KP_DISTANCE_1::0.4	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	82;"	d	line:82
+KP_DISTANCE_2::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	83;"	d	line:83
+KP_DISTANCE_3::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	84;"	d	line:84
+KP_VITESSE::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	103;"	d	line:103
+L	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	38;"	m	line:38	file:
+L	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	47;"	m	line:47	file:
+L	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	56;"	m	line:56	file:
+L	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	115;"	m	line:115
+L	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	154;"	m	line:154
+L	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	162;"	m	line:162
+L	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	170;"	m	line:170
+LARGEUR_ENTRE_ROUES_FOLLES::314.0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	62;"	d	line:62
+LCD::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\compil_cod.h	33;"	d	line:33
+LED_BLEU::RA0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	73;"	d	line:73
+LED_JAUNE::RA1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	74;"	d	line:74
+LOW_ISR	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.c	337;"	f	line:337	signature:(void)
+LOW_ISR	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.h	53;"	p	line:53	signature:(void)
+LedCouleurDepart	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	396;"	f	line:396	signature:(void)
+LedCouleurDepart	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	231;"	p	line:231	signature:(void)
+MATCH_EN_COURS::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	67;"	d	line:67
+MATCH_TERMINE::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	68;"	d	line:68
+MHZ::*1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\delay.h	30;"	d	line:30
+Master2Slave_Ptr	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	56;"	v	line:56
+MaxChannelsPerSlave::10	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.h	24;"	d	line:24
+MaxLength2PC::10	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.h	26;"	d	line:26
+MaxNumberI2CSlaves::12	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.h	21;"	d	line:21
+MaxSlaveRetry::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.h	28;"	d	line:28
+NB_DATA_BUFFER_PICBALISE::OperChannelsPerSlave	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.h	34;"	d	line:34
+NB_DATA_BUFFER_PICD::OperChannelsPerSlave	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.h	33;"	d	line:33
+NB_DATA_BUFFER_PICG::OperChannelsPerSlave	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.h	32;"	d	line:32
+NB_DATA_BUFFER_PICUP2::OperChannelsPerSlave	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.h	31;"	d	line:31
+NB_DATA_BUFFER_PSP::64	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.h	30;"	d	line:30
+NB_PERIODE_10MS::5	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	79;"	d	line:79
+NB_PERIODE_12_5MS::4	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	80;"	d	line:80
+NB_PERIODE_25MS::2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	81;"	d	line:81
+NB_PERIODE_2_5MS::20	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	77;"	d	line:77
+NB_PERIODE_5MS::10	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	78;"	d	line:78
+NB_PERIODE_HTR::NB_PERIODE_25MS	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	85;"	d	line:85
+NIEME_INIT::2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	25;"	d	line:25
+NON::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_config_mat.h	18;"	d	line:18
+OFF_SLAVE_READ::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.h	38;"	d	line:38
+OUI::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_config_mat.h	17;"	d	line:17
+Octet	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	40;"	m	line:40	file:
+Octet	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	49;"	m	line:49	file:
+Octet	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	58;"	m	line:58	file:
+Octet	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	117;"	m	line:117
+Octet	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	121;"	m	line:121
+Octet	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	136;"	m	line:136
+Octet	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	156;"	m	line:156
+Octet	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	164;"	m	line:164
+Octet	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	172;"	m	line:172
+OperChannelsPerSlave::16	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.h	25;"	d	line:25
+OperNumberI2CSlaves::4	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.h	22;"	d	line:22
+PAS_ATTENTE_FIN_TIMEOUT::2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	29;"	d	line:29
+PAS_COMMANDE_MOTEURS::10	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	49;"	d	line:49
+PAS_DE_CORRECTION_ANGLE::10002	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	42;"	d	line:42
+PAS_DE_CORRECTION_ANGLE_FIN::10001	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	41;"	d	line:41
+PAS_INIT_SUR_AXE::10000	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	23;"	d	line:23
+PERIODE_10MS::53035	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	73;"	d	line:73
+PERIODE_12_5MS::49910	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	72;"	d	line:72
+PERIODE_1MS::64285	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	76;"	d	line:76
+PERIODE_25MS::34285	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	71;"	d	line:71
+PERIODE_2_5MS::62410	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	70;"	d	line:70
+PERIODE_3MS::61785	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	75;"	d	line:75
+PERIODE_5MS::59285	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	74;"	d	line:74
+PERIODE_HTR::PERIODE_25MS	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	84;"	d	line:84
+PHTR_ATTENTE::100	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	53;"	d	line:53
+PHTR_ATTENTE_2::102	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	52;"	d	line:52
+PI::3.14159265359	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	59;"	d	line:59
+POS_ADV_SUR_AUTRE_AXE::32000	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	27;"	d	line:27
+PREMIERE_INIT::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	24;"	d	line:24
+PSA::T0PS3	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	33;"	d	line:33
+PWM_OUT_1::RB1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	55;"	d	line:55
+PWM_OUT_2::RB3	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	56;"	d	line:56
+PWM_moteurDroit	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	314;"	l	line:314
+PWM_moteurDroit	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	996;"	l	line:996
+PWM_moteurGauche	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	313;"	l	line:313
+PWM_moteurGauche	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	995;"	l	line:995
+P_I2C_ATTENTE::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	101;"	d	line:101
+P_I2C_RD_ACK_DATA::9	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	110;"	d	line:110
+P_I2C_RD_ADDR::6	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	107;"	d	line:107
+P_I2C_RD_DATA::7	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	108;"	d	line:108
+P_I2C_RD_DATA_OK::8	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	109;"	d	line:109
+P_I2C_RD_START::5	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	106;"	d	line:106
+P_I2C_SL_ATTENTE_START::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	112;"	d	line:112
+P_I2C_SL_ATTENTE_STOP::4	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	116;"	d	line:116
+P_I2C_SL_EMI_DATA::3	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	115;"	d	line:115
+P_I2C_SL_REC_DATA::2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	114;"	d	line:114
+P_I2C_SL_START::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	113;"	d	line:113
+P_I2C_WR_ACK_DATA::4	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	105;"	d	line:105
+P_I2C_WR_ADDR::2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	103;"	d	line:103
+P_I2C_WR_DATA::3	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	104;"	d	line:104
+P_I2C_WR_START::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	102;"	d	line:102
+PositionAdv	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	511;"	f	line:511	signature:(long x_mm, long y_mm, long fourchette_x_mm, long fourchette_y_mm, INT_US32B timeout_fin, int attente_timeout)
+PositionAdv	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	235;"	p	line:235	signature:(long x_mm, long y_mm, long fourchette_x_mm, long fourchette_y_mm, INT_US32B timeout_fin, int attente_timeout)
+RECULE_CALLAGE_EPIS::2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	28;"	d	line:28
+RECULE_CALLAGE_NORMALE::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	27;"	d	line:27
+RX_232_Handler	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.c	258;"	f	line:258	signature:(void)
+RX_232_Handler	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.h	43;"	p	line:43	signature:(void)
+RX_DATA::3	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	94;"	d	line:94
+S::START	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	34;"	d	line:34
+SANS_TIMEOUT::5000/DUREE_PHASE_TRAITEMENT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	50;"	d	line:50
+SENS_CODEUR::-1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	107;"	d	line:107
+SENS_MOT_D::RC1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	53;"	d	line:53
+SENS_MOT_G::RC0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	52;"	d	line:52
+SERIE::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\compil_cod.h	32;"	d	line:32
+SEUIL_ANGLE_BAS::10.0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	32;"	d	line:32
+SEUIL_ANGLE_HAUT::10.0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	33;"	d	line:33
+SEUIL_DISTANCE_AR::300.0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	38;"	d	line:38
+SEUIL_DISTANCE_AV::300.0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	37;"	d	line:37
+SEUIL_RECULE::1500	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	29;"	d	line:29
+SLAVE_ADDR::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	91;"	d	line:91
+SLAVE_NODE_ADDR::0x10	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	37;"	d	line:37
+SL_READ_ADDRESS::5	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	43;"	d	line:43
+SL_READ_DATA::6	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	44;"	d	line:44
+SL_WRITE_ADDRESS::1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	39;"	d	line:39
+SL_WRITE_DATA::4	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	42;"	d	line:42
+SL_WRITE_NBDATA::3	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	41;"	d	line:41
+SL_WRITE_OFFSET::2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	40;"	d	line:40
+SSP_Handler	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.c	40;"	f	line:40	signature:(void)
+SSP_Handler	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.h	22;"	p	line:22	signature:(void)
+SYS_COULEUR_DEPART::Strat.Sys_1.bits.bit6	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	107;"	d	line:107
+SYS_CT_AR_G::Strat.Sys_1.bits.bit1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	112;"	d	line:112
+SYS_CT_AV_D::Strat.Sys_1.bits.bit2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	111;"	d	line:111
+SYS_CT_AV_G::Strat.Sys_1.bits.bit3	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	110;"	d	line:110
+SYS_JACK::Strat.Sys_1.bits.bit7	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	106;"	d	line:106
+SYS_SICK_AR_D::Strat.Sys_1.bits.bit4	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	109;"	d	line:109
+SYS_SICK_AR_G::Strat.Sys_1.bits.bit5	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	108;"	d	line:108
+SYS_STRAT_1::Strat.Sys_1.Octet	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	105;"	d	line:105
+SYS_US_AV::Strat.Sys_1.bits.bit0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	113;"	d	line:113
+Service_I2CSlave	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.h	69;"	p	line:69	signature:(unsigned char i2c_addr, unsigned char i2c_rw, unsigned char i2c_offset, unsigned char i2c_nbdata, unsigned char i2c_mode)
+Slave2Master_Ptr	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	55;"	v	line:55
+Stop	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	908;"	f	line:908	signature:(int timeout_sec)
+Stop	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	241;"	p	line:241	signature:(int timeout_sec)
+StopAdv	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	929;"	f	line:929	signature:(void)
+StopAdv	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	243;"	p	line:243	signature:(void)
+Strat	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	148;"	v	line:148
+StratHomologation	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	327;"	f	line:327	signature:(void)
+StratHomologation	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	223;"	p	line:223	signature:(void)
+Strategie	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	205;"	v	line:205
+Struct_16bit	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	120;"	t	line:120
+Sys_1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	147;"	m	line:147
+TEMPS_ATTENTE_STAB_ANGLE::2000	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	31;"	d	line:31
+TEMPS_ATTENTE_STAB_DIST::1000	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	35;"	d	line:35
+TEMPS_ATTENTE_STAB_DIST_V350::547	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	36;"	d	line:36
+THETA	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	60;"	v	line:60
+THETA	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	174;"	m	line:174
+TIMEOUT_AUTOM::500/DUREE_PHASE_TRAITEMENT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	57;"	d	line:57
+TIMEOUT_AVANCE_CALLAGE::1000/DUREE_PHASE_TRAITEMENT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	60;"	d	line:60
+TIMEOUT_BALISE_0::2000/DUREE_PHASE_TRAITEMENT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	52;"	d	line:52
+TIMEOUT_BALISE_1::3000/DUREE_PHASE_TRAITEMENT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	53;"	d	line:53
+TIMEOUT_BALISE_ATTENTE::1000/DUREE_PHASE_TRAITEMENT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	51;"	d	line:51
+TIMEOUT_CALLAGE::2500/DUREE_PHASE_TRAITEMENT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	61;"	d	line:61
+TIMEOUT_CALLAGE_CHOP_ADV::10000/DUREE_PHASE_TRAITEMENT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	63;"	d	line:63
+TIMEOUT_CALLAGE_SORTIE_COLLINE::10000/DUREE_PHASE_TRAITEMENT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	55;"	d	line:55
+TIMEOUT_DESCENTE_COLLINE::2500/DUREE_PHASE_TRAITEMENT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	56;"	d	line:56
+TIMEOUT_DIAGONALE_EPIS::10000/DUREE_PHASE_TRAITEMENT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	65;"	d	line:65
+TIMEOUT_EVITEMENT::500/DUREE_PHASE_TRAITEMENT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	58;"	d	line:58
+TIMEOUT_EVITEMENT_EPIS::25/DUREE_PHASE_TRAITEMENT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	62;"	d	line:62
+TIMEOUT_RECULE_COLINE::1000/DUREE_PHASE_TRAITEMENT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	59;"	d	line:59
+TIMEOUT_VAS_VERS::2000/DUREE_PHASE_TRAITEMENT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	54;"	d	line:54
+TIMER0_Handler	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.c	172;"	f	line:172	signature:(void)
+TIMER0_Handler	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.h	32;"	p	line:32	signature:(void)
+TIMER1_Handler	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.h	38;"	p	line:38	signature:(void)
+TIMOUT_MATCH::90000/DUREE_PHASE_TRAITEMENT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	64;"	d	line:64
+TRAITEMENT::0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	61;"	d	line:61
+TYPE_ASSERV	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	14;"	d	line:14
+TYPE_ASSERV::extern	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	16;"	d	line:16
+TYPE_ASSERV_EXT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	14;"	d	line:14	file:
+TYPE_MAIN	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	20;"	d	line:20
+TYPE_MAIN::extern	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	22;"	d	line:22
+TYPE_MAIN_EXT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\main_cod.c	17;"	d	line:17	file:
+TYPE_STRAT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	11;"	d	line:11
+TYPE_STRAT::extern	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	13;"	d	line:13
+TYPE_STRAT_EXT	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	25;"	d	line:25	file:
+Test	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	129;"	f	line:129	signature:(void)
+Test	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	215;"	p	line:215	signature:(void)
+TestsAsserv	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	227;"	p	line:227	signature:(void)
+TraitementI2C	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	259;"	f	line:259	signature:(void)
+TraitementI2C	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.h	22;"	p	line:22	signature:(void)
+TraitementPrincipal	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	38;"	f	line:38	signature:(void)
+TraitementPrincipal	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	209;"	p	line:209	signature:(void)
+USE_POWER_PWM::NON	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_config_mat.h	22;"	d	line:22
+USE_POWER_PWM_DEAD_TIMES::NON	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_config_mat.h	25;"	d	line:25
+USE_POWER_PWM_FAULT::NON	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_config_mat.h	26;"	d	line:26
+USE_POWER_PWM_POSTSCALER::NON	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_config_mat.h	23;"	d	line:23
+USE_POWER_PWM_PRESCALER::NON	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_config_mat.h	24;"	d	line:24
+VISU_OSCILLO::RC2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\define_cod.h	30;"	d	line:30
+X	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	42;"	v	line:42
+X	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	158;"	m	line:158
+XTAL_FREQ::4MHZ	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\delay.h	33;"	d	line:33
+Y	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	51;"	v	line:51
+Y	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	166;"	m	line:166
+_CoupureAutom	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	415;"	f	line:415	signature:(void)
+_CoupureAutom	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	233;"	p	line:233	signature:(void)
+_ENCH_DEP_STRAT_IMPOSSIBLE::Strategie.enchainement_deplace	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	36;"	d	line:36
+_ENCH_DEP_STRAT_POSSIBLE::Strategie.enchainement_deplace	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	35;"	d	line:35
+_EVITEMENT_ADV_AR_ACTIF::Asserv.flag_evitement_adv=2;	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	32;"	d	line:32
+_EVITEMENT_ADV_AV_ACTIF::Asserv.flag_evitement_adv=1;	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	31;"	d	line:31
+_EVITEMENT_ADV_INACTIF::Asserv.flag_evitement_adv=0;	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	33;"	d	line:33
+_GO_ROBOT::Asserv.flag_stop_asserv=0;	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	46;"	d	line:46
+_ROUE_ARRIERE_EJEC::'4'	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	42;"	d	line:42
+_ROUE_ARRIERE_OFF::'0'	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	38;"	d	line:38
+_ROUE_ARRIERE_ON::'1'	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	39;"	d	line:39
+_ROUE_ARRIERE_ON_SENS2::'3'	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	41;"	d	line:41
+_ROUE_ARRIERE_TEMPO_ON::'2'	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	40;"	d	line:40
+_STOP_ROBOT::Asserv.flag_stop_asserv=1;	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	45;"	d	line:45
+_putch	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_affich.c	226;"	f	line:226	signature:(unsigned char byte)
+_putch	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_affich.h	53;"	p	line:53	signature:(unsigned char byte)
+_puts	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_affich.c	232;"	f	line:232	signature:(const char *s)
+_puts	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_affich.h	54;"	p	line:54	signature:(const char *s)
+a_init_log	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.c	66;"	f	line:66	signature:(void)
+a_init_log	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.h	18;"	p	line:18	signature:(void)
+acceleration_max	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	190;"	m	line:190
+acceleration_roue_D	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	181;"	m	line:181
+acceleration_roue_G	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	182;"	m	line:182
+angle_arrive	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	594;"	l	line:594
+angle_depart_theta_0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	164;"	m	line:164
+angle_inversion_repere	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	142;"	m	line:142
+as_i2c_transfer_and_rs232debug	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.h	98;"	p	line:98	signature:(unsigned char i2c_addr, unsigned char i2c_rw, unsigned char i2c_offset, unsigned char i2c_nbdata, unsigned char i2c_mode)
+ass_angle	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	86;"	f	line:86	signature:(void)
+ass_angle	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	221;"	p	line:221	signature:(void)
+ass_commande_moteur_polaire	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	297;"	f	line:297	signature:(void)
+ass_commande_moteur_polaire	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	226;"	p	line:226	signature:(void)
+ass_distance	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	137;"	f	line:137	signature:(void)
+ass_distance	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	222;"	p	line:222	signature:(void)
+ass_envoi_pwm	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	306;"	f	line:306	signature:(void)
+ass_envoi_pwm	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	227;"	p	line:227	signature:(void)
+ass_saturation_acceleration	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	245;"	f	line:245	signature:(void)
+ass_saturation_acceleration	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	225;"	p	line:225	signature:(void)
+ass_saturation_vitesse	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	215;"	f	line:215	signature:(void)
+ass_saturation_vitesse	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	224;"	p	line:224	signature:(void)
+ass_vitesse	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	194;"	f	line:194	signature:(void)
+ass_vitesse	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	223;"	p	line:223	signature:(void)
+autom	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	183;"	m	line:183
+avance_callage	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	757;"	f	line:757	signature:(INT_US32B timeout_final)
+avance_callage	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	237;"	p	line:237	signature:(INT_US32B timeout_final)
+balise	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	184;"	m	line:184
+bit	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.c	283;"	p	line:283	file:	signature:(unsigned)&T0CON*8
+bit0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	123;"	m	line:123
+bit0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	145;"	m	line:145
+bit1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	124;"	m	line:124
+bit1	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	144;"	m	line:144
+bit2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	125;"	m	line:125
+bit2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	143;"	m	line:143
+bit3	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	126;"	m	line:126
+bit3	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	142;"	m	line:142
+bit4	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	127;"	m	line:127
+bit4	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	141;"	m	line:141
+bit5	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	128;"	m	line:128
+bit5	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	140;"	m	line:140
+bit6	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	129;"	m	line:129
+bit6	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	139;"	m	line:139
+bit7	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	130;"	m	line:130
+bit7	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	138;"	m	line:138
+bits	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	131;"	m	line:131
+bits	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	146;"	m	line:146
+blocage_timeout_autom	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	189;"	m	line:189
+blocage_timeout_balise	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	190;"	m	line:190
+blocage_timeout_callage	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	188;"	m	line:188
+blocage_timeout_deplacement	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	187;"	m	line:187
+blocage_timeout_evitement	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	186;"	m	line:186
+blocage_timeout_match	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	185;"	m	line:185
+buffer_i2c_rx	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	46;"	v	line:46
+buffer_i2c_tx	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	47;"	v	line:47
+callage	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	182;"	m	line:182
+coef_Kp_hybride	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	144;"	l	line:144
+commande	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	994;"	l	line:994
+commande_angle	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	206;"	m	line:206
+commande_angle_precedente	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	207;"	m	line:207
+commande_correction_epis_d	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	151;"	m	line:151
+commande_correction_epis_g	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	150;"	m	line:150
+commande_distance	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	142;"	l	line:142
+commande_distance	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	197;"	m	line:197
+commande_distance_precedente	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	198;"	m	line:198
+commande_roue_D	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	312;"	l	line:312
+commande_roue_D	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	146;"	m	line:146
+commande_roue_D_clavier	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	144;"	m	line:144
+commande_roue_D_precedente	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	148;"	m	line:148
+commande_roue_G	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	311;"	l	line:311
+commande_roue_G	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	145;"	m	line:145
+commande_roue_G_clavier	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	143;"	m	line:143
+commande_roue_G_precedente	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	147;"	m	line:147
+compteur	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	516;"	l	line:516
+compteur_max	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	517;"	l	line:517
+compteur_sortie	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	425;"	l	line:425
+compteur_sortie	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	495;"	l	line:495
+compteur_sortie	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	598;"	l	line:598
+consigne_angle	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	203;"	m	line:203
+consigne_angle_atan2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	204;"	m	line:204
+consigne_angle_deg	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	496;"	l	line:496
+consigne_angle_precedent	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	205;"	m	line:205
+consigne_distance	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	196;"	m	line:196
+consigne_finale	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	595;"	l	line:595
+consigne_vitesse	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	188;"	m	line:188
+correction_KD	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	93;"	l	line:93
+correction_max_KD	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	94;"	l	line:94
+couleur_depart	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	199;"	m	line:199
+debug	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	215;"	m	line:215
+delta_x	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	145;"	l	line:145
+delta_x	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	30;"	l	line:30
+delta_y	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	146;"	l	line:146
+delta_y	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	31;"	l	line:31
+deplacement	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	181;"	m	line:181
+detection_back	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	789;"	l	line:789
+digits	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	97;"	v	line:97
+ecart_angle	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	91;"	l	line:91
+ecart_distance	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	143;"	l	line:143
+ecart_distance_precedent	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	193;"	m	line:193
+ecart_max_sur_KP	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	92;"	l	line:92
+ecart_vitesse_roue_D	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	199;"	l	line:199
+ecart_vitesse_roue_G	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	200;"	l	line:200
+enchainement_deplacement	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	202;"	m	line:202
+erreur_htr	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	36;"	v	line:36
+error_mask::0b0000000000000001	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.h	36;"	d	line:36
+etape	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	204;"	m	line:204
+etat_match	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	200;"	m	line:200
+evitement	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	180;"	m	line:180
+flag_affichage_debug	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	130;"	m	line:130
+flag_ass_angle	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	133;"	m	line:133
+flag_ass_callage	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	138;"	m	line:138
+flag_ass_commande_moteur_polaire	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	137;"	m	line:137
+flag_ass_distance	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	132;"	m	line:132
+flag_ass_saturation_acceleration	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	136;"	m	line:136
+flag_ass_saturation_vitesse	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	135;"	m	line:135
+flag_ass_vitesse	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	134;"	m	line:134
+flag_calcul_atan2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	129;"	m	line:129
+flag_carte_seule	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	40;"	v	line:40
+flag_control_clavier	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	131;"	m	line:131
+flag_evitement_adv	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	127;"	m	line:127
+flag_phase_htr	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	39;"	v	line:39
+flag_sortie_evitement_adv	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	128;"	m	line:128
+flag_stop_asserv	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	126;"	m	line:126
+g_config_i2c	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.h	24;"	p	line:24	signature:(void)
+g_config_i2c_slave	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.c	197;"	f	line:197	signature:(void)
+g_config_interrupt_slave	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.c	243;"	f	line:243	signature:(void)
+g_config_interrupt_slave	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.h	26;"	p	line:26	signature:(void)
+g_config_mat	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.c	326;"	f	line:326	signature:(void)
+g_config_mat	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.h	34;"	p	line:34	signature:(void)
+g_config_port	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.c	32;"	f	line:32	signature:(void)
+g_config_port	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.h	18;"	p	line:18	signature:(void)
+g_config_power_pwm	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.c	64;"	f	line:64	signature:(void)
+g_config_power_pwm	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.h	20;"	p	line:20	signature:(void)
+g_config_rs232	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.c	155;"	f	line:155	signature:(void)
+g_config_rs232	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.h	22;"	p	line:22	signature:(void)
+g_config_timer0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.c	285;"	f	line:285	signature:(void)
+g_config_timer0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.h	28;"	p	line:28	signature:(void)
+g_config_timer2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.c	300;"	f	line:300	signature:(void)
+g_config_timer2	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.h	30;"	p	line:30	signature:(void)
+g_config_timer5	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.c	313;"	f	line:313	signature:(void)
+g_config_timer5	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.h	32;"	p	line:32	signature:(void)
+i	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.c	42;"	l	line:42
+i	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	98;"	l	line:98
+i2c_nbdata	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	50;"	v	line:50
+i2c_offset	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	49;"	v	line:49
+i2c_slave_node_addr	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	53;"	v	line:53
+i2cstate_slave	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	52;"	v	line:52
+imp_roue_D	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	154;"	m	line:154
+imp_roue_G	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	153;"	m	line:153
+inversion_repaire	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	379;"	f	line:379	signature:(int consigne_angle_deg)
+inversion_repaire	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	229;"	p	line:229	signature:(int consigne_angle_deg)
+inversion_repere	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	141;"	m	line:141
+j	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	98;"	l	line:98
+main	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\main_cod.c	45;"	f	line:45	signature:(void)
+match	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	179;"	m	line:179
+octet_recu_rx	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	201;"	m	line:201
+offset_coef_saturation_vitesse	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	212;"	m	line:212
+offset_correcteur_angle	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	208;"	m	line:208
+offset_correcteur_distance	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	199;"	m	line:199
+orientation_depart	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	191;"	m	line:191
+periode_us	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	38;"	v	line:38
+phase_htr	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	34;"	v	line:34
+phase_htr_temp	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	35;"	v	line:35
+putch	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_affich.c	31;"	f	line:31	signature:(unsigned char byte)
+putch	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_affich.h	20;"	p	line:20	signature:(unsigned char byte)
+puts	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_affich.c	37;"	f	line:37	signature:(const char *s)
+puts	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_affich.h	25;"	p	line:25	signature:(const char *s)
+recule_callage	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	786;"	f	line:786	signature:(INT_S32B angle, INT_S32B x_mm, INT_S32B y_mm, INT_US32B timeout_final, int mode)
+recule_callage	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	239;"	p	line:239	signature:(INT_S32B angle, INT_S32B x_mm, INT_S32B y_mm, INT_US32B timeout_final, int mode)
+ret	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	132;"	l	line:132
+ret	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	514;"	l	line:514
+seuil_angle_bas	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	423;"	l	line:423
+seuil_angle_bas	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	493;"	l	line:493
+seuil_angle_bas	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	592;"	l	line:592
+seuil_angle_haut	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	424;"	l	line:424
+seuil_angle_haut	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	494;"	l	line:494
+seuil_angle_haut	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	593;"	l	line:593
+seuil_distance_ar	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	597;"	l	line:597
+seuil_distance_av	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	596;"	l	line:596
+sortie	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.c	515;"	l	line:515
+sortie_vas_vers	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	600;"	l	line:600
+tableau_coef_saturation_vitesse	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	211;"	m	line:211
+tableau_correcteur_angle	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	209;"	m	line:209
+tableau_correcteur_distance	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	200;"	m	line:200
+temporisation_raf_debug	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	27;"	v	line:27
+theta_actuel	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	162;"	m	line:162
+theta_init	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	198;"	m	line:198
+theta_precedent	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	163;"	m	line:163
+time	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	911;"	l	line:911
+timeout	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	191;"	v	line:191
+timeout_local	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	599;"	l	line:599
+timer_htr	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	32;"	v	line:32
+touche	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\reglages_carte.c	43;"	l	line:43
+tourner_angle	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	420;"	f	line:420	signature:(INT_S32B consigne_angle_deg, INT_S32B vitesse)
+tourner_angle	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	231;"	p	line:231	signature:(INT_S32B consigne_angle_deg, INT_S32B vitesse)
+tourner_cible	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	490;"	f	line:490	signature:(INT_S32B x_consigne_mm, INT_S32B y_consigne_mm, INT_S32B vitesse)
+tourner_cible	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	233;"	p	line:233	signature:(INT_S32B x_consigne_mm, INT_S32B y_consigne_mm, INT_S32B vitesse)
+traitement_i2c_cpt_octet	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	26;"	v	line:26
+traitement_i2c_nb_octet	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	25;"	v	line:25
+u16b	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	119;"	m	line:119
+uS_CNT::238	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\delay.h	37;"	d	line:37
+uS_CNT::244	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\delay.h	41;"	d	line:41
+uS_CNT::246	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\delay.h	43;"	d	line:43
+val_phase_htr_reste	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	33;"	v	line:33
+val_timer0	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\v_glob_cod.h	37;"	v	line:37
+vas_vers	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	589;"	f	line:589	signature:(INT_S32B x_consigne_mm, INT_S32B y_consigne_mm, INT_S32B vitesse, INT_S32B angle_force_deg)
+vas_vers	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	235;"	p	line:235	signature:(INT_S32B x_consigne_mm, INT_S32B y_consigne_mm, INT_S32B vitesse, INT_S32B angle_force_deg)
+vitesse_ass_distance	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	173;"	m	line:173
+vitesse_ass_distance_precedente	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	175;"	m	line:175
+vitesse_ass_orientation	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	174;"	m	line:174
+vitesse_ass_orientation_precedente	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	176;"	m	line:176
+vitesse_max	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	189;"	m	line:189
+vitesse_max_angle	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.c	220;"	l	line:220
+vitesse_roue_D	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	177;"	m	line:177
+vitesse_roue_D_precedente	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	179;"	m	line:179
+vitesse_roue_G	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	178;"	m	line:178
+vitesse_roue_G_precedente	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	180;"	m	line:180
+x_actuel	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	166;"	m	line:166
+x_actuel_preparation	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	171;"	m	line:171
+x_consigne	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	185;"	m	line:185
+x_init	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	196;"	m	line:196
+x_precedent	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	168;"	m	line:168
+y_actuel	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	167;"	m	line:167
+y_consigne	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	186;"	m	line:186
+y_init	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.h	197;"	m	line:197
+y_precedent	D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.h	169;"	m	line:169

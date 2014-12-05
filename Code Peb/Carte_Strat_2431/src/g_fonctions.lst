@@ -1,0 +1,428 @@
+
+
+HI-TECH Software PICC-18 Macro Assembler V8.35PL3
+Serial number: HCPIC18-33902                           Fri May 14 07:16:22 2010
+
+Licensed to: HOME VER
+     1                           	processor	18F2431
+     2                           	opt	pw 80
+     3                           	psect	__Z33902RS_,global,delta=1
+     4                           	psect	text,global,reloc=2,class=CODE,delta=1
+     5                           	psect	intsave_regs,global,class=BIGRAM,space=1,
+      +                          delta=1
+     6  000000                     
+     7  000000                     
+     8  000000                     
+     9  000000                     
+    10  000000                     
+    11  000000                     
+    12  000000                     
+    13  000000                     
+    14  000000                     
+    15  000000                     
+    16  000000                     
+    17  000000                     
+    18  000000                     
+    19  000000                     
+    20  000000                     
+    21  000000                     
+    22  000000                     
+    23  000000                     
+    24  000000                     
+    25  000000                     
+    26  000000                     
+    27  000000                     
+    28  000000                     
+    29  000000                     
+    30  000000                     
+    31  000000                     
+    32  000000                     
+    33  000000                     
+    34  000000                     
+    35  000000                     
+    36  000000                     
+    37  000000                     
+    38  000000                     
+    39  000000                     
+    40  000000                     
+    41  000000                     
+    42  000000                     
+    43  000000                     
+    44  000000                     
+    45  000000                     
+    46  000000                     
+    47  000000                     
+    48  000000                     
+    49  000000                     
+    50  000000                     
+    51  000000                     
+    52  000000                     
+    53  000000                     
+    54  000000                     
+    55  000000                     
+    56  000000                     
+    57  000000                     
+    58  000000                     
+    59  000000                     
+    60  000000                     
+    61  000000                     
+    62  000000                     
+    63  000000                     
+    64  000000                     
+    65  000000                     
+    66  000000                     
+    67  000000                     
+    68  000000                     
+    69  000000                     
+    70  000000                     
+    71  000000                     
+    72  000000                     
+    73  000000                     
+    74  000000                     
+    75  000000                     
+    76  000000                     
+    77  000000                     
+    78  000000                     
+    79  000000                     
+    80  000000                     
+    81  000000                     
+    82  000000                     
+    83  000000                     
+    84  000000                     
+    85  000000                     
+    86  000000                     
+    87  000000                     
+    88  000000                     
+    89  000000                     
+    90  000000                     
+    91  000000                     
+    92  000000                     
+    93  000000                     
+    94  000000                     
+    95                           
+    96                           	psect	__Z33902RS_
+    97  000004                     
+    98  000004                     
+    99                           
+   100                           	psect	text
+   101  0035A0                     _g_config_port:
+   102  000000                     
+   103                           ;g_fonctions.c: 35: ANSEL0 = 0;
+   104  0035A0  6AB8               	clrf	4024,c
+   105                           ;g_fonctions.c: 36: ADON = 0;
+   106  0035A2  90C2               	bcf	4034,0,c
+   107                           ;g_fonctions.c: 37: TRISA0 = 0;
+   108  0035A4  9092               	bcf	3986,0,c	;volatile
+   109                           ;g_fonctions.c: 38: TRISA1 = 0;
+   110  0035A6  9292               	bcf	3986,1,c	;volatile
+   111                           ;g_fonctions.c: 39: TRISA3 = 1;
+   112  0035A8  8692               	bsf	3986,3,c	;volatile
+   113                           ;g_fonctions.c: 40: TRISA4 = 1;
+   114  0035AA  8892               	bsf	3986,4,c	;volatile
+   115                           ;g_fonctions.c: 41: TRISA6 = 0;
+   116  0035AC  9C92               	bcf	3986,6,c	;volatile
+   117                           ;g_fonctions.c: 44: TRISB0 = 0;
+   118  0035AE  9093               	bcf	3987,0,c	;volatile
+   119                           ;g_fonctions.c: 45: TRISB1 = 0;
+   120  0035B0  9293               	bcf	3987,1,c	;volatile
+   121                           ;g_fonctions.c: 46: TRISB2 = 0;
+   122  0035B2  9493               	bcf	3987,2,c	;volatile
+   123                           ;g_fonctions.c: 47: TRISB3 = 0;
+   124  0035B4  9693               	bcf	3987,3,c	;volatile
+   125                           ;g_fonctions.c: 48: TRISB4 = 1;
+   126  0035B6  8893               	bsf	3987,4,c	;volatile
+   127                           ;g_fonctions.c: 49: TRISB5 = 1;
+   128  0035B8  8A93               	bsf	3987,5,c	;volatile
+   129                           ;g_fonctions.c: 52: TRISC0 = 0;
+   130  0035BA  9094               	bcf	3988,0,c	;volatile
+   131                           ;g_fonctions.c: 53: TRISC1 = 0;
+   132  0035BC  9294               	bcf	3988,1,c	;volatile
+   133                           ;g_fonctions.c: 54: TRISC2 = 0;
+   134  0035BE  9494               	bcf	3988,2,c	;volatile
+   135                           ;g_fonctions.c: 55: TRISC3 = 0;
+   136  0035C0  9694               	bcf	3988,3,c	;volatile
+   137                           ;g_fonctions.c: 56: TRISC6 = 0;
+   138  0035C2  9C94               	bcf	3988,6,c	;volatile
+   139                           ;g_fonctions.c: 57: TRISC7 = 1;
+   140  0035C4  8E94               	bsf	3988,7,c	;volatile
+   141                           ;g_fonctions.c: 59: RA0 = 0;
+   142  0035C6  9080               	bcf	3968,0,c	;volatile
+   143                           ;g_fonctions.c: 60: RA1 = 0;
+   144  0035C8  9280               	bcf	3968,1,c	;volatile
+   145                           ;g_fonctions.c: 61: RC0 = 0;
+   146  0035CA  9082               	bcf	3970,0,c	;volatile
+   147                           ;g_fonctions.c: 62: }
+   148  0035CC  0012               	return	
+   149  0035CE                     _g_config_power_pwm:
+   150  000000                     
+   151                           ;g_fonctions.c: 68: PTOPS3 = 0;
+   152  0035CE  9E7F               	bcf	3967,7,c
+   153                           ;g_fonctions.c: 69: PTOPS2 = 0;
+   154  0035D0  9C7F               	bcf	3967,6,c
+   155                           ;g_fonctions.c: 70: PTOPS1 = 0;
+   156  0035D2  9A7F               	bcf	3967,5,c
+   157                           ;g_fonctions.c: 71: PTOPS0 = 0;
+   158  0035D4  987F               	bcf	3967,4,c
+   159                           ;g_fonctions.c: 74: PTCKPS1 = 0;
+   160  0035D6  967F               	bcf	3967,3,c
+   161                           ;g_fonctions.c: 75: PTCKPS0 = 0;
+   162  0035D8  947F               	bcf	3967,2,c
+   163                           ;g_fonctions.c: 77: PTMOD1 = 0;
+   164  0035DA  927F               	bcf	3967,1,c
+   165                           ;g_fonctions.c: 78: PTMOD0 = 0;
+   166  0035DC  907F               	bcf	3967,0,c
+   167                           ;g_fonctions.c: 81: PTEN = 1;
+   168  0035DE  8E7E               	bsf	3966,7,c
+   169                           ;g_fonctions.c: 82: PTDIR = 0;
+   170  0035E0  9C7E               	bcf	3966,6,c	;volatile
+   171                           ;g_fonctions.c: 85: PWMEN2 = 1;
+   172  0035E2  8C6F               	bsf	3951,6,c
+   173                           ;g_fonctions.c: 86: PWMEN1 = 1;
+   174  0035E4  8A6F               	bsf	3951,5,c
+   175                           ;g_fonctions.c: 87: PWMEN0 = 0;
+   176  0035E6  986F               	bcf	3951,4,c
+   177                           ;g_fonctions.c: 89: PMOD3 = 1;
+   178  0035E8  866F               	bsf	3951,3,c
+   179                           ;g_fonctions.c: 90: PMOD2 = 1;
+   180  0035EA  846F               	bsf	3951,2,c
+   181                           ;g_fonctions.c: 91: PMOD1 = 1;
+   182  0035EC  826F               	bsf	3951,1,c
+   183                           ;g_fonctions.c: 92: PMOD0 = 1;
+   184  0035EE  806F               	bsf	3951,0,c
+   185                           ;g_fonctions.c: 95: SEVOPS3 = 0;
+   186  0035F0  9E6E               	bcf	3950,7,c
+   187                           ;g_fonctions.c: 96: SEVOPS2 = 0;
+   188  0035F2  9C6E               	bcf	3950,6,c
+   189                           ;g_fonctions.c: 97: SEVOPS1 = 0;
+   190  0035F4  9A6E               	bcf	3950,5,c
+   191                           ;g_fonctions.c: 98: SEVOPS0 = 0;
+   192  0035F6  986E               	bcf	3950,4,c
+   193                           ;g_fonctions.c: 100: SEVTDIR = 0;
+   194  0035F8  966E               	bcf	3950,3,c
+   195                           ;g_fonctions.c: 101: UDIS = 0;
+   196  0035FA  926E               	bcf	3950,1,c
+   197                           ;g_fonctions.c: 102: OSYNC = 0;
+   198  0035FC  906E               	bcf	3950,0,c
+   199                           ;g_fonctions.c: 105: DTCON = 0x00;
+   200  0035FE  6A6D               	clrf	3949,c
+   201                           ;g_fonctions.c: 122: POVD7 = 1;
+   202  003600  8E6B               	bsf	3947,7,c
+   203                           ;g_fonctions.c: 123: POVD6 = 1;
+   204  003602  8C6B               	bsf	3947,6,c
+   205                           ;g_fonctions.c: 124: POVD5 = 1;
+   206  003604  8A6B               	bsf	3947,5,c
+   207                           ;g_fonctions.c: 125: POVD4 = 1;
+   208  003606  886B               	bsf	3947,4,c
+   209                           ;g_fonctions.c: 126: POVD3 = 1;
+   210  003608  866B               	bsf	3947,3,c
+   211                           ;g_fonctions.c: 127: POVD2 = 1;
+   212  00360A  846B               	bsf	3947,2,c
+   213                           ;g_fonctions.c: 128: POVD1 = 1;
+   214  00360C  826B               	bsf	3947,1,c
+   215                           ;g_fonctions.c: 129: POVD0 = 1;
+   216  00360E  806B               	bsf	3947,0,c
+   217                           ;g_fonctions.c: 133: POUT7 = 0;
+   218  003610  9E6A               	bcf	3946,7,c	;volatile
+   219                           ;g_fonctions.c: 134: POUT6 = 0;
+   220  003612  9C6A               	bcf	3946,6,c	;volatile
+   221                           ;g_fonctions.c: 135: POUT5 = 0;
+   222  003614  9A6A               	bcf	3946,5,c	;volatile
+   223                           ;g_fonctions.c: 136: POUT4 = 0;
+   224  003616  986A               	bcf	3946,4,c	;volatile
+   225                           ;g_fonctions.c: 137: POUT3 = 0;
+   226  003618  966A               	bcf	3946,3,c	;volatile
+   227                           ;g_fonctions.c: 138: POUT2 = 0;
+   228  00361A  946A               	bcf	3946,2,c	;volatile
+   229                           ;g_fonctions.c: 139: POUT1 = 0;
+   230  00361C  926A               	bcf	3946,1,c	;volatile
+   231                           ;g_fonctions.c: 140: POUT0 = 0;
+   232  00361E  906A               	bcf	3946,0,c	;volatile
+   233                           ;g_fonctions.c: 143: FLTCONFIG = 0x00;
+   234  003620  6A6C               	clrf	3948,c	;volatile
+   235                           ;g_fonctions.c: 153: }
+   236  003622  0012               	return	
+   237  003624                     _g_config_rs232:
+   238  000000                     
+   239                           ;g_fonctions.c: 164: SPEN = 1;
+   240  003624  8EAB               	bsf	4011,7,c
+   241                           ;g_fonctions.c: 165: RX9 = 0;
+   242  003626  9CAB               	bcf	4011,6,c
+   243                           ;g_fonctions.c: 167: CREN = 1;
+   244  003628  88AB               	bsf	4011,4,c
+   245                           ;g_fonctions.c: 168: ADEN = 0;
+   246  00362A  96AB               	bcf	4011,3,c
+   247                           ;g_fonctions.c: 175: TX9 = 0;
+   248  00362C  9CAC               	bcf	4012,6,c
+   249                           ;g_fonctions.c: 176: TXEN = 1;
+   250  00362E  8AAC               	bsf	4012,5,c
+   251                           ;g_fonctions.c: 177: SYNC = 0;
+   252  003630  98AC               	bcf	4012,4,c
+   253                           ;g_fonctions.c: 179: BRGH = 1;
+   254  003632  84AC               	bsf	4012,2,c
+   255                           ;g_fonctions.c: 181: TX9D = 0;
+   256  003634  90AC               	bcf	4012,0,c	;volatile
+   257                           ;g_fonctions.c: 186: BRG16 = 1;
+   258  003636  86AA               	bsf	4010,3,c
+   259                           ;g_fonctions.c: 187: WUE = 0;
+   260  003638  92AA               	bcf	4010,1,c	;volatile
+   261                           ;g_fonctions.c: 188: ABDEN = 0;
+   262  00363A  90AA               	bcf	4010,0,c	;volatile
+   263                           ;g_fonctions.c: 193: SPBRGH = 0x00;
+   264  00363C  6AB0               	clrf	4016,c
+   265                           ;g_fonctions.c: 194: SPBRG = 0x56;
+   266  00363E  0E56               	movlw	86
+   267  003640  6EAF               	movwf	4015,c
+   268                           ;g_fonctions.c: 195: }
+   269  003642  0012               	return	
+   270  003644                     _g_config_i2c_slave:
+   271  000000                     
+   272                           ;g_fonctions.c: 200: SSPIF = 0;
+   273  003644  969E               	bcf	3998,3,c	;volatile
+   274                           ;g_fonctions.c: 206: SSPADD = 0x10;
+   275  003646  0E10               	movlw	16
+   276  003648  6EC8               	movwf	4040,c
+   277                           ;g_fonctions.c: 209: SMP = 0;
+   278  00364A  9EC7               	bcf	4039,7,c
+   279                           ;g_fonctions.c: 210: CKE = 0;
+   280  00364C  9CC7               	bcf	4039,6,c
+   281                           ;g_fonctions.c: 221: SSPEN = 1;
+   282  00364E  8AC6               	bsf	4038,5,c
+   283                           ;g_fonctions.c: 222: CKP = 1;
+   284  003650  88C6               	bsf	4038,4,c
+   285                           ;g_fonctions.c: 226: SSPM3 = 0;
+   286  003652  96C6               	bcf	4038,3,c
+   287                           ;g_fonctions.c: 227: SSPM2 = 1;
+   288  003654  84C6               	bsf	4038,2,c
+   289                           ;g_fonctions.c: 228: SSPM1 = 1;
+   290  003656  82C6               	bsf	4038,1,c
+   291                           ;g_fonctions.c: 229: SSPM0 = 0;
+   292  003658  90C6               	bcf	4038,0,c
+   293                           ;g_fonctions.c: 241: }
+   294  00365A  0012               	return	
+   295  00365C                     _g_config_interrupt_slave:
+   296  000000                     
+   297                           ;g_fonctions.c: 246: GIEH = 1;
+   298  00365C  8EF2               	bsf	intcon,7,c
+   299                           ;g_fonctions.c: 247: GIEL = 1;
+   300  00365E  8CF2               	bsf	intcon,6,c
+   301                           ;g_fonctions.c: 248: IPEN=1;
+   302  003660  8ED0               	bsf	4048,7,c
+   303                           ;g_fonctions.c: 249: TMR0IP = 1;
+   304  003662  84F1               	bsf	intcon2,2,c
+   305                           ;g_fonctions.c: 252: SSPIP = 1;
+   306  003664  869F               	bsf	3999,3,c
+   307                           ;g_fonctions.c: 255: RCIP = 1;
+   308  003666  8A9F               	bsf	3999,5,c
+   309                           ;g_fonctions.c: 256: TXIP = 0;
+   310  003668  989F               	bcf	3999,4,c
+   311                           ;g_fonctions.c: 257: ADIP = 0;
+   312  00366A  9C9F               	bcf	3999,6,c
+   313                           ;g_fonctions.c: 258: IC2QEIP = 1;
+   314  00366C  84A5               	bsf	4005,2,c
+   315                           ;g_fonctions.c: 259: IC3DRIP = 1;
+   316  00366E  86A5               	bsf	4005,3,c
+   317                           ;g_fonctions.c: 262: TMR0IE = 1;
+   318  003670  8AF2               	bsf	intcon,5,c
+   319                           ;g_fonctions.c: 268: SSPIE = 1;
+   320  003672  869D               	bsf	3997,3,c
+   321                           ;g_fonctions.c: 277: RCIE = 0;
+   322  003674  9A9D               	bcf	3997,5,c
+   323                           ;g_fonctions.c: 281: }
+   324  003676  0012               	return	
+   325  003678                     _g_config_timer0:
+   326  000000                     
+   327                           ;g_fonctions.c: 287: T016BIT = 0;
+   328  003678  9CD5               	bcf	4053,6,c
+   329                           ;g_fonctions.c: 288: T0CS = 0;
+   330  00367A  9AD5               	bcf	4053,5,c
+   331                           ;g_fonctions.c: 289: T0PS3 = 0;
+   332  00367C  96D5               	bcf	4053,3,c
+   333                           ;g_fonctions.c: 290: T0PS2 = 0;
+   334  00367E  94D5               	bcf	4053,2,c
+   335                           ;g_fonctions.c: 291: T0PS1 = 1;
+   336  003680  82D5               	bsf	4053,1,c
+   337                           ;g_fonctions.c: 292: T0PS0 = 0;
+   338  003682  90D5               	bcf	4053,0,c
+   339                           ;g_fonctions.c: 294: TMR0 = 34285;
+   340  003684  0EED               	movlw	237
+   341  003686  6ED6               	movwf	4054,c	;volatile
+   342  003688  0E85               	movlw	133
+   343  00368A  6ED7               	movwf	4055,c	;volatile
+   344                           ;g_fonctions.c: 295: TMR0IF = 0;
+   345  00368C  94F2               	bcf	intcon,2,c	;volatile
+   346                           ;g_fonctions.c: 296: TMR0ON = 1;
+   347  00368E  8ED5               	bsf	4053,7,c
+   348                           ;g_fonctions.c: 297: TMR0 = 34285;
+   349  003690  0EED               	movlw	237
+   350  003692  6ED6               	movwf	4054,c	;volatile
+   351  003694  0E85               	movlw	133
+   352  003696  6ED7               	movwf	4055,c	;volatile
+   353                           ;g_fonctions.c: 298: }
+   354  003698  0012               	return	
+   355  00369A                     _g_config_timer2:
+   356  000000                     
+   357                           ;g_fonctions.c: 302: TOUTPS0 = 1;
+   358  00369A  86CA               	bsf	4042,3,c
+   359                           ;g_fonctions.c: 303: TOUTPS0 = 1;
+   360  00369C  86CA               	bsf	4042,3,c
+   361                           ;g_fonctions.c: 304: TOUTPS0 = 1;
+   362  00369E  86CA               	bsf	4042,3,c
+   363                           ;g_fonctions.c: 305: TOUTPS0 = 1;
+   364  0036A0  86CA               	bsf	4042,3,c
+   365                           ;g_fonctions.c: 307: T2CKPS1 = 0;
+   366  0036A2  92CA               	bcf	4042,1,c
+   367                           ;g_fonctions.c: 308: T2CKPS0 = 0;
+   368  0036A4  90CA               	bcf	4042,0,c
+   369                           ;g_fonctions.c: 310: TMR2ON = 0;
+   370  0036A6  94CA               	bcf	4042,2,c
+   371                           ;g_fonctions.c: 311: }
+   372  0036A8  0012               	return	
+   373  0036AA                     _g_config_timer5:
+   374  000000                     
+   375                           ;g_fonctions.c: 316: T5SEN=1;
+   376  0036AA  8EB7               	bsf	4023,7,c
+   377                           ;g_fonctions.c: 318: T5MOD=0;
+   378  0036AC  9AB7               	bcf	4023,5,c
+   379                           ;g_fonctions.c: 319: T5PS1=0;
+   380  0036AE  98B7               	bcf	4023,4,c
+   381                           ;g_fonctions.c: 320: T5PS0=0;
+   382  0036B0  96B7               	bcf	4023,3,c
+   383                           ;g_fonctions.c: 321: T5SYNC=0;
+   384  0036B2  94B7               	bcf	4023,2,c
+   385                           ;g_fonctions.c: 322: TMR5CS=1;
+   386  0036B4  82B7               	bsf	4023,1,c
+   387                           ;g_fonctions.c: 323: TMR5ON=1;
+   388  0036B6  80B7               	bsf	4023,0,c
+   389                           ;g_fonctions.c: 324: }
+   390  0036B8  0012               	return	
+   391  0036BA                     _g_config_mat:
+   392  000000                     
+   393                           ;g_fonctions.c: 329: g_config_port();
+   394  0036BA  DF72               	call	_g_config_port	;wreg free
+   395                           ;g_fonctions.c: 332: g_config_interrupt_slave();
+   396  0036BC  DFCF               	call	_g_config_interrupt_slave	;wreg free
+   397                           ;g_fonctions.c: 335: g_config_timer0();
+   398  0036BE  DFDC               	call	_g_config_timer0	;wreg free
+   399                           ;g_fonctions.c: 336: g_config_timer2();
+   400  0036C0  DFEC               	call	_g_config_timer2	;wreg free
+   401                           ;g_fonctions.c: 337: g_config_timer5();
+   402  0036C2  DFF3               	call	_g_config_timer5	;wreg free
+   403                           ;g_fonctions.c: 340: g_config_power_pwm();
+   404  0036C4  DF84               	call	_g_config_power_pwm	;wreg free
+   405                           ;g_fonctions.c: 343: g_config_rs232();
+   406  0036C6  DFAE               	call	_g_config_rs232	;wreg free
+   407                           ;g_fonctions.c: 346: g_config_i2c_slave();
+   408  0036C8  D7BD               	goto	_g_config_i2c_slave	;wreg free
+   409                           intcon	equ	0xFF2
+   410                           intcon2	equ	0xFF1
+
+
+HI-TECH Software PICC-18 Macro Assembler V8.35PL3
+Symbol Table                                           Fri May 14 07:16:22 2010
+
+  _g_config_interrupt_slave 365C                _g_config_mat 36BA  
+             _g_config_port 35A0                     __Lparam 0083  
+                   __ramtop 0300          _g_config_power_pwm 35CE  
+           _g_config_timer0 3678             _g_config_timer2 369A  
+           _g_config_timer5 36AA              _g_config_rs232 3624  
+        _g_config_i2c_slave 3644  

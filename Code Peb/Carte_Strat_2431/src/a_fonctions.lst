@@ -1,0 +1,1092 @@
+
+
+HI-TECH Software PICC-18 Macro Assembler V8.35PL3
+Serial number: HCPIC18-33902                           Fri May 14 07:16:19 2010
+
+Licensed to: HOME VER
+     1                           	processor	18F2431
+     2                           	opt	pw 80
+     3                           	psect	__Z33902RS_,global,delta=1
+     4                           	psect	text,global,reloc=2,class=CODE,delta=1
+     5                           	psect	bss,global,class=RAM,space=1,delta=1
+     6                           	psect	temp,global,ovrld,common,class=COMRAM,spa
+      +                          ce=1,delta=1
+     7                           	psect	intsave_regs,global,class=BIGRAM,space=1,
+      +                          delta=1
+     8  000000                     
+     9  000000                     
+    10  000000                     
+    11  000000                     
+    12  000000                     
+    13  000000                     
+    14  000000                     
+    15  000000                     
+    16  000000                     
+    17  000000                     
+    18  000000                     
+    19  000000                     
+    20  000000                     
+    21  000000                     
+    22  000000                     
+    23  000000                     
+    24  000000                     
+    25  000000                     
+    26  000000                     
+    27  000000                     
+    28  000000                     
+    29  000000                     
+    30  000000                     
+    31  000000                     
+    32  000000                     
+    33  000000                     
+    34  000000                     
+    35  000000                     
+    36  000000                     
+    37  000000                     
+    38  000000                     
+    39  000000                     
+    40  000000                     
+    41  000000                     
+    42  000000                     
+    43  000000                     
+    44  000000                     
+    45  000000                     
+    46  000000                     
+    47  000000                     
+    48  000000                     
+    49  000000                     
+    50  000000                     
+    51  000000                     
+    52  000000                     
+    53  000000                     
+    54  000000                     
+    55  000000                     
+    56  000000                     
+    57  000000                     
+    58  000000                     
+    59  000000                     
+    60  000000                     
+    61  000000                     
+    62  000000                     
+    63  000000                     
+    64  000000                     
+    65  000000                     
+    66  000000                     
+    67  000000                     
+    68  000000                     
+    69  000000                     
+    70  000000                     
+    71  000000                     
+    72  000000                     
+    73  000000                     
+    74  000000                     
+    75  000000                     
+    76  000000                     
+    77  000000                     
+    78  000000                     
+    79  000000                     
+    80  000000                     
+    81  000000                     
+    82  000000                     
+    83  000000                     
+    84  000000                     
+    85  000000                     
+    86  000000                     
+    87  000000                     
+    88  000000                     
+    89  000000                     
+    90  000000                     
+    91  000000                     
+    92  000000                     
+    93  000000                     
+    94  000000                     
+    95  000000                     
+    96  000000                     
+    97                           
+    98                           	psect	__Z33902RS_
+    99  000004                     
+   100  000004                     
+   101                           
+   102                           	psect	text
+   103  0028C4                     _a_init_log:
+   104                           ;       param _numero_init assigned to ?_InitPos
+      +                          itionRobot+6
+   105  000000                     _InitPositionRobot$numero_init	set	?_InitPositio
+      +                          nRobot+6
+   106                           ;       param _theta_deg assigned to ?_InitPosit
+      +                          ionRobot+4
+   107  000000                     _InitPositionRobot$theta_deg	set	?_InitPositionR
+      +                          obot+4
+   108                           ;       param _y_mm assigned to ?_InitPositionRo
+      +                          bot+2
+   109  000000                     _InitPositionRobot$y_mm	set	?_InitPositionRobot+
+      +                          2
+   110                           ;       param _x_mm assigned to ?_InitPositionRo
+      +                          bot+0
+   111  000000                     _InitPositionRobot$x_mm	set	?_InitPositionRobot
+   112  000000                     
+   113                           ;a_fonctions.c: 69: temporisation_raf_debug = 0;
+   114  0028C4  0100               	movlb	_temporisation_raf_debug shr (0+8)
+   115  0028C6  6B3C               	clrf	_temporisation_raf_debug& (0+255),b
+   116  0028C8  6B3D               	clrf	(_temporisation_raf_debug+1)& (0+255),b
+   117                           ;a_fonctions.c: 73: phase_htr = 1;
+   118  0028CA  0E01               	movlw	1
+   119  0028CC  CFE8 F29C          	movff	wreg,_phase_htr
+   120                           ;a_fonctions.c: 77: traitement_i2c_nb_octet = 0;
+   121  0028D0  0100               	movlb	_traitement_i2c_nb_octet shr (0+8)
+   122  0028D2  6B42               	clrf	_traitement_i2c_nb_octet& (0+255),b
+   123  0028D4  6B43               	clrf	(_traitement_i2c_nb_octet+1)& (0+255),b
+   124                           ;a_fonctions.c: 81: Asserv.inversion_repere = 0;
+   125  0028D6  0101               	movlb	(_Asserv+26) shr (0+8)
+   126  0028D8  6B1A               	clrf	(_Asserv+26)& (0+255),b
+   127  0028DA  6B1B               	clrf	(_Asserv+27)& (0+255),b
+   128                           ;a_fonctions.c: 82: Asserv.orientation_depart = 
+      +                          1;
+   129  0028DC  0101               	movlb	(_Asserv+146) shr (0+8)
+   130  0028DE  0E01               	movlw	1
+   131  0028E0  6F92               	movwf	(_Asserv+146)& (0+255),b
+   132  0028E2  0E00               	movlw	0
+   133  0028E4  6B93               	clrf	(_Asserv+147)& (0+255),b
+   134                           ;a_fonctions.c: 83: Asserv.angle_inversion_reper
+      +                          e = 0;
+   135  0028E6  0101               	movlb	(_Asserv+28) shr (0+8)
+   136  0028E8  6B1C               	clrf	(_Asserv+28)& (0+255),b
+   137  0028EA  6B1D               	clrf	(_Asserv+29)& (0+255),b
+   138                           ;a_fonctions.c: 85: Asserv.flag_stop_asserv = 0;
+   139  0028EC  0101               	movlb	_Asserv shr (0+8)
+   140  0028EE  6B00               	clrf	_Asserv& (0+255),b
+   141  0028F0  6B01               	clrf	(_Asserv+1)& (0+255),b
+   142                           ;a_fonctions.c: 86: Asserv.flag_evitement_adv = 
+      +                          0;
+   143  0028F2  0101               	movlb	(_Asserv+2) shr (0+8)
+   144  0028F4  6B02               	clrf	(_Asserv+2)& (0+255),b
+   145  0028F6  6B03               	clrf	(_Asserv+3)& (0+255),b
+   146                           ;a_fonctions.c: 87: Asserv.flag_sortie_evitement
+      +                          _adv = 0;
+   147  0028F8  0101               	movlb	(_Asserv+4) shr (0+8)
+   148  0028FA  6B04               	clrf	(_Asserv+4)& (0+255),b
+   149  0028FC  6B05               	clrf	(_Asserv+5)& (0+255),b
+   150                           ;a_fonctions.c: 88: Asserv.flag_calcul_atan2 = 0
+      +                          ;
+   151  0028FE  0101               	movlb	(_Asserv+6) shr (0+8)
+   152  002900  6B06               	clrf	(_Asserv+6)& (0+255),b
+   153  002902  6B07               	clrf	(_Asserv+7)& (0+255),b
+   154                           ;a_fonctions.c: 89: Asserv.flag_affichage_debug 
+      +                          = 0;
+   155  002904  0101               	movlb	(_Asserv+8) shr (0+8)
+   156  002906  6B08               	clrf	(_Asserv+8)& (0+255),b
+   157  002908  6B09               	clrf	(_Asserv+9)& (0+255),b
+   158                           ;a_fonctions.c: 90: Asserv.flag_control_clavier 
+      +                          = 0;
+   159  00290A  0101               	movlb	(_Asserv+10) shr (0+8)
+   160  00290C  6B0A               	clrf	(_Asserv+10)& (0+255),b
+   161  00290E  6B0B               	clrf	(_Asserv+11)& (0+255),b
+   162                           ;a_fonctions.c: 91: Asserv.flag_ass_distance = 0
+      +                          ;
+   163  002910  0101               	movlb	(_Asserv+12) shr (0+8)
+   164  002912  6B0C               	clrf	(_Asserv+12)& (0+255),b
+   165  002914  6B0D               	clrf	(_Asserv+13)& (0+255),b
+   166                           ;a_fonctions.c: 92: Asserv.flag_ass_angle = 0;
+   167  002916  0101               	movlb	(_Asserv+14) shr (0+8)
+   168  002918  6B0E               	clrf	(_Asserv+14)& (0+255),b
+   169  00291A  6B0F               	clrf	(_Asserv+15)& (0+255),b
+   170                           ;a_fonctions.c: 93: Asserv.flag_ass_vitesse = 0;
+   171  00291C  0101               	movlb	(_Asserv+16) shr (0+8)
+   172  00291E  6B10               	clrf	(_Asserv+16)& (0+255),b
+   173  002920  6B11               	clrf	(_Asserv+17)& (0+255),b
+   174                           ;a_fonctions.c: 94: Asserv.flag_ass_saturation_v
+      +                          itesse = 0;
+   175  002922  0101               	movlb	(_Asserv+18) shr (0+8)
+   176  002924  6B12               	clrf	(_Asserv+18)& (0+255),b
+   177  002926  6B13               	clrf	(_Asserv+19)& (0+255),b
+   178                           ;a_fonctions.c: 95: Asserv.flag_ass_saturation_a
+      +                          cceleratio = 0;
+   179  002928  0101               	movlb	(_Asserv+20) shr (0+8)
+   180  00292A  6B14               	clrf	(_Asserv+20)& (0+255),b
+   181  00292C  6B15               	clrf	(_Asserv+21)& (0+255),b
+   182                           ;a_fonctions.c: 96: Asserv.flag_ass_commande_mot
+      +                          eur_polair = 0;
+   183  00292E  0101               	movlb	(_Asserv+22) shr (0+8)
+   184  002930  6B16               	clrf	(_Asserv+22)& (0+255),b
+   185  002932  6B17               	clrf	(_Asserv+23)& (0+255),b
+   186                           ;a_fonctions.c: 97: Asserv.flag_ass_callage = 0;
+   187  002934  0101               	movlb	(_Asserv+24) shr (0+8)
+   188  002936  6B18               	clrf	(_Asserv+24)& (0+255),b
+   189  002938  6B19               	clrf	(_Asserv+25)& (0+255),b
+   190                           ;a_fonctions.c: 99: Asserv.commande_roue_G_clavi
+      +                          er = 1;
+   191  00293A  0101               	movlb	(_Asserv+30) shr (0+8)
+   192  00293C  0E01               	movlw	1
+   193  00293E  6F1E               	movwf	(_Asserv+30)& (0+255),b
+   194  002940  6B1F               	clrf	(_Asserv+31)& (0+255),b
+   195                           ;a_fonctions.c: 100: Asserv.commande_roue_D_clav
+      +                          ier = 1;
+   196  002942  0101               	movlb	(_Asserv+32) shr (0+8)
+   197  002944  6F20               	movwf	(_Asserv+32)& (0+255),b
+   198  002946  0E00               	movlw	0
+   199  002948  6B21               	clrf	(_Asserv+33)& (0+255),b
+   200                           ;a_fonctions.c: 101: Asserv.commande_roue_G = 0;
+   201  00294A  0101               	movlb	(_Asserv+34) shr (0+8)
+   202  00294C  6B22               	clrf	(_Asserv+34)& (0+255),b
+   203  00294E  6B23               	clrf	(_Asserv+35)& (0+255),b
+   204                           ;a_fonctions.c: 102: Asserv.commande_roue_D = 0;
+   205  002950  0101               	movlb	(_Asserv+36) shr (0+8)
+   206  002952  6B24               	clrf	(_Asserv+36)& (0+255),b
+   207  002954  6B25               	clrf	(_Asserv+37)& (0+255),b
+   208                           ;a_fonctions.c: 103: Asserv.commande_roue_G_prec
+      +                          edente = 0;
+   209  002956  0101               	movlb	(_Asserv+38) shr (0+8)
+   210  002958  6B26               	clrf	(_Asserv+38)& (0+255),b
+   211  00295A  6B27               	clrf	(_Asserv+39)& (0+255),b
+   212                           ;a_fonctions.c: 104: Asserv.commande_roue_D_prec
+      +                          edente = 0;
+   213  00295C  0101               	movlb	(_Asserv+40) shr (0+8)
+   214  00295E  6B28               	clrf	(_Asserv+40)& (0+255),b
+   215  002960  6B29               	clrf	(_Asserv+41)& (0+255),b
+   216                           ;a_fonctions.c: 106: Asserv.commande_correction_
+      +                          epis_g = 0;
+   217  002962  0101               	movlb	(_Asserv+42) shr (0+8)
+   218  002964  6B2A               	clrf	(_Asserv+42)& (0+255),b
+   219  002966  6B2B               	clrf	(_Asserv+43)& (0+255),b
+   220                           ;a_fonctions.c: 107: Asserv.commande_correction_
+      +                          epis_d = 0;
+   221  002968  0101               	movlb	(_Asserv+44) shr (0+8)
+   222  00296A  6B2C               	clrf	(_Asserv+44)& (0+255),b
+   223  00296C  6B2D               	clrf	(_Asserv+45)& (0+255),b
+   224                           ;a_fonctions.c: 109: Asserv.imp_roue_G = 0;
+   225  00296E  0101               	movlb	(_Asserv+46) shr (0+8)
+   226  002970  6B2E               	clrf	(_Asserv+46)& (0+255),b
+   227  002972  6B2F               	clrf	(_Asserv+47)& (0+255),b
+   228  002974  6B30               	clrf	(_Asserv+48)& (0+255),b
+   229  002976  6B31               	clrf	(_Asserv+49)& (0+255),b
+   230                           ;a_fonctions.c: 110: Asserv.imp_roue_D = 0;
+   231  002978  0101               	movlb	(_Asserv+50) shr (0+8)
+   232  00297A  6B32               	clrf	(_Asserv+50)& (0+255),b
+   233  00297C  6B33               	clrf	(_Asserv+51)& (0+255),b
+   234  00297E  6B34               	clrf	(_Asserv+52)& (0+255),b
+   235  002980  6B35               	clrf	(_Asserv+53)& (0+255),b
+   236                           ;a_fonctions.c: 118: Asserv.angle_depart_theta_0
+      +                           = 0;
+   237  002982  0101               	movlb	(_Asserv+62) shr (0+8)
+   238  002984  6B3E               	clrf	(_Asserv+62)& (0+255),b
+   239  002986  6B3F               	clrf	(_Asserv+63)& (0+255),b
+   240  002988  6B40               	clrf	(_Asserv+64)& (0+255),b
+   241  00298A  6B41               	clrf	(_Asserv+65)& (0+255),b
+   242                           ;a_fonctions.c: 119: Asserv.theta_actuel = Asser
+      +                          v.angle_depart_theta_0;
+   243  00298C  C13E  F136         	movff	_Asserv+62,_Asserv+54
+   244  002990  C13F  F137         	movff	_Asserv+63,_Asserv+55
+   245  002994  C140  F138         	movff	_Asserv+64,_Asserv+56
+   246  002998  C141  F139         	movff	_Asserv+65,_Asserv+57
+   247                           ;a_fonctions.c: 120: Asserv.theta_precedent = As
+      +                          serv.angle_depart_theta_0;
+   248  00299C  C13E  F13A         	movff	_Asserv+62,_Asserv+58
+   249  0029A0  C13F  F13B         	movff	_Asserv+63,_Asserv+59
+   250  0029A4  C140  F13C         	movff	_Asserv+64,_Asserv+60
+   251  0029A8  C141  F13D         	movff	_Asserv+65,_Asserv+61
+   252                           ;a_fonctions.c: 122: Asserv.x_actuel = 0;
+   253  0029AC  0101               	movlb	(_Asserv+66) shr (0+8)
+   254  0029AE  6B42               	clrf	(_Asserv+66)& (0+255),b
+   255  0029B0  6B43               	clrf	(_Asserv+67)& (0+255),b
+   256  0029B2  6B44               	clrf	(_Asserv+68)& (0+255),b
+   257  0029B4  6B45               	clrf	(_Asserv+69)& (0+255),b
+   258                           ;a_fonctions.c: 123: Asserv.y_actuel = 0;
+   259  0029B6  0101               	movlb	(_Asserv+70) shr (0+8)
+   260  0029B8  6B46               	clrf	(_Asserv+70)& (0+255),b
+   261  0029BA  6B47               	clrf	(_Asserv+71)& (0+255),b
+   262  0029BC  6B48               	clrf	(_Asserv+72)& (0+255),b
+   263  0029BE  6B49               	clrf	(_Asserv+73)& (0+255),b
+   264                           ;a_fonctions.c: 127: Asserv.vitesse_ass_distance
+      +                           = 0;
+   265  0029C0  0101               	movlb	(_Asserv+86) shr (0+8)
+   266  0029C2  6B56               	clrf	(_Asserv+86)& (0+255),b
+   267  0029C4  6B57               	clrf	(_Asserv+87)& (0+255),b
+   268  0029C6  6B58               	clrf	(_Asserv+88)& (0+255),b
+   269  0029C8  6B59               	clrf	(_Asserv+89)& (0+255),b
+   270                           ;a_fonctions.c: 128: Asserv.vitesse_ass_orientat
+      +                          ion = 0;
+   271  0029CA  0101               	movlb	(_Asserv+90) shr (0+8)
+   272  0029CC  6B5A               	clrf	(_Asserv+90)& (0+255),b
+   273  0029CE  6B5B               	clrf	(_Asserv+91)& (0+255),b
+   274  0029D0  6B5C               	clrf	(_Asserv+92)& (0+255),b
+   275  0029D2  6B5D               	clrf	(_Asserv+93)& (0+255),b
+   276                           ;a_fonctions.c: 129: Asserv.vitesse_ass_distance
+      +                          _precedente = 0;
+   277  0029D4  0101               	movlb	(_Asserv+94) shr (0+8)
+   278  0029D6  6B5E               	clrf	(_Asserv+94)& (0+255),b
+   279  0029D8  6B5F               	clrf	(_Asserv+95)& (0+255),b
+   280  0029DA  6B60               	clrf	(_Asserv+96)& (0+255),b
+   281  0029DC  6B61               	clrf	(_Asserv+97)& (0+255),b
+   282                           ;a_fonctions.c: 130: Asserv.vitesse_ass_orientat
+      +                          ion_precede = 0;
+   283  0029DE  0101               	movlb	(_Asserv+98) shr (0+8)
+   284  0029E0  6B62               	clrf	(_Asserv+98)& (0+255),b
+   285  0029E2  6B63               	clrf	(_Asserv+99)& (0+255),b
+   286  0029E4  6B64               	clrf	(_Asserv+100)& (0+255),b
+   287  0029E6  6B65               	clrf	(_Asserv+101)& (0+255),b
+   288                           ;a_fonctions.c: 131: Asserv.vitesse_roue_D = 0;
+   289  0029E8  0101               	movlb	(_Asserv+102) shr (0+8)
+   290  0029EA  6B66               	clrf	(_Asserv+102)& (0+255),b
+   291  0029EC  6B67               	clrf	(_Asserv+103)& (0+255),b
+   292  0029EE  6B68               	clrf	(_Asserv+104)& (0+255),b
+   293  0029F0  6B69               	clrf	(_Asserv+105)& (0+255),b
+   294                           ;a_fonctions.c: 132: Asserv.vitesse_roue_G = 0;
+   295  0029F2  0101               	movlb	(_Asserv+106) shr (0+8)
+   296  0029F4  6B6A               	clrf	(_Asserv+106)& (0+255),b
+   297  0029F6  6B6B               	clrf	(_Asserv+107)& (0+255),b
+   298  0029F8  6B6C               	clrf	(_Asserv+108)& (0+255),b
+   299  0029FA  6B6D               	clrf	(_Asserv+109)& (0+255),b
+   300                           ;a_fonctions.c: 133: Asserv.vitesse_roue_D_prece
+      +                          dente = 0;
+   301  0029FC  0101               	movlb	(_Asserv+110) shr (0+8)
+   302  0029FE  6B6E               	clrf	(_Asserv+110)& (0+255),b
+   303  002A00  6B6F               	clrf	(_Asserv+111)& (0+255),b
+   304  002A02  6B70               	clrf	(_Asserv+112)& (0+255),b
+   305  002A04  6B71               	clrf	(_Asserv+113)& (0+255),b
+   306                           ;a_fonctions.c: 134: Asserv.vitesse_roue_G_prece
+      +                          dente = 0;
+   307  002A06  0101               	movlb	(_Asserv+114) shr (0+8)
+   308  002A08  6B72               	clrf	(_Asserv+114)& (0+255),b
+   309  002A0A  6B73               	clrf	(_Asserv+115)& (0+255),b
+   310  002A0C  6B74               	clrf	(_Asserv+116)& (0+255),b
+   311  002A0E  6B75               	clrf	(_Asserv+117)& (0+255),b
+   312                           ;a_fonctions.c: 135: Asserv.acceleration_roue_D 
+      +                          = 0;
+   313  002A10  0101               	movlb	(_Asserv+118) shr (0+8)
+   314  002A12  6B76               	clrf	(_Asserv+118)& (0+255),b
+   315  002A14  6B77               	clrf	(_Asserv+119)& (0+255),b
+   316  002A16  6B78               	clrf	(_Asserv+120)& (0+255),b
+   317  002A18  6B79               	clrf	(_Asserv+121)& (0+255),b
+   318                           ;a_fonctions.c: 136: Asserv.acceleration_roue_G 
+      +                          = 0;
+   319  002A1A  0101               	movlb	(_Asserv+122) shr (0+8)
+   320  002A1C  6B7A               	clrf	(_Asserv+122)& (0+255),b
+   321  002A1E  6B7B               	clrf	(_Asserv+123)& (0+255),b
+   322  002A20  6B7C               	clrf	(_Asserv+124)& (0+255),b
+   323  002A22  6B7D               	clrf	(_Asserv+125)& (0+255),b
+   324                           ;a_fonctions.c: 138: Asserv.x_consigne = 0;
+   325  002A24  0101               	movlb	(_Asserv+126) shr (0+8)
+   326  002A26  6B7E               	clrf	(_Asserv+126)& (0+255),b
+   327  002A28  6B7F               	clrf	(_Asserv+127)& (0+255),b
+   328  002A2A  6B80               	clrf	(_Asserv+128)& (0+255),b
+   329  002A2C  6B81               	clrf	(_Asserv+129)& (0+255),b
+   330                           ;a_fonctions.c: 139: Asserv.y_consigne = 0;
+   331  002A2E  0101               	movlb	(_Asserv+130) shr (0+8)
+   332  002A30  6B82               	clrf	(_Asserv+130)& (0+255),b
+   333  002A32  6B83               	clrf	(_Asserv+131)& (0+255),b
+   334  002A34  6B84               	clrf	(_Asserv+132)& (0+255),b
+   335  002A36  6B85               	clrf	(_Asserv+133)& (0+255),b
+   336                           ;a_fonctions.c: 141: Asserv.consigne_vitesse = 0
+      +                          ;
+   337  002A38  0101               	movlb	(_Asserv+134) shr (0+8)
+   338  002A3A  6B86               	clrf	(_Asserv+134)& (0+255),b
+   339  002A3C  6B87               	clrf	(_Asserv+135)& (0+255),b
+   340  002A3E  6B88               	clrf	(_Asserv+136)& (0+255),b
+   341  002A40  6B89               	clrf	(_Asserv+137)& (0+255),b
+   342                           ;a_fonctions.c: 142: Asserv.vitesse_max = 0;
+   343  002A42  0101               	movlb	(_Asserv+138) shr (0+8)
+   344  002A44  6B8A               	clrf	(_Asserv+138)& (0+255),b
+   345  002A46  6B8B               	clrf	(_Asserv+139)& (0+255),b
+   346  002A48  6B8C               	clrf	(_Asserv+140)& (0+255),b
+   347  002A4A  6B8D               	clrf	(_Asserv+141)& (0+255),b
+   348                           ;a_fonctions.c: 143: Asserv.acceleration_max = 0
+      +                          ;
+   349  002A4C  0101               	movlb	(_Asserv+142) shr (0+8)
+   350  002A4E  6B8E               	clrf	(_Asserv+142)& (0+255),b
+   351  002A50  6B8F               	clrf	(_Asserv+143)& (0+255),b
+   352  002A52  6B90               	clrf	(_Asserv+144)& (0+255),b
+   353  002A54  6B91               	clrf	(_Asserv+145)& (0+255),b
+   354                           ;a_fonctions.c: 147: Asserv.commande_distance = 
+      +                          0;
+   355  002A56  0101               	movlb	(_Asserv+155) shr (0+8)
+   356  002A58  6B9B               	clrf	(_Asserv+155)& (0+255),b
+   357  002A5A  6B9C               	clrf	(_Asserv+156)& (0+255),b
+   358  002A5C  6B9D               	clrf	(_Asserv+157)& (0+255),b
+   359  002A5E  6B9E               	clrf	(_Asserv+158)& (0+255),b
+   360                           ;a_fonctions.c: 148: Asserv.commande_distance_pr
+      +                          ecedente = 0;
+   361  002A60  0101               	movlb	(_Asserv+159) shr (0+8)
+   362  002A62  6B9F               	clrf	(_Asserv+159)& (0+255),b
+   363  002A64  6BA0               	clrf	(_Asserv+160)& (0+255),b
+   364  002A66  6BA1               	clrf	(_Asserv+161)& (0+255),b
+   365  002A68  6BA2               	clrf	(_Asserv+162)& (0+255),b
+   366                           ;a_fonctions.c: 149: Asserv.offset_correcteur_di
+      +                          stance = 0;
+   367  002A6A  0101               	movlb	(_Asserv+163) shr (0+8)
+   368  002A6C  6BA3               	clrf	(_Asserv+163)& (0+255),b
+   369  002A6E  6BA4               	clrf	(_Asserv+164)& (0+255),b
+   370  002A70  6BA5               	clrf	(_Asserv+165)& (0+255),b
+   371  002A72  6BA6               	clrf	(_Asserv+166)& (0+255),b
+   372                           ;a_fonctions.c: 150: Asserv.tableau_correcteur_d
+      +                          istance[0][0] = 0.4;
+   373  002A74  0101               	movlb	(_Asserv+167) shr (0+8)
+   374  002A76  0ECD               	movlw	205
+   375  002A78  6FA7               	movwf	(_Asserv+167)& (0+255),b
+   376  002A7A  0ECC               	movlw	204
+   377  002A7C  6FA8               	movwf	(_Asserv+168)& (0+255),b
+   378  002A7E  0E3E               	movlw	62
+   379  002A80  6FA9               	movwf	(_Asserv+169)& (0+255),b
+   380                           ;a_fonctions.c: 151: Asserv.tableau_correcteur_d
+      +                          istance[0][1] = 0;
+   381  002A82  0101               	movlb	(_Asserv+170) shr (0+8)
+   382  002A84  6BAA               	clrf	(_Asserv+170)& (0+255),b
+   383  002A86  6BAB               	clrf	(_Asserv+171)& (0+255),b
+   384  002A88  6BAC               	clrf	(_Asserv+172)& (0+255),b
+   385                           ;a_fonctions.c: 152: Asserv.tableau_correcteur_d
+      +                          istance[0][2] = 0;
+   386  002A8A  0101               	movlb	(_Asserv+173) shr (0+8)
+   387  002A8C  6BAD               	clrf	(_Asserv+173)& (0+255),b
+   388  002A8E  6BAE               	clrf	(_Asserv+174)& (0+255),b
+   389  002A90  6BAF               	clrf	(_Asserv+175)& (0+255),b
+   390                           ;a_fonctions.c: 153: Asserv.tableau_correcteur_d
+      +                          istance[1][0] = 0.5;
+   391  002A92  0101               	movlb	(_Asserv+176) shr (0+8)
+   392  002A94  6BB0               	clrf	(_Asserv+176)& (0+255),b
+   393  002A96  6BB1               	clrf	(_Asserv+177)& (0+255),b
+   394  002A98  0E3F               	movlw	63
+   395  002A9A  6FB2               	movwf	(_Asserv+178)& (0+255),b
+   396                           ;a_fonctions.c: 154: Asserv.tableau_correcteur_d
+      +                          istance[1][1] = 0;
+   397  002A9C  0101               	movlb	(_Asserv+179) shr (0+8)
+   398  002A9E  6BB3               	clrf	(_Asserv+179)& (0+255),b
+   399  002AA0  6BB4               	clrf	(_Asserv+180)& (0+255),b
+   400  002AA2  6BB5               	clrf	(_Asserv+181)& (0+255),b
+   401                           ;a_fonctions.c: 155: Asserv.tableau_correcteur_d
+      +                          istance[1][2] = 0;
+   402  002AA4  0101               	movlb	(_Asserv+182) shr (0+8)
+   403  002AA6  6BB6               	clrf	(_Asserv+182)& (0+255),b
+   404  002AA8  6BB7               	clrf	(_Asserv+183)& (0+255),b
+   405  002AAA  6BB8               	clrf	(_Asserv+184)& (0+255),b
+   406                           ;a_fonctions.c: 157: Asserv.consigne_angle = 0;
+   407  002AAC  0101               	movlb	(_Asserv+185) shr (0+8)
+   408  002AAE  6BB9               	clrf	(_Asserv+185)& (0+255),b
+   409  002AB0  6BBA               	clrf	(_Asserv+186)& (0+255),b
+   410  002AB2  6BBB               	clrf	(_Asserv+187)& (0+255),b
+   411                           ;a_fonctions.c: 158: Asserv.commande_angle = 0;
+   412  002AB4  0101               	movlb	(_Asserv+194) shr (0+8)
+   413  002AB6  6BC2               	clrf	(_Asserv+194)& (0+255),b
+   414  002AB8  6BC3               	clrf	(_Asserv+195)& (0+255),b
+   415  002ABA  6BC4               	clrf	(_Asserv+196)& (0+255),b
+   416  002ABC  6BC5               	clrf	(_Asserv+197)& (0+255),b
+   417                           ;a_fonctions.c: 159: Asserv.commande_angle_prece
+      +                          dente = 0;
+   418  002ABE  0101               	movlb	(_Asserv+198) shr (0+8)
+   419  002AC0  6BC6               	clrf	(_Asserv+198)& (0+255),b
+   420  002AC2  6BC7               	clrf	(_Asserv+199)& (0+255),b
+   421  002AC4  6BC8               	clrf	(_Asserv+200)& (0+255),b
+   422  002AC6  6BC9               	clrf	(_Asserv+201)& (0+255),b
+   423                           ;a_fonctions.c: 160: Asserv.offset_correcteur_an
+      +                          gle = 0;
+   424  002AC8  0101               	movlb	(_Asserv+202) shr (0+8)
+   425  002ACA  6BCA               	clrf	(_Asserv+202)& (0+255),b
+   426  002ACC  6BCB               	clrf	(_Asserv+203)& (0+255),b
+   427  002ACE  6BCC               	clrf	(_Asserv+204)& (0+255),b
+   428  002AD0  6BCD               	clrf	(_Asserv+205)& (0+255),b
+   429                           ;a_fonctions.c: 161: Asserv.tableau_correcteur_a
+      +                          ngle[0][0] = 10;
+   430  002AD2  0101               	movlb	(_Asserv+206) shr (0+8)
+   431  002AD4  6BCE               	clrf	(_Asserv+206)& (0+255),b
+   432  002AD6  0E20               	movlw	32
+   433  002AD8  6FCF               	movwf	(_Asserv+207)& (0+255),b
+   434  002ADA  0E41               	movlw	65
+   435  002ADC  6FD0               	movwf	(_Asserv+208)& (0+255),b
+   436                           ;a_fonctions.c: 162: Asserv.tableau_correcteur_a
+      +                          ngle[0][1] = 0;
+   437  002ADE  0101               	movlb	(_Asserv+209) shr (0+8)
+   438  002AE0  6BD1               	clrf	(_Asserv+209)& (0+255),b
+   439  002AE2  6BD2               	clrf	(_Asserv+210)& (0+255),b
+   440  002AE4  6BD3               	clrf	(_Asserv+211)& (0+255),b
+   441                           ;a_fonctions.c: 163: Asserv.tableau_correcteur_a
+      +                          ngle[0][2] = 30;
+   442  002AE6  0101               	movlb	(_Asserv+212) shr (0+8)
+   443  002AE8  6BD4               	clrf	(_Asserv+212)& (0+255),b
+   444  002AEA  0EF0               	movlw	240
+   445  002AEC  6FD5               	movwf	(_Asserv+213)& (0+255),b
+   446  002AEE  0E41               	movlw	65
+   447  002AF0  6FD6               	movwf	(_Asserv+214)& (0+255),b
+   448                           ;a_fonctions.c: 164: Asserv.tableau_correcteur_a
+      +                          ngle[1][0] = 150;
+   449  002AF2  0101               	movlb	(_Asserv+215) shr (0+8)
+   450  002AF4  6BD7               	clrf	(_Asserv+215)& (0+255),b
+   451  002AF6  0E16               	movlw	22
+   452  002AF8  6FD8               	movwf	(_Asserv+216)& (0+255),b
+   453  002AFA  0E43               	movlw	67
+   454  002AFC  6FD9               	movwf	(_Asserv+217)& (0+255),b
+   455                           ;a_fonctions.c: 165: Asserv.tableau_correcteur_a
+      +                          ngle[1][1] = 0;
+   456  002AFE  0101               	movlb	(_Asserv+218) shr (0+8)
+   457  002B00  6BDA               	clrf	(_Asserv+218)& (0+255),b
+   458  002B02  6BDB               	clrf	(_Asserv+219)& (0+255),b
+   459  002B04  6BDC               	clrf	(_Asserv+220)& (0+255),b
+   460                           ;a_fonctions.c: 166: Asserv.tableau_correcteur_a
+      +                          ngle[1][2] = 100;
+   461  002B06  0101               	movlb	(_Asserv+221) shr (0+8)
+   462  002B08  6BDD               	clrf	(_Asserv+221)& (0+255),b
+   463  002B0A  0EC8               	movlw	200
+   464  002B0C  6FDE               	movwf	(_Asserv+222)& (0+255),b
+   465  002B0E  0E42               	movlw	66
+   466  002B10  6FDF               	movwf	(_Asserv+223)& (0+255),b
+   467                           ;a_fonctions.c: 168: Asserv.offset_coef_saturati
+      +                          on_vitesse = 0;
+   468  002B12  0101               	movlb	(_Asserv+233) shr (0+8)
+   469  002B14  6BE9               	clrf	(_Asserv+233)& (0+255),b
+   470  002B16  6BEA               	clrf	(_Asserv+234)& (0+255),b
+   471  002B18  6BEB               	clrf	(_Asserv+235)& (0+255),b
+   472  002B1A  6BEC               	clrf	(_Asserv+236)& (0+255),b
+   473                           ;a_fonctions.c: 169: Asserv.tableau_coef_saturat
+      +                          ion_vitesse[0] = 0.3;
+   474  002B1C  0101               	movlb	(_Asserv+224) shr (0+8)
+   475  002B1E  0E9A               	movlw	154
+   476  002B20  6FE0               	movwf	(_Asserv+224)& (0+255),b
+   477  002B22  0E99               	movlw	153
+   478  002B24  6FE1               	movwf	(_Asserv+225)& (0+255),b
+   479  002B26  0E3E               	movlw	62
+   480  002B28  6FE2               	movwf	(_Asserv+226)& (0+255),b
+   481                           ;a_fonctions.c: 170: Asserv.tableau_coef_saturat
+      +                          ion_vitesse[1] = 0;
+   482  002B2A  0101               	movlb	(_Asserv+227) shr (0+8)
+   483  002B2C  6BE3               	clrf	(_Asserv+227)& (0+255),b
+   484  002B2E  6BE4               	clrf	(_Asserv+228)& (0+255),b
+   485  002B30  6BE5               	clrf	(_Asserv+229)& (0+255),b
+   486                           ;a_fonctions.c: 171: Asserv.tableau_coef_saturat
+      +                          ion_vitesse[2] = 1;
+   487  002B32  0101               	movlb	(_Asserv+230) shr (0+8)
+   488  002B34  6BE6               	clrf	(_Asserv+230)& (0+255),b
+   489  002B36  0E80               	movlw	128
+   490  002B38  6FE7               	movwf	(_Asserv+231)& (0+255),b
+   491  002B3A  0E3F               	movlw	63
+   492  002B3C  6FE8               	movwf	(_Asserv+232)& (0+255),b
+   493                           ;a_fonctions.c: 174: timeout.match = 0;
+   494  002B3E  0100               	movlb	_timeout shr (0+8)
+   495  002B40  6B5F               	clrf	_timeout& (0+255),b
+   496  002B42  6B60               	clrf	(_timeout+1)& (0+255),b
+   497  002B44  6B61               	clrf	(_timeout+2)& (0+255),b
+   498  002B46  6B62               	clrf	(_timeout+3)& (0+255),b
+   499                           ;a_fonctions.c: 175: timeout.evitement = 0;
+   500  002B48  0100               	movlb	(_timeout+4) shr (0+8)
+   501  002B4A  6B63               	clrf	(_timeout+4)& (0+255),b
+   502  002B4C  6B64               	clrf	(_timeout+5)& (0+255),b
+   503  002B4E  6B65               	clrf	(_timeout+6)& (0+255),b
+   504  002B50  6B66               	clrf	(_timeout+7)& (0+255),b
+   505                           ;a_fonctions.c: 176: timeout.deplacement = 0;
+   506  002B52  0100               	movlb	(_timeout+8) shr (0+8)
+   507  002B54  6B67               	clrf	(_timeout+8)& (0+255),b
+   508  002B56  6B68               	clrf	(_timeout+9)& (0+255),b
+   509  002B58  6B69               	clrf	(_timeout+10)& (0+255),b
+   510  002B5A  6B6A               	clrf	(_timeout+11)& (0+255),b
+   511                           ;a_fonctions.c: 177: timeout.callage = 0;
+   512  002B5C  0100               	movlb	(_timeout+12) shr (0+8)
+   513  002B5E  6B6B               	clrf	(_timeout+12)& (0+255),b
+   514  002B60  6B6C               	clrf	(_timeout+13)& (0+255),b
+   515  002B62  6B6D               	clrf	(_timeout+14)& (0+255),b
+   516  002B64  6B6E               	clrf	(_timeout+15)& (0+255),b
+   517                           ;a_fonctions.c: 178: timeout.autom = 0;
+   518  002B66  0100               	movlb	(_timeout+16) shr (0+8)
+   519  002B68  6B6F               	clrf	(_timeout+16)& (0+255),b
+   520  002B6A  6B70               	clrf	(_timeout+17)& (0+255),b
+   521  002B6C  6B71               	clrf	(_timeout+18)& (0+255),b
+   522  002B6E  6B72               	clrf	(_timeout+19)& (0+255),b
+   523                           ;a_fonctions.c: 179: timeout.balise = 0;
+   524  002B70  0100               	movlb	(_timeout+20) shr (0+8)
+   525  002B72  6B73               	clrf	(_timeout+20)& (0+255),b
+   526  002B74  6B74               	clrf	(_timeout+21)& (0+255),b
+   527  002B76  6B75               	clrf	(_timeout+22)& (0+255),b
+   528  002B78  6B76               	clrf	(_timeout+23)& (0+255),b
+   529                           ;a_fonctions.c: 180: timeout.blocage_timeout_mat
+      +                          ch = 1;
+   530  002B7A  0100               	movlb	(_timeout+24) shr (0+8)
+   531  002B7C  0E01               	movlw	1
+   532  002B7E  6F77               	movwf	(_timeout+24)& (0+255),b
+   533  002B80  6B78               	clrf	(_timeout+25)& (0+255),b
+   534                           ;a_fonctions.c: 181: timeout.blocage_timeout_evi
+      +                          tement = 1;
+   535  002B82  0100               	movlb	(_timeout+26) shr (0+8)
+   536  002B84  6F79               	movwf	(_timeout+26)& (0+255),b
+   537  002B86  6B7A               	clrf	(_timeout+27)& (0+255),b
+   538                           ;a_fonctions.c: 182: timeout.blocage_timeout_dep
+      +                          lacement = 1;
+   539  002B88  0100               	movlb	(_timeout+28) shr (0+8)
+   540  002B8A  6F7B               	movwf	(_timeout+28)& (0+255),b
+   541  002B8C  6B7C               	clrf	(_timeout+29)& (0+255),b
+   542                           ;a_fonctions.c: 183: timeout.blocage_timeout_cal
+      +                          lage = 1;
+   543  002B8E  0100               	movlb	(_timeout+30) shr (0+8)
+   544  002B90  6F7D               	movwf	(_timeout+30)& (0+255),b
+   545  002B92  6B7E               	clrf	(_timeout+31)& (0+255),b
+   546                           ;a_fonctions.c: 184: timeout.blocage_timeout_aut
+      +                          om = 1;
+   547  002B94  0100               	movlb	(_timeout+32) shr (0+8)
+   548  002B96  6F7F               	movwf	(_timeout+32)& (0+255),b
+   549  002B98  6B80               	clrf	(_timeout+33)& (0+255),b
+   550                           ;a_fonctions.c: 185: timeout.blocage_timeout_bal
+      +                          ise = 1;
+   551  002B9A  0100               	movlb	(_timeout+34) shr (0+8)
+   552  002B9C  6F81               	movwf	(_timeout+34)& (0+255),b
+   553  002B9E  6B82               	clrf	(_timeout+35)& (0+255),b
+   554                           ;a_fonctions.c: 188: Strategie.etat_match = 0;
+   555  002BA0  0100               	movlb	(_Strategie+8) shr (0+8)
+   556  002BA2  6B58               	clrf	(_Strategie+8)& (0+255),b
+   557  002BA4  6B59               	clrf	(_Strategie+9)& (0+255),b
+   558                           ;a_fonctions.c: 189: Strategie.enchainement_depl
+      +                          acement = 0;
+   559  002BA6  0100               	movlb	(_Strategie+11) shr (0+8)
+   560  002BA8  6B5B               	clrf	(_Strategie+11)& (0+255),b
+   561  002BAA  6B5C               	clrf	(_Strategie+12)& (0+255),b
+   562                           ;a_fonctions.c: 190: Strategie.octet_recu_rx = 0
+      +                          ;
+   563  002BAC  0100               	movlb	(_Strategie+10) shr (0+8)
+   564  002BAE  6B5A               	clrf	(_Strategie+10)& (0+255),b
+   565                           ;a_fonctions.c: 191: Strategie.etape = 0;
+   566  002BB0  0100               	movlb	(_Strategie+13) shr (0+8)
+   567  002BB2  6B5D               	clrf	(_Strategie+13)& (0+255),b
+   568  002BB4  6B5E               	clrf	(_Strategie+14)& (0+255),b
+   569                           ;a_fonctions.c: 202: ActionAutomatismeBalise2('0
+      +                          ');
+   570  002BB6  0E30               	movlw	48
+   571  002BB8  EF97  F00F         	goto	_ActionAutomatismeBalise2
+   572                           ;a_fonctions.c: 203: }
+   573  002BBC  0083               	dw	?_InitPositionRobot
+   574  002BBE                     _InitPositionRobot:
+   575  000000                     
+   576                           ;a_fonctions.c: 208: Asserv.commande_distance = 
+      +                          0;
+   577  002BBE  0101               	movlb	(_Asserv+155) shr (0+8)
+   578  002BC0  6B9B               	clrf	(_Asserv+155)& (0+255),b
+   579  002BC2  6B9C               	clrf	(_Asserv+156)& (0+255),b
+   580  002BC4  6B9D               	clrf	(_Asserv+157)& (0+255),b
+   581  002BC6  6B9E               	clrf	(_Asserv+158)& (0+255),b
+   582                           ;a_fonctions.c: 211: timeout.blocage_timeout_cal
+      +                          lage = 0;
+   583  002BC8  0100               	movlb	(_timeout+30) shr (0+8)
+   584  002BCA  6B7D               	clrf	(_timeout+30)& (0+255),b
+   585  002BCC  6B7E               	clrf	(_timeout+31)& (0+255),b
+   586                           ;a_fonctions.c: 214: while (timeout.callage < 25
+      +                          00/25/3);
+   587  002BCE                     l27:
+   588  002BCE  EE00  F06E         	lfsr	0,_timeout+15
+   589  002BD2  0E00               	movlw	0
+   590  002BD4  5CED               	subwf	postdec0,w,c
+   591  002BD6  E108               	bnz	u15
+   592  002BD8  0E00               	movlw	0
+   593  002BDA  5CED               	subwf	postdec0,w,c
+   594  002BDC  E105               	bnz	u15
+   595  002BDE  0E00               	movlw	0
+   596  002BE0  5CED               	subwf	postdec0,w,c
+   597  002BE2  E102               	bnz	u15
+   598  002BE4  0E21               	movlw	33
+   599  002BE6  5CEF               	subwf	indf0,w,c
+   600  002BE8                     u15:
+   601  002BE8  A0D8               	btfss	status,0,c
+   602  002BEA  D7F1               	goto	l27
+   603                           ;a_fonctions.c: 217: timeout.blocage_timeout_cal
+      +                          lage = 1;
+   604  002BEC  0100               	movlb	(_timeout+30) shr (0+8)
+   605  002BEE  0E01               	movlw	1
+   606  002BF0  6F7D               	movwf	(_timeout+30)& (0+255),b
+   607  002BF2  6B7E               	clrf	(_timeout+31)& (0+255),b
+   608                           ;a_fonctions.c: 218: timeout.callage = 0;
+   609  002BF4  0100               	movlb	(_timeout+12) shr (0+8)
+   610  002BF6  6B6B               	clrf	(_timeout+12)& (0+255),b
+   611  002BF8  6B6C               	clrf	(_timeout+13)& (0+255),b
+   612  002BFA  6B6D               	clrf	(_timeout+14)& (0+255),b
+   613  002BFC  6B6E               	clrf	(_timeout+15)& (0+255),b
+   614                           ;a_fonctions.c: 221: if (x_mm != 10000)
+   615  002BFE  0100               	movlb	__Lparam shr (0+8)
+   616  002C00  5184               	movf	(?_InitPositionRobot+1)^(__Lparam& (0+6528
+      +                          0)),w
+   617  002C02  0A27               	xorlw	39
+   618  002C04  0E10               	movlw	16
+   619  002C06  B4D8               	btfsc	status,2,c
+   620  002C08  1983               	xorwf	?_InitPositionRobot^(__Lparam& (0+65280))
+      +                          ,w
+   621  002C0A  B4D8               	btfsc	status,2,c
+   622  002C0C  D02E               	goto	l30
+   623                           ;a_fonctions.c: 222: {
+   624  002C0E  0589               	decf	(?_InitPositionRobot+6)^(__Lparam& (0+6528
+      +                          0)),w
+   625  002C10  118A               	iorwf	(?_InitPositionRobot+7)^(__Lparam& (0+652
+      +                          80)),w
+   626                           ;a_fonctions.c: 224: {
+   627  002C12  0E0A               	movlw	10
+   628  002C14  A4D8               	btfss	status,2,c
+   629  002C16  D013               	goto	L1
+   630  002C18  6E02               	movwf	btemp+2
+   631  002C1A  6A03               	clrf	btemp+3
+   632  002C1C  C083  F000         	movff	?_InitPositionRobot,btemp
+   633  002C20  C084  F001         	movff	?_InitPositionRobot+1,btemp+1
+   634  002C24  EC0E  F01F         	call	awmul
+   635  002C28  C142  FFE8         	movff	_Asserv+66,wreg
+   636  002C2C  5C04               	subwf	btemp+4,w
+   637  002C2E  CFE8 F050          	movff	wreg,_Strategie
+   638  002C32  C143  FFE8         	movff	_Asserv+67,wreg
+   639  002C36  5805               	subwfb	btemp+5,w
+   640  002C38  CFE8 F051          	movff	wreg,_Strategie+1
+   641                           ;a_fonctions.c: 226: }
+   642  002C3C  D016               	goto	l30
+   643                           ;a_fonctions.c: 228: {
+   644  002C3E                     L1:
+   645  002C3E  6E02               	movwf	btemp+2
+   646  002C40  6A03               	clrf	btemp+3
+   647  002C42  C083  F000         	movff	?_InitPositionRobot,btemp
+   648  002C46  C084  F001         	movff	?_InitPositionRobot+1,btemp+1
+   649  002C4A  EC0E  F01F         	call	awmul
+   650  002C4E  C142  FFE8         	movff	_Asserv+66,wreg
+   651  002C52  5C04               	subwf	btemp+4,w
+   652  002C54  6E00               	movwf	btemp
+   653  002C56  C143  FFE8         	movff	_Asserv+67,wreg
+   654  002C5A  5805               	subwfb	btemp+5,w
+   655  002C5C  6E01               	movwf	btemp+1
+   656  002C5E  EE00  F050         	lfsr	0,_Strategie
+   657  002C62  5000               	movf	btemp,w
+   658  002C64  26EE               	addwf	postinc0,f,c
+   659  002C66  5001               	movf	btemp+1,w
+   660  002C68  22ED               	addwfc	postdec0,f,c
+   661                           ;a_fonctions.c: 230: }
+   662  002C6A                     l30:
+   663                           ;a_fonctions.c: 231: }
+   664  002C6A  0100               	movlb	__Lparam shr (0+8)
+   665  002C6C  5186               	movf	(?_InitPositionRobot+3)^(__Lparam& (0+6528
+      +                          0)),w
+   666  002C6E  0A27               	xorlw	39
+   667  002C70  0E10               	movlw	16
+   668  002C72  B4D8               	btfsc	status,2,c
+   669  002C74  1985               	xorwf	(?_InitPositionRobot+2)^(__Lparam& (0+652
+      +                          80)),w
+   670  002C76  B4D8               	btfsc	status,2,c
+   671  002C78  0012               	return	
+   672                           ;a_fonctions.c: 235: {
+   673  002C7A  0589               	decf	(?_InitPositionRobot+6)^(__Lparam& (0+6528
+      +                          0)),w
+   674  002C7C  118A               	iorwf	(?_InitPositionRobot+7)^(__Lparam& (0+652
+      +                          80)),w
+   675                           ;a_fonctions.c: 237: {
+   676  002C7E  C085  F002         	movff	?_InitPositionRobot+2,btemp+2
+   677  002C82  A4D8               	btfss	status,2,c
+   678  002C84  D01E               	goto	L2
+   679  002C86  C086  F003         	movff	?_InitPositionRobot+3,btemp+3
+   680  002C8A  EE01  F092         	lfsr	0,_Asserv+146
+   681  002C8E  CFEE F000          	movff	postinc0,btemp
+   682  002C92  CFED F001          	movff	postdec0,btemp+1
+   683  002C96  EC0E  F01F         	call	awmul
+   684  002C9A  C004  F000         	movff	btemp+4,btemp
+   685  002C9E  C005  F001         	movff	btemp+5,btemp+1
+   686  002CA2  0E0A               	movlw	10
+   687  002CA4  6E02               	movwf	btemp+2
+   688  002CA6  6A03               	clrf	btemp+3
+   689  002CA8  EC0E  F01F         	call	awmul
+   690  002CAC  C146  FFE8         	movff	_Asserv+70,wreg
+   691  002CB0  5C04               	subwf	btemp+4,w
+   692  002CB2  CFE8 F052          	movff	wreg,_Strategie+2
+   693  002CB6  C147  FFE8         	movff	_Asserv+71,wreg
+   694  002CBA  5805               	subwfb	btemp+5,w
+   695  002CBC  CFE8 F053          	movff	wreg,_Strategie+3
+   696                           ;a_fonctions.c: 240: }
+   697  002CC0  0012               	return	
+   698                           ;a_fonctions.c: 242: {
+   699  002CC2                     L2:
+   700  002CC2  C086  F003         	movff	?_InitPositionRobot+3,btemp+3
+   701  002CC6  EE01  F092         	lfsr	0,_Asserv+146
+   702  002CCA  CFEE F000          	movff	postinc0,btemp
+   703  002CCE  CFED F001          	movff	postdec0,btemp+1
+   704  002CD2  EC0E  F01F         	call	awmul
+   705  002CD6  C004  F000         	movff	btemp+4,btemp
+   706  002CDA  C005  F001         	movff	btemp+5,btemp+1
+   707  002CDE  0E0A               	movlw	10
+   708  002CE0  6E02               	movwf	btemp+2
+   709  002CE2  6A03               	clrf	btemp+3
+   710  002CE4  EC0E  F01F         	call	awmul
+   711  002CE8  C146  FFE8         	movff	_Asserv+70,wreg
+   712  002CEC  5C04               	subwf	btemp+4,w
+   713  002CEE  6E00               	movwf	btemp
+   714  002CF0  C147  FFE8         	movff	_Asserv+71,wreg
+   715  002CF4  5805               	subwfb	btemp+5,w
+   716  002CF6  6E01               	movwf	btemp+1
+   717  002CF8  EE00  F052         	lfsr	0,_Strategie+2
+   718  002CFC  5000               	movf	btemp,w
+   719  002CFE  26EE               	addwf	postinc0,f,c
+   720  002D00  5001               	movf	btemp+1,w
+   721  002D02  22ED               	addwfc	postdec0,f,c
+   722                           ;a_fonctions.c: 246: }
+   723                           ;a_fonctions.c: 247: }
+   724  002D04  0012               	return	
+   725                           ;a_fonctions.c: 259: void TraitementI2C(void)
+   726                           ;a_fonctions.c: 260: {
+   727  002D06                     _TraitementI2C:
+   728  000000                     
+   729                           ;a_fonctions.c: 262: Asserv.x_precedent = Asserv
+      +                          .x_actuel;
+   730  002D06  C142  F14A         	movff	_Asserv+66,_Asserv+74
+   731  002D0A  C143  F14B         	movff	_Asserv+67,_Asserv+75
+   732  002D0E  C144  F14C         	movff	_Asserv+68,_Asserv+76
+   733  002D12  C145  F14D         	movff	_Asserv+69,_Asserv+77
+   734                           ;a_fonctions.c: 263: Asserv.y_precedent = Asserv
+      +                          .y_actuel;
+   735  002D16  C146  F14E         	movff	_Asserv+70,_Asserv+78
+   736  002D1A  C147  F14F         	movff	_Asserv+71,_Asserv+79
+   737  002D1E  C148  F150         	movff	_Asserv+72,_Asserv+80
+   738  002D22  C149  F151         	movff	_Asserv+73,_Asserv+81
+   739                           ;a_fonctions.c: 264: Asserv.theta_precedent = As
+      +                          serv.theta_actuel;
+   740  002D26  C136  F13A         	movff	_Asserv+54,_Asserv+58
+   741  002D2A  C137  F13B         	movff	_Asserv+55,_Asserv+59
+   742  002D2E  C138  F13C         	movff	_Asserv+56,_Asserv+60
+   743  002D32  C139  F13D         	movff	_Asserv+57,_Asserv+61
+   744                           ;a_fonctions.c: 267: X.Octet.H = buffer_i2c_rx[0
+      +                          ];
+   745  002D36  C2A4  F033         	movff	_buffer_i2c_rx,_X+1
+   746                           ;a_fonctions.c: 268: X.Octet.L = buffer_i2c_rx[1
+      +                          ];
+   747  002D3A  C2A5  F032         	movff	_buffer_i2c_rx+1,_X
+   748                           ;a_fonctions.c: 269: Y.Octet.H = buffer_i2c_rx[2
+      +                          ];
+   749  002D3E  C2A6  F035         	movff	_buffer_i2c_rx+2,_Y+1
+   750                           ;a_fonctions.c: 270: Y.Octet.L = buffer_i2c_rx[3
+      +                          ];
+   751  002D42  C2A7  F034         	movff	_buffer_i2c_rx+3,_Y
+   752                           ;a_fonctions.c: 271: THETA.Octet.H = buffer_i2c_
+      +                          rx[4];
+   753  002D46  C2A8  F031         	movff	_buffer_i2c_rx+4,_THETA+1
+   754                           ;a_fonctions.c: 272: THETA.Octet.L = buffer_i2c_
+      +                          rx[5];
+   755  002D4A  C2A9  F030         	movff	_buffer_i2c_rx+5,_THETA
+   756                           ;a_fonctions.c: 275: Strat.Flag.Octet = buffer_i
+      +                          2c_rx[13];
+   757  002D4E  C2B1  F048         	movff	_buffer_i2c_rx+13,_Strat
+   758                           ;a_fonctions.c: 276: Strat.Sys_1.Octet = buffer_
+      +                          i2c_rx[14];
+   759  002D52  C2B2  F049         	movff	_buffer_i2c_rx+14,_Strat+1
+   760                           ;a_fonctions.c: 279: Adv.X.Octet.L = buffer_i2c_
+      +                          rx[15];
+   761  002D56  C2B3  F04A         	movff	_buffer_i2c_rx+15,_Adv
+   762                           ;a_fonctions.c: 280: Adv.X.Octet.H = buffer_i2c_
+      +                          rx[16];
+   763  002D5A  C2B4  F04B         	movff	_buffer_i2c_rx+16,_Adv+1
+   764                           ;a_fonctions.c: 281: Adv.Y.Octet.L = buffer_i2c_
+      +                          rx[17];
+   765  002D5E  C2B5  F04C         	movff	_buffer_i2c_rx+17,_Adv+2
+   766                           ;a_fonctions.c: 282: Adv.Y.Octet.H = buffer_i2c_
+      +                          rx[18];
+   767  002D62  C2B6  F04D         	movff	_buffer_i2c_rx+18,_Adv+3
+   768                           ;a_fonctions.c: 286: if (Asserv.inversion_repere
+      +                          )
+   769  002D66  0101               	movlb	(_Asserv+26) shr (0+8)
+   770  002D68  511A               	movf	(_Asserv+26)& (0+255),w,b
+   771  002D6A  111B               	iorwf	(_Asserv+27)& (0+255),w,b
+   772  002D6C  B4D8               	btfsc	status,2,c
+   773  002D6E  D01C               	goto	l37
+   774                           ;a_fonctions.c: 287: Asserv.x_actuel = -(X.Full 
+      +                          + Strategie.x_init);
+   775  002D70  C032  F000         	movff	_X,btemp
+   776  002D74  C033  F001         	movff	_X+1,btemp+1
+   777  002D78  C050  FFE8         	movff	_Strategie,wreg
+   778  002D7C  2400               	addwf	btemp,w
+   779  002D7E  6E02               	movwf	btemp+2
+   780  002D80  C051  FFE8         	movff	_Strategie+1,wreg
+   781  002D84  2001               	addwfc	btemp+1,w
+   782  002D86  6E03               	movwf	btemp+3
+   783  002D88  1E02               	comf	btemp+2,f
+   784  002D8A  1E03               	comf	btemp+3,f
+   785  002D8C  2A02               	incf	btemp+2,f
+   786  002D8E  B4D8               	btfsc	status,2,c
+   787  002D90  2A03               	incf	btemp+3,f
+   788  002D92  0101               	movlb	(_Asserv+66) shr (0+8)
+   789  002D94  C002  F142         	movff	btemp+2,_Asserv+66
+   790  002D98  C003  F143         	movff	btemp+3,_Asserv+67
+   791  002D9C  0E00               	movlw	0
+   792  002D9E  BF43               	btfsc	(_Asserv+67)& (0+255),7
+   793  002DA0  0EFF               	movlw	255
+   794  002DA2  6F44               	movwf	(_Asserv+68)& (0+255),b
+   795  002DA4  6F45               	movwf	(_Asserv+69)& (0+255),b
+   796                           ;a_fonctions.c: 288: else
+   797  002DA6  D013               	goto	l38
+   798  002DA8                     l37:
+   799                           ;a_fonctions.c: 289: Asserv.x_actuel = X.Full + 
+      +                          Strategie.x_init;
+   800  002DA8  0100               	movlb	_X shr (0+8)
+   801  002DAA  C050  FFE8         	movff	_Strategie,wreg
+   802  002DAE  2532               	addwf	_X& (0+255),w,b
+   803  002DB0  CFE8 F142          	movff	wreg,_Asserv+66
+   804  002DB4  C051  FFE8         	movff	_Strategie+1,wreg
+   805  002DB8  2133               	addwfc	(_X+1)& (0+255),w,b
+   806  002DBA  CFE8 F143          	movff	wreg,_Asserv+67
+   807  002DBE  0B80               	andlw	128
+   808  002DC0  0E00               	movlw	0
+   809  002DC2  A4D8               	btfss	status,2,c
+   810  002DC4  0EFF               	movlw	255
+   811  002DC6  CFE8 F144          	movff	wreg,_Asserv+68
+   812  002DCA  CFE8 F145          	movff	wreg,_Asserv+69
+   813  002DCE                     l38:
+   814                           ;a_fonctions.c: 291: if (Asserv.inversion_repere
+      +                          )
+   815  002DCE  0101               	movlb	(_Asserv+26) shr (0+8)
+   816  002DD0  511A               	movf	(_Asserv+26)& (0+255),w,b
+   817  002DD2  111B               	iorwf	(_Asserv+27)& (0+255),w,b
+   818  002DD4  B4D8               	btfsc	status,2,c
+   819  002DD6  D01E               	goto	l39
+   820                           ;a_fonctions.c: 292: Asserv.y_actuel = -(Y.Full 
+      +                          + Strategie.y_init);
+   821  002DD8  EE00  F052         	lfsr	0,_Strategie+2
+   822  002DDC  CFEE F000          	movff	postinc0,btemp
+   823  002DE0  CFED F001          	movff	postdec0,btemp+1
+   824  002DE4  C034  FFE8         	movff	_Y,wreg
+   825  002DE8  2400               	addwf	btemp,w
+   826  002DEA  6E02               	movwf	btemp+2
+   827  002DEC  C035  FFE8         	movff	_Y+1,wreg
+   828  002DF0  2001               	addwfc	btemp+1,w
+   829  002DF2  6E03               	movwf	btemp+3
+   830  002DF4  1E02               	comf	btemp+2,f
+   831  002DF6  1E03               	comf	btemp+3,f
+   832  002DF8  2A02               	incf	btemp+2,f
+   833  002DFA  B4D8               	btfsc	status,2,c
+   834  002DFC  2A03               	incf	btemp+3,f
+   835  002DFE  0101               	movlb	(_Asserv+70) shr (0+8)
+   836  002E00  C002  F146         	movff	btemp+2,_Asserv+70
+   837  002E04  C003  F147         	movff	btemp+3,_Asserv+71
+   838  002E08  0E00               	movlw	0
+   839  002E0A  BF47               	btfsc	(_Asserv+71)& (0+255),7
+   840  002E0C  0EFF               	movlw	255
+   841  002E0E  6F48               	movwf	(_Asserv+72)& (0+255),b
+   842  002E10  6F49               	movwf	(_Asserv+73)& (0+255),b
+   843                           ;a_fonctions.c: 293: else
+   844  002E12  D013               	goto	l40
+   845  002E14                     l39:
+   846                           ;a_fonctions.c: 294: Asserv.y_actuel = Y.Full + 
+      +                          Strategie.y_init;
+   847  002E14  0100               	movlb	(_Strategie+2) shr (0+8)
+   848  002E16  C034  FFE8         	movff	_Y,wreg
+   849  002E1A  2552               	addwf	(_Strategie+2)& (0+255),w,b
+   850  002E1C  CFE8 F146          	movff	wreg,_Asserv+70
+   851  002E20  C035  FFE8         	movff	_Y+1,wreg
+   852  002E24  2153               	addwfc	(_Strategie+3)& (0+255),w,b
+   853  002E26  CFE8 F147          	movff	wreg,_Asserv+71
+   854  002E2A  0B80               	andlw	128
+   855  002E2C  0E00               	movlw	0
+   856  002E2E  A4D8               	btfss	status,2,c
+   857  002E30  0EFF               	movlw	255
+   858  002E32  CFE8 F148          	movff	wreg,_Asserv+72
+   859  002E36  CFE8 F149          	movff	wreg,_Asserv+73
+   860  002E3A                     l40:
+   861                           ;a_fonctions.c: 298: if (Asserv.inversion_repere
+      +                           == 1)
+   862  002E3A  0101               	movlb	(_Asserv+26) shr (0+8)
+   863  002E3C  511A               	movf	(_Asserv+26)& (0+255),w,b
+   864  002E3E  0A01               	xorlw	1
+   865  002E40  111B               	iorwf	(_Asserv+27)& (0+255),w,b
+   866  002E42  A4D8               	btfss	status,2,c
+   867  002E44  D03F               	goto	l41
+   868                           ;a_fonctions.c: 299: {
+   869  002E46  0100               	movlb	_THETA shr (0+8)
+   870                           ;a_fonctions.c: 302: {
+   871  002E48  EE00  F054         	lfsr	0,_Strategie+4
+   872  002E4C  BF31               	btfsc	(_THETA+1)& (0+255),7,b
+   873  002E4E  D01D               	goto	L3
+   874  002E50  CFEE F000          	movff	postinc0,btemp
+   875  002E54  CFED F001          	movff	postdec0,btemp+1
+   876  002E58  C030  FFE8         	movff	_THETA,wreg
+   877  002E5C  2400               	addwf	btemp,w
+   878  002E5E  6E02               	movwf	btemp+2
+   879  002E60  C031  FFE8         	movff	_THETA+1,wreg
+   880  002E64  2001               	addwfc	btemp+1,w
+   881  002E66  6E03               	movwf	btemp+3
+   882  002E68  0EF8               	movlw	248
+   883  002E6A  2402               	addwf	btemp+2,w
+   884  002E6C  CFE8 F136          	movff	wreg,_Asserv+54
+   885  002E70  0EF8               	movlw	248
+   886  002E72  2003               	addwfc	btemp+3,w
+   887  002E74  CFE8 F137          	movff	wreg,_Asserv+55
+   888  002E78  0B80               	andlw	128
+   889  002E7A  0E00               	movlw	0
+   890  002E7C  A4D8               	btfss	status,2,c
+   891  002E7E  0EFF               	movlw	255
+   892  002E80  CFE8 F138          	movff	wreg,_Asserv+56
+   893  002E84  CFE8 F139          	movff	wreg,_Asserv+57
+   894                           ;a_fonctions.c: 304: }
+   895  002E88  0012               	return	
+   896                           ;a_fonctions.c: 306: {
+   897  002E8A                     L3:
+   898  002E8A  CFEE F000          	movff	postinc0,btemp
+   899  002E8E  CFED F001          	movff	postdec0,btemp+1
+   900  002E92  C030  FFE8         	movff	_THETA,wreg
+   901  002E96  2400               	addwf	btemp,w
+   902  002E98  6E02               	movwf	btemp+2
+   903  002E9A  C031  FFE8         	movff	_THETA+1,wreg
+   904  002E9E  2001               	addwfc	btemp+1,w
+   905  002EA0  6E03               	movwf	btemp+3
+   906  002EA2  0E08               	movlw	8
+   907  002EA4  2402               	addwf	btemp+2,w
+   908  002EA6  CFE8 F136          	movff	wreg,_Asserv+54
+   909  002EAA  0E07               	movlw	7
+   910  002EAC  2003               	addwfc	btemp+3,w
+   911  002EAE  CFE8 F137          	movff	wreg,_Asserv+55
+   912  002EB2  0B80               	andlw	128
+   913  002EB4  0E00               	movlw	0
+   914  002EB6  A4D8               	btfss	status,2,c
+   915  002EB8  0EFF               	movlw	255
+   916  002EBA  CFE8 F138          	movff	wreg,_Asserv+56
+   917  002EBE  CFE8 F139          	movff	wreg,_Asserv+57
+   918                           ;a_fonctions.c: 308: }
+   919                           ;a_fonctions.c: 309: }
+   920  002EC2  0012               	return	
+   921  002EC4                     l41:
+   922                           ;a_fonctions.c: 311: {
+   923  002EC4  0100               	movlb	(_Strategie+4) shr (0+8)
+   924  002EC6  C030  FFE8         	movff	_THETA,wreg
+   925  002ECA  2554               	addwf	(_Strategie+4)& (0+255),w,b
+   926  002ECC  CFE8 F136          	movff	wreg,_Asserv+54
+   927  002ED0  C031  FFE8         	movff	_THETA+1,wreg
+   928  002ED4  2155               	addwfc	(_Strategie+5)& (0+255),w,b
+   929  002ED6  CFE8 F137          	movff	wreg,_Asserv+55
+   930  002EDA  0B80               	andlw	128
+   931  002EDC  0E00               	movlw	0
+   932  002EDE  A4D8               	btfss	status,2,c
+   933  002EE0  0EFF               	movlw	255
+   934  002EE2  CFE8 F138          	movff	wreg,_Asserv+56
+   935  002EE6  CFE8 F139          	movff	wreg,_Asserv+57
+   936                           ;a_fonctions.c: 313: }
+   937                           ;a_fonctions.c: 332: }
+   938  002EEA  0012               	return	
+   939                           
+   940                           	psect	bss
+   941  000030                     _THETA:
+   942  000030                     	ds	2
+   943  000000                     
+   944  000000                     
+   945  000030                     _X:
+   946  000030                     	ds	2
+   947  000030                     _Y:
+   948  000030                     	ds	2
+   949                           
+   950                           	psect	temp
+   951  000000                     btemp:
+   952  000000                     	ds	6
+   953                           indf0	equ	0xFEF
+   954                           postinc0	equ	0xFEE
+   955                           postdec0	equ	0xFED
+   956                           wreg	equ	0xFE8
+   957                           status	equ	0xFD8
+
+
+HI-TECH Software PICC-18 Macro Assembler V8.35PL3
+Symbol Table                                           Fri May 14 07:16:19 2010
+
+                            _X 0032                              _Y 0034  
+                           l30 2C6A                             l40 2E3A  
+                           l41 2EC4                             l27 2BCE  
+                           l37 2DA8                             l38 2DCE  
+                           l39 2E14                             u15 2BE8  
+     _ActionAutomatismeBalise2 1F2E                            _Adv 004A  
+                          wreg 000FE8                      _Strategie 0050  
+                         indf0 000FEF                           btemp 0000  
+                         awmul 3E1C                       clear_bss 0038  
+            _InitPositionRobot 2BBE                          _THETA 0030  
+                   used_btemp0 0001                     used_btemp1 0001  
+                   used_btemp2 0001                     used_btemp3 0001  
+                   used_btemp4 0001                     used_btemp5 0001  
+                        _Strat 0048                     _a_init_log 28C4  
+           ?_InitPositionRobot 0083        _temporisation_raf_debug 003C  
+                        status 000FD8                      _phase_htr 029C  
+                      __Lparam 0083                        __ramtop 0300  
+                      _timeout 005F        _traitement_i2c_nb_octet 0042  
+                       _Asserv 0100                  _buffer_i2c_rx 02A4  
+                      postdec0 000FED                        postinc0 000FEE  
+                _TraitementI2C 2D06  

@@ -1,0 +1,1929 @@
+
+
+HI-TECH Software PICC-18 Macro Assembler V8.35PL3
+Serial number: HCPIC18-33902                           Fri May 14 13:00:44 2010
+
+Licensed to: HOME VER
+     1                           	processor	18F2431
+     2                           	opt	pw 80
+     3                           	psect	__Z33902RS_,global,delta=1
+     4                           	psect	text,global,reloc=2,class=CODE,delta=1
+     5                           	psect	bss,global,class=RAM,space=1,delta=1
+     6                           	psect	temp,global,ovrld,common,class=COMRAM,spa
+      +                          ce=1,delta=1
+     7                           	psect	intsave_regs,global,class=BIGRAM,space=1,
+      +                          delta=1
+     8  000000                     
+     9  000000                     
+    10  000000                     
+    11  000000                     
+    12  000000                     
+    13  000000                     
+    14  000000                     
+    15  000000                     
+    16  000000                     
+    17  000000                     
+    18  000000                     
+    19  000000                     
+    20  000000                     
+    21  000000                     
+    22  000000                     
+    23  000000                     
+    24  000000                     
+    25  000000                     
+    26  000000                     
+    27  000000                     
+    28  000000                     
+    29  000000                     
+    30  000000                     
+    31  000000                     
+    32  000000                     
+    33  000000                     
+    34  000000                     
+    35  000000                     
+    36  000000                     
+    37  000000                     
+    38  000000                     
+    39  000000                     
+    40  000000                     
+    41  000000                     
+    42  000000                     
+    43  000000                     
+    44  000000                     
+    45  000000                     
+    46  000000                     
+    47  000000                     
+    48  000000                     
+    49  000000                     
+    50  000000                     
+    51  000000                     
+    52  000000                     
+    53  000000                     
+    54  000000                     
+    55  000000                     
+    56  000000                     
+    57  000000                     
+    58  000000                     
+    59  000000                     
+    60  000000                     
+    61  000000                     
+    62  000000                     
+    63  000000                     
+    64  000000                     
+    65  000000                     
+    66  000000                     
+    67  000000                     
+    68  000000                     
+    69  000000                     
+    70  000000                     
+    71  000000                     
+    72  000000                     
+    73  000000                     
+    74  000000                     
+    75  000000                     
+    76  000000                     
+    77  000000                     
+    78  000000                     
+    79  000000                     
+    80  000000                     
+    81  000000                     
+    82  000000                     
+    83  000000                     
+    84  000000                     
+    85  000000                     
+    86  000000                     
+    87  000000                     
+    88  000000                     
+    89  000000                     
+    90  000000                     
+    91  000000                     
+    92  000000                     
+    93  000000                     
+    94  000000                     
+    95  000000                     
+    96  000000                     
+    97                           
+    98                           	psect	__Z33902RS_
+    99  000004                     
+   100  000004                     
+   101                           
+   102                           	psect	text
+   103  001EBA                     _TraitementPrincipal:
+   104                           ;	_compteur_max assigned to ?a_PositionAdv+2
+   105  000000                     _PositionAdv$compteur_max	set	?a_PositionAdv+2
+   106                           ;	_sortie assigned to ?a_PositionAdv+0
+   107  000000                     _PositionAdv$sortie	set	?a_PositionAdv
+   108                           ;       param _attente_timeout assigned to ?_Pos
+      +                          itionAdv+20
+   109  000000                     _PositionAdv$attente_timeout	set	?_PositionAdv+2
+      +                          0
+   110                           ;       param _timeout_fin assigned to ?_Positio
+      +                          nAdv+16
+   111  000000                     _PositionAdv$timeout_fin	set	?_PositionAdv+16
+   112                           ;       param _fourchette_y_mm assigned to ?_Pos
+      +                          itionAdv+12
+   113  000000                     _PositionAdv$fourchette_y_mm	set	?_PositionAdv+1
+      +                          2
+   114                           ;       param _fourchette_x_mm assigned to ?_Pos
+      +                          itionAdv+8
+   115  000000                     _PositionAdv$fourchette_x_mm	set	?_PositionAdv+8
+   116                           ;       param _y_mm assigned to ?_PositionAdv+4
+   117  000000                     _PositionAdv$y_mm	set	?_PositionAdv+4
+   118                           ;strategies.c: 525: int PositionAdv(long x_mm, l
+      +                          ong y_mm, long fourchette_x_mm, long fourchette_
+      +                          y_mm, unsigned long long timeout_fin, int attent
+      +                          e_timeout)
+   119                           ;strategies.c: 526: {
+   120                           ;       param _x_mm assigned to ?_PositionAdv+0
+   121  000000                     _PositionAdv$x_mm	set	?_PositionAdv
+   122                           ;	_i assigned to ?a_ActionAutomatismeBalise2+1
+   123  000000                     _ActionAutomatismeBalise2$i	set	?a_ActionAutomat
+      +                          ismeBalise2+1
+   124                           ;	_autom assigned to ?a_ActionAutomatismeBalise2
+      +                          +0
+   125  000000                     _ActionAutomatismeBalise2$autom	set	?a_ActionAut
+      +                          omatismeBalise2
+   126                           ;       param _attente_ou_pas assigned to ?_Acti
+      +                          onAutomatisme+2
+   127  000000                     _ActionAutomatisme$attente_ou_pas	set	?_ActionAu
+      +                          tomatisme+2
+   128                           ;strategies.c: 67: void ActionAutomatisme(int ty
+      +                          pe, int attente_ou_pas)
+   129                           ;strategies.c: 68: {
+   130                           ;       param _type assigned to ?_ActionAutomati
+      +                          sme+0
+   131  000000                     _ActionAutomatisme$type	set	?_ActionAutomatisme
+   132  000000                     
+   133                           ;strategies.c: 40: RA1 = 1;
+   134  001EBA  8280               	bsf	3968,1,c	;volatile
+   135                           ;strategies.c: 45: while (!Strat.Sys_1.bits.bit7
+      +                          )
+   136  001EBC                     l20:
+   137                           ;strategies.c: 48: }
+   138  001EBC  0100               	movlb	(_Strat+1) shr (0+8)
+   139  001EBE  B149               	btfsc	(_Strat+1)& (0+255),0,b
+   140  001EC0  D002               	goto	u10
+   141                           ;strategies.c: 46: {
+   142  001EC2  DB3E               	call	_LedCouleurDepart	;wreg free
+   143  001EC4  D7FB               	goto	l20
+   144  001EC6                     u10:
+   145                           ;strategies.c: 53: CallageDepart();
+   146  001EC6  DAB5               	call	_CallageDepart	;wreg free
+   147                           ;strategies.c: 61: Test();
+   148  001EC8  D865               	call	_Test	;wreg free
+   149                           ;strategies.c: 64: FinMatch();
+   150  001ECA  D339               	goto	_FinMatch	;wreg free
+   151                           ;strategies.c: 65: }
+   152  001ECC  0083               	dw	?_ActionAutomatisme
+   153  001ECE                     _ActionAutomatisme:
+   154  000000                     
+   155  001ECE                     l25:
+   156                           ;strategies.c: 69: while(1)
+   157                           ;strategies.c: 70: {
+   158  001ECE  C083  F2C4         	movff	?_ActionAutomatisme,_buffer_i2c_tx
+   159                           ;strategies.c: 75: if ((Strat.Flag.bits.bit7 == 
+      +                          1) || (attente_ou_pas == 0))
+   160  001ED2  0100               	movlb	_Strat shr (0+8)
+   161  001ED4  BF48               	btfsc	_Strat& (0+255),7,b
+   162  001ED6  D005               	goto	l26
+   163  001ED8  0100               	movlb	__Lparam shr (0+8)
+   164  001EDA  5186               	movf	(?_ActionAutomatisme+3)^(__Lparam& (0+6528
+      +                          0)),w
+   165  001EDC  1185               	iorwf	(?_ActionAutomatisme+2)^(__Lparam& (0+652
+      +                          80)),w
+   166  001EDE  A4D8               	btfss	status,2,c
+   167  001EE0  D7F6               	goto	l25
+   168                           ;strategies.c: 76: break;
+   169  001EE2                     l26:
+   170                           ;strategies.c: 80: if (attente_ou_pas == 1)
+   171  001EE2  0100               	movlb	__Lparam shr (0+8)
+   172  001EE4  0585               	decf	(?_ActionAutomatisme+2)^(__Lparam& (0+6528
+      +                          0)),w
+   173  001EE6  1186               	iorwf	(?_ActionAutomatisme+3)^(__Lparam& (0+652
+      +                          80)),w
+   174  001EE8  A4D8               	btfss	status,2,c
+   175  001EEA  0012               	return	
+   176                           ;strategies.c: 81: {
+   177  001EEC  0100               	movlb	(_timeout+16) shr (0+8)
+   178  001EEE  6B6F               	clrf	(_timeout+16)& (0+255),b
+   179  001EF0  6B70               	clrf	(_timeout+17)& (0+255),b
+   180  001EF2  6B71               	clrf	(_timeout+18)& (0+255),b
+   181  001EF4  6B72               	clrf	(_timeout+19)& (0+255),b
+   182                           ;strategies.c: 83: timeout.blocage_timeout_autom
+      +                           = 0;
+   183  001EF6  6B7F               	clrf	(_timeout+32)& (0+255),b
+   184  001EF8  6B80               	clrf	(_timeout+33)& (0+255),b
+   185                           ;strategies.c: 85: while (timeout.autom <= 500/2
+      +                          5)
+   186  001EFA                     l29:
+   187                           ;strategies.c: 88: }
+   188  001EFA  EE00  F072         	lfsr	0,_timeout+19
+   189  001EFE  0E00               	movlw	0
+   190  001F00  5CED               	subwf	postdec0,w,c
+   191  001F02  E108               	bnz	u65
+   192  001F04  0E00               	movlw	0
+   193  001F06  5CED               	subwf	postdec0,w,c
+   194  001F08  E105               	bnz	u65
+   195  001F0A  0E00               	movlw	0
+   196  001F0C  5CED               	subwf	postdec0,w,c
+   197  001F0E  E102               	bnz	u65
+   198  001F10  0E15               	movlw	21
+   199  001F12  5CEF               	subwf	indf0,w,c
+   200  001F14                     u65:
+   201  001F14  B0D8               	btfsc	status,0,c
+   202  001F16  D003               	goto	u60
+   203                           ;strategies.c: 86: {
+   204  001F18  0102               	movlb	_buffer_i2c_tx shr (0+8)
+   205  001F1A  6BC4               	clrf	_buffer_i2c_tx& (0+255),b
+   206  001F1C  D7EE               	goto	l29
+   207  001F1E                     u60:
+   208                           ;strategies.c: 90: timeout.autom = 0;
+   209  001F1E  0100               	movlb	(_timeout+16) shr (0+8)
+   210  001F20  6B6F               	clrf	(_timeout+16)& (0+255),b
+   211  001F22  6B70               	clrf	(_timeout+17)& (0+255),b
+   212  001F24  6B71               	clrf	(_timeout+18)& (0+255),b
+   213  001F26  6B72               	clrf	(_timeout+19)& (0+255),b
+   214                           ;strategies.c: 91: timeout.blocage_timeout_autom
+      +                           = 0;
+   215  001F28  6B7F               	clrf	(_timeout+32)& (0+255),b
+   216  001F2A  6B80               	clrf	(_timeout+33)& (0+255),b
+   217                           ;strategies.c: 92: }
+   218  001F2C  0012               	return	
+   219                           ;strategies.c: 95: int ActionAutomatismeBalise2(
+      +                          char autom)
+   220                           ;strategies.c: 96: {
+   221  001F2E                     _ActionAutomatismeBalise2:
+   222  000000                     
+   223                           ;_autom stored from w
+   224  001F2E  0100               	movlb	__Lparam shr (0+8)
+   225  001F30  6F83               	movwf	?a_ActionAutomatismeBalise2^(__Lparam& (0
+      +                          +65280))
+   226                           ;strategies.c: 98: int i, j;
+   227  001F32  0100               	movlb	(_Strategie+10) shr (0+8)
+   228  001F34  6B5A               	clrf	(_Strategie+10)& (0+255),b
+   229                           ;strategies.c: 104: for (i=0; i<10; i++)
+   230  001F36  0100               	movlb	__Lparam shr (0+8)
+   231  001F38  6B84               	clrf	(?a_ActionAutomatismeBalise2+1)^(__Lparam&
+      +                           (0+65280))
+   232  001F3A  6B85               	clrf	(?a_ActionAutomatismeBalise2+2)^(__Lparam&
+      +                           (0+65280))
+   233  001F3C                     l33:
+   234                           ;strategies.c: 105: {
+   235                           ;strategies.c: 106: putch(autom);
+   236  001F3C  0100               	movlb	__Lparam shr (0+8)
+   237  001F3E  5183               	movf	?a_ActionAutomatismeBalise2^(__Lparam& (0+
+      +                          65280)),w
+   238  001F40  ECEE  F01B         	call	_putch
+   239                           ;strategies.c: 108: for (j=0; j<200; j++)
+   240  001F44  6AF3               	clrf	prodl,c
+   241  001F46  6AF4               	clrf	prodh,c
+   242  001F48                     l36:
+   243                           ;strategies.c: 109: {
+   244                           ;strategies.c: 111: if (OERR)
+   245  001F48  A2AB               	btfss	4011,1,c	;volatile
+   246  001F4A  D002               	goto	l39
+   247                           ;strategies.c: 112: {
+   248  001F4C  98AB               	bcf	4011,4,c
+   249                           ;strategies.c: 114: CREN = 1;
+   250  001F4E  88AB               	bsf	4011,4,c
+   251  001F50                     l39:
+   252                           ;strategies.c: 115: }
+   253  001F50  0100               	movlb	__Lparam shr (0+8)
+   254  001F52  5183               	movf	?a_ActionAutomatismeBalise2^(__Lparam& (0+
+      +                          65280)),w
+   255  001F54  0100               	movlb	(_Strategie+10) shr (0+8)
+   256  001F56  635A               	cpfseq	(_Strategie+10)& (0+255),b
+   257  001F58  D005               	goto	l40
+   258                           ;strategies.c: 119: {
+   259  001F5A  6B5A               	clrf	(_Strategie+10)& (0+255),b
+   260                           ;strategies.c: 121: return 1;
+   261  001F5C  0E01               	movlw	1
+   262  001F5E  6E00               	movwf	btemp
+   263  001F60  6A01               	clrf	btemp+1
+   264  001F62  0012               	return	
+   265  001F64                     l40:
+   266                           ;strategies.c: 122: }
+   267  001F64  4AF3               	infsnz	prodl,f,c
+   268  001F66  2AF4               	incf	prodh,f,c
+   269  001F68  50F4               	movf	prodh,w,c
+   270  001F6A  0A80               	xorlw	128
+   271  001F6C  0F80               	addlw	-128
+   272  001F6E  0EC8               	movlw	200
+   273  001F70  B4D8               	btfsc	status,2,c
+   274  001F72  5CF3               	subwf	prodl,w,c
+   275  001F74  A0D8               	btfss	status,0,c
+   276  001F76  D7E8               	goto	l36
+   277                           ;strategies.c: 124: }
+   278  001F78  0100               	movlb	__Lparam shr (0+8)
+   279  001F7A  4B84               	infsnz	(?a_ActionAutomatismeBalise2+1)^(__Lpara
+      +                          m& (0+65280)),f
+   280  001F7C  2B85               	incf	(?a_ActionAutomatismeBalise2+2)^(__Lparam&
+      +                           (0+65280)),f
+   281  001F7E  5185               	movf	(?a_ActionAutomatismeBalise2+2)^(__Lparam&
+      +                           (0+65280)),w
+   282  001F80  0A80               	xorlw	128
+   283  001F82  0F80               	addlw	-128
+   284  001F84  0E0A               	movlw	10
+   285  001F86  B4D8               	btfsc	status,2,c
+   286  001F88  5D84               	subwf	(?a_ActionAutomatismeBalise2+1)^(__Lparam
+      +                          & (0+65280)),w
+   287  001F8A  A0D8               	btfss	status,0,c
+   288  001F8C  D7D7               	goto	l33
+   289                           ;strategies.c: 126: return 0;
+   290  001F8E  6A00               	clrf	btemp
+   291  001F90  6A01               	clrf	btemp+1
+   292  001F92  0012               	return	
+   293                           ;strategies.c: 127: }
+   294                           ;strategies.c: 129: void Test(void)
+   295                           ;strategies.c: 130: {
+   296  001F94                     _Test:
+   297  000000                     
+   298                           ;strategies.c: 132: int ret = 0;
+   299  001F94  6AF3               	clrf	prodl,c
+   300  001F96  6AF4               	clrf	prodh,c
+   301                           ;strategies.c: 139: ActionAutomatismeBalise2('1'
+      +                          );
+   302  001F98  0E31               	movlw	49
+   303  001F9A  DFC9               	call	_ActionAutomatismeBalise2
+   304                           ;strategies.c: 140: ActionAutomatisme(14, 0);
+   305  001F9C  0E0E               	movlw	14
+   306  001F9E  0100               	movlb	__Lparam shr (0+8)
+   307  001FA0  6F83               	movwf	?_ActionAutomatisme^(__Lparam& (0+65280))
+   308  001FA2  6B84               	clrf	(?_ActionAutomatisme+1)^(__Lparam& (0+6528
+      +                          0))
+   309  001FA4  6B85               	clrf	(?_ActionAutomatisme+2)^(__Lparam& (0+6528
+      +                          0))
+   310  001FA6  6B86               	clrf	(?_ActionAutomatisme+3)^(__Lparam& (0+6528
+      +                          0))
+   311  001FA8  DF92               	call	_ActionAutomatisme	;wreg free
+   312                           ;strategies.c: 141: vas_vers(Asserv.x_actuel_pre
+      +                          paration, 280, 360, 10001);
+   313  001FAA  C152  F083         	movff	_Asserv+82,?_vas_vers
+   314  001FAE  C153  F084         	movff	_Asserv+83,?_vas_vers+1
+   315  001FB2  C154  F085         	movff	_Asserv+84,?_vas_vers+2
+   316  001FB6  C155  F086         	movff	_Asserv+85,?_vas_vers+3
+   317  001FBA  0100               	movlb	__Lparam shr (0+8)
+   318  001FBC  0E18               	movlw	24
+   319  001FBE  6F87               	movwf	(?_vas_vers+4)^(__Lparam& (0+65280))
+   320  001FC0  0E01               	movlw	1
+   321  001FC2  6F88               	movwf	(?_vas_vers+5)^(__Lparam& (0+65280))
+   322  001FC4  6B89               	clrf	(?_vas_vers+6)^(__Lparam& (0+65280))
+   323  001FC6  6B8A               	clrf	(?_vas_vers+7)^(__Lparam& (0+65280))
+   324  001FC8  0E68               	movlw	104
+   325  001FCA  6F8B               	movwf	(?_vas_vers+8)^(__Lparam& (0+65280))
+   326  001FCC  0E01               	movlw	1
+   327  001FCE  6F8C               	movwf	(?_vas_vers+9)^(__Lparam& (0+65280))
+   328  001FD0  6B8D               	clrf	(?_vas_vers+10)^(__Lparam& (0+65280))
+   329  001FD2  6B8E               	clrf	(?_vas_vers+11)^(__Lparam& (0+65280))
+   330  001FD4  0E11               	movlw	17
+   331  001FD6  6F8F               	movwf	(?_vas_vers+12)^(__Lparam& (0+65280))
+   332  001FD8  0E27               	movlw	39
+   333  001FDA  6F90               	movwf	(?_vas_vers+13)^(__Lparam& (0+65280))
+   334  001FDC  6B91               	clrf	(?_vas_vers+14)^(__Lparam& (0+65280))
+   335  001FDE  6B92               	clrf	(?_vas_vers+15)^(__Lparam& (0+65280))
+   336  001FE0  EC83  F00A         	call	_vas_vers	;wreg free
+   337                           ;strategies.c: 144: if (Strat.Sys_1.bits.bit6 ==
+      +                           1)
+   338  001FE4  0100               	movlb	(_Strat+1) shr (0+8)
+   339  001FE6  A349               	btfss	(_Strat+1)& (0+255),1,b
+   340  001FE8  D009               	goto	l42
+   341                           ;strategies.c: 145: {
+   342  001FEA  0E01               	movlw	1
+   343  001FEC  0100               	movlb	__Lparam shr (0+8)
+   344  001FEE  6F83               	movwf	?_ActionAutomatisme^(__Lparam& (0+65280))
+   345  001FF0  6B84               	clrf	(?_ActionAutomatisme+1)^(__Lparam& (0+6528
+      +                          0))
+   346  001FF2  0E01               	movlw	1
+   347  001FF4  6F85               	movwf	(?_ActionAutomatisme+2)^(__Lparam& (0+652
+      +                          80))
+   348  001FF6  6B86               	clrf	(?_ActionAutomatisme+3)^(__Lparam& (0+6528
+      +                          0))
+   349  001FF8  DF6A               	call	_ActionAutomatisme	;wreg free
+   350                           ;strategies.c: 147: }
+   351  001FFA  D008               	goto	l43
+   352  001FFC                     l42:
+   353                           ;strategies.c: 151: {
+   354  001FFC  0E02               	movlw	2
+   355  001FFE  0100               	movlb	__Lparam shr (0+8)
+   356  002000  6F83               	movwf	?_ActionAutomatisme^(__Lparam& (0+65280))
+   357  002002  6B84               	clrf	(?_ActionAutomatisme+1)^(__Lparam& (0+6528
+      +                          0))
+   358  002004  0E01               	movlw	1
+   359  002006  6F85               	movwf	(?_ActionAutomatisme+2)^(__Lparam& (0+652
+      +                          80))
+   360  002008  6B86               	clrf	(?_ActionAutomatisme+3)^(__Lparam& (0+6528
+      +                          0))
+   361  00200A  DF61               	call	_ActionAutomatisme	;wreg free
+   362  00200C                     l43:
+   363                           ;strategies.c: 153: }
+   364                           ;strategies.c: 159: ActionAutomatismeBalise2('3'
+      +                          );
+   365  00200C  0E33               	movlw	51
+   366  00200E  DF8F               	call	_ActionAutomatismeBalise2
+   367                           ;strategies.c: 160: Attente(2500/25);
+   368  002010  0E64               	movlw	100
+   369  002012  0100               	movlb	__Lparam shr (0+8)
+   370  002014  6F83               	movwf	?_Attente^(__Lparam& (0+65280))
+   371  002016  6B84               	clrf	(?_Attente+1)^(__Lparam& (0+65280))
+   372  002018  6B85               	clrf	(?_Attente+2)^(__Lparam& (0+65280))
+   373  00201A  6B86               	clrf	(?_Attente+3)^(__Lparam& (0+65280))
+   374  00201C  EC16  F00F         	call	_Attente	;wreg free
+   375                           ;strategies.c: 161: recule_callage(-90, 0, 0, 10
+      +                          00/25, 1);
+   376  002020  0100               	movlb	__Lparam shr (0+8)
+   377  002022  0EA6               	movlw	166
+   378  002024  6F83               	movwf	?_recule_callage^(__Lparam& (0+65280))
+   379  002026  6984               	setf	(?_recule_callage+1)^(__Lparam& (0+65280))
+   380  002028  6985               	setf	(?_recule_callage+2)^(__Lparam& (0+65280))
+   381  00202A  6986               	setf	(?_recule_callage+3)^(__Lparam& (0+65280))
+   382  00202C  6B87               	clrf	(?_recule_callage+4)^(__Lparam& (0+65280))
+   383  00202E  6B88               	clrf	(?_recule_callage+5)^(__Lparam& (0+65280))
+   384  002030  6B89               	clrf	(?_recule_callage+6)^(__Lparam& (0+65280))
+   385  002032  6B8A               	clrf	(?_recule_callage+7)^(__Lparam& (0+65280))
+   386  002034  6B8B               	clrf	(?_recule_callage+8)^(__Lparam& (0+65280))
+   387  002036  6B8C               	clrf	(?_recule_callage+9)^(__Lparam& (0+65280))
+   388  002038  6B8D               	clrf	(?_recule_callage+10)^(__Lparam& (0+65280)
+      +                          )
+   389  00203A  6B8E               	clrf	(?_recule_callage+11)^(__Lparam& (0+65280)
+      +                          )
+   390  00203C  0E28               	movlw	40
+   391  00203E  6F8F               	movwf	(?_recule_callage+12)^(__Lparam& (0+65280
+      +                          ))
+   392  002040  6B90               	clrf	(?_recule_callage+13)^(__Lparam& (0+65280)
+      +                          )
+   393  002042  6B91               	clrf	(?_recule_callage+14)^(__Lparam& (0+65280)
+      +                          )
+   394  002044  6B92               	clrf	(?_recule_callage+15)^(__Lparam& (0+65280)
+      +                          )
+   395  002046  0E01               	movlw	1
+   396  002048  6F93               	movwf	(?_recule_callage+16)^(__Lparam& (0+65280
+      +                          ))
+   397  00204A  6B94               	clrf	(?_recule_callage+17)^(__Lparam& (0+65280)
+      +                          )
+   398  00204C  ECD4  F00C         	call	_recule_callage	;wreg free
+   399                           ;strategies.c: 163: ActionAutomatismeBalise2('0'
+      +                          );
+   400  002050  0E30               	movlw	48
+   401  002052  DF6D               	call	_ActionAutomatismeBalise2
+   402                           ;strategies.c: 164: ActionAutomatisme(10, 1);
+   403  002054  0E0A               	movlw	10
+   404  002056  0100               	movlb	__Lparam shr (0+8)
+   405  002058  6F83               	movwf	?_ActionAutomatisme^(__Lparam& (0+65280))
+   406  00205A  6B84               	clrf	(?_ActionAutomatisme+1)^(__Lparam& (0+6528
+      +                          0))
+   407  00205C  0E01               	movlw	1
+   408  00205E  6F85               	movwf	(?_ActionAutomatisme+2)^(__Lparam& (0+652
+      +                          80))
+   409  002060  6B86               	clrf	(?_ActionAutomatisme+3)^(__Lparam& (0+6528
+      +                          0))
+   410  002062  DF35               	call	_ActionAutomatisme	;wreg free
+   411                           ;strategies.c: 166: tourner_angle(-95, 380);
+   412  002064  0100               	movlb	__Lparam shr (0+8)
+   413  002066  0EA1               	movlw	161
+   414  002068  6FB0               	movwf	?_tourner_angle^(__Lparam& (0+65280))
+   415  00206A  69B1               	setf	(?_tourner_angle+1)^(__Lparam& (0+65280))
+   416  00206C  69B2               	setf	(?_tourner_angle+2)^(__Lparam& (0+65280))
+   417  00206E  69B3               	setf	(?_tourner_angle+3)^(__Lparam& (0+65280))
+   418  002070  0E7C               	movlw	124
+   419  002072  6FB4               	movwf	(?_tourner_angle+4)^(__Lparam& (0+65280))
+   420  002074  0E01               	movlw	1
+   421  002076  6FB5               	movwf	(?_tourner_angle+5)^(__Lparam& (0+65280))
+   422  002078  6BB6               	clrf	(?_tourner_angle+6)^(__Lparam& (0+65280))
+   423  00207A  6BB7               	clrf	(?_tourner_angle+7)^(__Lparam& (0+65280))
+   424  00207C  ECA1  F007         	call	_tourner_angle	;wreg free
+   425                           ;strategies.c: 170: if (Strat.Sys_1.bits.bit6 ==
+      +                           1)
+   426  002080  0100               	movlb	(_Strat+1) shr (0+8)
+   427  002082  A349               	btfss	(_Strat+1)& (0+255),1,b
+   428  002084  D037               	goto	l44
+   429                           ;strategies.c: 171: {
+   430  002086  0100               	movlb	__Lparam shr (0+8)
+   431  002088  0EA1               	movlw	161
+   432  00208A  6F83               	movwf	?_recule_callage^(__Lparam& (0+65280))
+   433  00208C  6984               	setf	(?_recule_callage+1)^(__Lparam& (0+65280))
+   434  00208E  6985               	setf	(?_recule_callage+2)^(__Lparam& (0+65280))
+   435  002090  6986               	setf	(?_recule_callage+3)^(__Lparam& (0+65280))
+   436  002092  6B87               	clrf	(?_recule_callage+4)^(__Lparam& (0+65280))
+   437  002094  6B88               	clrf	(?_recule_callage+5)^(__Lparam& (0+65280))
+   438  002096  6B89               	clrf	(?_recule_callage+6)^(__Lparam& (0+65280))
+   439  002098  6B8A               	clrf	(?_recule_callage+7)^(__Lparam& (0+65280))
+   440  00209A  6B8B               	clrf	(?_recule_callage+8)^(__Lparam& (0+65280))
+   441  00209C  6B8C               	clrf	(?_recule_callage+9)^(__Lparam& (0+65280))
+   442  00209E  6B8D               	clrf	(?_recule_callage+10)^(__Lparam& (0+65280)
+      +                          )
+   443  0020A0  6B8E               	clrf	(?_recule_callage+11)^(__Lparam& (0+65280)
+      +                          )
+   444  0020A2  0E5C               	movlw	92
+   445  0020A4  6F8F               	movwf	(?_recule_callage+12)^(__Lparam& (0+65280
+      +                          ))
+   446  0020A6  6B90               	clrf	(?_recule_callage+13)^(__Lparam& (0+65280)
+      +                          )
+   447  0020A8  6B91               	clrf	(?_recule_callage+14)^(__Lparam& (0+65280)
+      +                          )
+   448  0020AA  6B92               	clrf	(?_recule_callage+15)^(__Lparam& (0+65280)
+      +                          )
+   449  0020AC  0E01               	movlw	1
+   450  0020AE  6F93               	movwf	(?_recule_callage+16)^(__Lparam& (0+65280
+      +                          ))
+   451  0020B0  6B94               	clrf	(?_recule_callage+17)^(__Lparam& (0+65280)
+      +                          )
+   452  0020B2  ECD4  F00C         	call	_recule_callage	;wreg free
+   453                           ;strategies.c: 173: Stop(1);
+   454  0020B6  0E01               	movlw	1
+   455  0020B8  0100               	movlb	__Lparam shr (0+8)
+   456  0020BA  6F83               	movwf	?_Stop^(__Lparam& (0+65280))
+   457  0020BC  6B84               	clrf	(?_Stop+1)^(__Lparam& (0+65280))
+   458  0020BE  EC72  F00E         	call	_Stop	;wreg free
+   459                           ;strategies.c: 174: recule_callage(-90, 0, 0, 10
+      +                          000/25, 1);
+   460  0020C2  0100               	movlb	__Lparam shr (0+8)
+   461  0020C4  0EA6               	movlw	166
+   462  0020C6  6F83               	movwf	?_recule_callage^(__Lparam& (0+65280))
+   463  0020C8  6984               	setf	(?_recule_callage+1)^(__Lparam& (0+65280))
+   464  0020CA  6985               	setf	(?_recule_callage+2)^(__Lparam& (0+65280))
+   465  0020CC  6986               	setf	(?_recule_callage+3)^(__Lparam& (0+65280))
+   466  0020CE  6B87               	clrf	(?_recule_callage+4)^(__Lparam& (0+65280))
+   467  0020D0  6B88               	clrf	(?_recule_callage+5)^(__Lparam& (0+65280))
+   468  0020D2  6B89               	clrf	(?_recule_callage+6)^(__Lparam& (0+65280))
+   469  0020D4  6B8A               	clrf	(?_recule_callage+7)^(__Lparam& (0+65280))
+   470  0020D6  6B8B               	clrf	(?_recule_callage+8)^(__Lparam& (0+65280))
+   471  0020D8  6B8C               	clrf	(?_recule_callage+9)^(__Lparam& (0+65280))
+   472  0020DA  6B8D               	clrf	(?_recule_callage+10)^(__Lparam& (0+65280)
+      +                          )
+   473  0020DC  6B8E               	clrf	(?_recule_callage+11)^(__Lparam& (0+65280)
+      +                          )
+   474  0020DE  0E90               	movlw	144
+   475  0020E0  6F8F               	movwf	(?_recule_callage+12)^(__Lparam& (0+65280
+      +                          ))
+   476  0020E2  0E01               	movlw	1
+   477  0020E4  6F90               	movwf	(?_recule_callage+13)^(__Lparam& (0+65280
+      +                          ))
+   478  0020E6  6B91               	clrf	(?_recule_callage+14)^(__Lparam& (0+65280)
+      +                          )
+   479  0020E8  6B92               	clrf	(?_recule_callage+15)^(__Lparam& (0+65280)
+      +                          )
+   480  0020EA  6F93               	movwf	(?_recule_callage+16)^(__Lparam& (0+65280
+      +                          ))
+   481  0020EC  6B94               	clrf	(?_recule_callage+17)^(__Lparam& (0+65280)
+      +                          )
+   482  0020EE  ECD4  F00C         	call	_recule_callage	;wreg free
+   483                           ;strategies.c: 175: }
+   484  0020F2  D018               	goto	l45
+   485  0020F4                     l44:
+   486                           ;strategies.c: 178: {
+   487  0020F4  0100               	movlb	__Lparam shr (0+8)
+   488  0020F6  0EA6               	movlw	166
+   489  0020F8  6F83               	movwf	?_recule_callage^(__Lparam& (0+65280))
+   490  0020FA  6984               	setf	(?_recule_callage+1)^(__Lparam& (0+65280))
+   491  0020FC  6985               	setf	(?_recule_callage+2)^(__Lparam& (0+65280))
+   492  0020FE  6986               	setf	(?_recule_callage+3)^(__Lparam& (0+65280))
+   493  002100  6B87               	clrf	(?_recule_callage+4)^(__Lparam& (0+65280))
+   494  002102  6B88               	clrf	(?_recule_callage+5)^(__Lparam& (0+65280))
+   495  002104  6B89               	clrf	(?_recule_callage+6)^(__Lparam& (0+65280))
+   496  002106  6B8A               	clrf	(?_recule_callage+7)^(__Lparam& (0+65280))
+   497  002108  6B8B               	clrf	(?_recule_callage+8)^(__Lparam& (0+65280))
+   498  00210A  6B8C               	clrf	(?_recule_callage+9)^(__Lparam& (0+65280))
+   499  00210C  6B8D               	clrf	(?_recule_callage+10)^(__Lparam& (0+65280)
+      +                          )
+   500  00210E  6B8E               	clrf	(?_recule_callage+11)^(__Lparam& (0+65280)
+      +                          )
+   501  002110  0E90               	movlw	144
+   502  002112  6F8F               	movwf	(?_recule_callage+12)^(__Lparam& (0+65280
+      +                          ))
+   503  002114  0E01               	movlw	1
+   504  002116  6F90               	movwf	(?_recule_callage+13)^(__Lparam& (0+65280
+      +                          ))
+   505  002118  6B91               	clrf	(?_recule_callage+14)^(__Lparam& (0+65280)
+      +                          )
+   506  00211A  6B92               	clrf	(?_recule_callage+15)^(__Lparam& (0+65280)
+      +                          )
+   507  00211C  6F93               	movwf	(?_recule_callage+16)^(__Lparam& (0+65280
+      +                          ))
+   508  00211E  6B94               	clrf	(?_recule_callage+17)^(__Lparam& (0+65280)
+      +                          )
+   509  002120  ECD4  F00C         	call	_recule_callage	;wreg free
+   510  002124                     l45:
+   511                           ;strategies.c: 180: }
+   512                           ;strategies.c: 182: InitPositionRobot(10000 , 12
+      +                          80, 0, 2);
+   513  002124  0100               	movlb	__Lparam shr (0+8)
+   514  002126  0E10               	movlw	16
+   515  002128  6F83               	movwf	?_InitPositionRobot^(__Lparam& (0+65280))
+   516  00212A  0E27               	movlw	39
+   517  00212C  6F84               	movwf	(?_InitPositionRobot+1)^(__Lparam& (0+652
+      +                          80))
+   518  00212E  6B85               	clrf	(?_InitPositionRobot+2)^(__Lparam& (0+6528
+      +                          0))
+   519  002130  0E05               	movlw	5
+   520  002132  6F86               	movwf	(?_InitPositionRobot+3)^(__Lparam& (0+652
+      +                          80))
+   521  002134  6B87               	clrf	(?_InitPositionRobot+4)^(__Lparam& (0+6528
+      +                          0))
+   522  002136  6B88               	clrf	(?_InitPositionRobot+5)^(__Lparam& (0+6528
+      +                          0))
+   523  002138  0E02               	movlw	2
+   524  00213A  6F89               	movwf	(?_InitPositionRobot+6)^(__Lparam& (0+652
+      +                          80))
+   525  00213C  6B8A               	clrf	(?_InitPositionRobot+7)^(__Lparam& (0+6528
+      +                          0))
+   526  00213E  ECDF  F015         	call	_InitPositionRobot	;wreg free
+   527                           ;strategies.c: 184: vas_vers(-800, 1150, 350, 0)
+      +                          ;
+   528  002142  0100               	movlb	__Lparam shr (0+8)
+   529  002144  0EE0               	movlw	224
+   530  002146  6F83               	movwf	?_vas_vers^(__Lparam& (0+65280))
+   531  002148  0EFC               	movlw	252
+   532  00214A  6F84               	movwf	(?_vas_vers+1)^(__Lparam& (0+65280))
+   533  00214C  6985               	setf	(?_vas_vers+2)^(__Lparam& (0+65280))
+   534  00214E  6986               	setf	(?_vas_vers+3)^(__Lparam& (0+65280))
+   535  002150  0E7E               	movlw	126
+   536  002152  6F87               	movwf	(?_vas_vers+4)^(__Lparam& (0+65280))
+   537  002154  0E04               	movlw	4
+   538  002156  6F88               	movwf	(?_vas_vers+5)^(__Lparam& (0+65280))
+   539  002158  6B89               	clrf	(?_vas_vers+6)^(__Lparam& (0+65280))
+   540  00215A  6B8A               	clrf	(?_vas_vers+7)^(__Lparam& (0+65280))
+   541  00215C  0E5E               	movlw	94
+   542  00215E  6F8B               	movwf	(?_vas_vers+8)^(__Lparam& (0+65280))
+   543  002160  0E01               	movlw	1
+   544  002162  6F8C               	movwf	(?_vas_vers+9)^(__Lparam& (0+65280))
+   545  002164  6B8D               	clrf	(?_vas_vers+10)^(__Lparam& (0+65280))
+   546  002166  6B8E               	clrf	(?_vas_vers+11)^(__Lparam& (0+65280))
+   547  002168  6B8F               	clrf	(?_vas_vers+12)^(__Lparam& (0+65280))
+   548  00216A  6B90               	clrf	(?_vas_vers+13)^(__Lparam& (0+65280))
+   549  00216C  6B91               	clrf	(?_vas_vers+14)^(__Lparam& (0+65280))
+   550  00216E  6B92               	clrf	(?_vas_vers+15)^(__Lparam& (0+65280))
+   551  002170  EC83  F00A         	call	_vas_vers	;wreg free
+   552                           ;strategies.c: 192: Asserv.flag_evitement_adv=1;
+   553  002174  0101               	movlb	(_Asserv+2) shr (0+8)
+   554  002176  0E01               	movlw	1
+   555  002178  6F02               	movwf	(_Asserv+2)& (0+255),b
+   556  00217A  6B03               	clrf	(_Asserv+3)& (0+255),b
+   557                           ;strategies.c: 193: tourner_cible(-320, 1000, 35
+      +                          0);
+   558  00217C  0100               	movlb	__Lparam shr (0+8)
+   559  00217E  0EC0               	movlw	192
+   560  002180  6F83               	movwf	?_tourner_cible^(__Lparam& (0+65280))
+   561  002182  0EFE               	movlw	254
+   562  002184  6F84               	movwf	(?_tourner_cible+1)^(__Lparam& (0+65280))
+   563  002186  6985               	setf	(?_tourner_cible+2)^(__Lparam& (0+65280))
+   564  002188  6986               	setf	(?_tourner_cible+3)^(__Lparam& (0+65280))
+   565  00218A  0EE8               	movlw	232
+   566  00218C  6F87               	movwf	(?_tourner_cible+4)^(__Lparam& (0+65280))
+   567  00218E  0E03               	movlw	3
+   568  002190  6F88               	movwf	(?_tourner_cible+5)^(__Lparam& (0+65280))
+   569  002192  6B89               	clrf	(?_tourner_cible+6)^(__Lparam& (0+65280))
+   570  002194  6B8A               	clrf	(?_tourner_cible+7)^(__Lparam& (0+65280))
+   571  002196  0E5E               	movlw	94
+   572  002198  6F8B               	movwf	(?_tourner_cible+8)^(__Lparam& (0+65280))
+   573  00219A  0E01               	movlw	1
+   574  00219C  6F8C               	movwf	(?_tourner_cible+9)^(__Lparam& (0+65280))
+   575  00219E  6B8D               	clrf	(?_tourner_cible+10)^(__Lparam& (0+65280))
+   576  0021A0  6B8E               	clrf	(?_tourner_cible+11)^(__Lparam& (0+65280))
+   577  0021A2  ECE9  F008         	call	_tourner_cible	;wreg free
+   578                           ;strategies.c: 194: vas_vers(-320, 1000, 300, 10
+      +                          001);
+   579  0021A6  0100               	movlb	__Lparam shr (0+8)
+   580  0021A8  0EC0               	movlw	192
+   581  0021AA  6F83               	movwf	?_vas_vers^(__Lparam& (0+65280))
+   582  0021AC  0EFE               	movlw	254
+   583  0021AE  6F84               	movwf	(?_vas_vers+1)^(__Lparam& (0+65280))
+   584  0021B0  6985               	setf	(?_vas_vers+2)^(__Lparam& (0+65280))
+   585  0021B2  6986               	setf	(?_vas_vers+3)^(__Lparam& (0+65280))
+   586  0021B4  0EE8               	movlw	232
+   587  0021B6  6F87               	movwf	(?_vas_vers+4)^(__Lparam& (0+65280))
+   588  0021B8  0E03               	movlw	3
+   589  0021BA  6F88               	movwf	(?_vas_vers+5)^(__Lparam& (0+65280))
+   590  0021BC  6B89               	clrf	(?_vas_vers+6)^(__Lparam& (0+65280))
+   591  0021BE  6B8A               	clrf	(?_vas_vers+7)^(__Lparam& (0+65280))
+   592  0021C0  0E2C               	movlw	44
+   593  0021C2  6F8B               	movwf	(?_vas_vers+8)^(__Lparam& (0+65280))
+   594  0021C4  0E01               	movlw	1
+   595  0021C6  6F8C               	movwf	(?_vas_vers+9)^(__Lparam& (0+65280))
+   596  0021C8  6B8D               	clrf	(?_vas_vers+10)^(__Lparam& (0+65280))
+   597  0021CA  6B8E               	clrf	(?_vas_vers+11)^(__Lparam& (0+65280))
+   598  0021CC  0E11               	movlw	17
+   599  0021CE  6F8F               	movwf	(?_vas_vers+12)^(__Lparam& (0+65280))
+   600  0021D0  0E27               	movlw	39
+   601  0021D2  6F90               	movwf	(?_vas_vers+13)^(__Lparam& (0+65280))
+   602  0021D4  6B91               	clrf	(?_vas_vers+14)^(__Lparam& (0+65280))
+   603  0021D6  6B92               	clrf	(?_vas_vers+15)^(__Lparam& (0+65280))
+   604  0021D8  EC83  F00A         	call	_vas_vers	;wreg free
+   605                           ;strategies.c: 195: ActionAutomatisme(12, 1);
+   606  0021DC  0E0C               	movlw	12
+   607  0021DE  0100               	movlb	__Lparam shr (0+8)
+   608  0021E0  6F83               	movwf	?_ActionAutomatisme^(__Lparam& (0+65280))
+   609  0021E2  6B84               	clrf	(?_ActionAutomatisme+1)^(__Lparam& (0+6528
+      +                          0))
+   610  0021E4  0E01               	movlw	1
+   611  0021E6  6F85               	movwf	(?_ActionAutomatisme+2)^(__Lparam& (0+652
+      +                          80))
+   612  0021E8  6B86               	clrf	(?_ActionAutomatisme+3)^(__Lparam& (0+6528
+      +                          0))
+   613  0021EA  DE71               	call	_ActionAutomatisme	;wreg free
+   614                           ;strategies.c: 198: tourner_angle(-90, 350);
+   615  0021EC  0100               	movlb	__Lparam shr (0+8)
+   616  0021EE  0EA6               	movlw	166
+   617  0021F0  6FB0               	movwf	?_tourner_angle^(__Lparam& (0+65280))
+   618  0021F2  69B1               	setf	(?_tourner_angle+1)^(__Lparam& (0+65280))
+   619  0021F4  69B2               	setf	(?_tourner_angle+2)^(__Lparam& (0+65280))
+   620  0021F6  69B3               	setf	(?_tourner_angle+3)^(__Lparam& (0+65280))
+   621  0021F8  0E5E               	movlw	94
+   622  0021FA  6FB4               	movwf	(?_tourner_angle+4)^(__Lparam& (0+65280))
+   623  0021FC  0E01               	movlw	1
+   624  0021FE  6FB5               	movwf	(?_tourner_angle+5)^(__Lparam& (0+65280))
+   625  002200  6BB6               	clrf	(?_tourner_angle+6)^(__Lparam& (0+65280))
+   626  002202  6BB7               	clrf	(?_tourner_angle+7)^(__Lparam& (0+65280))
+   627  002204  ECA1  F007         	call	_tourner_angle	;wreg free
+   628                           ;strategies.c: 199: tourner_cible(-250, 30, 350)
+      +                          ;
+   629  002208  0100               	movlb	__Lparam shr (0+8)
+   630  00220A  0E06               	movlw	6
+   631  00220C  6F83               	movwf	?_tourner_cible^(__Lparam& (0+65280))
+   632  00220E  6984               	setf	(?_tourner_cible+1)^(__Lparam& (0+65280))
+   633  002210  6985               	setf	(?_tourner_cible+2)^(__Lparam& (0+65280))
+   634  002212  6986               	setf	(?_tourner_cible+3)^(__Lparam& (0+65280))
+   635  002214  0E1E               	movlw	30
+   636  002216  6F87               	movwf	(?_tourner_cible+4)^(__Lparam& (0+65280))
+   637  002218  6B88               	clrf	(?_tourner_cible+5)^(__Lparam& (0+65280))
+   638  00221A  6B89               	clrf	(?_tourner_cible+6)^(__Lparam& (0+65280))
+   639  00221C  6B8A               	clrf	(?_tourner_cible+7)^(__Lparam& (0+65280))
+   640  00221E  0E5E               	movlw	94
+   641  002220  6F8B               	movwf	(?_tourner_cible+8)^(__Lparam& (0+65280))
+   642  002222  0E01               	movlw	1
+   643  002224  6F8C               	movwf	(?_tourner_cible+9)^(__Lparam& (0+65280))
+   644  002226  6B8D               	clrf	(?_tourner_cible+10)^(__Lparam& (0+65280))
+   645  002228  6B8E               	clrf	(?_tourner_cible+11)^(__Lparam& (0+65280))
+   646  00222A  ECE9  F008         	call	_tourner_cible	;wreg free
+   647                           ;strategies.c: 200: vas_vers(-250, 30, 300, 1000
+      +                          1);
+   648  00222E  0100               	movlb	__Lparam shr (0+8)
+   649  002230  0E06               	movlw	6
+   650  002232  6F83               	movwf	?_vas_vers^(__Lparam& (0+65280))
+   651  002234  6984               	setf	(?_vas_vers+1)^(__Lparam& (0+65280))
+   652  002236  6985               	setf	(?_vas_vers+2)^(__Lparam& (0+65280))
+   653  002238  6986               	setf	(?_vas_vers+3)^(__Lparam& (0+65280))
+   654  00223A  0E1E               	movlw	30
+   655  00223C  6F87               	movwf	(?_vas_vers+4)^(__Lparam& (0+65280))
+   656  00223E  6B88               	clrf	(?_vas_vers+5)^(__Lparam& (0+65280))
+   657  002240  6B89               	clrf	(?_vas_vers+6)^(__Lparam& (0+65280))
+   658  002242  6B8A               	clrf	(?_vas_vers+7)^(__Lparam& (0+65280))
+   659  002244  0E2C               	movlw	44
+   660  002246  6F8B               	movwf	(?_vas_vers+8)^(__Lparam& (0+65280))
+   661  002248  0E01               	movlw	1
+   662  00224A  6F8C               	movwf	(?_vas_vers+9)^(__Lparam& (0+65280))
+   663  00224C  6B8D               	clrf	(?_vas_vers+10)^(__Lparam& (0+65280))
+   664  00224E  6B8E               	clrf	(?_vas_vers+11)^(__Lparam& (0+65280))
+   665  002250  0E11               	movlw	17
+   666  002252  6F8F               	movwf	(?_vas_vers+12)^(__Lparam& (0+65280))
+   667  002254  0E27               	movlw	39
+   668  002256  6F90               	movwf	(?_vas_vers+13)^(__Lparam& (0+65280))
+   669  002258  6B91               	clrf	(?_vas_vers+14)^(__Lparam& (0+65280))
+   670  00225A  6B92               	clrf	(?_vas_vers+15)^(__Lparam& (0+65280))
+   671  00225C  EC83  F00A         	call	_vas_vers	;wreg free
+   672                           ;strategies.c: 219: ret = 0;
+   673  002260  6AF3               	clrf	prodl,c
+   674  002262  6AF4               	clrf	prodh,c
+   675                           ;strategies.c: 220: if (ret == 0)
+   676                           ;strategies.c: 221: {
+   677  002264  0100               	movlb	__Lparam shr (0+8)
+   678  002266  0ED4               	movlw	212
+   679  002268  6F83               	movwf	?_tourner_cible^(__Lparam& (0+65280))
+   680  00226A  0EFE               	movlw	254
+   681  00226C  6F84               	movwf	(?_tourner_cible+1)^(__Lparam& (0+65280))
+   682  00226E  6985               	setf	(?_tourner_cible+2)^(__Lparam& (0+65280))
+   683  002270  6986               	setf	(?_tourner_cible+3)^(__Lparam& (0+65280))
+   684  002272  0EA8               	movlw	168
+   685  002274  6F87               	movwf	(?_tourner_cible+4)^(__Lparam& (0+65280))
+   686  002276  0EFD               	movlw	253
+   687  002278  6F88               	movwf	(?_tourner_cible+5)^(__Lparam& (0+65280))
+   688  00227A  6989               	setf	(?_tourner_cible+6)^(__Lparam& (0+65280))
+   689  00227C  698A               	setf	(?_tourner_cible+7)^(__Lparam& (0+65280))
+   690  00227E  0E5E               	movlw	94
+   691  002280  6F8B               	movwf	(?_tourner_cible+8)^(__Lparam& (0+65280))
+   692  002282  0E01               	movlw	1
+   693  002284  6F8C               	movwf	(?_tourner_cible+9)^(__Lparam& (0+65280))
+   694  002286  6B8D               	clrf	(?_tourner_cible+10)^(__Lparam& (0+65280))
+   695  002288  6B8E               	clrf	(?_tourner_cible+11)^(__Lparam& (0+65280))
+   696  00228A  ECE9  F008         	call	_tourner_cible	;wreg free
+   697                           ;strategies.c: 223: vas_vers(-300, -600, 300, 10
+      +                          001);
+   698  00228E  0100               	movlb	__Lparam shr (0+8)
+   699  002290  0ED4               	movlw	212
+   700  002292  6F83               	movwf	?_vas_vers^(__Lparam& (0+65280))
+   701  002294  0EFE               	movlw	254
+   702  002296  6F84               	movwf	(?_vas_vers+1)^(__Lparam& (0+65280))
+   703  002298  6985               	setf	(?_vas_vers+2)^(__Lparam& (0+65280))
+   704  00229A  6986               	setf	(?_vas_vers+3)^(__Lparam& (0+65280))
+   705  00229C  0EA8               	movlw	168
+   706  00229E  6F87               	movwf	(?_vas_vers+4)^(__Lparam& (0+65280))
+   707  0022A0  0EFD               	movlw	253
+   708  0022A2  6F88               	movwf	(?_vas_vers+5)^(__Lparam& (0+65280))
+   709  0022A4  6989               	setf	(?_vas_vers+6)^(__Lparam& (0+65280))
+   710  0022A6  698A               	setf	(?_vas_vers+7)^(__Lparam& (0+65280))
+   711  0022A8  0E2C               	movlw	44
+   712  0022AA  6F8B               	movwf	(?_vas_vers+8)^(__Lparam& (0+65280))
+   713  0022AC  0E01               	movlw	1
+   714  0022AE  6F8C               	movwf	(?_vas_vers+9)^(__Lparam& (0+65280))
+   715  0022B0  6B8D               	clrf	(?_vas_vers+10)^(__Lparam& (0+65280))
+   716  0022B2  6B8E               	clrf	(?_vas_vers+11)^(__Lparam& (0+65280))
+   717  0022B4  0E11               	movlw	17
+   718  0022B6  6F8F               	movwf	(?_vas_vers+12)^(__Lparam& (0+65280))
+   719  0022B8  0E27               	movlw	39
+   720  0022BA  6F90               	movwf	(?_vas_vers+13)^(__Lparam& (0+65280))
+   721  0022BC  6B91               	clrf	(?_vas_vers+14)^(__Lparam& (0+65280))
+   722  0022BE  6B92               	clrf	(?_vas_vers+15)^(__Lparam& (0+65280))
+   723  0022C0  EC83  F00A         	call	_vas_vers	;wreg free
+   724                           ;strategies.c: 231: tourner_cible(-360, -1000, 3
+      +                          00);
+   725  0022C4  0100               	movlb	__Lparam shr (0+8)
+   726  0022C6  0E98               	movlw	152
+   727  0022C8  6F83               	movwf	?_tourner_cible^(__Lparam& (0+65280))
+   728  0022CA  0EFE               	movlw	254
+   729  0022CC  6F84               	movwf	(?_tourner_cible+1)^(__Lparam& (0+65280))
+   730  0022CE  6985               	setf	(?_tourner_cible+2)^(__Lparam& (0+65280))
+   731  0022D0  6986               	setf	(?_tourner_cible+3)^(__Lparam& (0+65280))
+   732  0022D2  0E18               	movlw	24
+   733  0022D4  6F87               	movwf	(?_tourner_cible+4)^(__Lparam& (0+65280))
+   734  0022D6  0EFC               	movlw	252
+   735  0022D8  6F88               	movwf	(?_tourner_cible+5)^(__Lparam& (0+65280))
+   736  0022DA  6989               	setf	(?_tourner_cible+6)^(__Lparam& (0+65280))
+   737  0022DC  698A               	setf	(?_tourner_cible+7)^(__Lparam& (0+65280))
+   738  0022DE  0E2C               	movlw	44
+   739  0022E0  6F8B               	movwf	(?_tourner_cible+8)^(__Lparam& (0+65280))
+   740  0022E2  0E01               	movlw	1
+   741  0022E4  6F8C               	movwf	(?_tourner_cible+9)^(__Lparam& (0+65280))
+   742  0022E6  6B8D               	clrf	(?_tourner_cible+10)^(__Lparam& (0+65280))
+   743  0022E8  6B8E               	clrf	(?_tourner_cible+11)^(__Lparam& (0+65280))
+   744  0022EA  ECE9  F008         	call	_tourner_cible	;wreg free
+   745                           ;strategies.c: 232: vas_vers(-360, -1000, 300, 1
+      +                          0001);
+   746  0022EE  0100               	movlb	__Lparam shr (0+8)
+   747  0022F0  0E98               	movlw	152
+   748  0022F2  6F83               	movwf	?_vas_vers^(__Lparam& (0+65280))
+   749  0022F4  0EFE               	movlw	254
+   750  0022F6  6F84               	movwf	(?_vas_vers+1)^(__Lparam& (0+65280))
+   751  0022F8  6985               	setf	(?_vas_vers+2)^(__Lparam& (0+65280))
+   752  0022FA  6986               	setf	(?_vas_vers+3)^(__Lparam& (0+65280))
+   753  0022FC  0E18               	movlw	24
+   754  0022FE  6F87               	movwf	(?_vas_vers+4)^(__Lparam& (0+65280))
+   755  002300  0EFC               	movlw	252
+   756  002302  6F88               	movwf	(?_vas_vers+5)^(__Lparam& (0+65280))
+   757  002304  6989               	setf	(?_vas_vers+6)^(__Lparam& (0+65280))
+   758  002306  698A               	setf	(?_vas_vers+7)^(__Lparam& (0+65280))
+   759  002308  0E2C               	movlw	44
+   760  00230A  6F8B               	movwf	(?_vas_vers+8)^(__Lparam& (0+65280))
+   761  00230C  0E01               	movlw	1
+   762  00230E  6F8C               	movwf	(?_vas_vers+9)^(__Lparam& (0+65280))
+   763  002310  6B8D               	clrf	(?_vas_vers+10)^(__Lparam& (0+65280))
+   764  002312  6B8E               	clrf	(?_vas_vers+11)^(__Lparam& (0+65280))
+   765  002314  0E11               	movlw	17
+   766  002316  6F8F               	movwf	(?_vas_vers+12)^(__Lparam& (0+65280))
+   767  002318  0E27               	movlw	39
+   768  00231A  6F90               	movwf	(?_vas_vers+13)^(__Lparam& (0+65280))
+   769  00231C  6B91               	clrf	(?_vas_vers+14)^(__Lparam& (0+65280))
+   770  00231E  6B92               	clrf	(?_vas_vers+15)^(__Lparam& (0+65280))
+   771  002320  EC83  F00A         	call	_vas_vers	;wreg free
+   772                           ;strategies.c: 234: Asserv.flag_evitement_adv=0;
+   773  002324  0101               	movlb	(_Asserv+2) shr (0+8)
+   774  002326  6B02               	clrf	(_Asserv+2)& (0+255),b
+   775  002328  6B03               	clrf	(_Asserv+3)& (0+255),b
+   776                           ;strategies.c: 235: tourner_angle(172, 350);
+   777  00232A  0EAC               	movlw	172
+   778  00232C  0100               	movlb	__Lparam shr (0+8)
+   779  00232E  6FB0               	movwf	?_tourner_angle^(__Lparam& (0+65280))
+   780  002330  6BB1               	clrf	(?_tourner_angle+1)^(__Lparam& (0+65280))
+   781  002332  6BB2               	clrf	(?_tourner_angle+2)^(__Lparam& (0+65280))
+   782  002334  6BB3               	clrf	(?_tourner_angle+3)^(__Lparam& (0+65280))
+   783  002336  0E5E               	movlw	94
+   784  002338  6FB4               	movwf	(?_tourner_angle+4)^(__Lparam& (0+65280))
+   785  00233A  0E01               	movlw	1
+   786  00233C  6FB5               	movwf	(?_tourner_angle+5)^(__Lparam& (0+65280))
+   787  00233E  6BB6               	clrf	(?_tourner_angle+6)^(__Lparam& (0+65280))
+   788  002340  6BB7               	clrf	(?_tourner_angle+7)^(__Lparam& (0+65280))
+   789  002342  ECA1  F007         	call	_tourner_angle	;wreg free
+   790                           ;strategies.c: 238: EjectionBalles();
+   791  002346  D855               	call	_EjectionBalles	;wreg free
+   792                           ;strategies.c: 242: ActionAutomatisme(12, 1);
+   793  002348  0E0C               	movlw	12
+   794  00234A  0100               	movlb	__Lparam shr (0+8)
+   795  00234C  6F83               	movwf	?_ActionAutomatisme^(__Lparam& (0+65280))
+   796  00234E  6B84               	clrf	(?_ActionAutomatisme+1)^(__Lparam& (0+6528
+      +                          0))
+   797  002350  0E01               	movlw	1
+   798  002352  6F85               	movwf	(?_ActionAutomatisme+2)^(__Lparam& (0+652
+      +                          80))
+   799  002354  6B86               	clrf	(?_ActionAutomatisme+3)^(__Lparam& (0+6528
+      +                          0))
+   800  002356  DDBB               	call	_ActionAutomatisme	;wreg free
+   801                           ;strategies.c: 243: Stop(2);
+   802  002358  0E02               	movlw	2
+   803  00235A  0100               	movlb	__Lparam shr (0+8)
+   804  00235C  6F83               	movwf	?_Stop^(__Lparam& (0+65280))
+   805  00235E  6B84               	clrf	(?_Stop+1)^(__Lparam& (0+65280))
+   806  002360  EC72  F00E         	call	_Stop	;wreg free
+   807                           ;strategies.c: 244: tourner_cible(-300, -600, 35
+      +                          0);
+   808  002364  0100               	movlb	__Lparam shr (0+8)
+   809  002366  0ED4               	movlw	212
+   810  002368  6F83               	movwf	?_tourner_cible^(__Lparam& (0+65280))
+   811  00236A  0EFE               	movlw	254
+   812  00236C  6F84               	movwf	(?_tourner_cible+1)^(__Lparam& (0+65280))
+   813  00236E  6985               	setf	(?_tourner_cible+2)^(__Lparam& (0+65280))
+   814  002370  6986               	setf	(?_tourner_cible+3)^(__Lparam& (0+65280))
+   815  002372  0EA8               	movlw	168
+   816  002374  6F87               	movwf	(?_tourner_cible+4)^(__Lparam& (0+65280))
+   817  002376  0EFD               	movlw	253
+   818  002378  6F88               	movwf	(?_tourner_cible+5)^(__Lparam& (0+65280))
+   819  00237A  6989               	setf	(?_tourner_cible+6)^(__Lparam& (0+65280))
+   820  00237C  698A               	setf	(?_tourner_cible+7)^(__Lparam& (0+65280))
+   821  00237E  0E5E               	movlw	94
+   822  002380  6F8B               	movwf	(?_tourner_cible+8)^(__Lparam& (0+65280))
+   823  002382  0E01               	movlw	1
+   824  002384  6F8C               	movwf	(?_tourner_cible+9)^(__Lparam& (0+65280))
+   825  002386  6B8D               	clrf	(?_tourner_cible+10)^(__Lparam& (0+65280))
+   826  002388  6B8E               	clrf	(?_tourner_cible+11)^(__Lparam& (0+65280))
+   827  00238A  ECE9  F008         	call	_tourner_cible	;wreg free
+   828                           ;strategies.c: 246: Asserv.flag_evitement_adv=1;
+   829  00238E  0101               	movlb	(_Asserv+2) shr (0+8)
+   830  002390  0E01               	movlw	1
+   831  002392  6F02               	movwf	(_Asserv+2)& (0+255),b
+   832  002394  6B03               	clrf	(_Asserv+3)& (0+255),b
+   833                           ;strategies.c: 247: tourner_cible(-250, 30, 350)
+      +                          ;
+   834  002396  0100               	movlb	__Lparam shr (0+8)
+   835  002398  0E06               	movlw	6
+   836  00239A  6F83               	movwf	?_tourner_cible^(__Lparam& (0+65280))
+   837  00239C  6984               	setf	(?_tourner_cible+1)^(__Lparam& (0+65280))
+   838  00239E  6985               	setf	(?_tourner_cible+2)^(__Lparam& (0+65280))
+   839  0023A0  6986               	setf	(?_tourner_cible+3)^(__Lparam& (0+65280))
+   840  0023A2  0E1E               	movlw	30
+   841  0023A4  6F87               	movwf	(?_tourner_cible+4)^(__Lparam& (0+65280))
+   842  0023A6  6B88               	clrf	(?_tourner_cible+5)^(__Lparam& (0+65280))
+   843  0023A8  6B89               	clrf	(?_tourner_cible+6)^(__Lparam& (0+65280))
+   844  0023AA  6B8A               	clrf	(?_tourner_cible+7)^(__Lparam& (0+65280))
+   845  0023AC  0E5E               	movlw	94
+   846  0023AE  6F8B               	movwf	(?_tourner_cible+8)^(__Lparam& (0+65280))
+   847  0023B0  0E01               	movlw	1
+   848  0023B2  6F8C               	movwf	(?_tourner_cible+9)^(__Lparam& (0+65280))
+   849  0023B4  6B8D               	clrf	(?_tourner_cible+10)^(__Lparam& (0+65280))
+   850  0023B6  6B8E               	clrf	(?_tourner_cible+11)^(__Lparam& (0+65280))
+   851  0023B8  ECE9  F008         	call	_tourner_cible	;wreg free
+   852                           ;strategies.c: 248: vas_vers(-250, 30, 300, -90)
+      +                          ;
+   853  0023BC  0100               	movlb	__Lparam shr (0+8)
+   854  0023BE  0E06               	movlw	6
+   855  0023C0  6F83               	movwf	?_vas_vers^(__Lparam& (0+65280))
+   856  0023C2  6984               	setf	(?_vas_vers+1)^(__Lparam& (0+65280))
+   857  0023C4  6985               	setf	(?_vas_vers+2)^(__Lparam& (0+65280))
+   858  0023C6  6986               	setf	(?_vas_vers+3)^(__Lparam& (0+65280))
+   859  0023C8  0E1E               	movlw	30
+   860  0023CA  6F87               	movwf	(?_vas_vers+4)^(__Lparam& (0+65280))
+   861  0023CC  6B88               	clrf	(?_vas_vers+5)^(__Lparam& (0+65280))
+   862  0023CE  6B89               	clrf	(?_vas_vers+6)^(__Lparam& (0+65280))
+   863  0023D0  6B8A               	clrf	(?_vas_vers+7)^(__Lparam& (0+65280))
+   864  0023D2  0E2C               	movlw	44
+   865  0023D4  6F8B               	movwf	(?_vas_vers+8)^(__Lparam& (0+65280))
+   866  0023D6  0E01               	movlw	1
+   867  0023D8  6F8C               	movwf	(?_vas_vers+9)^(__Lparam& (0+65280))
+   868  0023DA  6B8D               	clrf	(?_vas_vers+10)^(__Lparam& (0+65280))
+   869  0023DC  6B8E               	clrf	(?_vas_vers+11)^(__Lparam& (0+65280))
+   870  0023DE  0EA6               	movlw	166
+   871  0023E0  6F8F               	movwf	(?_vas_vers+12)^(__Lparam& (0+65280))
+   872  0023E2  0EFF               	movlw	255
+   873  0023E4  6990               	setf	(?_vas_vers+13)^(__Lparam& (0+65280))
+   874  0023E6  6991               	setf	(?_vas_vers+14)^(__Lparam& (0+65280))
+   875  0023E8  6992               	setf	(?_vas_vers+15)^(__Lparam& (0+65280))
+   876  0023EA  EF83  F00A         	goto	_vas_vers	;wreg free
+   877                           ;strategies.c: 261: }
+   878                           ;strategies.c: 267: {
+   879                           ;strategies.c: 278: }
+   880                           ;strategies.c: 280: void Diagonal_1(void)
+   881                           ;strategies.c: 281: {
+   882  0023EE                     _Diagonal_1:
+   883  000000                     
+   884                           ;strategies.c: 306: }
+   885  0023EE  0012               	return	
+   886                           ;strategies.c: 308: void Diagonal_2(void)
+   887                           ;strategies.c: 309: {
+   888  0023F0                     _Diagonal_2:
+   889  000000                     
+   890                           ;strategies.c: 323: }
+   891  0023F0  0012               	return	
+   892                           ;strategies.c: 325: void EjectionBalles(void)
+   893                           ;strategies.c: 326: {
+   894  0023F2                     _EjectionBalles:
+   895  000000                     
+   896                           ;strategies.c: 327: Asserv.flag_stop_asserv = 1;
+   897  0023F2  0101               	movlb	_Asserv shr (0+8)
+   898  0023F4  0E01               	movlw	1
+   899  0023F6  6F00               	movwf	_Asserv& (0+255),b
+   900  0023F8  6B01               	clrf	(_Asserv+1)& (0+255),b
+   901                           ;strategies.c: 328: ActionAutomatismeBalise2('4'
+      +                          );
+   902  0023FA  0E34               	movlw	52
+   903  0023FC  DD98               	call	_ActionAutomatismeBalise2
+   904                           ;strategies.c: 329: ActionAutomatisme(10, 1);
+   905  0023FE  0E0A               	movlw	10
+   906  002400  0100               	movlb	__Lparam shr (0+8)
+   907  002402  6F83               	movwf	?_ActionAutomatisme^(__Lparam& (0+65280))
+   908  002404  6B84               	clrf	(?_ActionAutomatisme+1)^(__Lparam& (0+6528
+      +                          0))
+   909  002406  0E01               	movlw	1
+   910  002408  6F85               	movwf	(?_ActionAutomatisme+2)^(__Lparam& (0+652
+      +                          80))
+   911  00240A  6B86               	clrf	(?_ActionAutomatisme+3)^(__Lparam& (0+6528
+      +                          0))
+   912  00240C  DD60               	call	_ActionAutomatisme	;wreg free
+   913                           ;strategies.c: 330: ActionAutomatisme(9, 1);
+   914  00240E  0E09               	movlw	9
+   915  002410  0100               	movlb	__Lparam shr (0+8)
+   916  002412  6F83               	movwf	?_ActionAutomatisme^(__Lparam& (0+65280))
+   917  002414  6B84               	clrf	(?_ActionAutomatisme+1)^(__Lparam& (0+6528
+      +                          0))
+   918  002416  0E01               	movlw	1
+   919  002418  6F85               	movwf	(?_ActionAutomatisme+2)^(__Lparam& (0+652
+      +                          80))
+   920  00241A  6B86               	clrf	(?_ActionAutomatisme+3)^(__Lparam& (0+6528
+      +                          0))
+   921  00241C  DD58               	call	_ActionAutomatisme	;wreg free
+   922                           ;strategies.c: 331: Asserv.flag_stop_asserv = 0;
+   923  00241E  0101               	movlb	_Asserv shr (0+8)
+   924  002420  6B00               	clrf	_Asserv& (0+255),b
+   925  002422  6B01               	clrf	(_Asserv+1)& (0+255),b
+   926                           ;strategies.c: 334: ActionAutomatismeBalise2('0'
+      +                          );
+   927  002424  0E30               	movlw	48
+   928  002426  DD83               	call	_ActionAutomatismeBalise2
+   929                           ;strategies.c: 338: Strategie.enchainement_depla
+      +                          cement = 0;
+   930  002428  0100               	movlb	(_Strategie+11) shr (0+8)
+   931  00242A  6B5B               	clrf	(_Strategie+11)& (0+255),b
+   932  00242C  6B5C               	clrf	(_Strategie+12)& (0+255),b
+   933                           ;strategies.c: 339: }
+   934  00242E  0012               	return	
+   935                           ;strategies.c: 341: void StratHomologation(void)
+   936                           ;strategies.c: 342: {
+   937  002430                     _StratHomologation:
+   938  000000                     
+   939                           ;strategies.c: 365: }
+   940  002430  0012               	return	
+   941                           ;strategies.c: 367: void CallageDepart(void)
+   942                           ;strategies.c: 368: {
+   943  002432                     _CallageDepart:
+   944  000000                     
+   945                           ;strategies.c: 370: RA1 = 1;
+   946  002432  8280               	bsf	3968,1,c	;volatile
+   947                           ;strategies.c: 371: RA0 = 1;
+   948  002434  8080               	bsf	3968,0,c	;volatile
+   949                           ;strategies.c: 374: recule_callage(-90, 0, 0, 25
+      +                          00/25, 1);
+   950  002436  0100               	movlb	__Lparam shr (0+8)
+   951  002438  0EA6               	movlw	166
+   952  00243A  6F83               	movwf	?_recule_callage^(__Lparam& (0+65280))
+   953  00243C  6984               	setf	(?_recule_callage+1)^(__Lparam& (0+65280))
+   954  00243E  6985               	setf	(?_recule_callage+2)^(__Lparam& (0+65280))
+   955  002440  6986               	setf	(?_recule_callage+3)^(__Lparam& (0+65280))
+   956  002442  6B87               	clrf	(?_recule_callage+4)^(__Lparam& (0+65280))
+   957  002444  6B88               	clrf	(?_recule_callage+5)^(__Lparam& (0+65280))
+   958  002446  6B89               	clrf	(?_recule_callage+6)^(__Lparam& (0+65280))
+   959  002448  6B8A               	clrf	(?_recule_callage+7)^(__Lparam& (0+65280))
+   960  00244A  6B8B               	clrf	(?_recule_callage+8)^(__Lparam& (0+65280))
+   961  00244C  6B8C               	clrf	(?_recule_callage+9)^(__Lparam& (0+65280))
+   962  00244E  6B8D               	clrf	(?_recule_callage+10)^(__Lparam& (0+65280)
+      +                          )
+   963  002450  6B8E               	clrf	(?_recule_callage+11)^(__Lparam& (0+65280)
+      +                          )
+   964  002452  0E64               	movlw	100
+   965  002454  6F8F               	movwf	(?_recule_callage+12)^(__Lparam& (0+65280
+      +                          ))
+   966  002456  6B90               	clrf	(?_recule_callage+13)^(__Lparam& (0+65280)
+      +                          )
+   967  002458  6B91               	clrf	(?_recule_callage+14)^(__Lparam& (0+65280)
+      +                          )
+   968  00245A  6B92               	clrf	(?_recule_callage+15)^(__Lparam& (0+65280)
+      +                          )
+   969  00245C  0E01               	movlw	1
+   970  00245E  6F93               	movwf	(?_recule_callage+16)^(__Lparam& (0+65280
+      +                          ))
+   971  002460  6B94               	clrf	(?_recule_callage+17)^(__Lparam& (0+65280)
+      +                          )
+   972  002462  ECD4  F00C         	call	_recule_callage	;wreg free
+   973                           ;strategies.c: 377: InitPositionRobot(-800, 1300
+      +                          , 0, 1);
+   974  002466  0100               	movlb	__Lparam shr (0+8)
+   975  002468  0EE0               	movlw	224
+   976  00246A  6F83               	movwf	?_InitPositionRobot^(__Lparam& (0+65280))
+   977  00246C  0EFC               	movlw	252
+   978  00246E  6F84               	movwf	(?_InitPositionRobot+1)^(__Lparam& (0+652
+      +                          80))
+   979  002470  0E14               	movlw	20
+   980  002472  6F85               	movwf	(?_InitPositionRobot+2)^(__Lparam& (0+652
+      +                          80))
+   981  002474  0E05               	movlw	5
+   982  002476  6F86               	movwf	(?_InitPositionRobot+3)^(__Lparam& (0+652
+      +                          80))
+   983  002478  6B87               	clrf	(?_InitPositionRobot+4)^(__Lparam& (0+6528
+      +                          0))
+   984  00247A  6B88               	clrf	(?_InitPositionRobot+5)^(__Lparam& (0+6528
+      +                          0))
+   985  00247C  0E01               	movlw	1
+   986  00247E  6F89               	movwf	(?_InitPositionRobot+6)^(__Lparam& (0+652
+      +                          80))
+   987  002480  6B8A               	clrf	(?_InitPositionRobot+7)^(__Lparam& (0+6528
+      +                          0))
+   988  002482  ECDF  F015         	call	_InitPositionRobot	;wreg free
+   989                           ;strategies.c: 380: vas_vers(-800, 1150, 310, -9
+      +                          0);
+   990  002486  0100               	movlb	__Lparam shr (0+8)
+   991  002488  0EE0               	movlw	224
+   992  00248A  6F83               	movwf	?_vas_vers^(__Lparam& (0+65280))
+   993  00248C  0EFC               	movlw	252
+   994  00248E  6F84               	movwf	(?_vas_vers+1)^(__Lparam& (0+65280))
+   995  002490  6985               	setf	(?_vas_vers+2)^(__Lparam& (0+65280))
+   996  002492  6986               	setf	(?_vas_vers+3)^(__Lparam& (0+65280))
+   997  002494  0E7E               	movlw	126
+   998  002496  6F87               	movwf	(?_vas_vers+4)^(__Lparam& (0+65280))
+   999  002498  0E04               	movlw	4
+  1000  00249A  6F88               	movwf	(?_vas_vers+5)^(__Lparam& (0+65280))
+  1001  00249C  6B89               	clrf	(?_vas_vers+6)^(__Lparam& (0+65280))
+  1002  00249E  6B8A               	clrf	(?_vas_vers+7)^(__Lparam& (0+65280))
+  1003  0024A0  0E36               	movlw	54
+  1004  0024A2  6F8B               	movwf	(?_vas_vers+8)^(__Lparam& (0+65280))
+  1005  0024A4  0E01               	movlw	1
+  1006  0024A6  6F8C               	movwf	(?_vas_vers+9)^(__Lparam& (0+65280))
+  1007  0024A8  6B8D               	clrf	(?_vas_vers+10)^(__Lparam& (0+65280))
+  1008  0024AA  6B8E               	clrf	(?_vas_vers+11)^(__Lparam& (0+65280))
+  1009  0024AC  0EA6               	movlw	166
+  1010  0024AE  6F8F               	movwf	(?_vas_vers+12)^(__Lparam& (0+65280))
+  1011  0024B0  6990               	setf	(?_vas_vers+13)^(__Lparam& (0+65280))
+  1012  0024B2  6991               	setf	(?_vas_vers+14)^(__Lparam& (0+65280))
+  1013  0024B4  6992               	setf	(?_vas_vers+15)^(__Lparam& (0+65280))
+  1014  0024B6  EC83  F00A         	call	_vas_vers	;wreg free
+  1015                           ;strategies.c: 381: tourner_angle(-90, 350);
+  1016  0024BA  0100               	movlb	__Lparam shr (0+8)
+  1017  0024BC  0EA6               	movlw	166
+  1018  0024BE  6FB0               	movwf	?_tourner_angle^(__Lparam& (0+65280))
+  1019  0024C0  69B1               	setf	(?_tourner_angle+1)^(__Lparam& (0+65280))
+  1020  0024C2  69B2               	setf	(?_tourner_angle+2)^(__Lparam& (0+65280))
+  1021  0024C4  69B3               	setf	(?_tourner_angle+3)^(__Lparam& (0+65280))
+  1022  0024C6  0E5E               	movlw	94
+  1023  0024C8  6FB4               	movwf	(?_tourner_angle+4)^(__Lparam& (0+65280))
+  1024  0024CA  0E01               	movlw	1
+  1025  0024CC  6FB5               	movwf	(?_tourner_angle+5)^(__Lparam& (0+65280))
+  1026  0024CE  6BB6               	clrf	(?_tourner_angle+6)^(__Lparam& (0+65280))
+  1027  0024D0  6BB7               	clrf	(?_tourner_angle+7)^(__Lparam& (0+65280))
+  1028  0024D2  ECA1  F007         	call	_tourner_angle	;wreg free
+  1029                           ;strategies.c: 384: ActionAutomatisme(12, 1);
+  1030  0024D6  0E0C               	movlw	12
+  1031  0024D8  0100               	movlb	__Lparam shr (0+8)
+  1032  0024DA  6F83               	movwf	?_ActionAutomatisme^(__Lparam& (0+65280))
+  1033  0024DC  6B84               	clrf	(?_ActionAutomatisme+1)^(__Lparam& (0+6528
+      +                          0))
+  1034  0024DE  0E01               	movlw	1
+  1035  0024E0  6F85               	movwf	(?_ActionAutomatisme+2)^(__Lparam& (0+652
+      +                          80))
+  1036  0024E2  6B86               	clrf	(?_ActionAutomatisme+3)^(__Lparam& (0+6528
+      +                          0))
+  1037  0024E4  DCF4               	call	_ActionAutomatisme	;wreg free
+  1038                           ;strategies.c: 387: Asserv.commande_distance = 0
+      +                          ;
+  1039  0024E6  0101               	movlb	(_Asserv+155) shr (0+8)
+  1040  0024E8  6B9B               	clrf	(_Asserv+155)& (0+255),b
+  1041  0024EA  6B9C               	clrf	(_Asserv+156)& (0+255),b
+  1042  0024EC  6B9D               	clrf	(_Asserv+157)& (0+255),b
+  1043  0024EE  6B9E               	clrf	(_Asserv+158)& (0+255),b
+  1044                           ;strategies.c: 389: Asserv.x_actuel_preparation 
+      +                          = Asserv.x_actuel/10;
+  1045  0024F0  0E0A               	movlw	10
+  1046  0024F2  6E04               	movwf	btemp+4
+  1047  0024F4  6A05               	clrf	btemp+5
+  1048  0024F6  6A06               	clrf	btemp+6
+  1049  0024F8  6A07               	clrf	btemp+7
+  1050  0024FA  C142  F000         	movff	_Asserv+66,btemp
+  1051  0024FE  C143  F001         	movff	_Asserv+67,btemp+1
+  1052  002502  C144  F002         	movff	_Asserv+68,btemp+2
+  1053  002506  C145  F003         	movff	_Asserv+69,btemp+3
+  1054  00250A  EC7F  F01E         	call	aldiv
+  1055  00250E  C000  F152         	movff	btemp,_Asserv+82
+  1056  002512  C001  F153         	movff	btemp+1,_Asserv+83
+  1057  002516  C002  F154         	movff	btemp+2,_Asserv+84
+  1058  00251A  C003  F155         	movff	btemp+3,_Asserv+85
+  1059                           ;strategies.c: 392: while (Strat.Sys_1.bits.bit7
+      +                          )
+  1060  00251E                     l53:
+  1061                           ;strategies.c: 398: }
+  1062  00251E  0100               	movlb	(_Strat+1) shr (0+8)
+  1063  002520  A149               	btfss	(_Strat+1)& (0+255),0,b
+  1064  002522  D005               	goto	u130
+  1065                           ;strategies.c: 393: {
+  1066  002524  D80D               	call	_LedCouleurDepart	;wreg free
+  1067                           ;strategies.c: 397: Asserv.flag_sortie_evitement
+      +                          _adv = 0;
+  1068  002526  0101               	movlb	(_Asserv+4) shr (0+8)
+  1069  002528  6B04               	clrf	(_Asserv+4)& (0+255),b
+  1070  00252A  6B05               	clrf	(_Asserv+5)& (0+255),b
+  1071  00252C  D7F8               	goto	l53
+  1072  00252E                     u130:
+  1073                           ;strategies.c: 401: timeout.match = 0;
+  1074  00252E  0100               	movlb	_timeout shr (0+8)
+  1075  002530  6B5F               	clrf	_timeout& (0+255),b
+  1076  002532  6B60               	clrf	(_timeout+1)& (0+255),b
+  1077  002534  6B61               	clrf	(_timeout+2)& (0+255),b
+  1078  002536  6B62               	clrf	(_timeout+3)& (0+255),b
+  1079                           ;strategies.c: 402: timeout.blocage_timeout_matc
+      +                          h = 0;
+  1080  002538  6B77               	clrf	(_timeout+24)& (0+255),b
+  1081  00253A  6B78               	clrf	(_timeout+25)& (0+255),b
+  1082                           ;strategies.c: 403: }
+  1083  00253C  0012               	return	
+  1084                           ;strategies.c: 405: void FinMatch(void)
+  1085                           ;strategies.c: 406: {
+  1086  00253E                     _FinMatch:
+  1087  000000                     
+  1088                           ;strategies.c: 407: while(1);
+  1089  00253E                     l57:
+  1090  00253E  D7FF               	goto	l57
+  1091                           ;strategies.c: 410: void LedCouleurDepart(void)
+  1092                           ;strategies.c: 411: {
+  1093  002540                     _LedCouleurDepart:
+  1094  000000                     
+  1095                           ;strategies.c: 413: if (Strat.Sys_1.bits.bit6 ==
+      +                           0)
+  1096  002540  0100               	movlb	(_Strat+1) shr (0+8)
+  1097  002542  B349               	btfsc	(_Strat+1)& (0+255),1,b
+  1098  002544  D008               	goto	l61
+  1099                           ;strategies.c: 414: {
+  1100  002546  9280               	bcf	3968,1,c	;volatile
+  1101                           ;strategies.c: 416: RA0 = 1;
+  1102  002548  8080               	bsf	3968,0,c	;volatile
+  1103                           ;strategies.c: 417: Asserv.orientation_depart = 
+      +                          -1;
+  1104  00254A  0EFF               	movlw	255
+  1105  00254C  CFE8 F192          	movff	wreg,_Asserv+146
+  1106  002550  CFE8 F193          	movff	wreg,_Asserv+147
+  1107                           ;strategies.c: 418: }
+  1108  002554  0012               	return	
+  1109  002556                     l61:
+  1110                           ;strategies.c: 422: {
+  1111  002556  8280               	bsf	3968,1,c	;volatile
+  1112                           ;strategies.c: 424: RA0 = 0;
+  1113  002558  9080               	bcf	3968,0,c	;volatile
+  1114                           ;strategies.c: 425: Asserv.orientation_depart = 
+      +                          1;
+  1115  00255A  0101               	movlb	(_Asserv+146) shr (0+8)
+  1116  00255C  0E01               	movlw	1
+  1117  00255E  6F92               	movwf	(_Asserv+146)& (0+255),b
+  1118  002560  0E00               	movlw	0
+  1119  002562  6B93               	clrf	(_Asserv+147)& (0+255),b
+  1120                           ;strategies.c: 426: }
+  1121                           ;strategies.c: 427: }
+  1122  002564  0012               	return	
+  1123                           ;strategies.c: 429: void _CoupureAutom(void)
+  1124                           ;strategies.c: 430: {
+  1125  002566                     __CoupureAutom:
+  1126  000000                     
+  1127  002566                     l65:
+  1128                           ;strategies.c: 432: while (1)
+  1129                           ;strategies.c: 433: {
+  1130  002566  9280               	bcf	3968,1,c	;volatile
+  1131                           ;strategies.c: 436: RA0 = 0;
+  1132  002568  9080               	bcf	3968,0,c	;volatile
+  1133                           ;strategies.c: 439: buffer_i2c_tx[0] = 255;
+  1134  00256A  0EFF               	movlw	255
+  1135  00256C  CFE8 F2C4          	movff	wreg,_buffer_i2c_tx
+  1136                           ;strategies.c: 442: _putch('0');
+  1137  002570  0E30               	movlw	48
+  1138  002572  EC1F  F01C         	call	__putch
+  1139                           ;strategies.c: 445: if (OERR) {CREN = 0;CREN = 1
+      +                          ;}
+  1140  002576  A2AB               	btfss	4011,1,c	;volatile
+  1141  002578  D002               	goto	l67
+  1142  00257A  98AB               	bcf	4011,4,c
+  1143  00257C  88AB               	bsf	4011,4,c
+  1144  00257E                     l67:
+  1145                           ;strategies.c: 448: ass_envoi_pwm();
+  1146  00257E  EC31  F007         	call	_ass_envoi_pwm	;wreg free
+  1147                           ;strategies.c: 449: }
+  1148  002582  D7F1               	goto	l65
+  1149  002584  0083               	dw	?_PositionAdv
+  1150  002586                     _PositionAdv:
+  1151  000000                     
+  1152                           ;strategies.c: 528: int ret = 0;
+  1153  002586  6AF3               	clrf	prodl,c
+  1154  002588  6AF4               	clrf	prodh,c
+  1155                           ;strategies.c: 529: int sortie = 0;
+  1156  00258A  0100               	movlb	__Lparam shr (0+8)
+  1157  00258C  6B83               	clrf	?a_PositionAdv^(__Lparam& (0+65280))
+  1158  00258E  6B84               	clrf	(?a_PositionAdv+1)^(__Lparam& (0+65280))
+  1159                           ;strategies.c: 530: int compteur = 0;
+  1160  002590  6AF6               	clrf	tblptrl,c
+  1161  002592  6AF7               	clrf	tblptrh,c
+  1162                           ;strategies.c: 531: int compteur_max = 150;
+  1163  002594  0E96               	movlw	150
+  1164  002596  6F85               	movwf	(?a_PositionAdv+2)^(__Lparam& (0+65280))
+  1165  002598  6B86               	clrf	(?a_PositionAdv+3)^(__Lparam& (0+65280))
+  1166                           ;strategies.c: 534: if (Strategie.enchainement_d
+      +                          eplacement)
+  1167  00259A  0100               	movlb	(_Strategie+11) shr (0+8)
+  1168  00259C  515B               	movf	(_Strategie+11)& (0+255),w,b
+  1169  00259E  115C               	iorwf	(_Strategie+12)& (0+255),w,b
+  1170  0025A0  B4D8               	btfsc	status,2,c
+  1171  0025A2  D004               	goto	l69
+  1172                           ;strategies.c: 535: return 2;
+  1173  0025A4  0E02               	movlw	2
+  1174  0025A6  6E00               	movwf	btemp
+  1175  0025A8  6A01               	clrf	btemp+1
+  1176  0025AA  0012               	return	
+  1177  0025AC                     l69:
+  1178                           ;strategies.c: 538: x_mm /= 10;
+  1179  0025AC  0E0A               	movlw	10
+  1180  0025AE  6E04               	movwf	btemp+4
+  1181  0025B0  6A05               	clrf	btemp+5
+  1182  0025B2  6A06               	clrf	btemp+6
+  1183  0025B4  6A07               	clrf	btemp+7
+  1184  0025B6  0E83               	movlw	low ?_PositionAdv
+  1185  0025B8  6EE9               	movwf	fsr0l,c
+  1186  0025BA  0E00               	movlw	high ?_PositionAdv
+  1187  0025BC  6EEA               	movwf	fsr0h,c
+  1188  0025BE  EC45  F01F         	call	aldiv_f
+  1189                           ;strategies.c: 539: y_mm /= 10;
+  1190  0025C2  0E0A               	movlw	10
+  1191  0025C4  6E04               	movwf	btemp+4
+  1192  0025C6  6A05               	clrf	btemp+5
+  1193  0025C8  6A06               	clrf	btemp+6
+  1194  0025CA  6A07               	clrf	btemp+7
+  1195  0025CC  0E87               	movlw	low (?_PositionAdv+4)
+  1196  0025CE  6EE9               	movwf	fsr0l,c
+  1197  0025D0  0E00               	movlw	high (?_PositionAdv+4)
+  1198  0025D2  6EEA               	movwf	fsr0h,c
+  1199  0025D4  EC45  F01F         	call	aldiv_f
+  1200                           ;strategies.c: 540: y_mm *= Asserv.orientation_d
+      +                          epart;
+  1201  0025D8  C192  F004         	movff	_Asserv+146,btemp+4
+  1202  0025DC  C193  F005         	movff	_Asserv+147,btemp+5
+  1203  0025E0  0E00               	movlw	0
+  1204  0025E2  BE05               	btfsc	btemp+5,7
+  1205  0025E4  0EFF               	movlw	255
+  1206  0025E6  6E06               	movwf	btemp+6
+  1207  0025E8  6E07               	movwf	btemp+7
+  1208  0025EA  0E87               	movlw	low (?_PositionAdv+4)
+  1209  0025EC  6EE9               	movwf	fsr0l,c
+  1210  0025EE  0E00               	movlw	high (?_PositionAdv+4)
+  1211  0025F0  6EEA               	movwf	fsr0h,c
+  1212  0025F2  EC3B  F01F         	call	almul_f
+  1213                           ;strategies.c: 542: fourchette_x_mm /= 10;
+  1214  0025F6  0E0A               	movlw	10
+  1215  0025F8  6E04               	movwf	btemp+4
+  1216  0025FA  6A05               	clrf	btemp+5
+  1217  0025FC  6A06               	clrf	btemp+6
+  1218  0025FE  6A07               	clrf	btemp+7
+  1219  002600  0E8B               	movlw	low (?_PositionAdv+8)
+  1220  002602  6EE9               	movwf	fsr0l,c
+  1221  002604  0E00               	movlw	high (?_PositionAdv+8)
+  1222  002606  6EEA               	movwf	fsr0h,c
+  1223  002608  EC45  F01F         	call	aldiv_f
+  1224                           ;strategies.c: 543: fourchette_y_mm /= 10;
+  1225  00260C  0E0A               	movlw	10
+  1226  00260E  6E04               	movwf	btemp+4
+  1227  002610  6A05               	clrf	btemp+5
+  1228  002612  6A06               	clrf	btemp+6
+  1229  002614  6A07               	clrf	btemp+7
+  1230  002616  0E8F               	movlw	low (?_PositionAdv+12)
+  1231  002618  6EE9               	movwf	fsr0l,c
+  1232  00261A  0E00               	movlw	high (?_PositionAdv+12)
+  1233  00261C  6EEA               	movwf	fsr0h,c
+  1234  00261E  EC45  F01F         	call	aldiv_f
+  1235                           ;strategies.c: 546: timeout.balise = 0;
+  1236  002622  0100               	movlb	(_timeout+20) shr (0+8)
+  1237  002624  6B73               	clrf	(_timeout+20)& (0+255),b
+  1238  002626  6B74               	clrf	(_timeout+21)& (0+255),b
+  1239  002628  6B75               	clrf	(_timeout+22)& (0+255),b
+  1240  00262A  6B76               	clrf	(_timeout+23)& (0+255),b
+  1241                           ;strategies.c: 547: timeout.blocage_timeout_bali
+      +                          se = 0;
+  1242  00262C  6B81               	clrf	(_timeout+34)& (0+255),b
+  1243  00262E  6B82               	clrf	(_timeout+35)& (0+255),b
+  1244                           ;strategies.c: 550: while (timeout.balise <= 100
+      +                          0/25);
+  1245  002630                     l70:
+  1246  002630  EE00  F076         	lfsr	0,_timeout+23
+  1247  002634  0E00               	movlw	0
+  1248  002636  5CED               	subwf	postdec0,w,c
+  1249  002638  E108               	bnz	u175
+  1250  00263A  0E00               	movlw	0
+  1251  00263C  5CED               	subwf	postdec0,w,c
+  1252  00263E  E105               	bnz	u175
+  1253  002640  0E00               	movlw	0
+  1254  002642  5CED               	subwf	postdec0,w,c
+  1255  002644  E102               	bnz	u175
+  1256  002646  0E29               	movlw	41
+  1257  002648  5CEF               	subwf	indf0,w,c
+  1258  00264A                     u175:
+  1259  00264A  A0D8               	btfss	status,0,c
+  1260  00264C  D7F1               	goto	l70
+  1261                           ;strategies.c: 553: timeout.balise = 0;
+  1262  00264E  0100               	movlb	(_timeout+20) shr (0+8)
+  1263  002650  6B73               	clrf	(_timeout+20)& (0+255),b
+  1264  002652  6B74               	clrf	(_timeout+21)& (0+255),b
+  1265  002654  6B75               	clrf	(_timeout+22)& (0+255),b
+  1266  002656  6B76               	clrf	(_timeout+23)& (0+255),b
+  1267                           ;strategies.c: 554: while ((timeout.balise <= ti
+      +                          meout_fin) && (!sortie))
+  1268  002658  D0FA               	goto	l73
+  1269  00265A                     l74:
+  1270                           ;strategies.c: 555: {
+  1271  00265A  0100               	movlb	__Lparam shr (0+8)
+  1272  00265C  518B               	movf	(?_PositionAdv+8)^(__Lparam& (0+65280)),w
+  1273  00265E  2583               	addwf	?_PositionAdv^(__Lparam& (0+65280)),w
+  1274  002660  6E04               	movwf	btemp+4
+  1275  002662  518C               	movf	(?_PositionAdv+9)^(__Lparam& (0+65280)),w
+  1276  002664  2184               	addwfc	(?_PositionAdv+1)^(__Lparam& (0+65280)),
+      +                          w
+  1277  002666  6E05               	movwf	btemp+5
+  1278  002668  518D               	movf	(?_PositionAdv+10)^(__Lparam& (0+65280)),w
+  1279  00266A  2185               	addwfc	(?_PositionAdv+2)^(__Lparam& (0+65280)),
+      +                          w
+  1280  00266C  6E06               	movwf	btemp+6
+  1281  00266E  518E               	movf	(?_PositionAdv+11)^(__Lparam& (0+65280)),w
+  1282  002670  2186               	addwfc	(?_PositionAdv+3)^(__Lparam& (0+65280)),
+      +                          w
+  1283  002672  6E07               	movwf	btemp+7
+  1284  002674  C04A  F000         	movff	_Adv,btemp
+  1285  002678  C04B  F001         	movff	_Adv+1,btemp+1
+  1286  00267C  0E00               	movlw	0
+  1287  00267E  BE01               	btfsc	btemp+1,7
+  1288  002680  0EFF               	movlw	255
+  1289  002682  6E02               	movwf	btemp+2
+  1290  002684  6E03               	movwf	btemp+3
+  1291  002686  5003               	movf	btemp+3,w
+  1292  002688  0A80               	xorlw	128
+  1293  00268A  6E08               	movwf	btemp+8
+  1294  00268C  5007               	movf	btemp+7,w
+  1295  00268E  0A80               	xorlw	128
+  1296  002690  5C08               	subwf	btemp+8,w
+  1297  002692  E108               	bnz	u185
+  1298  002694  5006               	movf	btemp+6,w
+  1299  002696  5C02               	subwf	btemp+2,w
+  1300  002698  E105               	bnz	u185
+  1301  00269A  5005               	movf	btemp+5,w
+  1302  00269C  5C01               	subwf	btemp+1,w
+  1303  00269E  E102               	bnz	u185
+  1304  0026A0  5004               	movf	btemp+4,w
+  1305  0026A2  5C00               	subwf	btemp,w
+  1306  0026A4                     u185:
+  1307  0026A4  B0D8               	btfsc	status,0,c
+  1308  0026A6  D0D0               	goto	l76
+  1309  0026A8  C04A  F004         	movff	_Adv,btemp+4
+  1310  0026AC  C04B  F005         	movff	_Adv+1,btemp+5
+  1311  0026B0  0E00               	movlw	0
+  1312  0026B2  BE05               	btfsc	btemp+5,7
+  1313  0026B4  0EFF               	movlw	255
+  1314  0026B6  6E06               	movwf	btemp+6
+  1315  0026B8  6E07               	movwf	btemp+7
+  1316  0026BA  518B               	movf	(?_PositionAdv+8)^(__Lparam& (0+65280)),w
+  1317  0026BC  5D83               	subwf	?_PositionAdv^(__Lparam& (0+65280)),w
+  1318  0026BE  6E00               	movwf	btemp
+  1319  0026C0  518C               	movf	(?_PositionAdv+9)^(__Lparam& (0+65280)),w
+  1320  0026C2  5984               	subwfb	(?_PositionAdv+1)^(__Lparam& (0+65280)),
+      +                          w
+  1321  0026C4  6E01               	movwf	btemp+1
+  1322  0026C6  518D               	movf	(?_PositionAdv+10)^(__Lparam& (0+65280)),w
+  1323  0026C8  5985               	subwfb	(?_PositionAdv+2)^(__Lparam& (0+65280)),
+      +                          w
+  1324  0026CA  6E02               	movwf	btemp+2
+  1325  0026CC  518E               	movf	(?_PositionAdv+11)^(__Lparam& (0+65280)),w
+  1326  0026CE  5986               	subwfb	(?_PositionAdv+3)^(__Lparam& (0+65280)),
+      +                          w
+  1327  0026D0  6E03               	movwf	btemp+3
+  1328  0026D2  5003               	movf	btemp+3,w
+  1329  0026D4  0A80               	xorlw	128
+  1330  0026D6  6E08               	movwf	btemp+8
+  1331  0026D8  5007               	movf	btemp+7,w
+  1332  0026DA  0A80               	xorlw	128
+  1333  0026DC  5C08               	subwf	btemp+8,w
+  1334  0026DE  E108               	bnz	u195
+  1335  0026E0  5006               	movf	btemp+6,w
+  1336  0026E2  5C02               	subwf	btemp+2,w
+  1337  0026E4  E105               	bnz	u195
+  1338  0026E6  5005               	movf	btemp+5,w
+  1339  0026E8  5C01               	subwf	btemp+1,w
+  1340  0026EA  E102               	bnz	u195
+  1341  0026EC  5004               	movf	btemp+4,w
+  1342  0026EE  5C00               	subwf	btemp,w
+  1343  0026F0                     u195:
+  1344  0026F0  B0D8               	btfsc	status,0,c
+  1345  0026F2  D0AA               	goto	l76
+  1346  0026F4  0100               	movlb	_Adv shr (0+8)
+  1347  0026F6  514A               	movf	_Adv& (0+255),w,b
+  1348  0026F8  114B               	iorwf	(_Adv+1)& (0+255),w,b
+  1349  0026FA  B4D8               	btfsc	status,2,c
+  1350  0026FC  D0A5               	goto	l76
+  1351                           ;strategies.c: 558: {
+  1352  0026FE  0100               	movlb	__Lparam shr (0+8)
+  1353  002700  518F               	movf	(?_PositionAdv+12)^(__Lparam& (0+65280)),w
+  1354  002702  2587               	addwf	(?_PositionAdv+4)^(__Lparam& (0+65280)),w
+  1355  002704  6E00               	movwf	btemp
+  1356  002706  5190               	movf	(?_PositionAdv+13)^(__Lparam& (0+65280)),w
+  1357  002708  2188               	addwfc	(?_PositionAdv+5)^(__Lparam& (0+65280)),
+      +                          w
+  1358  00270A  6E01               	movwf	btemp+1
+  1359  00270C  5191               	movf	(?_PositionAdv+14)^(__Lparam& (0+65280)),w
+  1360  00270E  2189               	addwfc	(?_PositionAdv+6)^(__Lparam& (0+65280)),
+      +                          w
+  1361  002710  6E02               	movwf	btemp+2
+  1362  002712  5192               	movf	(?_PositionAdv+15)^(__Lparam& (0+65280)),w
+  1363  002714  218A               	addwfc	(?_PositionAdv+7)^(__Lparam& (0+65280)),
+      +                          w
+  1364  002716  6E03               	movwf	btemp+3
+  1365  002718  C04C  F004         	movff	_Adv+2,btemp+4
+  1366  00271C  C04D  F005         	movff	_Adv+3,btemp+5
+  1367  002720  0E00               	movlw	0
+  1368  002722  BE05               	btfsc	btemp+5,7
+  1369  002724  0EFF               	movlw	255
+  1370  002726  6E06               	movwf	btemp+6
+  1371  002728  6E07               	movwf	btemp+7
+  1372  00272A  5007               	movf	btemp+7,w
+  1373  00272C  0A80               	xorlw	128
+  1374  00272E  6E08               	movwf	btemp+8
+  1375  002730  5003               	movf	btemp+3,w
+  1376  002732  0A80               	xorlw	128
+  1377  002734  5C08               	subwf	btemp+8,w
+  1378  002736  E108               	bnz	u235
+  1379  002738  5002               	movf	btemp+2,w
+  1380  00273A  5C06               	subwf	btemp+6,w
+  1381  00273C  E105               	bnz	u235
+  1382  00273E  5001               	movf	btemp+1,w
+  1383  002740  5C05               	subwf	btemp+5,w
+  1384  002742  E102               	bnz	u235
+  1385  002744  5000               	movf	btemp,w
+  1386  002746  5C04               	subwf	btemp+4,w
+  1387  002748                     u235:
+  1388  002748  B0D8               	btfsc	status,0,c
+  1389  00274A  D07E               	goto	l76
+  1390  00274C  C04C  F004         	movff	_Adv+2,btemp+4
+  1391  002750  C04D  F005         	movff	_Adv+3,btemp+5
+  1392  002754  0E00               	movlw	0
+  1393  002756  BE05               	btfsc	btemp+5,7
+  1394  002758  0EFF               	movlw	255
+  1395  00275A  6E06               	movwf	btemp+6
+  1396  00275C  6E07               	movwf	btemp+7
+  1397  00275E  518F               	movf	(?_PositionAdv+12)^(__Lparam& (0+65280)),w
+  1398  002760  5D87               	subwf	(?_PositionAdv+4)^(__Lparam& (0+65280)),w
+  1399  002762  6E00               	movwf	btemp
+  1400  002764  5190               	movf	(?_PositionAdv+13)^(__Lparam& (0+65280)),w
+  1401  002766  5988               	subwfb	(?_PositionAdv+5)^(__Lparam& (0+65280)),
+      +                          w
+  1402  002768  6E01               	movwf	btemp+1
+  1403  00276A  5191               	movf	(?_PositionAdv+14)^(__Lparam& (0+65280)),w
+  1404  00276C  5989               	subwfb	(?_PositionAdv+6)^(__Lparam& (0+65280)),
+      +                          w
+  1405  00276E  6E02               	movwf	btemp+2
+  1406  002770  5192               	movf	(?_PositionAdv+15)^(__Lparam& (0+65280)),w
+  1407  002772  598A               	subwfb	(?_PositionAdv+7)^(__Lparam& (0+65280)),
+      +                          w
+  1408  002774  6E03               	movwf	btemp+3
+  1409  002776  5003               	movf	btemp+3,w
+  1410  002778  0A80               	xorlw	128
+  1411  00277A  6E08               	movwf	btemp+8
+  1412  00277C  5007               	movf	btemp+7,w
+  1413  00277E  0A80               	xorlw	128
+  1414  002780  5C08               	subwf	btemp+8,w
+  1415  002782  E108               	bnz	u245
+  1416  002784  5006               	movf	btemp+6,w
+  1417  002786  5C02               	subwf	btemp+2,w
+  1418  002788  E105               	bnz	u245
+  1419  00278A  5005               	movf	btemp+5,w
+  1420  00278C  5C01               	subwf	btemp+1,w
+  1421  00278E  E102               	bnz	u245
+  1422  002790  5004               	movf	btemp+4,w
+  1423  002792  5C00               	subwf	btemp,w
+  1424  002794                     u245:
+  1425  002794  B0D8               	btfsc	status,0,c
+  1426  002796  D058               	goto	l76
+  1427  002798  0100               	movlb	(_Adv+2) shr (0+8)
+  1428  00279A  514C               	movf	(_Adv+2)& (0+255),w,b
+  1429  00279C  114D               	iorwf	(_Adv+3)& (0+255),w,b
+  1430  00279E  B4D8               	btfsc	status,2,c
+  1431  0027A0  D053               	goto	l76
+  1432                           ;strategies.c: 561: {
+  1433  0027A2  0100               	movlb	__Lparam shr (0+8)
+  1434  0027A4  50F7               	movf	tblptrh,w,c
+  1435  0027A6  0A80               	xorlw	128
+  1436  0027A8  6E00               	movwf	btemp
+  1437  0027AA  5186               	movf	(?a_PositionAdv+3)^(__Lparam& (0+65280)),w
+  1438  0027AC  0A80               	xorlw	128
+  1439  0027AE  5C00               	subwf	btemp,w
+  1440  0027B0  E102               	bnz	u285
+  1441  0027B2  5185               	movf	(?a_PositionAdv+2)^(__Lparam& (0+65280)),w
+  1442  0027B4  5CF6               	subwf	tblptrl,w,c
+  1443  0027B6                     u285:
+  1444  0027B6  B0D8               	btfsc	status,0,c
+  1445  0027B8  D014               	goto	u300
+  1446  0027BA  C085  F000         	movff	?a_PositionAdv+2,btemp
+  1447  0027BE  C086  F001         	movff	?a_PositionAdv+3,btemp+1
+  1448  0027C2  1E00               	comf	btemp,f
+  1449  0027C4  1E01               	comf	btemp+1,f
+  1450  0027C6  2A00               	incf	btemp,f
+  1451  0027C8  B4D8               	btfsc	status,2,c
+  1452  0027CA  2A01               	incf	btemp+1,f
+  1453  0027CC  5001               	movf	btemp+1,w
+  1454  0027CE  0A80               	xorlw	128
+  1455  0027D0  6E02               	movwf	btemp+2
+  1456  0027D2  50F7               	movf	tblptrh,w,c
+  1457  0027D4  0A80               	xorlw	128
+  1458  0027D6  5C02               	subwf	btemp+2,w
+  1459  0027D8  E102               	bnz	u295
+  1460  0027DA  50F6               	movf	tblptrl,w,c
+  1461  0027DC  5C00               	subwf	btemp,w
+  1462  0027DE                     u295:
+  1463  0027DE  A0D8               	btfss	status,0,c
+  1464  0027E0  D030               	goto	l78
+  1465  0027E2                     u300:
+  1466  0027E2  0100               	movlb	__Lparam shr (0+8)
+  1467  0027E4  5197               	movf	(?_PositionAdv+20)^(__Lparam& (0+65280)),w
+  1468  0027E6  0A02               	xorlw	2
+  1469  0027E8  1198               	iorwf	(?_PositionAdv+21)^(__Lparam& (0+65280)),
+      +                          w
+  1470  0027EA  A4D8               	btfss	status,2,c
+  1471  0027EC  D02A               	goto	l78
+  1472                           ;strategies.c: 564: {
+  1473  0027EE  0E01               	movlw	1
+  1474  0027F0  0100               	movlb	__Lparam shr (0+8)
+  1475  0027F2  6F83               	movwf	?a_PositionAdv^(__Lparam& (0+65280))
+  1476  0027F4  6B84               	clrf	(?a_PositionAdv+1)^(__Lparam& (0+65280))
+  1477                           ;strategies.c: 568: if (compteur >= compteur_max
+      +                          )
+  1478  0027F6  50F7               	movf	tblptrh,w,c
+  1479  0027F8  0A80               	xorlw	128
+  1480  0027FA  6E00               	movwf	btemp
+  1481  0027FC  5186               	movf	(?a_PositionAdv+3)^(__Lparam& (0+65280)),w
+  1482  0027FE  0A80               	xorlw	128
+  1483  002800  5C00               	subwf	btemp,w
+  1484  002802  E102               	bnz	u335
+  1485  002804  5185               	movf	(?a_PositionAdv+2)^(__Lparam& (0+65280)),w
+  1486  002806  5CF6               	subwf	tblptrl,w,c
+  1487  002808                     u335:
+  1488  002808  A0D8               	btfss	status,0,c
+  1489  00280A  D004               	goto	l79
+  1490                           ;strategies.c: 569: return 1;
+  1491  00280C  0E01               	movlw	1
+  1492  00280E  6E00               	movwf	btemp
+  1493  002810  6A01               	clrf	btemp+1
+  1494  002812  0012               	return	
+  1495  002814                     l79:
+  1496                           ;strategies.c: 571: if (compteur <= -compteur_ma
+      +                          x)
+  1497  002814  C085  F000         	movff	?a_PositionAdv+2,btemp
+  1498  002818  C086  F001         	movff	?a_PositionAdv+3,btemp+1
+  1499  00281C  1E00               	comf	btemp,f
+  1500  00281E  1E01               	comf	btemp+1,f
+  1501  002820  2A00               	incf	btemp,f
+  1502  002822  B4D8               	btfsc	status,2,c
+  1503  002824  2A01               	incf	btemp+1,f
+  1504  002826  5001               	movf	btemp+1,w
+  1505  002828  0A80               	xorlw	128
+  1506  00282A  6E02               	movwf	btemp+2
+  1507  00282C  50F7               	movf	tblptrh,w,c
+  1508  00282E  0A80               	xorlw	128
+  1509  002830  5C02               	subwf	btemp+2,w
+  1510  002832  E102               	bnz	u345
+  1511  002834  50F6               	movf	tblptrl,w,c
+  1512  002836  5C00               	subwf	btemp,w
+  1513  002838                     u345:
+  1514  002838  A0D8               	btfss	status,0,c
+  1515  00283A  D009               	goto	l73
+  1516                           ;strategies.c: 572: return 0;
+  1517  00283C  6A00               	clrf	btemp
+  1518  00283E  6A01               	clrf	btemp+1
+  1519  002840  0012               	return	
+  1520                           ;strategies.c: 573: }
+  1521                           ;strategies.c: 574: else
+  1522  002842                     l78:
+  1523                           ;strategies.c: 575: {
+  1524  002842  4AF6               	infsnz	tblptrl,f,c
+  1525  002844  2AF7               	incf	tblptrh,f,c
+  1526                           ;strategies.c: 577: }
+  1527                           ;strategies.c: 578: }
+  1528  002846  D003               	goto	l73
+  1529                           ;strategies.c: 580: {
+  1530                           ;strategies.c: 582: }
+  1531                           ;strategies.c: 583: }
+  1532  002848                     l76:
+  1533                           ;strategies.c: 585: {
+  1534  002848  06F6               	decf	tblptrl,f,c
+  1535  00284A  A0D8               	btfss	status,0,c
+  1536  00284C  06F7               	decf	tblptrh,f,c
+  1537                           ;strategies.c: 587: }
+  1538  00284E                     l73:
+  1539                           ;strategies.c: 588: }
+  1540  00284E  EE00  F076         	lfsr	0,_timeout+23
+  1541  002852  0100               	movlb	__Lparam shr (0+8)
+  1542  002854  50ED               	movf	postdec0,w,c
+  1543  002856  5D96               	subwf	(?_PositionAdv+19)^(__Lparam& (0+65280)),
+      +                          w
+  1544  002858  E108               	bnz	u355
+  1545  00285A  50ED               	movf	postdec0,w,c
+  1546  00285C  5D95               	subwf	(?_PositionAdv+18)^(__Lparam& (0+65280)),
+      +                          w
+  1547  00285E  E105               	bnz	u355
+  1548  002860  50ED               	movf	postdec0,w,c
+  1549  002862  5D94               	subwf	(?_PositionAdv+17)^(__Lparam& (0+65280)),
+      +                          w
+  1550  002864  E102               	bnz	u355
+  1551  002866  50EF               	movf	indf0,w,c
+  1552  002868  5D93               	subwf	(?_PositionAdv+16)^(__Lparam& (0+65280)),
+      +                          w
+  1553  00286A                     u355:
+  1554  00286A  A0D8               	btfss	status,0,c
+  1555  00286C  D004               	goto	u370
+  1556  00286E  5184               	movf	(?a_PositionAdv+1)^(__Lparam& (0+65280)),w
+  1557  002870  1183               	iorwf	?a_PositionAdv^(__Lparam& (0+65280)),w
+  1558  002872  B4D8               	btfsc	status,2,c
+  1559  002874  D6F2               	goto	l74
+  1560  002876                     u370:
+  1561                           ;strategies.c: 591: if (compteur >= compteur_max
+      +                          /2)
+  1562  002876  0E02               	movlw	2
+  1563  002878  6E02               	movwf	btemp+2
+  1564  00287A  6A03               	clrf	btemp+3
+  1565  00287C  C085  F000         	movff	?a_PositionAdv+2,btemp
+  1566  002880  C086  F001         	movff	?a_PositionAdv+3,btemp+1
+  1567  002884  ECE9  F01E         	call	awdiv
+  1568  002888  50F7               	movf	tblptrh,w,c
+  1569  00288A  0A80               	xorlw	128
+  1570  00288C  6E00               	movwf	btemp
+  1571  00288E  5005               	movf	btemp+5,w
+  1572  002890  0A80               	xorlw	128
+  1573  002892  5C00               	subwf	btemp,w
+  1574  002894  E102               	bnz	u385
+  1575  002896  5004               	movf	btemp+4,w
+  1576  002898  5CF6               	subwf	tblptrl,w,c
+  1577  00289A                     u385:
+  1578  00289A  A0D8               	btfss	status,0,c
+  1579  00289C  D003               	goto	l84
+  1580                           ;strategies.c: 592: {
+  1581  00289E  0E01               	movlw	1
+  1582  0028A0  6EF3               	movwf	prodl,c
+  1583  0028A2  D001               	goto	L1
+  1584                           ;strategies.c: 594: }
+  1585  0028A4                     l84:
+  1586                           ;strategies.c: 596: {
+  1587  0028A4  6AF3               	clrf	prodl,c
+  1588  0028A6                     L1:
+  1589  0028A6  6AF4               	clrf	prodh,c
+  1590                           ;strategies.c: 598: }
+  1591                           ;strategies.c: 601: timeout.blocage_timeout_bali
+      +                          se = 1;
+  1592  0028A8  0100               	movlb	(_timeout+34) shr (0+8)
+  1593  0028AA  0E01               	movlw	1
+  1594  0028AC  6F81               	movwf	(_timeout+34)& (0+255),b
+  1595  0028AE  0E00               	movlw	0
+  1596  0028B0  6B82               	clrf	(_timeout+35)& (0+255),b
+  1597                           ;strategies.c: 602: timeout.balise = 0;
+  1598  0028B2  6B73               	clrf	(_timeout+20)& (0+255),b
+  1599  0028B4  6B74               	clrf	(_timeout+21)& (0+255),b
+  1600  0028B6  6B75               	clrf	(_timeout+22)& (0+255),b
+  1601  0028B8  6B76               	clrf	(_timeout+23)& (0+255),b
+  1602                           ;strategies.c: 604: return ret;
+  1603  0028BA  CFF3 F000          	movff	prodl,btemp
+  1604  0028BE  CFF4 F001          	movff	prodh,btemp+1
+  1605  0028C2  0012               	return	
+  1606                           
+  1607                           	psect	bss
+  1608  000048                     _Strat:
+  1609  000048                     	ds	2
+  1610  000000                     
+  1611  000000                     
+  1612  000000                     
+  1613  000048                     _Adv:
+  1614  000048                     	ds	6
+  1615  000048                     _Strategie:
+  1616  000048                     	ds	15
+  1617  000048                     _timeout:
+  1618  000048                     	ds	36
+  1619                           
+  1620                           	psect	temp
+  1621  000000                     btemp:
+  1622  000000                     	ds	9
+  1623                           tblptrh	equ	0xFF7
+  1624                           tblptrl	equ	0xFF6
+  1625                           prodh	equ	0xFF4
+  1626                           prodl	equ	0xFF3
+  1627                           indf0	equ	0xFEF
+  1628                           postdec0	equ	0xFED
+  1629                           fsr0h	equ	0xFEA
+  1630                           fsr0l	equ	0xFE9
+  1631                           wreg	equ	0xFE8
+  1632                           status	equ	0xFD8
+
+
+HI-TECH Software PICC-18 Macro Assembler V8.35PL3
+Symbol Table                                           Fri May 14 13:00:44 2010
+
+                              l20 1EBC  
+                              l40 1F64  
+                              l33 1F3C  
+                              l25 1ECE  
+                              l42 1FFC  
+                              l26 1EE2  
+                              l43 200C  
+                              l44 20F4  
+                              l36 1F48  
+                              l61 2556  
+                              l53 251E  
+                              l45 2124  
+                              l29 1EFA  
+                              l70 2630  
+                              l39 1F50  
+                              l73 284E  
+                              l65 2566  
+                              l57 253E  
+                              l74 265A  
+                              l67 257E  
+                              l84 28A4  
+                              l76 2848  
+                              l69 25AC  
+                              l78 2842  
+                              l79 2814  
+                              u10 1EC6  
+                              u60 1F1E  
+                              u65 1F14  
+                  _EjectionBalles 23F2  
+               _StratHomologation 2430  
+        _ActionAutomatismeBalise2 1F2E  
+                             u130 252E  
+                             u300 27E2  
+                             u235 2748  
+                             u245 2794  
+                             u335 2808  
+                             u175 264A  
+                             u345 2838  
+                             u185 26A4  
+                             u370 2876  
+                             u355 286A  
+                             u195 26F0  
+                             u285 27B6  
+                             u295 27DE  
+                             u385 289A  
+                   _tourner_cible 11D2  
+                             _Adv 004A  
+                   _tourner_angle 0F42  
+                             wreg 000FE8  
+                       _Strategie 0050  
+             _TraitementPrincipal 1EBA  
+                            _Test 1F94  
+                            _Stop 1CE4  
+                            aldiv 3CFE  
+                            fsr0h 000FEA  
+                            indf0 000FEF  
+                            fsr0l 000FE9  
+                            btemp 0000  
+                            awdiv 3DD2  
+                            prodl 000FF3  
+                        clear_bss 0038  
+                  _recule_callage 19A8  
+                        _vas_vers 1506  
+                 ?_recule_callage 0083  
+               _InitPositionRobot 2BBE  
+                       ?_vas_vers 0083  
+                           ?_Stop 0083  
+                      used_btemp0 0001  
+                      used_btemp1 0001  
+                      used_btemp2 0001  
+                      used_btemp3 0001  
+                      used_btemp4 0001  
+                      used_btemp5 0001  
+                      used_btemp6 0001  
+                      used_btemp7 0001  
+                      used_btemp8 0001  
+                           _Strat 0048  
+      ?a_ActionAutomatismeBalise2 0083  
+                     _PositionAdv 2586  
+                           _putch 37DC  
+              ?_InitPositionRobot 0083  
+                           status 000FD8  
+                         _Attente 1E2C  
+                   ?a_PositionAdv 0083  
+                        ?_Attente 0083  
+                         __Lparam 0083  
+                    ?_PositionAdv 0083  
+                      _Diagonal_1 23EE  
+                      _Diagonal_2 23F0  
+                         __ramtop 0300  
+                  ?_tourner_cible 0083  
+                  ?_tourner_angle 00B0  
+                         _timeout 005F  
+               _ActionAutomatisme 1ECE  
+                   _CallageDepart 2432  
+                          _Asserv 0100  
+                   _buffer_i2c_tx 02C4  
+                         postdec0 000FED  
+                          __putch 383E  
+              ?_ActionAutomatisme 0083  
+                          aldiv_f 3E8A  
+                          almul_f 3E76  
+                          tblptrl 000FF6  
+                        _FinMatch 253E  
+                   __CoupureAutom 2566  
+                   _ass_envoi_pwm 0E62  
+                _LedCouleurDepart 2540  

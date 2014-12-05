@@ -1,0 +1,253 @@
+
+
+HI-TECH Software PICC-18 Macro Assembler V8.35PL3
+Serial number: HCPIC18-33902                           Fri May 14 07:16:18 2010
+
+Licensed to: HOME VER
+     1                           	processor	18F2431
+     2                           	opt	pw 80
+     3                           	psect	__Z33902RS_,global,delta=1
+     4                           	psect	text,global,reloc=2,class=CODE,delta=1
+     5                           	psect	intsave_regs,global,class=BIGRAM,space=1,
+      +                          delta=1
+     6  000000                     
+     7  000000                     
+     8  000000                     
+     9  000000                     
+    10  000000                     
+    11  000000                     
+    12  000000                     
+    13  000000                     
+    14  000000                     
+    15  000000                     
+    16  000000                     
+    17  000000                     
+    18  000000                     
+    19  000000                     
+    20  000000                     
+    21  000000                     
+    22  000000                     
+    23  000000                     
+    24  000000                     
+    25  000000                     
+    26  000000                     
+    27  000000                     
+    28  000000                     
+    29  000000                     
+    30  000000                     
+    31  000000                     
+    32  000000                     
+    33  000000                     
+    34  000000                     
+    35  000000                     
+    36  000000                     
+    37  000000                     
+    38  000000                     
+    39  000000                     
+    40  000000                     
+    41  000000                     
+    42  000000                     
+    43  000000                     
+    44  000000                     
+    45  000000                     
+    46  000000                     
+    47  000000                     
+    48  000000                     
+    49  000000                     
+    50  000000                     
+    51  000000                     
+    52  000000                     
+    53  000000                     
+    54  000000                     
+    55  000000                     
+    56  000000                     
+    57  000000                     
+    58  000000                     
+    59  000000                     
+    60  000000                     
+    61  000000                     
+    62  000000                     
+    63  000000                     
+    64  000000                     
+    65  000000                     
+    66  000000                     
+    67  000000                     
+    68  000000                     
+    69  000000                     
+    70  000000                     
+    71  000000                     
+    72  000000                     
+    73  000000                     
+    74  000000                     
+    75  000000                     
+    76  000000                     
+    77  000000                     
+    78  000000                     
+    79  000000                     
+    80  000000                     
+    81  000000                     
+    82  000000                     
+    83  000000                     
+    84  000000                     
+    85  000000                     
+    86  000000                     
+    87  000000                     
+    88  000000                     
+    89  000000                     
+    90  000000                     
+    91  000000                     
+    92  000000                     
+    93  000000                     
+    94  000000                     
+    95                           
+    96                           	psect	__Z33902RS_
+    97  000004                     
+    98  000004                     
+    99                           
+   100                           	psect	text
+   101  0037DC                     _putch:
+   102                           ;a_affich.c: 232: void _puts(const char *s)
+   103                           ;a_affich.c: 233: {
+   104                           ;       param _s assigned to ?__puts+0
+   105  000000                     __puts$s	set	?__puts
+   106                           ;a_affich.c: 37: void puts(const char *s)
+   107                           ;a_affich.c: 38: {
+   108                           ;       param _s assigned to ?_puts+0
+   109  000000                     _puts$s	set	?_puts
+   110  000000                     
+   111                           ;a_affich.c: 33: while(!TRMT);
+   112  0037DC                     l2:
+   113  0037DC  A2AC               	btfss	4012,1,c	;volatile
+   114  0037DE  D7FE               	goto	l2
+   115                           ;a_affich.c: 34: TXREG = byte;
+   116  0037E0  6EAD               	movwf	4013,c	;volatile
+   117                           ;a_affich.c: 35: }
+   118  0037E2  0012               	return	
+   119  0037E4  00C5               	dw	?_puts
+   120  0037E6                     _puts:
+   121  000000                     
+   122                           ;a_affich.c: 39: while(s && *s)
+   123  0037E6                     l6:
+   124  0037E6  0100               	movlb	__Lparam shr (0+8)
+   125  0037E8  51C6               	movf	(?_puts+1)^(__Lparam& (0+65280)),w
+   126  0037EA  11C5               	iorwf	?_puts^(__Lparam& (0+65280)),w
+   127  0037EC  B4D8               	btfsc	status,2,c
+   128  0037EE  0012               	return	
+   129  0037F0  C0C5  FFF6         	movff	?_puts,tblptrl
+   130  0037F4  C0C6  FFF7         	movff	?_puts+1,tblptrh
+   131  0037F8  0E02               	movlw	(high __ramtop+-1)
+   132  0037FA  64F7               	cpfsgt	tblptrh,c
+   133  0037FC  D003               	bra	u47
+   134  0037FE  0008               	tblrd		*
+   135  003800  50F5               	movf	tablat,w,c
+   136  003802  D005               	bra	u40
+   137  003804                     u47:
+   138  003804  CFF6 FFE9          	movff	tblptrl,fsr0l
+   139  003808  CFF7 FFEA          	movff	tblptrh,fsr0h
+   140  00380C  50EF               	movf	indf0,w,c
+   141  00380E                     u40:
+   142  00380E  0900               	iorlw	0
+   143  003810  B4D8               	btfsc	status,2,c
+   144                           ;a_affich.c: 41: }
+   145  003812  0012               	return	
+   146                           ;a_affich.c: 40: putch(*s++);
+   147  003814  0100               	movlb	__Lparam shr (0+8)
+   148  003816  C0C5  FFF6         	movff	?_puts,tblptrl
+   149  00381A  C0C6  FFF7         	movff	?_puts+1,tblptrh
+   150  00381E  2BC5               	incf	?_puts^(__Lparam& (0+65280)),f
+   151  003820  0E00               	movlw	0
+   152  003822  23C6               	addwfc	(?_puts+1)^(__Lparam& (0+65280)),f
+   153  003824  0E02               	movlw	(high __ramtop+-1)
+   154  003826  64F7               	cpfsgt	tblptrh,c
+   155  003828  D003               	bra	u27
+   156  00382A  0008               	tblrd		*
+   157  00382C  50F5               	movf	tablat,w,c
+   158  00382E  D005               	bra	u20
+   159  003830                     u27:
+   160  003830  CFF6 FFE9          	movff	tblptrl,fsr0l
+   161  003834  CFF7 FFEA          	movff	tblptrh,fsr0h
+   162  003838  50EF               	movf	indf0,w,c
+   163  00383A                     u20:
+   164  00383A  DFD0               	call	_putch
+   165  00383C  D7D4               	goto	l6
+   166                           ;a_affich.c: 226: void _putch(unsigned char byte
+      +                          )
+   167                           ;a_affich.c: 227: {
+   168  00383E                     __putch:
+   169  000000                     
+   170                           ;a_affich.c: 228: while(!TRMT);
+   171  00383E                     l10:
+   172  00383E  A2AC               	btfss	4012,1,c	;volatile
+   173  003840  D7FE               	goto	l10
+   174                           ;a_affich.c: 229: TXREG = byte;
+   175  003842  6EAD               	movwf	4013,c	;volatile
+   176                           ;a_affich.c: 230: }
+   177  003844  0012               	return	
+   178  003846  00C7               	dw	?__puts
+   179  003848                     __puts:
+   180  000000                     
+   181                           ;a_affich.c: 234: while(s && *s)
+   182  003848                     l14:
+   183  003848  0100               	movlb	__Lparam shr (0+8)
+   184  00384A  51C8               	movf	(?__puts+1)^(__Lparam& (0+65280)),w
+   185  00384C  11C7               	iorwf	?__puts^(__Lparam& (0+65280)),w
+   186  00384E  B4D8               	btfsc	status,2,c
+   187  003850  0012               	return	
+   188  003852  C0C7  FFF6         	movff	?__puts,tblptrl
+   189  003856  C0C8  FFF7         	movff	?__puts+1,tblptrh
+   190  00385A  0E02               	movlw	(high __ramtop+-1)
+   191  00385C  64F7               	cpfsgt	tblptrh,c
+   192  00385E  D003               	bra	u107
+   193  003860  0008               	tblrd		*
+   194  003862  50F5               	movf	tablat,w,c
+   195  003864  D005               	bra	u100
+   196  003866                     u107:
+   197  003866  CFF6 FFE9          	movff	tblptrl,fsr0l
+   198  00386A  CFF7 FFEA          	movff	tblptrh,fsr0h
+   199  00386E  50EF               	movf	indf0,w,c
+   200  003870                     u100:
+   201  003870  0900               	iorlw	0
+   202  003872  B4D8               	btfsc	status,2,c
+   203                           ;a_affich.c: 236: }
+   204  003874  0012               	return	
+   205                           ;a_affich.c: 235: _putch(*s++);
+   206  003876  0100               	movlb	__Lparam shr (0+8)
+   207  003878  C0C7  FFF6         	movff	?__puts,tblptrl
+   208  00387C  C0C8  FFF7         	movff	?__puts+1,tblptrh
+   209  003880  2BC7               	incf	?__puts^(__Lparam& (0+65280)),f
+   210  003882  0E00               	movlw	0
+   211  003884  23C8               	addwfc	(?__puts+1)^(__Lparam& (0+65280)),f
+   212  003886  0E02               	movlw	(high __ramtop+-1)
+   213  003888  64F7               	cpfsgt	tblptrh,c
+   214  00388A  D003               	bra	u87
+   215  00388C  0008               	tblrd		*
+   216  00388E  50F5               	movf	tablat,w,c
+   217  003890  D005               	bra	u80
+   218  003892                     u87:
+   219  003892  CFF6 FFE9          	movff	tblptrl,fsr0l
+   220  003896  CFF7 FFEA          	movff	tblptrh,fsr0h
+   221  00389A  50EF               	movf	indf0,w,c
+   222  00389C                     u80:
+   223  00389C  DFD0               	call	__putch
+   224  00389E  D7D4               	goto	l14
+   225                           tblptrh	equ	0xFF7
+   226                           tblptrl	equ	0xFF6
+   227                           tablat	equ	0xFF5
+   228                           indf0	equ	0xFEF
+   229                           fsr0h	equ	0xFEA
+   230                           fsr0l	equ	0xFE9
+   231                           status	equ	0xFD8
+
+
+HI-TECH Software PICC-18 Macro Assembler V8.35PL3
+Symbol Table                                           Fri May 14 07:16:18 2010
+
+          l2 37DC            l6 37E6           l10 383E  
+         l14 3848           u20 383A           u40 380E  
+         u27 3830           u47 3804           u80 389C  
+         u87 3892          u100 3870          u107 3866  
+       fsr0h 000FEA         indf0 000FEF         fsr0l 000FE9  
+       _puts 37E6        ?_puts 00C5        __puts 3848  
+      _putch 37DC        tablat 000FF5        status 000FD8  
+    __Lparam 0083      __ramtop 0300       ?__puts 00C7  
+     __putch 383E       tblptrh 000FF7       tblptrl 000FF6  

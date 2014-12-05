@@ -1,0 +1,906 @@
+HI-TECH Software PICC18 Compiler V8.35PL3
+
+Linker command line:
+
+-z -MPic2431_COD.map -ol.obj \
+  -ppowerup=00h,intcode=08h,intcodelo=018h,init,end_init -ACOMRAM=00h-05Fh \
+  -ptemp=COMRAM -ARAM=0-0FFhx3 -ABIGRAM=0-02FFh -ANVRAM=0200h-02FFh \
+  -pramtop=0300h -ACODE=00h-03FFFh -AFARRAM=00h-00h \
+  -pconfig=0300000h,idloc=0200000h,eeprom_data=0f00000h \
+  -pconst=end_init+0300h \
+  -prbss=COMRAM,rbit=COMRAM,rdata=COMRAM,nvrram=COMRAM,nvbit=COMRAM \
+  -pstruct=COMRAM -pnvram=NVRAM -pfarbss=FARRAM,fardata=FARRAM \
+  -pintsave_regs=BIGRAM,bigbss=BIGRAM,bigdata=BIGRAM -pdata=RAM,param \
+  -pidata=CODE,irdata=CODE,ibigdata=CODE,ifardata=CODE -Q18F2431 \
+  -h+Pic2431_COD.sym -E -EE:\DOCUME~1\PEB\LOCALS~1\Temp\_E0.AAA \
+  -ver=PICC18#V8.35PL3 C:\HT-PIC18\LIB\picrt82l.obj \
+  D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_affich.obj \
+  D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.obj \
+  D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\delay.obj \
+  D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.obj \
+  D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.obj \
+  D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.obj \
+  D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\main_cod.obj \
+  D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\reglages_carte.obj \
+  D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.obj \
+  D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.obj \
+  C:\HT-PIC18\LIB\pic80--p.lib C:\HT-PIC18\LIB\pic82l-c.lib 
+
+Object code version is 3.7
+
+Machine type is 18F2431
+
+Call graph:
+
+*_main size 0,0 offset 0
+     _g_config_mat size 0,0 offset 0
+         _g_config_port
+         _g_config_interrupt_slave
+         _g_config_timer0
+         _g_config_timer2
+         _g_config_timer5
+         _g_config_power_pwm
+         _g_config_rs232
+         _g_config_i2c_slave
+     _a_init_log->_ActionAutomatismeBalise2 size 0,3 offset 0
+         _putch
+*    _TraitementPrincipal size 0,0 offset 0
+         _LedCouleurDepart
+*        _CallageDepart size 0,0 offset 0
+             _recule_callage size 18,0 offset 0
+                 almul
+                 altoft->l0neg
+                 awtoft
+                 ftmul_f size 0,0 offset 101
+                     ftunpack1
+                     ftunpack2
+                 almul_f
+             _InitPositionRobot size 8,0 offset 0
+                 awmul
+*            _vas_vers size 16,29 offset 0
+*                _puts size 2,0 offset 66
+*                    _putch
+*                _tourner_angle size 8,13 offset 45
+*                    _inversion_repaire size 2,0 offset 66
+*                    _puts size 2,0 offset 66
+*                        _putch
+                     almul_f
+*                    altoft->altoft size 0,0 offset 101
+*                        l0neg
+*                    ftsub size 0,0 offset 101
+*                        ftunpack1
+*                        ftunpack2
+*                        ftdenorm
+*                        t0neg
+*                    ftadd size 0,0 offset 115
+*                        ftunpack1
+*                        ftunpack2
+*                        ftdenorm
+*                        t0neg
+*                    ftcmp
+                 almul_f
+*                ftsub size 0,0 offset 101
+*                    ftunpack1
+*                    ftunpack2
+*                    ftdenorm
+*                    t0neg
+*                ftadd size 0,0 offset 115
+*                    ftunpack1
+*                    ftunpack2
+*                    ftdenorm
+*                    t0neg
+*                ftcmp
+                 awtoft
+*                ftmul_f size 0,0 offset 101
+*                    ftunpack1
+*                    ftunpack2
+*                ftdiv->ftunpack1
+*                fttol size 0,0 offset 101
+*                    ftunpack1
+*                    l0neg
+*            _tourner_angle size 8,13 offset 45
+*                _inversion_repaire size 2,0 offset 66
+*                _puts size 2,0 offset 66
+*                    _putch
+                 almul_f
+*                altoft->altoft size 0,0 offset 101
+*                    l0neg
+*                ftsub size 0,0 offset 101
+*                    ftunpack1
+*                    ftunpack2
+*                    ftdenorm
+*                    t0neg
+*                ftadd size 0,0 offset 115
+*                    ftunpack1
+*                    ftunpack2
+*                    ftdenorm
+*                    t0neg
+*                ftcmp
+             _ActionAutomatisme size 4,0 offset 0
+             _LedCouleurDepart
+*            aldiv->l0neg
+*        _Test size 0,0 offset 0
+*            _ActionAutomatismeBalise2 size 0,3 offset 0
+*                _putch
+             _ActionAutomatisme size 4,0 offset 0
+*            _vas_vers size 16,29 offset 0
+*                _puts size 2,0 offset 66
+*                    _putch
+*                _tourner_angle size 8,13 offset 45
+*                    _inversion_repaire size 2,0 offset 66
+*                    _puts size 2,0 offset 66
+*                        _putch
+                     almul_f
+*                    altoft->altoft size 0,0 offset 101
+*                        l0neg
+*                    ftsub size 0,0 offset 101
+*                        ftunpack1
+*                        ftunpack2
+*                        ftdenorm
+*                        t0neg
+*                    ftadd size 0,0 offset 115
+*                        ftunpack1
+*                        ftunpack2
+*                        ftdenorm
+*                        t0neg
+*                    ftcmp
+                 almul_f
+*                ftsub size 0,0 offset 101
+*                    ftunpack1
+*                    ftunpack2
+*                    ftdenorm
+*                    t0neg
+*                ftadd size 0,0 offset 115
+*                    ftunpack1
+*                    ftunpack2
+*                    ftdenorm
+*                    t0neg
+*                ftcmp
+                 awtoft
+*                ftmul_f size 0,0 offset 101
+*                    ftunpack1
+*                    ftunpack2
+*                ftdiv->ftdiv size 0,0 offset 115
+*                    ftunpack1
+*                fttol size 0,0 offset 101
+*                    ftunpack1
+*                    l0neg
+             _Attente size 4,4 offset 0
+             _recule_callage size 18,0 offset 0
+                 almul
+                 altoft->altoft size 0,0 offset 101
+                     l0neg
+                 awtoft
+                 ftmul_f size 0,0 offset 101
+                     ftunpack1
+                     ftunpack2
+                 almul_f
+*            _tourner_angle size 8,13 offset 45
+*                _inversion_repaire size 2,0 offset 66
+*                _puts size 2,0 offset 66
+*                    _putch
+                 almul_f
+*                altoft->altoft size 0,0 offset 101
+*                    l0neg
+*                ftsub size 0,0 offset 101
+*                    ftunpack1
+*                    ftunpack2
+*                    ftdenorm
+*                    t0neg
+*                ftadd size 0,0 offset 115
+*                    ftunpack1
+*                    ftunpack2
+*                    ftdenorm
+*                    t0neg
+*                ftcmp
+             _Stop size 2,0 offset 0
+                 awmul
+                 awdiv
+             _InitPositionRobot size 8,0 offset 0
+                 awmul
+             _tourner_cible size 12,17 offset 0
+                 _inversion_repaire size 2,0 offset 66
+                 _puts size 2,0 offset 66
+                     _putch
+                 almul_f
+                 fttol size 0,0 offset 101
+                     ftunpack1
+                     l0neg
+                 altoft->altoft size 0,0 offset 101
+                     l0neg
+                 ftsub size 0,0 offset 101
+                     ftunpack1
+                     ftunpack2
+                     ftdenorm
+                     t0neg
+                 ftadd size 0,0 offset 115
+                     ftunpack1
+                     ftunpack2
+                     ftdenorm
+                     t0neg
+                 ftcmp
+*            _EjectionBalles size 0,0 offset 0
+*                _ActionAutomatismeBalise2 size 0,3 offset 0
+*                    _putch
+                 _ActionAutomatisme size 4,0 offset 0
+         _FinMatch
+*_LOW_ISR
+*_HI_ISR size 0,0 offset 68
+     _INT0_Handler
+     _SSP_Handler
+     _RX_232_Handler
+*    _TIMER0_Handler size 0,0 offset 68
+         _TraitementI2C
+*        _Asservissement size 0,6 offset 68
+             _atan2 size 6,6 offset 74
+                 _fabs size 3,0 offset 101
+                 _atan size 3,10 offset 86
+                     _fabs size 3,0 offset 101
+                     _eval_poly size 7,6 offset 99
+                         awmul
+                         ftmul size 0,0 offset 112
+                             ftunpack1
+                             ftunpack2
+                         ftadd size 0,0 offset 115
+                             ftunpack1
+                             ftunpack2
+                             ftdenorm
+                             t0neg
+                     ftcmp
+                     ftdiv->ftdiv size 0,0 offset 115
+                         ftunpack1
+                     ftmul size 0,0 offset 112
+                         ftunpack1
+                         ftunpack2
+                     ftmul_f size 0,0 offset 101
+                         ftunpack1
+                         ftunpack2
+                     ftsub size 0,0 offset 101
+                         ftunpack1
+                         ftunpack2
+                         ftdenorm
+                         t0neg
+                     ftneg
+                 ftcmp
+                 ftdiv->ftdiv size 0,0 offset 115
+                     ftunpack1
+                 ftadd_f size 0,0 offset 86
+                     ftunpack1
+                     ftunpack2
+                     ftdenorm
+                 ftsub_f size 0,0 offset 101
+                     ftunpack1
+                     ftunpack2
+                     ftdenorm
+                 ftneg
+*            _ass_distance size 0,27 offset 74
+*                _sqrt size 3,11 offset 101
+                     _frexp size 5,1 offset 115
+*                    _ldexp size 6,4 offset 115
+                     ftcmp
+                     ftdiv->ftdiv size 0,0 offset 115
+                         ftunpack1
+                     awdiv
+                     ftadd size 0,0 offset 115
+                         ftunpack1
+                         ftunpack2
+                         ftdenorm
+                         t0neg
+                 _fabs size 3,0 offset 101
+                 altoft->altoft size 0,0 offset 101
+                     l0neg
+                 aldiv->aldiv size 0,0 offset 101
+                     l0neg
+                 ftmul size 0,0 offset 112
+                     ftunpack1
+                     ftunpack2
+                 ftadd size 0,0 offset 115
+                     ftunpack1
+                     ftunpack2
+                     ftdenorm
+                     t0neg
+                 ftsub size 0,0 offset 101
+                     ftunpack1
+                     ftunpack2
+                     ftdenorm
+                     t0neg
+                 ftdiv->ftdiv size 0,0 offset 115
+                     ftunpack1
+                 lwmul
+                 ftsub_f size 0,0 offset 101
+                     ftunpack1
+                     ftunpack2
+                     ftdenorm
+                 ftmul_f size 0,0 offset 101
+                     ftunpack1
+                     ftunpack2
+                 fttol size 0,0 offset 101
+                     ftunpack1
+                     l0neg
+             _ass_angle size 0,21 offset 74
+                 altoft->altoft size 0,0 offset 101
+                     l0neg
+                 ftsub size 0,0 offset 101
+                     ftunpack1
+                     ftunpack2
+                     ftdenorm
+                     t0neg
+                 lwmul
+                 ftdiv->ftdiv size 0,0 offset 115
+                     ftunpack1
+                 ftcmp
+                 ftmul size 0,0 offset 112
+                     ftunpack1
+                     ftunpack2
+                 fttol size 0,0 offset 101
+                     ftunpack1
+                     l0neg
+             _ass_vitesse size 0,4 offset 74
+             _ass_saturation_vitesse size 0,7 offset 74
+                 _fabs size 3,0 offset 101
+                 lwmul
+                 altoft->altoft size 0,0 offset 101
+                     l0neg
+                 ftmul size 0,0 offset 112
+                     ftunpack1
+                     ftunpack2
+                 fttol size 0,0 offset 101
+                     ftunpack1
+                     l0neg
+                 ftcmp
+             _ass_saturation_acceleration size 0,3 offset 74
+                 _fabs size 3,0 offset 101
+                 altoft->altoft size 0,0 offset 101
+                     l0neg
+                 ftcmp
+             _ass_commande_moteur_polaire
+             _StopAdv
+             _ass_envoi_pwm size 0,4 offset 74
+             altoft->altoft size 0,0 offset 101
+                 l0neg
+             ftmul_f size 0,0 offset 101
+                 ftunpack1
+                 ftunpack2
+         __puts size 2,0 offset 68
+             __putch
+         __CoupureAutom size 0,0 offset 68
+             __putch
+             _ass_envoi_pwm size 0,4 offset 74
+
+		Name          Link     Load   Length Selector Space Scale
+C:\HT-PIC18\LIB\picrt82l.obj
+		end_init        44       44        4       C     0
+D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_affich.obj
+		text          37DC     37DC       C4     300     0
+D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\a_fonctions.obj
+		temp             0        0        6       0     1
+		bss             30       30        6      30     1
+		text          28C4     28C4      628     300     0
+D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\delay.obj
+		
+D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\g_fonctions.obj
+		text          35A0     35A0      12A     300     0
+D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\i2c_comm.obj
+		
+D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.obj
+		intcode          8        8        8       4     0
+		intsave_r      2E4      2E4       1C     2E4     1
+		intcodelo       18       18        8       C     0
+		const          300      300       1B     300     0
+		temp             0        0        F       0     1
+		text          2EEC     2EEC      36A     300     0
+D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\main_cod.obj
+		bigbss         296      296       4E     296     1
+		rbit            88       11        1       0     1    8
+		bss             36       36       12      36     1
+		text          3EBE     3EBE        E     300     0
+D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\reglages_carte.obj
+		text            10       10        6       4     0
+D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\asserv.obj
+		const          31B      31B        2     300     0
+		temp             0        0        C       0     1
+		bss            100      100       F3      83     1
+		text           33E      33E     1B7C     300     0
+D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\strategies.obj
+		temp             0        0        9       0     1
+		bss             48       48       3B      48     1
+		text          1EBA     1EBA      A0A     300     0
+
+C:\HT-PIC18\LIB\pic80--p.lib
+
+C:\HT-PIC18\LIB\pic82l-c.lib
+atan2.obj       temp             0        0        6       0     1
+		text          3256     3256      1CE     300     0
+atan.obj        const          31D      31D       21     300     0
+		temp             0        0        6       0     1
+		text          3424     3424      17C     300     0
+errno.obj       bss             2E       2E        2      2E     1
+evalpoly.obj    temp             0        0        6       0     1
+		text          36CA     36CA      112     300     0
+sqrt.obj        temp             0        0        6       0     1
+		text            62       62      1E4       C     0
+aldiv_f.obj     temp             0        0        C       0     1
+		text          3E8A     3E8A       14     300     0
+aldiv.obj       temp             0        0        D       0     1
+		text          3CFE     3CFE       3C     300     0
+almul_f.obj     temp             0        0        C       0     1
+		text          3E76     3E76       14     300     0
+awdiv.obj       temp             0        0        7       0     1
+		text          3DD2     3DD2       2A     300     0
+btemp0.obj      temp             0        0        1       0     1
+btemp10.obj     temp             0        0        B       0     1
+btemp11.obj     temp             0        0        C       0     1
+btemp12.obj     temp             0        0        D       0     1
+btemp13.obj     temp             0        0        E       0     1
+btemp14.obj     temp             0        0        F       0     1
+btemp1.obj      temp             0        0        2       0     1
+btemp2.obj      temp             0        0        3       0     1
+btemp3.obj      temp             0        0        4       0     1
+btemp4.obj      temp             0        0        5       0     1
+btemp5.obj      temp             0        0        6       0     1
+btemp6.obj      temp             0        0        7       0     1
+btemp7.obj      temp             0        0        8       0     1
+btemp8.obj      temp             0        0        9       0     1
+btemp9.obj      temp             0        0        A       0     1
+clrbigbss.obj   init            20       20        C       C     0
+clrbit.obj      init            2C       2C        C       C     0
+clrbss.obj      init            38       38        C       C     0
+clr.obj         text          3EAE     3EAE       10     300     0
+double.obj      temp             0        0        F       0     1
+		text          38A0     38A0       A4     300     0
+fabs.obj        temp             0        0        3       0     1
+		text0            4        4        4       0     0
+float.obj       temp             0        0        9       0     1
+		text          39DE     39DE       98     300     0
+fpover.obj      rbit            89       12        4       0     1    8
+		temp             0        0        9       0     1
+frexp.obj       temp             0        0        3       0     1
+		text0         3D74     3D74       32     300     0
+ftadd_f.obj     temp             0        0        9       0     1
+		text          3E62     3E62       14     300     0
+ftadd.obj       temp             0        0        9       0     1
+		text          3B80     3B80       82     300     0
+ftcmp.obj       temp             0        0        9       0     1
+		text          3D3A     3D3A       3A     300     0
+ftdiv.obj       temp             0        0        C       0     1
+		text          3AFC     3AFC       84     300     0
+ftmul_f.obj     temp             0        0        9       0     1
+		text          3E9E     3E9E       10     300     0
+ftmul.obj       temp             0        0        C       0     1
+		text          3944     3944       9A     300     0
+ftneg.obj       temp             0        0        F       0     1
+		text          3ECC     3ECC        C     300     0
+fttol.obj       temp             0        0        9       0     1
+		text          3C68     3C68       4C     300     0
+l0neg.obj       temp             0        0        4       0     1
+		text          3E4E     3E4E       14     300     0
+ldexp.obj       temp             0        0        3       0     1
+		text          3CB4     3CB4       4A     300     0
+ldiv.obj        temp             0        0        D       0     1
+		text           246      246       B6       C     0
+lmul.obj        temp             0        0        C       0     1
+		text          3A76     3A76       86     300     0
+ltoft.obj       temp             0        0        9       0     1
+		text          3DA6     3DA6       2C     300     0
+powerup.obj     powerup          0        0        4       0     0
+sbsr0.obj       rbss             F        F        1       0     1
+sbsr1.obj       rbss            10       10        1       0     1
+store3.obj      temp             0        0        4       0     1
+		ftext0          48       48       1A       C     0
+store.obj       temp             0        0        4       0     1
+		text          3DFC     3DFC       20     300     0
+wdiv.obj        temp             0        0        7       0     1
+		text          3C02     3C02       66     300     0
+wmul.obj        temp             0        0        6       0     1
+		text          3E1C     3E1C       1C     300     0
+wtoft.obj       temp             0        0        9       0     1
+		text          3E38     3E38       16     300     0
+
+COMMON          param           83       83       7D      83     1
+
+TOTAL		Name          Link     Load   Length
+	CLASS	COMRAM   
+		rbit            88       11        5
+		rbss             F        F        2
+		temp             0        0        F
+
+	CLASS	RAM      
+		param           83       83       7D
+		bss             30       30        6
+		bss             36       36       12
+		bss            100      100       F3
+		bss             48       48       3B
+		bss             2E       2E        2
+
+	CLASS	BIGRAM   
+		bigbss         296      296       4E
+		intsave_r      2E4      2E4       1C
+
+	CLASS	NVRAM    
+
+	CLASS	CODE     
+		intcode          8        8        8
+		powerup          0        0        4
+		end_init        44       44        4
+		init            20       20       24
+		intcodelo       18       18        8
+		const          300      300       3E
+		text          37DC     37DC       C4
+		text          28C4     28C4      628
+		text          35A0     35A0      12A
+		text          2EEC     2EEC      36A
+		text          3EBE     3EBE        E
+		text            10       10        6
+		text           33E      33E     1B7C
+		text          1EBA     1EBA      A0A
+		text          3256     3256      1CE
+		text          3424     3424      17C
+		text          36CA     36CA      112
+		text            62       62      1E4
+		text          3E8A     3E8A       14
+		text          3CFE     3CFE       3C
+		text          3E76     3E76       14
+		text          3DD2     3DD2       2A
+		text          3EAE     3EAE       10
+		text          38A0     38A0       A4
+		text0            4        4        4
+		text          39DE     39DE       98
+		text0         3D74     3D74       32
+		text          3E62     3E62       14
+		text          3B80     3B80       82
+		text          3D3A     3D3A       3A
+		text          3AFC     3AFC       84
+		text          3E9E     3E9E       10
+		text          3944     3944       9A
+		text          3ECC     3ECC        C
+		text          3C68     3C68       4C
+		text          3E4E     3E4E       14
+		text          3CB4     3CB4       4A
+		text           246      246       B6
+		text          3A76     3A76       86
+		text          3DA6     3DA6       2C
+		ftext0          48       48       1A
+		text          3DFC     3DFC       20
+		text          3C02     3C02       66
+		text          3E1C     3E1C       1C
+		text          3E38     3E38       16
+
+	CLASS	FARRAM   
+
+	CLASS	EEDATA   
+
+	CLASS	IDLOC    
+
+	CLASS	CONFIG   
+
+
+
+SEGMENTS	Name		Load	Length	 Top	Selector    Space Class
+
+		temp            000000	000012	000012	       0       1  COMRAM  
+		powerup         000000	000008	000008	       0       0  CODE    
+		intcode         000008	00000E	000016	       4       0  CODE    
+		intcodelo       000018	0002E4	0002FC	       C       0  CODE    
+		bss             00002E	000002	000030	      2E       1  RAM     
+		bss             000030	000006	000036	      30       1  RAM     
+		bss             000036	000012	000048	      36       1  RAM     
+		bss             000048	00003B	000083	      48       1  RAM     
+		param           000083	000170	0001F3	      83       1  RAM     
+		bigbss          000296	00004E	0002E4	     296       1  BIGRAM  
+		intsave_regs    0002E4	00001C	000300	     2E4       1  BIGRAM  
+		const           000300	003BD8	003ED8	     300       0  CODE    
+
+
+UNUSED ADDRESS RANGES
+
+	BIGRAM           000012-00002D
+	                 0001F3-000295
+	CODE             000016-000017
+	                 0002FC-0002FF
+	                 003ED8-003FFF
+	COMRAM           000012-00002D
+	NVRAM            000200-000295
+	RAM              000012-00002D
+	                 0001F3-000295
+
+                                  Symbol Table
+
+?_ActionAutomatisme            param        000083
+?_Attente                      param        000083
+?_InitPositionRobot            param        000083
+?_PositionAdv                  param        000083
+?_Stop                         param        000083
+?__puts                        param        0000C7
+?_atan                         param        0000D9
+?_atan2                        param        0000CD
+?_avance_callage               param        000083
+?_eval_poly                    param        0000E6
+?_fabs                         temp         000000
+?_frexp                        param        0000F6
+?_inversion_repaire            param        0000C5
+?_ldexp                        param        0000F6
+?_puts                         param        0000C5
+?_recule_callage               param        000083
+?_sqrt                         param        0000E8
+?_tourner_angle                param        0000B0
+?_tourner_cible                param        000083
+?_vas_vers                     param        000083
+?a_ActionAutomatismeBalise2    param        000083
+?a_Asservissement              param        0000C7
+?a_Attente                     param        000087
+?a_PositionAdv                 param        000083
+?a_ass_angle                   param        0000CD
+?a_ass_distance                param        0000CD
+?a_ass_envoi_pwm               param        0000CD
+?a_ass_saturation_acceleration param        0000CD
+?a_ass_saturation_vitesse      param        0000CD
+?a_ass_vitesse                 param        0000CD
+?a_atan                        param        0000DC
+?a_atan2                       param        0000D3
+?a_eval_poly                   param        0000ED
+?a_frexp                       param        0000FB
+?a_ldexp                       param        0000FC
+?a_sqrt                        param        0000EB
+?a_tourner_angle               param        0000B8
+?a_tourner_cible               param        00008F
+?a_vas_vers                    param        000093
+_ActionAutomatisme             text         001ECE
+_ActionAutomatismeBalise2      text         001F2E
+_Adv                           bss          00004A
+_Asserv                        bss          000100
+_Asservissement                text         00033E
+_Attente                       text         001E2C
+_CallageDepart                 text         002432
+_Diagonal_1                    text         0023EE
+_Diagonal_2                    text         0023F0
+_EjectionBalles                text         0023F2
+_FinMatch                      text         00253E
+_GestionToucheUART1            text         000010
+_HI_ISR                        text         00319E
+_INT0_Handler                  text         003016
+_InitPositionRobot             text         002BBE
+_LOW_ISR                       text         00324E
+_LedCouleurDepart              text         002540
+_Master2Slave_Ptr              bss          000036
+_PositionAdv                   text         002586
+_RX_232_Handler                text         00312C
+_SSP_Handler                   text         002EEC
+_Slave2Master_Ptr              bss          000038
+_Stop                          text         001CE4
+_StopAdv                       text         001D76
+_Strat                         bss          000048
+_StratHomologation             text         002430
+_Strategie                     bss          000050
+_THETA                         bss          000030
+_TIMER0_Handler                text         003046
+_Test                          text         001F94
+_TraitementI2C                 text         002D06
+_TraitementPrincipal           text         001EBA
+_X                             bss          000032
+_Y                             bss          000034
+__Bnvbit                       nvbit        000012
+__Brbit                        rbit         000011
+__CoupureAutom                 text         002566
+__HRAM                         (abs)        0001F3
+__H__Z33902RS_                 __Z33902RS_  000004
+__Hbigbss                      bigbss       0002E4
+__Hbigdata                     bigdata      000012
+__Hbss                         bss          000004
+__Hclrtext                     clrtext      000004
+__Hconfig                      config       300000
+__Hconst                       const        00033E
+__Hdata                        data         000012
+__Heeprom_data                 eeprom_data  F00000
+__Hend_init                    end_init     000048
+__Hfarbss                      farbss       000000
+__Hfardata                     fardata      000000
+__Hfstlkup                     fstlkup      000004
+__Hibigdata                    ibigdata     000004
+__Hidata                       idata        000004
+__Hidloc                       idloc        200000
+__Hifardata                    ifardata     000004
+__Hinit                        init         000044
+__Hintcode                     intcode      000010
+__Hintcodelo                   intcodelo    000020
+__Hintentry                    intentry     000004
+__Hintret                      intret       000004
+__Hintsave_regs                intsave_regs 000300
+__Hirdata                      irdata       000004
+__Hnvbit                       nvbit        000090
+__Hnvram                       nvram        000200
+__Hnvrram                      nvrram       000012
+__Hparam                       param        000100
+__Hpowerup                     powerup      000004
+__Hramtop                      ramtop       000300
+__Hrbit                        rbit         00008D
+__Hrbss                        rbss         000011
+__Hrdata                       rdata        000012
+__Hstruct                      struct       000012
+__Htemp                        temp         00000F
+__Htext                        text         000004
+__LRAM                         (abs)        00002E
+__L__Z33902RS_                 __Z33902RS_  000004
+__Lbigbss                      bigbss       000296
+__Lbigdata                     bigdata      000012
+__Lbss                         bss          000004
+__Lclrtext                     clrtext      000004
+__Lconfig                      config       300000
+__Lconst                       const        000300
+__Ldata                        data         000012
+__Leeprom_data                 eeprom_data  F00000
+__Lend_init                    end_init     000044
+__Lfarbss                      farbss       000000
+__Lfardata                     fardata      000000
+__Lfstlkup                     fstlkup      000004
+__Libigdata                    ibigdata     000004
+__Lidata                       idata        000004
+__Lidloc                       idloc        200000
+__Lifardata                    ifardata     000004
+__Linit                        init         000020
+__Lintcode                     intcode      000008
+__Lintcodelo                   intcodelo    000018
+__Lintentry                    intentry     000004
+__Lintret                      intret       000004
+__Lintsave_regs                intsave_regs 0002E4
+__Lirdata                      irdata       000004
+__Lnvbit                       nvbit        000090
+__Lnvram                       nvram        000200
+__Lnvrram                      nvrram       000012
+__Lparam                       param        000083
+__Lpowerup                     powerup      000000
+__Lramtop                      ramtop       000300
+__Lrbit                        rbit         000088
+__Lrbss                        rbss         00000F
+__Lrdata                       rdata        000012
+__Lstruct                      struct       000012
+__Ltemp                        temp         000000
+__Ltext                        text         000004
+__S0                           (abs)        003ED8
+__S1                           (abs)        000300
+__fpdiv0                       rbit         00008B
+__fpover                       rbit         000089
+__fpunder                      rbit         00008A
+__putch                        text         00383E
+__puts                         text         003848
+__ramtop                       ramtop       000300
+_a_init_log                    text         0028C4
+_ass_angle                     text         000456
+_ass_commande_moteur_polaire   text         000E00
+_ass_distance                  text         00074C
+_ass_envoi_pwm                 text         000E62
+_ass_saturation_acceleration   text         000CFC
+_ass_saturation_vitesse        text         000B3C
+_ass_vitesse                   text         000AC8
+_atan                          text         003426
+_atan2                         text         003258
+_avance_callage                text         00191E
+_buffer_i2c_rx                 bigbss       0002A4
+_buffer_i2c_tx                 bigbss       0002C4
+_digits                        bigbss       00029E
+_erreur_htr                    bigbss       000296
+_errno                         bss          00002E
+_eval_poly                     text         0036CC
+_exit                          init         000020
+_fabs                          text0        000004
+_flag_carte_seule              bigbss       000297
+_flag_phase_htr                rbit         000088
+_frexp                         text0        003D74
+_g_config_i2c_slave            text         003644
+_g_config_interrupt_slave      text         00365C
+_g_config_mat                  text         0036BA
+_g_config_port                 text         0035A0
+_g_config_power_pwm            text         0035CE
+_g_config_rs232                text         003624
+_g_config_timer0               text         003678
+_g_config_timer2               text         00369A
+_g_config_timer5               text         0036AA
+_i2c_nbdata                    bigbss       000298
+_i2c_offset                    bigbss       000299
+_i2c_slave_node_addr           bigbss       00029A
+_i2cstate_slave                bigbss       00029B
+_inversion_repaire             text         000F26
+_ldexp                         text         003CB4
+_main                          text         003EBE
+_periode_us                    bss          00003A
+_phase_htr                     bigbss       00029C
+_phase_htr_temp                bigbss       00029D
+_putch                         text         0037DC
+_puts                          text         0037E6
+_recule_callage                text         0019A8
+_sqrt                          text         000064
+_temporisation_raf_debug       bss          00003C
+_timeout                       bss          00005F
+_timer_htr                     bss          00003E
+_tourner_angle                 text         000F42
+_tourner_cible                 text         0011D2
+_traitement_i2c_cpt_octet      bss          000040
+_traitement_i2c_nb_octet       bss          000042
+_val_phase_htr_reste           bss          000044
+_val_timer0                    bss          000046
+_vas_vers                      text         001506
+aldiv                          text         003CFE
+aldiv_f                        text         003E8A
+aldiv_x                        text         003D02
+almod                          text         003CFE
+almul                          text         003A76
+almul_f                        text         003E76
+almul_x                        text         003A7A
+altoft                         text         003DA6
+awdiv                          text         003DD2
+awmod                          text         003DD2
+awmul                          text         003E1C
+awtoft                         text         003E38
+clear_big                      init         000020
+clear_bit                      init         00002C
+clear_bss                      init         000038
+clear_ram                      text         003EB0
+divide                         text         003B08
+doldiv                         text         00024C
+dowdiv                         text         003C04
+flnorm1                        text         0038F4
+flunpack1                      text         0038A0
+flunpack2                      text         0038BC
+ftadd                          text         003BB2
+ftadd_f                        text         003E66
+ftadd_x                        text         003BB6
+ftcmp                          text         003D3A
+ftdenorm                       text         003B80
+ftdiv                          text         003AFC
+ftdiv_x                        text         003B00
+ftmul                          text         003944
+ftmul_f                        text         003E9E
+ftmul_x                        text         003948
+ftneg                          text         003ECC
+ftnorm1                        text         003A2E
+ftsub                          text         003BAE
+ftsub_f                        text         003E62
+fttol                          text         003C68
+ftunpack1                      text         0039DE
+ftunpack2                      text         0039F8
+int_func                       text         00319E
+int_funclo                     text         00324E
+intlevel0                      fstlkup      000004
+intlevel1                      fstlkup      000004
+l0neg                          text         003E4E
+lldiv                          text         000246
+lldiv_x                        text         00024A
+llmod                          text         000246
+llmul                          text         003A76
+llmul_f                        text         003E76
+llmul_x                        text         003A7A
+lltoft                         text         003DB2
+lwdiv                          text         003C02
+lwmod                          text         003C02
+lwmul                          text         003E1C
+lwtoft                         text         003E46
+powerup                        powerup      000000
+restore                        text         0031E0
+restorelo                      text         003250
+save                           text         003136
+saved_bsrh                     rbss         00000F
+saved_bsrl                     rbss         000010
+savelo                         text         00324E
+saveunder                      rbit         00008C
+start                          init         000020
+storeback                      text         003E04
+storeback_3                    ftext0       00004E
+storeback_cl                   text         003DFC
+storeback_ct                   ftext0       000048
+t0neg                          text         003BF2
+used_btemp0                    (abs)        000001
+used_btemp1                    (abs)        000001
+used_btemp10                   (abs)        000001
+used_btemp11                   (abs)        000001
+used_btemp12                   (abs)        000001
+used_btemp13                   (abs)        000001
+used_btemp14                   (abs)        000001
+used_btemp2                    (abs)        000001
+used_btemp3                    (abs)        000001
+used_btemp4                    (abs)        000001
+used_btemp5                    (abs)        000001
+used_btemp6                    (abs)        000001
+used_btemp7                    (abs)        000001
+used_btemp8                    (abs)        000001
+used_btemp9                    (abs)        000001
+zerct                          text         0038B2
+zerctt                         text         0039F0

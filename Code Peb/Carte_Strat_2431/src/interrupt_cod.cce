@@ -1,0 +1,8 @@
+Warning[000] C:\HT-PIC18\INCLUDE\pic18fxx31.h 764 : Redefining macro "BORDIS"
+Warning[000] C:\HT-PIC18\INCLUDE\pic18fxx31.h 765 : Redefining macro "BORV45"
+Warning[000] C:\HT-PIC18\INCLUDE\pic18fxx31.h 766 : Redefining macro "BORV42"
+Warning[000] C:\HT-PIC18\INCLUDE\pic18fxx31.h 767 : Redefining macro "BORV27"
+Warning[000] C:\HT-PIC18\INCLUDE\pic18fxx31.h 810 : Redefining macro "MCLREN"
+Warning[000] C:\HT-PIC18\INCLUDE\pic18fxx31.h 811 : Redefining macro "MCLRDIS"
+Warning[000] D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.c 79 : redundant & applied to array
+Warning[000] D:\BOTIK\Electronique\ROBOT_PROG\2431_strat\src\interrupt_cod.c 107 : redundant & applied to array
