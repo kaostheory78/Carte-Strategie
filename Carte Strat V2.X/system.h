@@ -122,7 +122,7 @@ extern "C" {
 
     extern _systeme_asserv DISTANCE;
     extern _systeme_asserv ORIENTATION;
-    extern _systeme_asserv VITESSE;
+    extern _systeme_asserv VITESSE[3];
 
     extern _erreur ERREUR_DISTANCE;
     extern _erreur ERREUR_ORIENTATION;

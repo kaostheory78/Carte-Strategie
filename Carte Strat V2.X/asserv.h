@@ -29,6 +29,10 @@
 
 #define Pi                          3.14159265359
 
+#define ROUE_DROITE                 0
+#define ROUE_GAUCHE                 1
+#define SYS_ROBOT                   2
+
 
 #define ENTRAXE_MM                  _ENTRAXE_MM
 #define DIAMETRE_ROUE_CODEUSE       _DIAMETRE_ROUE_CODEUSE
@@ -44,6 +48,15 @@
 
 
 #define FIN_DEPLACEMENT             2344
+
+#define CONSIGNE_MAX                100
+#define VITESSE_CONSIGNE_MM         5 //10
+#define VITESSE_CONSIGNE_MAX_MM     10
+
+#define VITESSE_CONSIGNE_PERCENT    60
+
+#define VITESSE_CONSIGNE_MAX_PAS    VITESSE_CONSIGNE_MAX_MM * TICKS_PAR_MM
+#define VITESSE_CONSIGNE_PAS        VITESSE_CONSIGNE_MM * TICKS_PAR_MM
 
 
 
