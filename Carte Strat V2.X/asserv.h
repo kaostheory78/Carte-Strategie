@@ -33,6 +33,11 @@
 #define ROUE_GAUCHE                 1
 #define SYS_ROBOT                   2
 
+#define KP_VITESSE                  0.5
+#define KI_VITESSE                  0
+#define KD_VITESSE                  0.
+
+
 
 #define ENTRAXE_MM                  _ENTRAXE_MM
 #define DIAMETRE_ROUE_CODEUSE       _DIAMETRE_ROUE_CODEUSE
@@ -50,8 +55,8 @@
 #define FIN_DEPLACEMENT             2344
 
 #define CONSIGNE_MAX                100
-#define VITESSE_CONSIGNE_MM         5 //10
-#define VITESSE_CONSIGNE_MAX_MM     10
+#define VITESSE_CONSIGNE_MM         1 //10
+#define VITESSE_CONSIGNE_MAX_MM     5
 
 #define VITESSE_CONSIGNE_PERCENT    60
 

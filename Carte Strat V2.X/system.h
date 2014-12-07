@@ -126,6 +126,7 @@ extern "C" {
 
     extern _erreur ERREUR_DISTANCE;
     extern _erreur ERREUR_ORIENTATION;
+    extern _erreur ERREUR_VITESSE[2];
 
     extern _commande_moteur COMMANDE;
 

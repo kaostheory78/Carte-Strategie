@@ -141,20 +141,20 @@ void debug ()
     PutLongUART((int32_t)ROBOT.orientation_degre);
     PutsUART(UART_XBEE, "] \r");*/
 
-    PutsUART(UART_XBEE, "d consigne : [");
-    PutLongUART((int32_t)(DISTANCE.consigne));
-    PutsUART(UART_XBEE, "],d act : [");
-    PutLongUART((int32_t)(DISTANCE.actuelle));
+    //PutsUART(UART_XBEE, "d consigne : [");
+    //PutLongUART((int32_t)(DISTANCE.consigne));
+    //PutsUART(UART_XBEE, "],d act : [");
+    //PutLongUART((int32_t)(DISTANCE.actuelle));
     PutsUART(UART_XBEE, "], Vit cons : [");
     PutLongUART((int32_t)(VITESSE[SYS_ROBOT].theorique * 1000));
-    PutsUART(UART_XBEE, "], VDA : [");
-    PutLongUART( (int32_t) (VITESSE[ROUE_DROITE].actuelle * 1000));
-    PutsUART(UART_XBEE, "], VDC : [");
-    PutLongUART((int32_t) (VITESSE[ROUE_DROITE].consigne * 1000));
-    PutsUART(UART_XBEE, "], VGA : [");
-    PutLongUART( (int32_t) (VITESSE[ROUE_GAUCHE].actuelle * 1000));
-    PutsUART(UART_XBEE, "], VGC : [");
-    PutLongUART((int32_t) (VITESSE[ROUE_GAUCHE].consigne * 1000));
+    PutsUART(UART_XBEE, "], Vcons G : [");
+    PutLongUART( (int32_t) (VITESSE[ROUE_GAUCHE].consigne * 1000));
+    PutsUART(UART_XBEE, "], Vg act : [");
+    PutLongUART((int32_t) (VITESSE[ROUE_GAUCHE].actuelle * 1000));
+    PutsUART(UART_XBEE, "], err act : [");
+    PutLongUART( (int32_t) (ERREUR_VITESSE[ROUE_GAUCHE].actuelle * 1000));
+    PutsUART(UART_XBEE, "], consigne mot : [");
+    PutLongUART((int32_t) (COMMANDE.gauche ));
     //PutsUART(UART_XBEE, "], VIT : [");
 //    PutLongUART((int32_t) VITESSE[ROBOT].theorique);
     PutsUART(UART_XBEE, "] \n\r");

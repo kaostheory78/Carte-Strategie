@@ -27,6 +27,7 @@ _systeme_asserv ORIENTATION;
 _systeme_asserv VITESSE[3];
 
 _erreur ERREUR_DISTANCE;
+_erreur ERREUR_VITESSE[2];
 _erreur ERREUR_ORIENTATION;
 
 _commande_moteur COMMANDE;
@@ -152,7 +153,8 @@ void asserv_vitesse (void)
     if (compteur == 0)
     {
         if (VITESSE[SYS_ROBOT].theorique < VITESSE[SYS_ROBOT].consigne)
-            VITESSE[SYS_ROBOT].theorique += VITESSE[SYS_ROBOT].acceleration;
+           VITESSE[SYS_ROBOT].theorique += VITESSE[SYS_ROBOT].acceleration;
+            
 
         else if (VITESSE[SYS_ROBOT].theorique > VITESSE[SYS_ROBOT].consigne)
             VITESSE[SYS_ROBOT].theorique -= VITESSE[SYS_ROBOT].acceleration;
@@ -160,9 +162,13 @@ void asserv_vitesse (void)
         if (VITESSE[SYS_ROBOT].consigne == FIN_DEPLACEMENT)
             VITESSE[SYS_ROBOT].theorique = 0;
     }
+
+    VITESSE[ROUE_DROITE].consigne = VITESSE[SYS_ROBOT].theorique;
+    VITESSE[ROUE_GAUCHE].consigne = VITESSE[SYS_ROBOT].theorique;
+
     compteur++;
 
-    if (VITESSE[ROUE_DROITE].actuelle < VITESSE[SYS_ROBOT].theorique)
+   /* if (VITESSE[ROUE_DROITE].actuelle < VITESSE[SYS_ROBOT].theorique)
         VITESSE[ROUE_DROITE].consigne += VITESSE[1].acceleration;
     else if (VITESSE[ROUE_DROITE].actuelle > VITESSE[SYS_ROBOT].theorique)
         VITESSE[ROUE_DROITE].consigne -= VITESSE[1].acceleration;
@@ -170,9 +176,27 @@ void asserv_vitesse (void)
     if (VITESSE[ROUE_GAUCHE].actuelle < VITESSE[SYS_ROBOT].theorique)
         VITESSE[ROUE_GAUCHE].consigne += VITESSE[1].acceleration;
     else if (VITESSE[ROUE_GAUCHE].actuelle > VITESSE[SYS_ROBOT].theorique)
-        VITESSE[ROUE_GAUCHE].consigne -= VITESSE[1].acceleration;
+        VITESSE[ROUE_GAUCHE].consigne -= VITESSE[1].acceleration;*/
 
 
+}
+
+void PID_vitesse ()
+{
+    ERREUR_VITESSE[ROUE_DROITE].actuelle = VITESSE[ROUE_DROITE].consigne - VITESSE[ROUE_DROITE].actuelle;
+    ERREUR_VITESSE[ROUE_DROITE].integralle += ERREUR_VITESSE[ROUE_DROITE].actuelle;
+    ERREUR_VITESSE[ROUE_DROITE].precedente = ERREUR_VITESSE[ROUE_DROITE].actuelle;
+
+
+    ERREUR_VITESSE[ROUE_GAUCHE].actuelle = VITESSE[ROUE_GAUCHE].consigne - VITESSE[ROUE_GAUCHE].actuelle;
+    ERREUR_VITESSE[ROUE_GAUCHE].integralle += ERREUR_VITESSE[ROUE_GAUCHE].actuelle;
+    //ERREUR_VITESSE[ROUE_GAUCHE].precedente = ERREUR_VITESSE[ROUE_GAUCHE].actuelle;
+
+
+    COMMANDE.droit = ERREUR_VITESSE[ROUE_DROITE].actuelle  * KP_VITESSE ;//+ ERREUR_VITESSE[ROUE_DROITE].integralle * KI_VITESSE + (ERREUR_VITESSE[ROUE_DROITE].actuelle - ERREUR_VITESSE[ROUE_DROITE].precedente ) * KD_VITESSE;
+    COMMANDE.gauche = ERREUR_VITESSE[ROUE_GAUCHE].maximum + ERREUR_VITESSE[ROUE_GAUCHE].actuelle * KP_VITESSE + ERREUR_VITESSE[ROUE_GAUCHE].integralle * KI_VITESSE + (ERREUR_VITESSE[ROUE_GAUCHE].actuelle - ERREUR_VITESSE[ROUE_GAUCHE].precedente ) * KD_VITESSE;
+
+    ERREUR_VITESSE[ROUE_GAUCHE].maximum = COMMANDE.gauche;
 }
 
 void asserv_orientation (void)
@@ -186,18 +210,21 @@ void asserv()
     static int test = 0;
 
     if (FLAG_ASSERV.position == ON)
-        asserv_distance();
+       // asserv_distance();
     if(FLAG_ASSERV.vitesse == ON)
-        asserv_vitesse();
+       // asserv_vitesse();
     if(FLAG_ASSERV.orientation == ON)
         asserv_orientation();
 
     DISTANCE.theorique += VITESSE[SYS_ROBOT].theorique ; // * ;
     ERREUR_DISTANCE.actuelle = DISTANCE.theorique - VITESSE[SYS_ROBOT].actuelle;
         
+    VITESSE[ROUE_GAUCHE].consigne = VITESSE_CONSIGNE_PAS;
 
     init_commande_moteur();
-    PID_distance();
+    //PID_distance();
+    PID_vitesse();
+    
     ecretage_consignes();
 
     envoit_pwm(MOTEUR_DROIT, COMMANDE.droit);
