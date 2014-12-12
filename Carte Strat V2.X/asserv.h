@@ -33,9 +33,9 @@
 #define ROUE_GAUCHE                 1
 #define SYS_ROBOT                   2
 
-#define KP_VITESSE                  0.5
-#define KI_VITESSE                  0
-#define KD_VITESSE                  0.
+#define KP_VITESSE                  4.
+#define KI_VITESSE                  0.5
+#define KD_VITESSE                  20.
 
 
 
@@ -54,8 +54,8 @@
 
 #define FIN_DEPLACEMENT             2344
 
-#define CONSIGNE_MAX                100
-#define VITESSE_CONSIGNE_MM         1 //10
+#define CONSIGNE_MAX                100L
+#define VITESSE_CONSIGNE_MM         3 //10
 #define VITESSE_CONSIGNE_MAX_MM     5
 
 #define VITESSE_CONSIGNE_PERCENT    60
@@ -88,8 +88,8 @@
 
     typedef struct
     {
-        int32_t droit;
-        int32_t gauche;
+        double droit;
+        double gauche;
     }_commande_moteur;
 
     typedef struct

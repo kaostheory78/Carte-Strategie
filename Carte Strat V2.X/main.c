@@ -87,9 +87,10 @@ int main(int argc, char** argv)
 
     init_position_robot (0, 0, 0);
 
-    PID_DISTANCE.KD = 1;
+    PID_DISTANCE.KP = 100;
     PID_DISTANCE.KI = 0;
-    PID_DISTANCE.KP = 1;
+    PID_DISTANCE.KD = 0;
+    
 
 
 

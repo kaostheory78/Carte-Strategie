@@ -31,7 +31,7 @@ void config_timer_5ms()
     // T = 0, 250 ns
     // Presacler 1 : 256 => T = 6,4 µs
     // 782 * 6,4µs = 5 ms
-    PR1 = 782 * 2;                 //décompte de 5ms
+    PR1 = 782;                 //décompte de 5ms
 
     //IPC0bits.T1IP = 0x02;       //priorité à 2  -> définit dans la table des vecteurs
     FLAG_TIMER_5ms = 0;         //Clear flag interrupt timer

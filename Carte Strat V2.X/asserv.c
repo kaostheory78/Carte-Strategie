@@ -42,11 +42,11 @@ void init_flag()
 
     VITESSE[0].acceleration = 0.5;
     VITESSE[1].acceleration = 0.1;
-    VITESSE[2].acceleration = 1;
+    VITESSE[2].acceleration = 2;
 
     VITESSE[SYS_ROBOT].theorique = 0;
 
-    DISTANCE.consigne = 1000 *  TICKS_PAR_MM;
+    DISTANCE.consigne = 2000 *  TICKS_PAR_MM;
     reinit_asserv();
 
     //PutsUART(UART_XBEE, "demarage asserv \n\r");
@@ -94,10 +94,19 @@ void reinit_asserv(void)
     ERREUR_DISTANCE.actuelle = 0;
     ERREUR_DISTANCE.integralle = 0;
     ERREUR_DISTANCE.precedente = 0;
+
+    VITESSE[ROUE_DROITE].actuelle = 0;
+    VITESSE[ROUE_DROITE].consigne = 0;
+    VITESSE[ROUE_DROITE].theorique = 0;
+
+    VITESSE[ROUE_GAUCHE].actuelle = 0;
+    VITESSE[ROUE_GAUCHE].consigne = 0;
+    VITESSE[ROUE_GAUCHE].theorique = 0;
 }
 
 void asserv_distance(void)
 {
+    Nop();
     static int32_t distance_restante = 0;
     static int32_t compteur  = 0;
 
@@ -132,6 +141,10 @@ void asserv_distance(void)
         }
     }
 
+
+
+
+
    /* if(distance_restante > (int32_t) ( 9 * DISTANCE.consigne /10))
     {
         VITESSE[SYS_ROBOT].consigne = VITESSE_CONSIGNE_PAS; //vmax
@@ -161,28 +174,44 @@ void asserv_vitesse (void)
 
         if (VITESSE[SYS_ROBOT].consigne == FIN_DEPLACEMENT)
             VITESSE[SYS_ROBOT].theorique = 0;
+
+        /*if (ERREUR_DISTANCE.actuelle > 0.75 * DISTANCE.consigne )
+        {
+            VITESSE[ROUE_DROITE].consigne += VITESSE[SYS_ROBOT].acceleration;
+            VITESSE[ROUE_GAUCHE].consigne += VITESSE[SYS_ROBOT].acceleration;
+        }
+        else if (ERREUR_DISTANCE.actuelle < 0.25 * DISTANCE.consigne)
+        {
+            VITESSE[ROUE_DROITE].consigne -= VITESSE[SYS_ROBOT].acceleration;
+            VITESSE[ROUE_GAUCHE].consigne -= VITESSE[SYS_ROBOT].acceleration;
+        }*/
     }
 
-    VITESSE[ROUE_DROITE].consigne = VITESSE[SYS_ROBOT].theorique;
-    VITESSE[ROUE_GAUCHE].consigne = VITESSE[SYS_ROBOT].theorique;
+     VITESSE[ROUE_DROITE].consigne = VITESSE[SYS_ROBOT].theorique;
+     VITESSE[ROUE_GAUCHE].consigne = VITESSE[SYS_ROBOT].theorique;
+
+ /*   //saturation des consignes
+    if (VITESSE[ROUE_DROITE].consigne > VITESSE_CONSIGNE_MAX_PAS)
+        VITESSE[ROUE_DROITE].consigne = VITESSE_CONSIGNE_MAX_PAS;
+    else if (VITESSE[ROUE_DROITE].consigne < - VITESSE_CONSIGNE_MAX_PAS)
+        VITESSE[ROUE_DROITE].consigne = - VITESSE_CONSIGNE_MAX_PAS;
+
+      if (VITESSE[ROUE_GAUCHE].consigne > VITESSE_CONSIGNE_MAX_PAS)
+        VITESSE[ROUE_GAUCHE].consigne = VITESSE_CONSIGNE_MAX_PAS;
+    else if (VITESSE[ROUE_GAUCHE].consigne < - VITESSE_CONSIGNE_MAX_PAS)
+        VITESSE[ROUE_GAUCHE].consigne = - VITESSE_CONSIGNE_MAX_PAS;
+*/
+   
+
+    
 
     compteur++;
-
-   /* if (VITESSE[ROUE_DROITE].actuelle < VITESSE[SYS_ROBOT].theorique)
-        VITESSE[ROUE_DROITE].consigne += VITESSE[1].acceleration;
-    else if (VITESSE[ROUE_DROITE].actuelle > VITESSE[SYS_ROBOT].theorique)
-        VITESSE[ROUE_DROITE].consigne -= VITESSE[1].acceleration;
-
-    if (VITESSE[ROUE_GAUCHE].actuelle < VITESSE[SYS_ROBOT].theorique)
-        VITESSE[ROUE_GAUCHE].consigne += VITESSE[1].acceleration;
-    else if (VITESSE[ROUE_GAUCHE].actuelle > VITESSE[SYS_ROBOT].theorique)
-        VITESSE[ROUE_GAUCHE].consigne -= VITESSE[1].acceleration;*/
-
-
 }
 
 void PID_vitesse ()
 {
+    static double commande_precedante_gauche = 0, commande_precedante_droite = 0;
+
     ERREUR_VITESSE[ROUE_DROITE].actuelle = VITESSE[ROUE_DROITE].consigne - VITESSE[ROUE_DROITE].actuelle;
     ERREUR_VITESSE[ROUE_DROITE].integralle += ERREUR_VITESSE[ROUE_DROITE].actuelle;
     ERREUR_VITESSE[ROUE_DROITE].precedente = ERREUR_VITESSE[ROUE_DROITE].actuelle;
@@ -190,13 +219,14 @@ void PID_vitesse ()
 
     ERREUR_VITESSE[ROUE_GAUCHE].actuelle = VITESSE[ROUE_GAUCHE].consigne - VITESSE[ROUE_GAUCHE].actuelle;
     ERREUR_VITESSE[ROUE_GAUCHE].integralle += ERREUR_VITESSE[ROUE_GAUCHE].actuelle;
-    //ERREUR_VITESSE[ROUE_GAUCHE].precedente = ERREUR_VITESSE[ROUE_GAUCHE].actuelle;
+    ERREUR_VITESSE[ROUE_GAUCHE].precedente = ERREUR_VITESSE[ROUE_GAUCHE].actuelle;
 
 
-    COMMANDE.droit = ERREUR_VITESSE[ROUE_DROITE].actuelle  * KP_VITESSE ;//+ ERREUR_VITESSE[ROUE_DROITE].integralle * KI_VITESSE + (ERREUR_VITESSE[ROUE_DROITE].actuelle - ERREUR_VITESSE[ROUE_DROITE].precedente ) * KD_VITESSE;
-    COMMANDE.gauche = ERREUR_VITESSE[ROUE_GAUCHE].maximum + ERREUR_VITESSE[ROUE_GAUCHE].actuelle * KP_VITESSE + ERREUR_VITESSE[ROUE_GAUCHE].integralle * KI_VITESSE + (ERREUR_VITESSE[ROUE_GAUCHE].actuelle - ERREUR_VITESSE[ROUE_GAUCHE].precedente ) * KD_VITESSE;
+    COMMANDE.droit  = ERREUR_VITESSE[ROUE_DROITE].actuelle * KP_VITESSE + ERREUR_VITESSE[ROUE_DROITE].integralle * KI_VITESSE + (ERREUR_VITESSE[ROUE_DROITE].actuelle - ERREUR_VITESSE[ROUE_DROITE].precedente ) * KD_VITESSE;
+    COMMANDE.gauche = ERREUR_VITESSE[ROUE_GAUCHE].actuelle * KP_VITESSE + ERREUR_VITESSE[ROUE_GAUCHE].integralle * KI_VITESSE + (ERREUR_VITESSE[ROUE_GAUCHE].actuelle - ERREUR_VITESSE[ROUE_GAUCHE].precedente ) * KD_VITESSE;
 
-    ERREUR_VITESSE[ROUE_GAUCHE].maximum = COMMANDE.gauche;
+    commande_precedante_droite = COMMANDE.droit;
+    commande_precedante_gauche = COMMANDE.gauche;
 }
 
 void asserv_orientation (void)
@@ -207,19 +237,16 @@ void asserv_orientation (void)
 void asserv()
 {
     //calcul_position_robot();
-    static int test = 0;
 
     if (FLAG_ASSERV.position == ON)
-       // asserv_distance();
+        asserv_distance();
     if(FLAG_ASSERV.vitesse == ON)
-       // asserv_vitesse();
+        asserv_vitesse();
     if(FLAG_ASSERV.orientation == ON)
         asserv_orientation();
 
-    DISTANCE.theorique += VITESSE[SYS_ROBOT].theorique ; // * ;
-    ERREUR_DISTANCE.actuelle = DISTANCE.theorique - VITESSE[SYS_ROBOT].actuelle;
-        
-    VITESSE[ROUE_GAUCHE].consigne = VITESSE_CONSIGNE_PAS;
+    //DISTANCE.theorique += VITESSE[SYS_ROBOT].theorique ; // * ;
+    //ERREUR_DISTANCE.actuelle = DISTANCE.theorique - VITESSE[SYS_ROBOT].actuelle;
 
     init_commande_moteur();
     //PID_distance();
@@ -227,8 +254,8 @@ void asserv()
     
     ecretage_consignes();
 
-    envoit_pwm(MOTEUR_DROIT, COMMANDE.droit);
-    envoit_pwm(MOTEUR_GAUCHE, COMMANDE.gauche);
+    envoit_pwm(MOTEUR_DROIT, (int32_t) COMMANDE.droit);
+    envoit_pwm(MOTEUR_GAUCHE, (int32_t) COMMANDE.gauche);
 
 }
 
@@ -236,11 +263,12 @@ void PID_distance (void)
 {
     static double duty;
 
+    ERREUR_DISTANCE.actuelle = DISTANCE.consigne - DISTANCE.actuelle;
 
-    //duty = VITESSE.theorique; // ERREUR_DISTANCE.actuelle * PID_DISTANCE.KP / 100 + ERREUR_DISTANCE.integralle * PID_DISTANCE.KI / 10000 + (ERREUR_DISTANCE.actuelle - ERREUR_DISTANCE.precedente) * PID_DISTANCE.KD / 1000;
+    duty =  ERREUR_DISTANCE.actuelle * PID_DISTANCE.KP / 100 + ERREUR_DISTANCE.integralle * PID_DISTANCE.KI / 10000 + (ERREUR_DISTANCE.actuelle - ERREUR_DISTANCE.precedente) * PID_DISTANCE.KD / 1000;
 
-    COMMANDE.droit += (int32_t) ( (double) (80 * VITESSE[ROUE_DROITE].consigne  / VITESSE_CONSIGNE_MAX_PAS ));//duty;
-    COMMANDE.gauche += (int32_t) (( (double) 80 * VITESSE[ROUE_GAUCHE].consigne / VITESSE_CONSIGNE_MAX_PAS));
+    COMMANDE.droit += duty;
+    COMMANDE.gauche += duty;
 
     ERREUR_DISTANCE.integralle += ERREUR_DISTANCE.actuelle;
     ERREUR_DISTANCE.precedente = ERREUR_DISTANCE.actuelle;

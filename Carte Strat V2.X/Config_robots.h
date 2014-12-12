@@ -70,8 +70,8 @@ extern "C" {
 
 
     //Tensions cartes
-    #define _TENSION_MOTEUR_DROIT        6L
-    #define _TENSION_MOTEUR_GAUCHE       6L
+    #define _TENSION_MOTEUR_DROIT        12L
+    #define _TENSION_MOTEUR_GAUCHE       12L
 
     #define _TENSION_SORTIE_PTN          17L
 

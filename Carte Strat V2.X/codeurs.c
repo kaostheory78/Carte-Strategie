@@ -154,7 +154,7 @@ void debug ()
     PutsUART(UART_XBEE, "], err act : [");
     PutLongUART( (int32_t) (ERREUR_VITESSE[ROUE_GAUCHE].actuelle * 1000));
     PutsUART(UART_XBEE, "], consigne mot : [");
-    PutLongUART((int32_t) (COMMANDE.gauche ));
+    PutLongUART((int32_t) (COMMANDE.gauche * 1000 ));
     //PutsUART(UART_XBEE, "], VIT : [");
 //    PutLongUART((int32_t) VITESSE[ROBOT].theorique);
     PutsUART(UART_XBEE, "] \n\r");
