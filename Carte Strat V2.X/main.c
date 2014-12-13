@@ -87,9 +87,6 @@ int main(int argc, char** argv)
 
     init_position_robot (0, 0, 0);
 
-    PID_DISTANCE.KP = 100;
-    PID_DISTANCE.KI = 0;
-    PID_DISTANCE.KD = 0;
     
 
 
@@ -139,7 +136,7 @@ int main(int argc, char** argv)
     delay_ms(800);
 
 
-    TIMER_10ms = ACTIVE;
+    //TIMER_10ms = ACTIVE;
     TIMER_5ms = ACTIVE;
     //TIMER_90s = ACTIVE;
     //TIMER_DEBUG = ACTIVE;

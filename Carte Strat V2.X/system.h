@@ -115,8 +115,7 @@ extern "C" {
     extern _position position[3];
     extern _robot ROBOT;
 
-    extern _PID PID_DISTANCE;
-    extern _PID PID_ORIENTATION;
+    extern _PID PID;
 
     extern _flag_asserv FLAG_ASSERV;
 

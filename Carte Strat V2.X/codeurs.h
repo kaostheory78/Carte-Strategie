@@ -70,20 +70,6 @@ extern "C" {
         int32_t ecart;
     }_position;
 
-    typedef struct
-    {
-        //double distance;
-        //double distance_precedante;
-        double orientation_init;
-        double orientation_degre;
-        double orientation;
-        //double orientation_precedante;
-        //double X_point;
-        //double Y_point;
-        double X_mm;
-        double Y_mm;
-    }_robot;
-
 
     
 /******************************************************************************/

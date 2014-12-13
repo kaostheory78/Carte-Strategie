@@ -118,6 +118,8 @@ void get_valeur_codeur (int codeur)
 
 void debug ()
 {
+    static int compteur = 0;
+    compteur++;
     /*PutcUART(UART_XBEE, '[');
     PutLongUART (position[CODEUR_D].totale);
     PutcUART(UART_XBEE, ']');
@@ -141,22 +143,61 @@ void debug ()
     PutLongUART((int32_t)ROBOT.orientation_degre);
     PutsUART(UART_XBEE, "] \r");*/
 
-    //PutsUART(UART_XBEE, "d consigne : [");
-    //PutLongUART((int32_t)(DISTANCE.consigne));
-    //PutsUART(UART_XBEE, "],d act : [");
-    //PutLongUART((int32_t)(DISTANCE.actuelle));
-    PutsUART(UART_XBEE, "], Vit cons : [");
-    PutLongUART((int32_t)(VITESSE[SYS_ROBOT].theorique * 1000));
-    PutsUART(UART_XBEE, "], Vcons G : [");
-    PutLongUART( (int32_t) (VITESSE[ROUE_GAUCHE].consigne * 1000));
-    PutsUART(UART_XBEE, "], Vg act : [");
-    PutLongUART((int32_t) (VITESSE[ROUE_GAUCHE].actuelle * 1000));
-    PutsUART(UART_XBEE, "], err act : [");
-    PutLongUART( (int32_t) (ERREUR_VITESSE[ROUE_GAUCHE].actuelle * 1000));
-    PutsUART(UART_XBEE, "], consigne mot : [");
-    PutLongUART((int32_t) (COMMANDE.gauche * 1000 ));
-    //PutsUART(UART_XBEE, "], VIT : [");
-//    PutLongUART((int32_t) VITESSE[ROBOT].theorique);
-    PutsUART(UART_XBEE, "] \n\r");
+
+   
+/*
+        PutsUART(UART_XBEE, "Vcons ");
+        PutLongUART( (int32_t) (VITESSE[ROUE_GAUCHE].consigne * 1000));
+        PutsUART(UART_XBEE, " Vg \t");
+        PutLongUART((int32_t) (VITESSE[ROUE_GAUCHE].actuelle * 1000));
+        PutsUART(UART_XBEE, " e act\t ");
+        PutLongUART( (int32_t) (ERREUR_VITESSE[ROUE_GAUCHE].actuelle * 1000));
+        PutsUART(UART_XBEE, " e int \t");
+        PutLongUART( (int32_t) (ERREUR_VITESSE[ROUE_GAUCHE].integralle * 1000));
+        PutsUART(UART_XBEE, " e der ");
+        PutLongUART( (int32_t) ((ERREUR_VITESSE[ROUE_GAUCHE].actuelle - ERREUR_VITESSE[ROUE_GAUCHE].precedente) * 1000));
+        PutsUART(UART_XBEE, " mot :");
+        PutLongUART((int32_t) (COMMANDE.gauche));
+        PutsUART(UART_XBEE, " d cons ");
+        PutLongUART((int32_t)(DISTANCE.consigne));
+        PutsUART(UART_XBEE, " d act ");
+        PutLongUART((int32_t)(DISTANCE.actuelle));
+        PutsUART(UART_XBEE, " ed act ");
+        PutLongUART( (int32_t) (ERREUR_DISTANCE.actuelle * 1000));
+        PutsUART(UART_XBEE, " pid ");
+        PutLongUART( (int32_t) ((ERREUR_DISTANCE.actuelle - ERREUR_DISTANCE.precedente) * 1000));
+                PutsUART(UART_XBEE, " pid ");
+        PutLongUART( (int32_t) (ERREUR_DISTANCE.maximum * 1000));*/
+
+
+        PutLongUART( (int32_t) (VITESSE[ROUE_GAUCHE].consigne * 1000));
+        PutsUART(UART_XBEE, "\t");
+        PutLongUART((int32_t) (VITESSE[ROUE_GAUCHE].actuelle * 1000));
+        PutsUART(UART_XBEE, "\t");
+        PutLongUART( (int32_t) (ERREUR_VITESSE[ROUE_GAUCHE].actuelle * 1000));
+        PutsUART(UART_XBEE, "\t");
+        PutLongUART( (int32_t) (ERREUR_VITESSE[ROUE_GAUCHE].integralle * 1000));
+        PutsUART(UART_XBEE, "\t");
+        PutLongUART( (int32_t) ((ERREUR_VITESSE[ROUE_GAUCHE].actuelle - ERREUR_VITESSE[ROUE_GAUCHE].precedente) * 1000));
+        PutsUART(UART_XBEE, "\t");
+        PutLongUART((int32_t) (COMMANDE.gauche));
+        PutsUART(UART_XBEE, "\t");
+        PutLongUART((int32_t)(DISTANCE.consigne));
+        PutsUART(UART_XBEE, "\t");
+        PutLongUART((int32_t)(DISTANCE.actuelle));
+        PutsUART(UART_XBEE, "\t");
+        PutLongUART( (int32_t) (ERREUR_DISTANCE.actuelle * 1000));
+        PutsUART(UART_XBEE, "\t");
+        PutLongUART( (int32_t) ((ERREUR_DISTANCE.actuelle - ERREUR_DISTANCE.precedente) * 1000));
+        PutsUART(UART_XBEE, "\t");
+        PutLongUART( (int32_t) (ERREUR_DISTANCE.maximum * 1000));
+
+
+
+
+        //PutsUART(UART_XBEE, "], VIT : [");
+    //    PutLongUART((int32_t) VITESSE[ROBOT].theorique);
+        PutsUART(UART_XBEE, "\n\r");
+    
 
 }

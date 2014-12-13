@@ -27,7 +27,7 @@
  */
 void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
 {
-   FLAG_TIMER_5ms = 0;
+    FLAG_TIMER_5ms = 0;
    //calcul_position_robot();
 
    calcul_position_robot();
@@ -36,6 +36,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
 
    if (FLAG_ASSERV.totale == ON)
         asserv();
+
+  
    
 }
 

@@ -34,6 +34,21 @@ extern "C" {
     #define _DIAMETRE_ROUE_CODEUSE       0
     #define _PERIMETRE_ROUE_MM           19.44
 
+    //PID
+    #define _VITESSE_DIS_KP              4.
+    #define _VITESSE_DIS_KD              0.5
+    #define _VITESSE_DIS_KD              20.
+
+    #define POSITION_KP                  1.
+    #define POSITION_KI                  0.
+    #define POSITION_KD                  0.
+
+    #define _ORIENTATION_KP              0.
+    #define _ORIENTATION_KI              0.
+    #define _ORIENTATION_KD              0.
+
+
+
     #define _TENSION_MOTEUR_DROIT        24L
     #define _TENSION_MOTEUR_GAUCHE       24L
 
@@ -68,6 +83,19 @@ extern "C" {
     #define _DIAMETRE_ROUE_CODEUSE       51.9
     #define _PERIMETRE_ROUE_MM           (_DIAMETRE_ROUE_CODEUSE * _Pi)
 
+    //PID
+    #define _VITESSE_DIS_KP              0.2 //4 //0.2
+    #define _VITESSE_DIS_KI              0.2 //0.5 //0.2
+    #define _VITESSE_DIS_KD              0. //20 //0.35
+
+    #define _POSITION_KP                 1.
+    #define _POSITION_KI                 0.
+    #define _POSITION_KD                 0.
+
+    #define _ORIENTATION_KP              0.
+    #define _ORIENTATION_KI              0.
+    #define _ORIENTATION_KD              0.
+
 
     //Tensions cartes
     #define _TENSION_MOTEUR_DROIT        12L
@@ -85,7 +113,7 @@ extern "C" {
 
     #define _RAPPORT_REDUCTION           4
 
-    #define _RESOLUTION_LOGICIELLE       1
+    #define _RESOLUTION_LOGICIELLE       4
 
 
     //PWM
