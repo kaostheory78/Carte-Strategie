@@ -41,6 +41,12 @@
 
 #define DEBUT_DEPLACEMENT           0
 #define FIN_DEPLACEMENT             1
+#define ANGLE_ATTEINT               2
+#define DISTANCE_ATTEINTE           3
+#define EN_COURS                    4
+
+#define MM                          1
+#define XY                          2
 
 
 /******************************************************************************/
@@ -59,6 +65,8 @@
 #define ORIENTATION_KP              _ORIENTATION_KP
 #define ORIENTATION_KI              _ORIENTATION_KI
 #define ORIENTATION_KD              _ORIENTATION_KD
+
+#define KP_HYBRIDE                  _KP_HYBRIDE
 
 
 /******************************************************************************/
@@ -81,16 +89,23 @@
 #define SEUIL_DISTANCE_MINI_MM      1
 #define SEUIL_DISTANCE_MINI_PAS     (int32_t) SEUIL_DISTANCE_MINI_MM * TICKS_PAR_MM
 
+#define SEUIL_ORIENTATION_MINI      1
+#define SEUIL_ORIENTATION_MINI_PAS  (int32_t) SEUIL_ORIENTATION_MINI * Pi / 180 * (ENTRAXE_TICKS/2)
+
+#define SEUIL_IMMOBILITE            100
+
 
 #define CONSIGNE_MAX                100L
-#define VITESSE_CONSIGNE_MM         3//3
+#define VITESSE_CONSIGNE_MM         2.//3
+#define VITESSE_ANGLE_RAD           0.05//0.005
+#define VITESSE_ANGLE_MAX           2
 #define VITESSE_CONSIGNE_MAX_MM     5
 
 #define VITESSE_CONSIGNE_PERCENT    80
 
 #define VITESSE_CONSIGNE_MAX_PAS    VITESSE_CONSIGNE_MAX_MM * TICKS_PAR_MM
 #define VITESSE_CONSIGNE_PAS        VITESSE_CONSIGNE_MM * TICKS_PAR_MM
-
+#define VITESSE_ANGLE_PAS           VITESSE_ANGLE_RAD * (ENTRAXE_TICKS / 2)
 
 /******************************************************************************/
 /******************************************************************************/
@@ -139,6 +154,7 @@
     {
         double actuelle;
         double integralle;
+        double integralle_precedente;
         double precedente;
         double maximum;
     }_erreur;
@@ -149,7 +165,11 @@
         char position;
         char vitesse;
         char orientation;
+        char etat_angle;
+        char etat_distance;
         char fin_deplacement;
+        char vitesse_fin_nulle;
+        uint64_t immobilite;
     }_flag_asserv;
 
 /******************************************************************************/
@@ -223,6 +243,11 @@ void asserv_vitesse_distance (void);
  *
  */
 void asserv_orientation (void);
+
+/**
+ *
+ */
+void asserv_vitesse_orientation (void);
 
 /**
  * permet de lancer toutes les fonctions d'asservissement !!

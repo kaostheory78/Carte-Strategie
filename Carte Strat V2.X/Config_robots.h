@@ -23,31 +23,31 @@ extern "C" {
 /***************************** Defines ****************************************/
 /******************************************************************************/
 
-//#define GROS_ROBOT    
-#define ROBOT_TEST
+#define GROS_ROBOT
+//#define ROBOT_TEST
 
 #define _Pi                             3.14159265359
 
 #ifdef GROS_ROBOT
 
-    #define _ENTRAXE_MM                  30.64
+    #define _ENTRAXE_MM                  306.4
     #define _DIAMETRE_ROUE_CODEUSE       0
-    #define _PERIMETRE_ROUE_MM           19.44
+    #define _PERIMETRE_ROUE_MM           194.4
 
     //PID
-    #define _VITESSE_DIS_KP              4.
-    #define _VITESSE_DIS_KD              0.5
-    #define _VITESSE_DIS_KD              20.
+    #define _VITESSE_DIS_KP              0.2
+    #define _VITESSE_DIS_KI              0.2
+    #define _VITESSE_DIS_KD              0.
 
-    #define POSITION_KP                  1.
-    #define POSITION_KI                  0.
-    #define POSITION_KD                  0.
+    #define _POSITION_KP                  1.
+    #define _POSITION_KI                  0.
+    #define _POSITION_KD                  0.
 
-    #define _ORIENTATION_KP              0.
+    #define _ORIENTATION_KP              1.
     #define _ORIENTATION_KI              0.
     #define _ORIENTATION_KD              0.
 
-
+    #define _KP_HYBRIDE                  25.
 
     #define _TENSION_MOTEUR_DROIT        24L
     #define _TENSION_MOTEUR_GAUCHE       24L
@@ -65,11 +65,11 @@ extern "C" {
     #define _RESOLUTION_LOGICIELLE       1
 
     //PWM
-    #define AVANCER_MOTEUR_D             1 //0
-    #define RECULER_MOTEUR_D             0   //1
+    #define _AVANCER_MOTEUR_D             1 //0
+    #define _RECULER_MOTEUR_D             0   //1
 
-    #define AVANCER_MOTEUR_G            0 //1
-    #define RECULER_MOTEUR_G            1   //0
+    #define _AVANCER_MOTEUR_G            0 //1
+    #define _RECULER_MOTEUR_G            1   //0
 
 
 
@@ -92,9 +92,11 @@ extern "C" {
     #define _POSITION_KI                 0.
     #define _POSITION_KD                 0.
 
-    #define _ORIENTATION_KP              0.
+    #define _ORIENTATION_KP              1.
     #define _ORIENTATION_KI              0.
     #define _ORIENTATION_KD              0.
+
+    #define _KP_HYBRIDE                  25
 
 
     //Tensions cartes

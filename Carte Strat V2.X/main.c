@@ -106,11 +106,9 @@ int main(int argc, char** argv)
 
     InitUART(UART_XBEE, 115200);
     PutsUART(UART_XBEE, "UART configure \n\r");
-    delay_ms(500);
 
     ConfigPWM();
     PutsUART(UART_XBEE, "PWM configure \n\r");
-    delay_ms(500);
 
    /* envoit_pwm(MOTEUR_DROIT, 0);
     envoit_pwm(MOTEUR_GAUCHE, 0);
@@ -132,8 +130,7 @@ int main(int argc, char** argv)
     /**************************************************************************/
     /**************************************************************************/
     /**************************************************************************/
-    
-    delay_ms(800);
+
 
 
     //TIMER_10ms = ACTIVE;
@@ -148,22 +145,44 @@ int main(int argc, char** argv)
     
 
     PutsUART(UART_XBEE, "\n\n\rasserv active \n\n\n\r");
-    delay_ms(3000);
+    delay_ms(500);
 
     TIMER_DEBUG = ACTIVE;
 
     init_flag();
-  /*  static double compteur = 0;
-    while(compteur < 20)
-    {
-        delay_ms(100);
-        envoit_pwm(MOTEUR_DROIT, compteur);
-        envoit_pwm(MOTEUR_GAUCHE, compteur);
-        compteur+= 0.1;
-    }
-    compteur = 0;
-    envoit_pwm(MOTEUR_DROIT, 0);
-    envoit_pwm(MOTEUR_GAUCHE, 0);*/
+
+
+    //rejoindre(-1000, 0);
+
+    /*cibler(500, 0);
+    rejoindre(500, 0);
+    cibler(500, 500);
+
+    rejoindre (500, 500);
+    cibler (0, 500);
+    rejoindre (0, 500);
+    cibler (0, 0);
+    rejoindre(0, 0);
+    cibler(250, 0);*/
+
+
+
+    //orienter(90);
+    //orienter(180);
+    //orienter (-90);
+    //orienter(0);
+
+    avancer_reculer(100);
+    //avancer_reculer (-100);
+    //avancer_reculer(100);
+
+    //delay_ms(500);
+
+   /* cibler(0, -500);
+    cibler(0, 500);
+    cibler(0, -500);
+    cibler(0, 500);
+    cibler(0, -500);*/
 
 
     while(1);

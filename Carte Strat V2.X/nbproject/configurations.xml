@@ -11,6 +11,7 @@
       <itemPath>pwm.h</itemPath>
       <itemPath>asserv.h</itemPath>
       <itemPath>Config_robots.h</itemPath>
+      <itemPath>fonctions_deplacements.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -27,6 +28,7 @@
       <itemPath>codeurs.c</itemPath>
       <itemPath>debug.c</itemPath>
       <itemPath>pwm.c</itemPath>
+      <itemPath>Fonctions_deplacements.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -52,8 +54,11 @@
           <linkerLibItems>
           </linkerLibItems>
         </linkerTool>
+        <archiverTool>
+        </archiverTool>
         <loading>
           <useAlternateLoadableFile>false</useAlternateLoadableFile>
+          <parseOnProdLoad>false</parseOnProdLoad>
           <alternateLoadableFile></alternateLoadableFile>
         </loading>
       </compileType>
@@ -104,6 +109,9 @@
         <property key="scalar-model" value="default"/>
         <property key="use-cci" value="false"/>
       </C30>
+      <C30-AR>
+        <property key="additional-options-chop-files" value="false"/>
+      </C30-AR>
       <C30-AS>
         <property key="assembler-symbols" value=""/>
         <property key="expand-macros" value="false"/>
@@ -197,6 +205,7 @@
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
         <property key="UART 1" value="true"/>
         <property key="UART 2" value="true"/>
+        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="false"/>

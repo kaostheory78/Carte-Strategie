@@ -42,7 +42,7 @@ void InitUART (int8_t channel, uint32_t baud)
             U1MODEbits.BRGH     = 1;		// Vitesse élevée
 
             //#ifdef UTILISATION_MODULE_XBEE
-            //        U1MODEbits.URXINV 	= 1;		// Polarite non inversee
+    //                U1MODEbits.URXINV 	= 1;		// Polarite non inversee
             //#else
                     U1MODEbits.URXINV 	= 0;		// Polarite non inversee
             //#endif
@@ -52,7 +52,7 @@ void InitUART (int8_t channel, uint32_t baud)
             U1MODEbits.WAKE 	= 0;		// Wake-up desactive
 
 //		#ifdef UTILISATION_MODULE_XBEE
-//			U1MODEbits.UEN 		= 0b10;		// TX et RX actif, CTS et RTS utilsee
+	//		U1MODEbits.UEN 		= 0b10;		// TX et RX actif, CTS et RTS utilsee
 //		#else
                     U1MODEbits.UEN 		= 0;		// TX et RX actif, CTS et RTS non
 //		#endif
@@ -63,6 +63,8 @@ void InitUART (int8_t channel, uint32_t baud)
 
             U1MODEbits.UARTEN 	= 1;		// Activation de l'uart1
             U1STAbits.UTXEN 	= 1;		// TX actif
+
+            //PORTAbits.RA7 = 1;
 	}
 
 	// UART2 : AX12

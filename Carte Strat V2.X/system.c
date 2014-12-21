@@ -206,7 +206,7 @@ void ConfigPorts (void)
 	_TRISA1		= 1;	_CN3IE	= 0;	_CN3PUE		= 0;	// IN  : (ANALOG) Courant_D (AN1)
 	_TRISA3		= 1;	_CN29IE	= 0;	_CN29PUE	= 0;	// IN  : (DIGIT) capteur 1
 	_TRISA4		= 1;	_CN0IE	= 0;	_CN0PUE		= 0;	// IN  : (DIGIT) capteur 2
-        _TRISA7		= 0;						// OUT : (DIGIT) XBEE RSI
+        _TRISA7		= 0;						// OUT : (DIGIT) XBEE RSET
 	_TRISA8		= 1;						// IN  : (DIGIT) capteur 3
 	_TRISA9		= 1;						// IN  : (DIGIT)  capteur 4
 	_TRISA10	= 0;						// OUT : (DIGIT)  Commande Alim AX12

@@ -27,6 +27,7 @@ extern "C" {
     #include "asserv.h"
     #include "pwm.h"
     #include "Config_robots.h"
+    #include "fonctions_deplacements.h"
     
 
 /******************************************************************************/
@@ -119,8 +120,11 @@ extern "C" {
 
     extern _flag_asserv FLAG_ASSERV;
 
+    extern _systeme_asserv X;
+    extern _systeme_asserv Y;
     extern _systeme_asserv DISTANCE;
     extern _systeme_asserv ORIENTATION;
+    extern _systeme_asserv VITESSE_ORIENTATION[3];
     extern _systeme_asserv VITESSE[3];
 
     extern _erreur ERREUR_DISTANCE;
@@ -128,6 +132,8 @@ extern "C" {
     extern _erreur ERREUR_VITESSE[2];
 
     extern _commande_moteur COMMANDE;
+
+    extern char TYPE_CONSIGNE;
 
 /******************************************************************************/
 /****************************** Prototypes ************************************/
@@ -139,7 +145,6 @@ extern "C" {
     void config_timer_90s();
 
     void start_timer_90s (void);
-
 
     void odometrie (unsigned char mode);
 
