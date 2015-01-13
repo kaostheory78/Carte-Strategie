@@ -26,7 +26,7 @@ extern "C" {
 #define GROS_ROBOT
 //#define ROBOT_TEST
 
-#define _Pi                             3.14159265359
+#define _Pi                             3.14159265359 
 
 #ifdef GROS_ROBOT
 

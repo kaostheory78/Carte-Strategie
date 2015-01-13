@@ -53,7 +53,7 @@ void cibler (double x, double y)
     while(FLAG_ASSERV.fin_deplacement != FIN_DEPLACEMENT);
     
 }
-
+ 
 void orienter (double angle)
 {
 

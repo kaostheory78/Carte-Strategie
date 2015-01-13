@@ -470,7 +470,7 @@ double fonction_PID (unsigned char type)
             ERREUR_ORIENTATION.actuelle -=  Pi * ENTRAXE_TICKS;
         else if (ERREUR_ORIENTATION.actuelle < - Pi * ENTRAXE_TICKS/2)
             ERREUR_ORIENTATION.actuelle +=  Pi * ENTRAXE_TICKS;
-
+ 
         ERREUR_ORIENTATION.integralle += ERREUR_ORIENTATION.actuelle;
 
          duty =  ERREUR_ORIENTATION.actuelle * PID.ORIENTATION.KP  + ERREUR_ORIENTATION.integralle * PID.ORIENTATION.KI - (ERREUR_ORIENTATION.actuelle - ERREUR_ORIENTATION.precedente) * PID.ORIENTATION.KD;

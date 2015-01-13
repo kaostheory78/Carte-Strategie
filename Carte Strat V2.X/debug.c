@@ -94,7 +94,7 @@ void debug ()
         PutLongUART( (int32_t) ((ERREUR_DISTANCE.actuelle - ERREUR_DISTANCE.precedente) * 1000));
         PutsUART(UART_XBEE, "\t");
         PutLongUART( (int32_t) (ERREUR_DISTANCE.maximum * 1000));*/
-
+ 
 
 
 

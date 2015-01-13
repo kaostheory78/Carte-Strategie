@@ -37,7 +37,7 @@
 
 #define ASSERV_VITESSE_DISTANCE     0
 #define ASSERV_POSITION             1
-#define ASSERV_ORIENTATION          2
+#define ASSERV_ORIENTATION          2 
 
 #define DEBUT_DEPLACEMENT           0
 #define FIN_DEPLACEMENT             1
