@@ -30,18 +30,37 @@ extern "C" {
 
 #ifdef GROS_ROBOT
 
+    //Paramètres Odométrie
     #define _ENTRAXE_MM                  306.4
     #define _DIAMETRE_ROUE_CODEUSE       0
     #define _PERIMETRE_ROUE_MM           194.4
 
-    //PID
-    #define _VITESSE_DIS_KP              0.2
-    #define _VITESSE_DIS_KI              0.2
-    #define _VITESSE_DIS_KD              0.
+    //Paramètres Vitesse Asserv
+        //Association distance - Vitesse - Accélérations max
+    #define _VITESSE_CONSIGNE_MAX_MM     3.
+    #define _DISTANCE_CONSIGNE_MM        50.
 
-    #define _POSITION_KP                  1.
-    #define _POSITION_KI                  0.
-    #define _POSITION_KD                  0.
+    #define _ACC_POSITION_CONSIGNE       20.
+    #define _DCC_POSITION_CONSIGNE       40.
+
+        //Association Angle - Vitesse - Accélérations max
+    #define _VITESSE_ANGLE_MAX           0.05
+    #define _ORIENTATION_CONSIGNE_DEG    90
+
+    #define _ACC_ORIENTATION_CONSIGNE    10.
+    #define _DCC_ORIENTATION_CONSIGNE    10.
+
+        //Autres réglages asserv
+    #define _SEUIL_IMMOBILITE            100
+   
+    //PID
+    #define _VITESSE_DIS_KP              0.4  //0.2
+    #define _VITESSE_DIS_KI              0.02 //0.01
+    #define _VITESSE_DIS_KD              0.2
+
+    #define _POSITION_KP                 1.
+    #define _POSITION_KI                 0.
+    #define _POSITION_KD                 0.
 
     #define _ORIENTATION_KP              1.
     #define _ORIENTATION_KI              0.
@@ -49,11 +68,15 @@ extern "C" {
 
     #define _KP_HYBRIDE                  25.
 
+
+    //Tensions d'alimentations
     #define _TENSION_MOTEUR_DROIT        24L
     #define _TENSION_MOTEUR_GAUCHE       24L
 
     #define _TENSION_SORTIE_PTN          34L 
 
+
+    //Paramètres codeurs, et moteurs
     #define _SENS_ROT_D                  1L
     #define _SENS_ROT_G                  -1L
 
@@ -65,8 +88,8 @@ extern "C" {
     #define _RESOLUTION_LOGICIELLE       1
 
     //PWM
-    #define _AVANCER_MOTEUR_D             1 //0
-    #define _RECULER_MOTEUR_D             0   //1
+    #define _AVANCER_MOTEUR_D            1 //0
+    #define _RECULER_MOTEUR_D            0   //1
 
     #define _AVANCER_MOTEUR_G            0 //1
     #define _RECULER_MOTEUR_G            1   //0

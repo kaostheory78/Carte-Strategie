@@ -172,7 +172,7 @@ int main(int argc, char** argv)
     //orienter (-90);
     //orienter(0);
 
-    avancer_reculer(100);
+    avancer_reculer(150, 10);
     //avancer_reculer (-100);
     //avancer_reculer(100);
 

@@ -106,13 +106,16 @@ void _rejoindre (double x, double y, char vitesse_fin_deplacement_nulle)
     while (FLAG_ASSERV.fin_deplacement != FIN_DEPLACEMENT);
 }
 
-void avancer_reculer (double distance)
+void avancer_reculer (double distance, double pourcentage_vitesse)
 {
     reinit_asserv();
 
     TYPE_CONSIGNE = MM;
 
     DISTANCE.consigne = distance * TICKS_PAR_MM;
+
+    calcul_vitesse_position(pourcentage_vitesse);
+    calcul_acceleration_position();
 
     FLAG_ASSERV.position = ON;
     FLAG_ASSERV.orientation = OFF;

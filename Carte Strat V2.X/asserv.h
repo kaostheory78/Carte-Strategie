@@ -13,7 +13,7 @@
 /******************************** INCLUDES ************************************/
 /******************************************************************************/
 
-#include "Config_robots.h"
+//#include "Config_robots.h"
 #include "codeurs.h"
 
 
@@ -87,25 +87,37 @@
 /******************************************************************************/
 
 #define SEUIL_DISTANCE_MINI_MM      1
-#define SEUIL_DISTANCE_MINI_PAS     (int32_t) SEUIL_DISTANCE_MINI_MM * TICKS_PAR_MM
+#define SEUIL_DISTANCE_MINI_PAS     (int32_t) ( SEUIL_DISTANCE_MINI_MM * TICKS_PAR_MM )
 
 #define SEUIL_ORIENTATION_MINI      1
-#define SEUIL_ORIENTATION_MINI_PAS  (int32_t) SEUIL_ORIENTATION_MINI * Pi / 180 * (ENTRAXE_TICKS/2)
+#define SEUIL_ORIENTATION_MINI_PAS  (int32_t) ( SEUIL_ORIENTATION_MINI * Pi / 180 * (ENTRAXE_TICKS/2) )
 
-#define SEUIL_IMMOBILITE            100
-
+#define SEUIL_IMMOBILITE            _SEUIL_IMMOBILITE
 
 #define CONSIGNE_MAX                100L
-#define VITESSE_CONSIGNE_MM         2.//3
-#define VITESSE_ANGLE_RAD           0.05//0.005
-#define VITESSE_ANGLE_MAX           2
-#define VITESSE_CONSIGNE_MAX_MM     5
 
-#define VITESSE_CONSIGNE_PERCENT    80
+    //Association Distance - Vitesse - Accélérations Max
+#define VITESSE_CONSIGNE_MAX_MM     _VITESSE_CONSIGNE_MAX_MM
+#define VITESSE_CONSIGNE_MAX_PAS    ( VITESSE_CONSIGNE_MAX_MM * TICKS_PAR_MM )
 
-#define VITESSE_CONSIGNE_MAX_PAS    VITESSE_CONSIGNE_MAX_MM * TICKS_PAR_MM
-#define VITESSE_CONSIGNE_PAS        VITESSE_CONSIGNE_MM * TICKS_PAR_MM
-#define VITESSE_ANGLE_PAS           VITESSE_ANGLE_RAD * (ENTRAXE_TICKS / 2)
+#define DISTANCE_CONSIGNE_MM        _DISTANCE_CONSIGNE_MM
+#define DISTANCE_CONSIGNE_PAS       ( DISTANCE_CONSIGNE_MM * TICKS_PAR_MM )
+
+#define ACC_POSITION_CONSIGNE       _ACC_POSITION_CONSIGNE
+#define DCC_POSITION_CONSIGNE       _DCC_POSITION_CONSIGNE
+
+    //Association Orientation - Vitesse - Accélération Max
+#define VITESSE_ANGLE_MAX           _VITESSE_ANGLE_MAX
+#define VITESSE_ANGLE_PAS           ( VITESSE_ANGLE_MAX * (ENTRAXE_TICKS / 2) )
+
+#define ORIENTATION_CONSIGNE_DEG    _ORIENTATION_CONSIGNE_DEG
+#define ORIENTATION_CONSIGNE_PAS    ( ORIENTATION_CONSIGNE_DEG * (ENTRAXE_TICKS /2) )
+
+#define ACC_ORIENTATION_CONSIGNE    _ACC_ORIENTATION_CONSIGNE
+#define DCC_ORIENTATION_CONSIGNE    _DCC_ORIENTATION_CONSIGNE
+
+
+
 
 /******************************************************************************/
 /******************************************************************************/
@@ -193,6 +205,12 @@
 /******************************************************************************/
 /******************************************************************************/
 /******************************************************************************/    
+
+
+ void saturation_vitesse_max (unsigned char type);
+ void calcul_distance_consigne_XY (void);
+ void calcul_vitesse_position (double pourcentage_vitesse);
+ void calcul_acceleration_position (void);
 
 
 /**
