@@ -252,24 +252,22 @@ void calcul_vitesse_orientation (double pourcentage_vitesse)
 {
     calcul_distance_consigne_XY();
 
-    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS  * ORIENTATION.consigne; // / ORIENTATION_CONSIGNE_PAS;
+    fonction_PID(ASSERV_ORIENTATION);
+
+    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
+    VITESSE_MAX_ORIENTATION *= ERREUR_ORIENTATION.actuelle; // / ORIENTATION_CONSIGNE_PAS;
     VITESSE_MAX_ORIENTATION /= ORIENTATION_CONSIGNE_PAS;
     VITESSE_MAX_ORIENTATION *= pourcentage_vitesse;
     VITESSE_MAX_ORIENTATION /= 100;
-    //VITESSE_MAX_ORIENTATION *= pourcentage_vitesse / 100;
 
-    if (VITESSE_MAX_ORIENTATION < 0)
-        VITESSE_MAX_POSITION *= -1;
-
-    //if (VITESSE_MAX_ORIENTATION > VITESSE_ANGLE_PAS)
-    //    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
+    VITESSE_MAX_ORIENTATION = abs(VITESSE_MAX_ORIENTATION);
 }
 
 void calcul_acceleration_orientation (void)
 {
     if (VITESSE_MAX_ORIENTATION < VITESSE_ANGLE_PAS) //Si on est inferieur au réglage consigne
     {
-        if (ORIENTATION.consigne > 0)
+        if (ERREUR_ORIENTATION.actuelle > 0)
         {
             acc.acceleration.orientation = VITESSE_MAX_ORIENTATION;
             acc.acceleration.orientation *= ACC_ORIENTATION_CONSIGNE;
@@ -292,7 +290,7 @@ void calcul_acceleration_orientation (void)
     }
     else //sinon on sature l'acceleration
     {
-        if ( ORIENTATION.consigne > 0)
+        if ( ERREUR_ORIENTATION.actuelle > 0)
         {
             acc.acceleration.orientation = ACC_ORIENTATION_CONSIGNE;
             acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
@@ -398,13 +396,17 @@ void asserv()
 void asserv_distance(void)
 {
     static double distance_restante = 0;
+    static double distance_restate_abs = 0;
     static double temps_freinage, temps_restant;
     static int compteur = 0;
     
     calcul_distance_consigne_XY();
     distance_restante = fonction_PID(ASSERV_POSITION); //DISTANCE.consigne - DISTANCE.actuelle;
 
-    if (abs(distance_restante) >  10)
+    distance_restate_abs = abs(distance_restante);
+    distance_restate_abs -= 10.;
+
+    if (distance_restate_abs > 0.)
     {
         compteur = 0;
         FLAG_ASSERV.etat_distance = EN_COURS;
@@ -484,7 +486,7 @@ void asserv_orientation (void)
 
     angle_restant = fonction_PID(ASSERV_ORIENTATION); 
 
-    if (abs(angle_restant) >  Pi / 180 * ENTRAXE_TICKS/2)
+    if (abs(angle_restant) >  Pi / 180 * ENTRAXE_TICKS) //2°
     {
         compteur = 0;
         FLAG_ASSERV.etat_angle = EN_COURS;
@@ -492,12 +494,12 @@ void asserv_orientation (void)
         if (angle_restant > 0) //distance restante > 0
         {
             VITESSE_ORIENTATION[SYS_ROBOT].consigne =  VITESSE_MAX_ORIENTATION;
-            temps_freinage = VITESSE_ORIENTATION[SYS_ROBOT].theorique / (acc.deceleration.orientation/10);
+            temps_freinage = VITESSE_ORIENTATION[SYS_ROBOT].theorique / (acc.deceleration.orientation);
         }
         else if (angle_restant < 0)
         {
             VITESSE_ORIENTATION[SYS_ROBOT].consigne = - VITESSE_MAX_ORIENTATION;
-            temps_freinage = VITESSE_ORIENTATION[SYS_ROBOT].theorique / (acc.acceleration.orientation/10);
+            temps_freinage = VITESSE_ORIENTATION[SYS_ROBOT].theorique / (acc.acceleration.orientation);
         }
 
         //Génération de la courbe de freinage

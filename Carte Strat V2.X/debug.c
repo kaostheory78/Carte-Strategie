@@ -95,10 +95,7 @@ void debug ()
         PutsUART(UART_XBEE, "\t");
         PutLongUART( (int32_t) (ERREUR_DISTANCE.maximum * 1000));*/
  
-
-
-
-    //asserv
+       //asserv
         PutLongUART( (int32_t) (ORIENTATION.consigne * 1000));
         PutsUART(UART_XBEE, "\t");
         PutLongUART((int32_t) (ORIENTATION.actuelle * 1000));
@@ -138,6 +135,9 @@ void debug ()
         PutLongUART( (int32_t) (VITESSE_MAX_ORIENTATION * 1000));
         PutsUART(UART_XBEE, "\t");
         PutsUART(UART_XBEE, "\n\r");
+
+
+    
  
 
 
