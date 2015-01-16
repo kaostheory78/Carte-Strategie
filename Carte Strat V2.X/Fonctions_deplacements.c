@@ -54,7 +54,7 @@ void cibler (double x, double y)
     
 }
  
-void orienter (double angle)
+void orienter (double angle, double pourcentage_vitesse)
 {
 
     reinit_asserv();
@@ -62,6 +62,9 @@ void orienter (double angle)
     TYPE_CONSIGNE = MM;
 
     ORIENTATION.consigne = (angle * Pi)/ 180 * (ENTRAXE_TICKS/2);
+
+    calcul_vitesse_orientation(pourcentage_vitesse);
+    calcul_acceleration_orientation();
 
     FLAG_ASSERV.position = OFF;
     FLAG_ASSERV.orientation = ON;

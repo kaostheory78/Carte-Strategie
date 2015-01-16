@@ -44,11 +44,11 @@ extern "C" {
     #define _DCC_POSITION_CONSIGNE       40.
 
         //Association Angle - Vitesse - Accélérations max
-    #define _VITESSE_ANGLE_MAX           0.05
-    #define _ORIENTATION_CONSIGNE_DEG    90
+    #define _VITESSE_ANGLE_MAX           0.02
+    #define _ORIENTATION_CONSIGNE_DEG    90.
 
-    #define _ACC_ORIENTATION_CONSIGNE    10.
-    #define _DCC_ORIENTATION_CONSIGNE    10.
+    #define _ACC_ORIENTATION_CONSIGNE    4.
+    #define _DCC_ORIENTATION_CONSIGNE    6.
 
         //Autres réglages asserv
     #define _SEUIL_IMMOBILITE            100
@@ -73,7 +73,7 @@ extern "C" {
     #define _TENSION_MOTEUR_DROIT        24L
     #define _TENSION_MOTEUR_GAUCHE       24L
 
-    #define _TENSION_SORTIE_PTN          34L 
+    #define _TENSION_SORTIE_PTN          34L
 
 
     //Paramètres codeurs, et moteurs

@@ -127,6 +127,9 @@ extern "C" {
     extern _systeme_asserv VITESSE_ORIENTATION[3];
     extern _systeme_asserv VITESSE[3];
 
+    extern double VITESSE_MAX_ORIENTATION;
+    extern double VITESSE_MAX_POSITION;
+
     extern _erreur ERREUR_DISTANCE;
     extern _erreur ERREUR_ORIENTATION;
     extern _erreur ERREUR_VITESSE[2];

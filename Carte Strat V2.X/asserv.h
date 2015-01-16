@@ -44,6 +44,7 @@
 #define ANGLE_ATTEINT               2
 #define DISTANCE_ATTEINTE           3
 #define EN_COURS                    4
+#define PHASE_NORMAL                5
 
 #define MM                          1
 #define XY                          2
@@ -111,7 +112,7 @@
 #define VITESSE_ANGLE_PAS           ( VITESSE_ANGLE_MAX * (ENTRAXE_TICKS / 2) )
 
 #define ORIENTATION_CONSIGNE_DEG    _ORIENTATION_CONSIGNE_DEG
-#define ORIENTATION_CONSIGNE_PAS    ( ORIENTATION_CONSIGNE_DEG * (ENTRAXE_TICKS /2) )
+#define ORIENTATION_CONSIGNE_PAS    ( ORIENTATION_CONSIGNE_DEG * Pi /180 * (ENTRAXE_TICKS /2) )
 
 #define ACC_ORIENTATION_CONSIGNE    _ACC_ORIENTATION_CONSIGNE
 #define DCC_ORIENTATION_CONSIGNE    _DCC_ORIENTATION_CONSIGNE
@@ -181,6 +182,8 @@
         char etat_distance;
         char fin_deplacement;
         char vitesse_fin_nulle;
+        char phase_decelaration_orientation;
+        char phase_deceleration_distance;
         uint64_t immobilite;
     }_flag_asserv;
 
@@ -211,6 +214,8 @@
  void calcul_distance_consigne_XY (void);
  void calcul_vitesse_position (double pourcentage_vitesse);
  void calcul_acceleration_position (void);
+ void calcul_vitesse_orientation (double pourcentage_vitesse);
+ void calcul_acceleration_orientation (void);
 
 
 /**

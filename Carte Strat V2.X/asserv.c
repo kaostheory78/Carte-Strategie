@@ -54,24 +54,8 @@ void init_flag()
     FLAG_ASSERV.vitesse = OFF;
     FLAG_ASSERV.orientation = OFF;
     FLAG_ASSERV.fin_deplacement = FIN_DEPLACEMENT;
-
-    acc.acceleration.orientation = ACC_ORIENTATION_CONSIGNE.;
-    acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
-
-    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
-
-
-
-    //TYPE_CONSIGNE = XY;
-
-    //DISTANCE.consigne = 800 *  TICKS_PAR_MM;
-    //ORIENTATION.consigne = 0 * (ENTRAXE_TICKS / 2) * Pi / 180;
-
-    //X.consigne = 300 * TICKS_PAR_MM;
-    //Y.consigne = 300 * TICKS_PAR_MM;
-
     
-
+    FLAG_ASSERV.vitesse_fin_nulle = ON;
 
     reinit_asserv();
     reglage_PID();
@@ -100,50 +84,54 @@ void init_commande_moteur(void)
 
 void reinit_asserv(void)
 {
-    if (FLAG_ASSERV.vitesse_fin_nulle == OFF)
-    {
+
+    FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
+    FLAG_ASSERV.phase_deceleration_distance = PHASE_NORMAL;
+
+   // if (FLAG_ASSERV.vitesse_fin_nulle == ON)
+    //{
         FLAG_ASSERV.immobilite = 0;
 
-    DISTANCE.actuelle = 0;
-    DISTANCE.theorique = 0;
-    DISTANCE.consigne = 0;
-    //ORIENTATION.actuelle = 0;
-    ORIENTATION.theorique = 0;
-    ORIENTATION.consigne = 0;
+        DISTANCE.actuelle = 0;
+        DISTANCE.theorique = 0;
+        DISTANCE.consigne = 0;
+        //ORIENTATION.actuelle = 0;
+        ORIENTATION.theorique = 0;
+        ORIENTATION.consigne = 0;
 
-    ERREUR_DISTANCE.actuelle = 0;
-    ERREUR_DISTANCE.integralle = 0;
-    ERREUR_DISTANCE.precedente = 0;
+        ERREUR_DISTANCE.actuelle = 0;
+        ERREUR_DISTANCE.integralle = 0;
+        ERREUR_DISTANCE.precedente = 0;
 
-    ERREUR_ORIENTATION.actuelle = 0;
-    ERREUR_ORIENTATION.precedente = 0;
-    ERREUR_ORIENTATION.integralle = 0;
+        ERREUR_ORIENTATION.actuelle = 0;
+        ERREUR_ORIENTATION.precedente = 0;
+        ERREUR_ORIENTATION.integralle = 0;
 
-    ERREUR_VITESSE[ROUE_DROITE].actuelle = 0;
-    ERREUR_VITESSE[ROUE_DROITE].integralle = 0;
-    ERREUR_VITESSE[ROUE_DROITE].precedente = 0;
+        ERREUR_VITESSE[ROUE_DROITE].actuelle = 0;
+        ERREUR_VITESSE[ROUE_DROITE].integralle = 0;
+        ERREUR_VITESSE[ROUE_DROITE].precedente = 0;
 
-    ERREUR_VITESSE[ROUE_GAUCHE].actuelle = 0;
-    ERREUR_VITESSE[ROUE_GAUCHE].integralle = 0;
-    ERREUR_VITESSE[ROUE_GAUCHE].precedente = 0;
+        ERREUR_VITESSE[ROUE_GAUCHE].actuelle = 0;
+        ERREUR_VITESSE[ROUE_GAUCHE].integralle = 0;
+        ERREUR_VITESSE[ROUE_GAUCHE].precedente = 0;
 
 
-    VITESSE[ROUE_DROITE].actuelle = 0;
-    VITESSE[ROUE_DROITE].consigne = 0;
-    VITESSE[ROUE_DROITE].theorique = 0;
+        VITESSE[ROUE_DROITE].actuelle = 0;
+        VITESSE[ROUE_DROITE].consigne = 0;
+        VITESSE[ROUE_DROITE].theorique = 0;
 
-    VITESSE[ROUE_GAUCHE].actuelle = 0;
-    VITESSE[ROUE_GAUCHE].consigne = 0;
-    VITESSE[ROUE_GAUCHE].theorique = 0;
+        VITESSE[ROUE_GAUCHE].actuelle = 0;
+        VITESSE[ROUE_GAUCHE].consigne = 0;
+        VITESSE[ROUE_GAUCHE].theorique = 0;
 
-    VITESSE_ORIENTATION[ROUE_DROITE].actuelle = 0;
-    VITESSE_ORIENTATION[ROUE_DROITE].consigne = 0;
-    VITESSE_ORIENTATION[ROUE_DROITE].theorique = 0;
+        VITESSE_ORIENTATION[ROUE_DROITE].actuelle = 0;
+        VITESSE_ORIENTATION[ROUE_DROITE].consigne = 0;
+        VITESSE_ORIENTATION[ROUE_DROITE].theorique = 0;
 
-    VITESSE_ORIENTATION[ROUE_GAUCHE].actuelle = 0;
-    VITESSE_ORIENTATION[ROUE_GAUCHE].consigne = 0;
-    VITESSE_ORIENTATION[ROUE_GAUCHE].theorique = 0;
-    }
+        VITESSE_ORIENTATION[ROUE_GAUCHE].actuelle = 0;
+        VITESSE_ORIENTATION[ROUE_GAUCHE].consigne = 0;
+        VITESSE_ORIENTATION[ROUE_GAUCHE].theorique = 0;
+   // }
     PORTCbits.RC5 = 1;
 
     
@@ -264,14 +252,17 @@ void calcul_vitesse_orientation (double pourcentage_vitesse)
 {
     calcul_distance_consigne_XY();
 
-    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS * ORIENTATION.consigne / ORIENTATION_CONSIGNE_PAS;
-    //VITESSE_MAX_ORIENTATION /= ORIENTATION_CONSIGNE_PAS;
-   // VITESSE_MAX_ORIENTATION *= pourcentage_vitesse;
-    //VITESSE_MAX_ORIENTATION /= 100;
-    VITESSE_MAX_ORIENTATION *= pourcentage_vitesse / 100;
+    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS  * ORIENTATION.consigne; // / ORIENTATION_CONSIGNE_PAS;
+    VITESSE_MAX_ORIENTATION /= ORIENTATION_CONSIGNE_PAS;
+    VITESSE_MAX_ORIENTATION *= pourcentage_vitesse;
+    VITESSE_MAX_ORIENTATION /= 100;
+    //VITESSE_MAX_ORIENTATION *= pourcentage_vitesse / 100;
 
     if (VITESSE_MAX_ORIENTATION < 0)
         VITESSE_MAX_POSITION *= -1;
+
+    //if (VITESSE_MAX_ORIENTATION > VITESSE_ANGLE_PAS)
+    //    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
 }
 
 void calcul_acceleration_orientation (void)
@@ -407,6 +398,7 @@ void asserv()
 void asserv_distance(void)
 {
     static double distance_restante = 0;
+    static double temps_freinage, temps_restant;
     static int compteur = 0;
     
     calcul_distance_consigne_XY();
@@ -420,15 +412,26 @@ void asserv_distance(void)
         if (distance_restante > 0) 
         {
             VITESSE[SYS_ROBOT].consigne =  VITESSE_MAX_POSITION; //vmax
+            temps_freinage = VITESSE[SYS_ROBOT].theorique / (acc.deceleration.position/10);
         }
         else if (distance_restante < 0)
         {
             VITESSE[SYS_ROBOT].consigne = - VITESSE_MAX_POSITION; //Vmin //-120
+            temps_freinage = VITESSE[SYS_ROBOT].theorique / (acc.acceleration.position/10);
         }
 
+        //Génération de la courbe de freinage
+        temps_restant = distance_restante / VITESSE[SYS_ROBOT].theorique;
+
+        if (temps_freinage <0)
+            temps_freinage *= -1;
+        if (temps_restant <0)
+            temps_restant *= -1;
+
         // Si le robot doit freiner
-        if ((abs(VITESSE[SYS_ROBOT].theorique / (acc.deceleration.position/10) )) > abs(((distance_restante / VITESSE[SYS_ROBOT].theorique) ) )) //-20 = anticipation freinage
+        if (temps_freinage > temps_restant) //-20 = anticipation freinage
         {
+            FLAG_ASSERV.phase_deceleration_distance = EN_COURS;
             VITESSE[SYS_ROBOT].consigne = 0;
         }
     }
@@ -449,26 +452,26 @@ void asserv_distance(void)
 //Fonction qui génère les rampes de vitesse pour l'asserv en Distance
 void asserv_vitesse_distance (void)
 {
-    static int compteur = 0;
+    //static int compteur = 0;
 
-    if (compteur == 10)
-    {
-        compteur = 0;
+    //if (compteur == 10)
+    //{
+    //    compteur = 0;
 
         if (VITESSE[SYS_ROBOT].theorique < VITESSE[SYS_ROBOT].consigne)
-           VITESSE[SYS_ROBOT].theorique += acc.acceleration.position;
+           VITESSE[SYS_ROBOT].theorique += acc.acceleration.position/10;
             
 
         else if (VITESSE[SYS_ROBOT].theorique > VITESSE[SYS_ROBOT].consigne)
-            VITESSE[SYS_ROBOT].theorique -= acc.deceleration.position;
+            VITESSE[SYS_ROBOT].theorique -= acc.deceleration.position/10;
 
         saturation_vitesse_max(ASSERV_POSITION);
-    }
+    //}
     
      VITESSE[ROUE_DROITE].consigne += VITESSE[SYS_ROBOT].theorique;
      VITESSE[ROUE_GAUCHE].consigne += VITESSE[SYS_ROBOT].theorique;
 
-    compteur++;
+    //compteur++;
 }
 
 
@@ -476,11 +479,12 @@ void asserv_vitesse_distance (void)
 void asserv_orientation (void)
 {
     static double angle_restant = 0;
+    static double temps_freinage, temps_restant;
     static int32_t compteur  = 0;
 
     angle_restant = fonction_PID(ASSERV_ORIENTATION); 
 
-    if (abs(angle_restant) >  Pi / 180 * ENTRAXE_TICKS/2)//0.5 * SEUIL_ORIENTATION_MINI_PAS)
+    if (abs(angle_restant) >  Pi / 180 * ENTRAXE_TICKS/2)
     {
         compteur = 0;
         FLAG_ASSERV.etat_angle = EN_COURS;
@@ -488,15 +492,25 @@ void asserv_orientation (void)
         if (angle_restant > 0) //distance restante > 0
         {
             VITESSE_ORIENTATION[SYS_ROBOT].consigne =  VITESSE_MAX_ORIENTATION;
+            temps_freinage = VITESSE_ORIENTATION[SYS_ROBOT].theorique / (acc.deceleration.orientation/10);
         }
         else if (angle_restant < 0)
         {
             VITESSE_ORIENTATION[SYS_ROBOT].consigne = - VITESSE_MAX_ORIENTATION;
+            temps_freinage = VITESSE_ORIENTATION[SYS_ROBOT].theorique / (acc.acceleration.orientation/10);
         }
 
         //Génération de la courbe de freinage
-        if (abs((VITESSE_ORIENTATION[SYS_ROBOT].theorique / (acc.deceleration.orientation/10) ) > abs((angle_restant / VITESSE_ORIENTATION[SYS_ROBOT].theorique)) ) )
+        temps_restant = angle_restant / VITESSE_ORIENTATION[SYS_ROBOT].theorique;
+
+        if (temps_freinage <0)
+            temps_freinage *= -1;
+        if (temps_restant <0)
+            temps_restant *= -1;
+
+        if (temps_freinage > temps_restant)
         {
+            FLAG_ASSERV.phase_decelaration_orientation = EN_COURS;
             VITESSE_ORIENTATION[SYS_ROBOT].consigne = 0;
         }
     }
@@ -513,26 +527,25 @@ void asserv_orientation (void)
 //Fonction qui génère les rampes de Vitesse pour la rotation du robot
 void asserv_vitesse_orientation (void)
 {
-     static int compteur = 0;
-
-    if (compteur == 10)
+    //Si on a attaqué la phase de décélération, on ne permet plus de réaccélérer
+    if (FLAG_ASSERV.phase_decelaration_orientation == PHASE_NORMAL || VITESSE_ORIENTATION[SYS_ROBOT].consigne == 0 )
     {
-        compteur = 0;
-
-        if (VITESSE_ORIENTATION[SYS_ROBOT].theorique < VITESSE_ORIENTATION[SYS_ROBOT].consigne)
-           VITESSE_ORIENTATION[SYS_ROBOT].theorique += acc.acceleration.orientation;
+         if (VITESSE_ORIENTATION[SYS_ROBOT].theorique < VITESSE_ORIENTATION[SYS_ROBOT].consigne)
+            VITESSE_ORIENTATION[SYS_ROBOT].theorique += acc.acceleration.orientation;
 
 
         else if (VITESSE_ORIENTATION[SYS_ROBOT].theorique > VITESSE_ORIENTATION[SYS_ROBOT].consigne)
             VITESSE_ORIENTATION[SYS_ROBOT].theorique -= acc.deceleration.orientation;
 
-        saturation_vitesse_max(ASSERV_ORIENTATION);
+         saturation_vitesse_max(ASSERV_ORIENTATION);
+
+         //débloquage de la l'interdiction d'acceleration si on arrive à une consigne nulle pour enlever l'erreur statiqye
+        // if (VITESSE_ORIENTATION[SYS_ROBOT].theorique == 0)
+        //     FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
     }
 
      VITESSE[ROUE_DROITE].consigne += VITESSE_ORIENTATION[SYS_ROBOT].theorique;
      VITESSE[ROUE_GAUCHE].consigne -= VITESSE_ORIENTATION[SYS_ROBOT].theorique;
-
-    compteur++;
 }
 
 /******************************************************************************/
