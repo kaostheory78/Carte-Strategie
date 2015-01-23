@@ -37,14 +37,21 @@
 
 #define ASSERV_VITESSE_DISTANCE     0
 #define ASSERV_POSITION             1
-#define ASSERV_ORIENTATION          2 
+#define ASSERV_ORIENTATION          2
+#define KP_HYBRIDE                  3
+
+#define MARCHE_AVANT                1
+#define MARCHE_ARRIERE              -1
+
+#define ORIENTER                    0
+#define AVANCER                     1
 
 #define DEBUT_DEPLACEMENT           0
 #define FIN_DEPLACEMENT             1
 #define ANGLE_ATTEINT               2
-#define DISTANCE_ATTEINTE           3
-#define EN_COURS                    4
-#define PHASE_NORMAL                5
+#define DISTANCE_ATTEINTE           4
+#define EN_COURS                    6
+#define PHASE_NORMAL                7
 
 #define MM                          1
 #define XY                          2
@@ -59,6 +66,8 @@
 #define VITESSE_DIS_KI              _VITESSE_DIS_KI
 #define VITESSE_DIS_KD              _VITESSE_DIS_KD
 
+#define MAX_ERREUR_INTEGRALLE_V     2000
+
 #define POSITION_KP                 _POSITION_KP
 #define POSITION_KI                 _POSITION_KI
 #define POSITION_KD                 _POSITION_KD
@@ -66,9 +75,6 @@
 #define ORIENTATION_KP              _ORIENTATION_KP
 #define ORIENTATION_KI              _ORIENTATION_KI
 #define ORIENTATION_KD              _ORIENTATION_KD
-
-#define KP_HYBRIDE                  _KP_HYBRIDE
-
 
 /******************************************************************************/
 /************************* CONTRAINTES MECANIQUES *****************************/
@@ -178,8 +184,11 @@
         char position;
         char vitesse;
         char orientation;
+        char brake;
+        char sens_deplacement;
         char etat_angle;
         char etat_distance;
+        char type_deplacement;
         char fin_deplacement;
         char vitesse_fin_nulle;
         char phase_decelaration_orientation;

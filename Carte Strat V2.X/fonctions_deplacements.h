@@ -38,13 +38,13 @@ extern "C" {
 /****************************** Prototypes ************************************/
 /******************************************************************************/
 
-    void cibler (double x, double y);
-    void rejoindre (double x, double y);
+    void cibler (double x, double y, double pourcentage_vitesse);
+    void rejoindre (double x, double y, double pourcentage_vitesse);
     void orienter (double angle, double pourcentage);
     void avancer_reculer (double distance, double pourcentage_vitesse);
     void passe_part (double x, double y);
     void passe_part2 (double x, double y);
-    void _rejoindre (double x, double y, char vitesse_fin_deplacement_nulle);
+    void _rejoindre (double x, double y, double pourcentage_vitesse, char vitesse_fin_deplacement_nulle);
 
 
 #ifdef	__cplusplus

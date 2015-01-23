@@ -116,6 +116,8 @@ extern "C" {
     extern _position position[3];
     extern _robot ROBOT;
 
+    extern _acc acc;
+
     extern _PID PID;
 
     extern _flag_asserv FLAG_ASSERV;

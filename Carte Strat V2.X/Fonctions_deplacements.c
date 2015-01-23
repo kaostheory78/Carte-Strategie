@@ -18,7 +18,7 @@
 
 #include "system.h"
 
-void cibler (double x, double y)
+void cibler (double x, double y, double pourcentage_vitesse)
 {
     reinit_asserv();
 
@@ -80,19 +80,27 @@ void orienter (double angle, double pourcentage_vitesse)
 }
 
 
-void rejoindre (double x, double y)
+void rejoindre (double x, double y, double pourcentage_vitesse)
 {
-    _rejoindre(x, y, ON);
+    _rejoindre(x, y, pourcentage_vitesse, ON);
 }
 
-void _rejoindre (double x, double y, char vitesse_fin_deplacement_nulle)
+void _rejoindre (double x, double y, double pourcentage_vitesse, char vitesse_fin_deplacement_nulle)
 {
     reinit_asserv();
+    FLAG_ASSERV.brake = OFF;
 
     X.consigne = x * TICKS_PAR_MM;
     Y.consigne = y * TICKS_PAR_MM;
 
     TYPE_CONSIGNE = XY;
+
+    calcul_vitesse_position(pourcentage_vitesse);
+    calcul_acceleration_position();
+
+    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
+    acc.acceleration.orientation = DCC_ORIENTATION_CONSIGNE;
+    acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
 
     FLAG_ASSERV.position = ON;
     FLAG_ASSERV.orientation = ON;
@@ -100,6 +108,7 @@ void _rejoindre (double x, double y, char vitesse_fin_deplacement_nulle)
 
     FLAG_ASSERV.etat_angle = EN_COURS;
     FLAG_ASSERV.etat_distance = EN_COURS;
+    FLAG_ASSERV.type_deplacement = AVANCER;
     FLAG_ASSERV.vitesse_fin_nulle = vitesse_fin_deplacement_nulle;
 
     FLAG_ASSERV.immobilite = 0;
@@ -134,7 +143,7 @@ void avancer_reculer (double distance, double pourcentage_vitesse)
 
 void passe_part (double x, double y)
 {
-    _rejoindre(x, y, OFF);
+    //_rejoindre(x, y, OFF);
 }
 
 void passe_part2 (double x, double y)

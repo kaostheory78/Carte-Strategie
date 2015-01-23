@@ -66,9 +66,6 @@ extern "C" {
     #define _ORIENTATION_KI              0.
     #define _ORIENTATION_KD              0.
 
-    #define _KP_HYBRIDE                  25.
-
-
     //Tensions d'alimentations
     #define _TENSION_MOTEUR_DROIT        24L
     #define _TENSION_MOTEUR_GAUCHE       24L
@@ -118,9 +115,6 @@ extern "C" {
     #define _ORIENTATION_KP              1.
     #define _ORIENTATION_KI              0.
     #define _ORIENTATION_KD              0.
-
-    #define _KP_HYBRIDE                  25
-
 
     //Tensions cartes
     #define _TENSION_MOTEUR_DROIT        12L
