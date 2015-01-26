@@ -40,8 +40,8 @@ extern "C" {
     #define _VITESSE_CONSIGNE_MAX_MM     3.
     #define _DISTANCE_CONSIGNE_MM        50.
 
-    #define _ACC_POSITION_CONSIGNE       20.
-    #define _DCC_POSITION_CONSIGNE       40.
+    #define _ACC_POSITION_CONSIGNE       2.
+    #define _DCC_POSITION_CONSIGNE       4.
 
         //Association Angle - Vitesse - Accélérations max
     #define _VITESSE_ANGLE_MAX           0.02

@@ -151,9 +151,6 @@ int main(int argc, char** argv)
 
     init_flag();
 
-
-    //rejoindre(-1000, 0);
-
     /*cibler(500, 0);
     rejoindre(500, 0);
     cibler(500, 500);
@@ -166,12 +163,6 @@ int main(int argc, char** argv)
     cibler(250, 0);*/
 
 
-
-    //orienter(180, 100);
-    //orienter(180);
-    //orienter (-90);
-    //orienter(0);
-
    /* avancer_reculer(1500, 100);
     orienter(90, 100);
     avancer_reculer(500, 100);
@@ -183,19 +174,7 @@ int main(int argc, char** argv)
     avancer_reculer(-500, 100);*/
 
     rejoindre(-1000, 0, 100);
-
-    //orienter (90, 100);
-    //orienter (180, 100);
-   // orienter (-10, 100);
-    //orienter (0, 100);
-
-    //delay_ms(500);
-
-   /* cibler(0, -500);
-    cibler(0, 500);
-    cibler(0, -500);
-    cibler(0, 500);
-    cibler(0, -500);*/
+    //brake();
 
 
     while(1);
