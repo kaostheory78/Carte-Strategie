@@ -66,6 +66,10 @@ extern "C" {
     #define _ORIENTATION_KI              0.
     #define _ORIENTATION_KD              0.
 
+    #define KP_BRAKE                    0.05
+    #define KI_BRAKE                    0.0001
+    #define KD_BRAKE                    0.5
+
     //Tensions d'alimentations
     #define _TENSION_MOTEUR_DROIT        24L
     #define _TENSION_MOTEUR_GAUCHE       24L

@@ -25,6 +25,7 @@ double VITESSE_MAX_ORIENTATION;
 double VITESSE_MAX_POSITION;
 
 _systeme_asserv X, Y;
+_systeme_asserv BRAKE[2];
 _systeme_asserv DISTANCE;
 _systeme_asserv ORIENTATION;
 _systeme_asserv VITESSE_ORIENTATION[3];
@@ -35,6 +36,7 @@ _acc acc;
 _erreur ERREUR_DISTANCE;
 _erreur ERREUR_VITESSE[2];
 _erreur ERREUR_ORIENTATION;
+_erreur ERREUR_BRAKE[2];
 
 _commande_moteur COMMANDE;
 
@@ -87,6 +89,7 @@ void init_commande_moteur(void)
 void reinit_asserv(void)
 {
 
+    FLAG_ASSERV.brake = OFF;
     FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
     FLAG_ASSERV.phase_deceleration_distance = PHASE_NORMAL;
 
@@ -117,6 +120,16 @@ void reinit_asserv(void)
         ERREUR_VITESSE[ROUE_GAUCHE].integralle = 0;
         ERREUR_VITESSE[ROUE_GAUCHE].precedente = 0;
 
+        ERREUR_BRAKE[ROUE_DROITE].actuelle = 0;
+        ERREUR_BRAKE[ROUE_DROITE].integralle = 0;
+        ERREUR_BRAKE[ROUE_DROITE].precedente = 0;
+
+        ERREUR_BRAKE[ROUE_GAUCHE].actuelle = 0;
+        ERREUR_BRAKE[ROUE_GAUCHE].integralle = 0;
+        ERREUR_BRAKE[ROUE_GAUCHE].precedente = 0;
+
+        BRAKE[ROUE_DROITE].actuelle = 0;
+        BRAKE[ROUE_GAUCHE].actuelle = 0;
 
         VITESSE[ROUE_DROITE].actuelle = 0;
         VITESSE[ROUE_DROITE].consigne = 0;
@@ -348,11 +361,6 @@ void calcul_distance_consigne_XY (void)
 void brake(void)
 {
     reinit_asserv();
-    TYPE_CONSIGNE = MM;
-
-    DISTANCE.consigne = 0;
-    ORIENTATION.consigne = ORIENTATION.actuelle;
-
     FLAG_ASSERV.brake = ON;
 }
 
@@ -365,10 +373,10 @@ void asserv()
 
  
     //Fonction de sortie de l'asserv, vérifie que le robot est bien a sa position.
-    if (FLAG_ASSERV.etat_angle == ANGLE_ATTEINT && FLAG_ASSERV.etat_distance == DISTANCE_ATTEINTE)
-    {   
-        FLAG_ASSERV.immobilite ++;
+    if (FLAG_ASSERV.etat_angle == ANGLE_ATTEINT && FLAG_ASSERV.etat_distance == DISTANCE_ATTEINTE && FLAG_ASSERV.fin_deplacement != FIN_DEPLACEMENT)
+    {
         PORTCbits.RC5 = 0;
+        FLAG_ASSERV.immobilite ++;
 
         if (FLAG_ASSERV.vitesse_fin_nulle == ON && FLAG_ASSERV.brake == OFF)
             brake();
@@ -400,20 +408,20 @@ void asserv()
                     asserv_vitesse_orientation();
             }
         }
-        else if (FLAG_ASSERV.brake == ON)
-        {
-            asserv_distance();
-            //asserv_orientation();
-            asserv_vitesse_distance();
-            //asserv_vitesse_orientation();
-        }
+
         
        
         //Réinitialisation des commandes moteurs à 0
         init_commande_moteur();
 
-        //Calcul des consignes moteurs gauche et droit, asserv indispendable
-        fonction_PID(ASSERV_VITESSE_DISTANCE);
+        if (FLAG_ASSERV.brake == OFF)
+        {
+            //Calcul des consignes moteurs gauche et droit, asserv indispendable
+            fonction_PID(ASSERV_VITESSE_DISTANCE);
+        }
+        else
+            asserv_brake();
+        
         ecretage_consignes();
 
         //envoit sur les moteurs
@@ -430,36 +438,29 @@ void asserv()
 
 }
 
-void asserv_distance_brake(void)
+void asserv_brake(void)
 {
-    static double temps_freinage, temps_restant;
+    ERREUR_BRAKE[ROUE_DROITE].actuelle = BRAKE[ROUE_DROITE].actuelle;
+    ERREUR_BRAKE[ROUE_GAUCHE].actuelle = BRAKE[ROUE_GAUCHE].actuelle;
 
-    if (DISTANCE.actuelle < 0)
-    {
-        VITESSE[SYS_ROBOT].consigne =  VITESSE_MAX_POSITION; //vmax
-        temps_freinage = VITESSE[SYS_ROBOT].theorique / (DCC_POSITION_CONSIGNE);
-    }
-    else if (DISTANCE.actuelle > 0)
-    {
-        VITESSE[SYS_ROBOT].consigne = - VITESSE_MAX_POSITION; //Vmin //-120
-        temps_freinage = VITESSE[SYS_ROBOT].theorique / (DCC_POSITION_CONSIGNE);
-    }
+    ERREUR_BRAKE[ROUE_DROITE].integralle += ERREUR_BRAKE[ROUE_DROITE].actuelle;
+    ERREUR_BRAKE[ROUE_GAUCHE].integralle += ERREUR_BRAKE[ROUE_GAUCHE].actuelle;
 
-    //Génération de la courbe de freinage
-    temps_restant = DISTANCE.actuelle / VITESSE[SYS_ROBOT].theorique;
+    if (ERREUR_BRAKE[ROUE_DROITE].integralle > 500)
+        ERREUR_BRAKE[ROUE_DROITE].integralle = 500;
+    if (ERREUR_BRAKE[ROUE_GAUCHE].integralle > 500)
+        ERREUR_BRAKE[ROUE_GAUCHE].integralle = 500;
 
-    if (temps_freinage <0)
-        temps_freinage *= -1;
-    if (temps_restant <0)
-        temps_restant *= -1;
+    if (ERREUR_BRAKE[ROUE_DROITE].integralle < -500)
+        ERREUR_BRAKE[ROUE_DROITE].integralle = -500;
+    if (ERREUR_BRAKE[ROUE_GAUCHE].integralle < -500)
+        ERREUR_BRAKE[ROUE_GAUCHE].integralle = -500;
 
-    if (temps_freinage > temps_restant) //-20 = anticipation freinage
-    {
+    COMMANDE.droit  =  ERREUR_BRAKE[ROUE_DROITE].actuelle * KP_BRAKE + ERREUR_BRAKE[ROUE_DROITE].integralle * KI_BRAKE + (ERREUR_BRAKE[ROUE_DROITE].actuelle - ERREUR_BRAKE[ROUE_DROITE].precedente ) * KD_BRAKE;
+    COMMANDE.gauche =  ERREUR_BRAKE[ROUE_GAUCHE].actuelle * KP_BRAKE + ERREUR_BRAKE[ROUE_GAUCHE].integralle * KI_BRAKE + (ERREUR_BRAKE[ROUE_GAUCHE].actuelle - ERREUR_BRAKE[ROUE_GAUCHE].precedente ) * KD_BRAKE;
 
-
-    }
-
-
+    ERREUR_BRAKE[ROUE_DROITE].precedente = ERREUR_BRAKE[ROUE_DROITE].actuelle;
+    ERREUR_BRAKE[ROUE_GAUCHE].precedente = ERREUR_BRAKE[ROUE_GAUCHE].actuelle;
 }
 
 // Fonction qui gère l'asserv de Distance, donne les consignes pour générer les rampes
@@ -467,30 +468,19 @@ void asserv_distance(void)
 {
     static double distance_restante = 0;
     static double temps_freinage, temps_restant;
-    static int compteur = 0;
     
     calcul_distance_consigne_XY();
     distance_restante = fonction_PID(ASSERV_POSITION);
 
-    if (TYPE_CONSIGNE == MM)
-    {
-        if (distance_restante < 0)
-            FLAG_ASSERV.sens_deplacement = MARCHE_ARRIERE;
-        else
-            FLAG_ASSERV.sens_deplacement = MARCHE_AVANT;
-    }
-
-
-    if ((FLAG_ASSERV.sens_deplacement * distance_restante > 2 * TICKS_PAR_MM) || FLAG_ASSERV.brake == ON)
+    if ((FLAG_ASSERV.sens_deplacement * distance_restante > 2 * TICKS_PAR_MM))
     {
         //si on se trouve dans un cercle de 5 cm autour du point d'arrivé
-        if (FLAG_ASSERV.sens_deplacement * distance_restante < 10 * TICKS_PAR_MM && FLAG_ASSERV.brake == OFF) //100
+        if (FLAG_ASSERV.sens_deplacement * distance_restante < 10 * TICKS_PAR_MM) //100
         {
+            FLAG_ASSERV.orientation = OFF;
             //SI on s'éloigne de notre consigne on s'arrête
             if (ERREUR_DISTANCE.actuelle > ERREUR_DISTANCE.precedente)
             {
-                //VITESSE[SYS_ROBOT].theorique = 0;
-                //VITESSE_ORIENTATION[SYS_ROBOT].theorique = 0;
                 FLAG_ASSERV.position = OFF;
                 FLAG_ASSERV.orientation = OFF;
                 FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
@@ -498,9 +488,8 @@ void asserv_distance(void)
                 return;
             }
         }
-        //compteur = 0;
-        FLAG_ASSERV.etat_distance = EN_COURS;
 
+        FLAG_ASSERV.etat_distance = EN_COURS;
         if (distance_restante > 0)
         {
             VITESSE[SYS_ROBOT].consigne =  VITESSE_MAX_POSITION; //vmax
@@ -523,26 +512,20 @@ void asserv_distance(void)
         // Si le robot doit freiner
         if (temps_freinage > temps_restant) //-20 = anticipation freinage
         {
-            if (FLAG_ASSERV.brake == ON)
-                FLAG_ASSERV.phase_deceleration_distance = EN_COURS;
+            FLAG_ASSERV.phase_deceleration_distance = EN_COURS;
             VITESSE[SYS_ROBOT].consigne = 0;
         }
 
     }
     // Si on arrive à 2mm du point et que l'on veut une vitesse d'arrêt nulle
-    else if (FLAG_ASSERV.vitesse_fin_nulle == ON && FLAG_ASSERV.brake == OFF)
+    else if (FLAG_ASSERV.vitesse_fin_nulle == ON)
     {
-        VITESSE[SYS_ROBOT].theorique = 0;
-        VITESSE_ORIENTATION[SYS_ROBOT].theorique = 0;
-        //compteur ++;
-        //if (compteur == 50)
-            FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
-            FLAG_ASSERV.position = OFF;
-            FLAG_ASSERV.orientation = OFF;
-            FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
-
+        FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
+        FLAG_ASSERV.position = OFF;
+        FLAG_ASSERV.orientation = OFF;
+        FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
     }
-    else if (FLAG_ASSERV.brake == OFF)//Sinon on passe au déplacement suivant sans arrêt
+    else //Sinon on passe au déplacement suivant sans arrêt
     {
         FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
     }
@@ -561,7 +544,10 @@ void asserv_vitesse_distance (void)
 
         saturation_vitesse_max(ASSERV_POSITION);
     }
-    fonction_PID(KP_HYBRIDE);
+    if (FLAG_ASSERV.brake == OFF)
+        fonction_PID(KP_HYBRIDE);
+    else
+        KP_hybride = 1;
     
      VITESSE[ROUE_DROITE].consigne += VITESSE[SYS_ROBOT].theorique * KP_hybride;
      VITESSE[ROUE_GAUCHE].consigne += VITESSE[SYS_ROBOT].theorique * KP_hybride;
@@ -577,12 +563,11 @@ void asserv_orientation (void)
 
     angle_restant = fonction_PID(ASSERV_ORIENTATION); 
 
-    if (abs(angle_restant) >  Pi / 180 * ENTRAXE_TICKS || FLAG_ASSERV.brake == ON) //2°
+    if ( (angle_restant >  Pi / 180 * ENTRAXE_TICKS) || (angle_restant < - Pi / 180 * ENTRAXE_TICKS)) //2°
     {
-        //compteur = 0;
         FLAG_ASSERV.etat_angle = EN_COURS;
 
-        if (angle_restant > 0) //distance restante > 0
+        if (angle_restant > 0) 
         {
             VITESSE_ORIENTATION[SYS_ROBOT].consigne =  VITESSE_MAX_ORIENTATION;
             temps_freinage = VITESSE_ORIENTATION[SYS_ROBOT].theorique / (acc.deceleration.orientation);
@@ -604,17 +589,13 @@ void asserv_orientation (void)
         if (temps_freinage > temps_restant)
         {
             FLAG_ASSERV.phase_decelaration_orientation = EN_COURS;
-            if (FLAG_ASSERV.brake == OFF)
-                VITESSE_ORIENTATION[SYS_ROBOT].consigne = 0;
+            VITESSE_ORIENTATION[SYS_ROBOT].consigne = 0;
         }
     }
-    else if (FLAG_ASSERV.brake == OFF)//(FLAG_ASSERV.vitesse_fin_nulle == ON)
+    else //(FLAG_ASSERV.vitesse_fin_nulle == ON)
     {
-            //compteur ++;
-        VITESSE_ORIENTATION[SYS_ROBOT].theorique = 0;
-            //if (compteur == 50)
-                FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
-                FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
+        FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
+        FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
     }
 }
 
@@ -749,6 +730,12 @@ void calcul_position_robot (void)
     //calcul des modifs
     delta_o = (position[CODEUR_D].ecart - position[CODEUR_G].ecart) /2;
     delta_d = (int32_t) (position[CODEUR_D].ecart + position[CODEUR_G].ecart) /2;
+
+    if (FLAG_ASSERV.brake == ON)
+    {
+        BRAKE[ROUE_DROITE].actuelle -= position[CODEUR_D].ecart;
+        BRAKE[ROUE_GAUCHE].actuelle -= position[CODEUR_G].ecart;
+    }
 
     //cumul des valeurs pour l'asserv
     DISTANCE.actuelle += (double) delta_d;

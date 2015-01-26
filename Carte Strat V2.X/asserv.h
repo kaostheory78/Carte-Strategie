@@ -218,6 +218,9 @@
 /******************************************************************************/
 /******************************************************************************/    
 
+void asserv_brake(void);
+
+void brake();
 
  void saturation_vitesse_max (unsigned char type);
  void saturation_erreur_integralle_vitesse (void);
