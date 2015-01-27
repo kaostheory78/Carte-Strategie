@@ -151,29 +151,45 @@ int main(int argc, char** argv)
 
     init_flag();
 
-    /*cibler(500, 0);
-    rejoindre(500, 0);
-    cibler(500, 500);
+    /*//cibler(500, 0, 100);
+    rejoindre(500, 0, 100);
+    orienter (90, 100);
+    //cibler(500, 500, 100);
 
-    rejoindre (500, 500);
-    cibler (0, 500);
-    rejoindre (0, 500);
-    cibler (0, 0);
-    rejoindre(0, 0);
-    cibler(250, 0);*/
+    rejoindre (500, 500, 100);
+    orienter(180, 100);
+    //cibler (0, 500, 100);
+    rejoindre (0, 500, 100);
+    orienter(-90, 100);
+    //cibler (0, 0, 100);
+    rejoindre(0, 0, 100);
+    orienter(0, 100);
+    //cibler(250, 0, 100);*/
+
+    passe_part(500, 0, 100);
+    passe_part2 (500, 500, 100, OFF);
+    passe_part2 (0, 500, 100, OFF);
+    passe_part2(0, 0, 100, ON);
 
 
-   /* avancer_reculer(1500, 100);
+    /*avancer_reculer(1500, 100);
     orienter(90, 100);
     avancer_reculer(500, 100);
     orienter(180, 100);
     avancer_reculer (1000, 100);
     orienter(-90, 100);
     avancer_reculer (500, 100);
-    orienter(1, 100);
+    orienter(0, 100);
     avancer_reculer(-500, 100);*/
 
-    rejoindre(-1000, 0, 100);
+    /*orienter(180, 100);
+    orienter(170, 100);
+    orienter (-170, 100);
+    orienter(0, 100);*/
+
+
+
+    //rejoindre(-500, 0, 100);
     //brake();
 
 

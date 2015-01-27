@@ -21,6 +21,8 @@
 void cibler (double x, double y, double pourcentage_vitesse)
 {
     FLAG_ASSERV.brake = OFF;
+    delay_ms(10);
+
     reinit_asserv();
 
     x *= TICKS_PAR_MM;
@@ -52,16 +54,13 @@ void cibler (double x, double y, double pourcentage_vitesse)
 void orienter (double angle, double pourcentage_vitesse)
 {
     FLAG_ASSERV.brake = OFF;
+    delay_ms(10);
+
     reinit_asserv();
     
     TYPE_CONSIGNE = MM;
 
     ORIENTATION.consigne = (angle * Pi)/ 180 * (ENTRAXE_TICKS/2);
-
-    /*    while((ORIENTATION.consigne) > Pi * ENTRAXE_TICKS/2)
-            ORIENTATION.consigne -= Pi * ENTRAXE_TICKS;
-        while (ORIENTATION.consigne < - Pi * ENTRAXE_TICKS/2)
-            ORIENTATION.consigne += Pi * ENTRAXE_TICKS;*/
 
     calcul_vitesse_orientation(pourcentage_vitesse);
     calcul_acceleration_orientation();
@@ -87,18 +86,13 @@ void rejoindre (double x, double y, double pourcentage_vitesse)
 
 void _rejoindre (double x, double y, double pourcentage_vitesse, char vitesse_fin_deplacement_nulle)
 {
-    static double orientation_debut;
     FLAG_ASSERV.brake = OFF;
+    delay_ms(10);
 
     reinit_asserv();
     
     X.consigne = x * TICKS_PAR_MM;
     Y.consigne = y * TICKS_PAR_MM;
-
-    if ((Y.consigne - Y.actuelle) != 0 || (X.consigne - X.actuelle) != 0 )
-    {
-        orientation_debut =  atan2((Y.consigne - Y.actuelle), (X.consigne - X.actuelle)) * ENTRAXE_TICKS/2 * 180/Pi;
-    }
 
     TYPE_CONSIGNE = XY;
 
@@ -106,7 +100,7 @@ void _rejoindre (double x, double y, double pourcentage_vitesse, char vitesse_fi
     calcul_acceleration_position();
 
     VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
-    acc.acceleration.orientation = DCC_ORIENTATION_CONSIGNE;
+    acc.acceleration.orientation = ACC_ORIENTATION_CONSIGNE;
     acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
 
     FLAG_ASSERV.position = ON;
@@ -124,17 +118,22 @@ void _rejoindre (double x, double y, double pourcentage_vitesse, char vitesse_fi
     FLAG_ASSERV.fin_deplacement = DEBUT_DEPLACEMENT;
     while (FLAG_ASSERV.fin_deplacement != FIN_DEPLACEMENT);
     
-    orienter(orientation_debut, 100);
+    //orienter(orientation_debut, 100);
 
 }
 
 void avancer_reculer (double distance, double pourcentage_vitesse)
 {
+    FLAG_ASSERV.brake = OFF;
     reinit_asserv();
 
     TYPE_CONSIGNE = MM;
 
     DISTANCE.consigne = distance * TICKS_PAR_MM;
+    if (distance < 0)
+        FLAG_ASSERV.sens_deplacement = MARCHE_ARRIERE;
+    else
+        FLAG_ASSERV.sens_deplacement = MARCHE_AVANT;
 
     calcul_vitesse_position(pourcentage_vitesse);
     calcul_acceleration_position();
@@ -151,18 +150,31 @@ void avancer_reculer (double distance, double pourcentage_vitesse)
     while (FLAG_ASSERV.fin_deplacement != FIN_DEPLACEMENT);
 }
 
-void passe_part (double x, double y)
+void passe_part (double x, double y, double pourcentage_vitesse)
 {
-    //_rejoindre(x, y, OFF);
+    _rejoindre(x, y, pourcentage_vitesse, OFF);
 }
 
-void passe_part2 (double x, double y)
+void passe_part2 (double x, double y, double pourcentage_vitesse, char last)
 {
+    reinit_asserv();
     X.consigne = x * TICKS_PAR_MM;
     Y.consigne = y * TICKS_PAR_MM;
 
+    calcul_vitesse_position(pourcentage_vitesse);
+    calcul_acceleration_position();
+
+    FLAG_ASSERV.position = ON;
+    FLAG_ASSERV.orientation = ON;
+    FLAG_ASSERV.vitesse = ON;
+    FLAG_ASSERV.phase_deceleration_distance = PHASE_NORMAL;
+    FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
+
     FLAG_ASSERV.etat_angle = EN_COURS;
     FLAG_ASSERV.etat_distance = EN_COURS;
+
+    if (last == ON)
+        FLAG_ASSERV.vitesse_fin_nulle = ON;
 
     FLAG_ASSERV.fin_deplacement = DEBUT_DEPLACEMENT;
     while (FLAG_ASSERV.fin_deplacement != FIN_DEPLACEMENT);

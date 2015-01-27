@@ -288,7 +288,8 @@ void calcul_vitesse_orientation (double pourcentage_vitesse)
     VITESSE_MAX_ORIENTATION *= pourcentage_vitesse;
     VITESSE_MAX_ORIENTATION /= 100;
 
-    VITESSE_MAX_ORIENTATION = abs(VITESSE_MAX_ORIENTATION);
+    if (VITESSE_MAX_ORIENTATION < 0)
+        VITESSE_MAX_ORIENTATION *= - 1;
 }
 
 void calcul_acceleration_orientation (void)
@@ -396,7 +397,7 @@ void asserv()
             {
                 asserv_distance();
             }
-            if(FLAG_ASSERV.orientation == ON)
+            if (FLAG_ASSERV.orientation == ON)
             {
                 asserv_orientation();
             }
@@ -424,9 +425,12 @@ void asserv()
         
         ecretage_consignes();
 
-        //envoit sur les moteurs
-        envoit_pwm(MOTEUR_DROIT, (int32_t) COMMANDE.droit);
-        envoit_pwm(MOTEUR_GAUCHE, (int32_t) COMMANDE.gauche);
+        if (FLAG_ASSERV.vitesse_fin_nulle == ON || FLAG_ASSERV.fin_deplacement != FIN_DEPLACEMENT)
+        {
+            //envoit sur les moteurs
+            envoit_pwm(MOTEUR_DROIT, (int32_t) COMMANDE.droit);
+            envoit_pwm(MOTEUR_GAUCHE, (int32_t) COMMANDE.gauche);
+        }
     }
     else
     {
@@ -475,7 +479,7 @@ void asserv_distance(void)
     if ((FLAG_ASSERV.sens_deplacement * distance_restante > 2 * TICKS_PAR_MM))
     {
         //si on se trouve dans un cercle de 5 cm autour du point d'arrivé
-        if (FLAG_ASSERV.sens_deplacement * distance_restante < 10 * TICKS_PAR_MM) //100
+        if (FLAG_ASSERV.sens_deplacement * distance_restante < 20 * TICKS_PAR_MM) //100
         {
             FLAG_ASSERV.orientation = OFF;
             //SI on s'éloigne de notre consigne on s'arrête
@@ -485,6 +489,10 @@ void asserv_distance(void)
                 FLAG_ASSERV.orientation = OFF;
                 FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
                 FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
+
+                if (FLAG_ASSERV.vitesse_fin_nulle == OFF)
+                    FLAG_ASSERV.fin_deplacement = FIN_DEPLACEMENT;
+                
                 return;
             }
         }
@@ -502,33 +510,37 @@ void asserv_distance(void)
         }
 
         //Génération de la courbe de freinage
-        temps_restant = distance_restante / VITESSE[SYS_ROBOT].theorique;
-
-        if (temps_freinage <0)
-            temps_freinage *= -1;
-        if (temps_restant <0)
-            temps_restant *= -1;
-
-        // Si le robot doit freiner
-        if (temps_freinage > temps_restant) //-20 = anticipation freinage
+        if (FLAG_ASSERV.vitesse_fin_nulle == ON)
         {
-            FLAG_ASSERV.phase_deceleration_distance = EN_COURS;
-            VITESSE[SYS_ROBOT].consigne = 0;
+            temps_restant = distance_restante / VITESSE[SYS_ROBOT].theorique;
+
+            if (temps_freinage <0)
+                temps_freinage *= -1;
+            if (temps_restant <0)
+                temps_restant *= -1;
+
+            // Si le robot doit freiner
+            if (temps_freinage > temps_restant) //-20 = anticipation freinage
+            {
+                FLAG_ASSERV.phase_deceleration_distance = EN_COURS;
+                VITESSE[SYS_ROBOT].consigne = 0;
+            }
         }
+        
 
     }
     // Si on arrive à 2mm du point et que l'on veut une vitesse d'arrêt nulle
-    else if (FLAG_ASSERV.vitesse_fin_nulle == ON)
+    else //if (FLAG_ASSERV.vitesse_fin_nulle == ON)
     {
         FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
         FLAG_ASSERV.position = OFF;
         FLAG_ASSERV.orientation = OFF;
         FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
     }
-    else //Sinon on passe au déplacement suivant sans arrêt
+   /* else //Sinon on passe au déplacement suivant sans arrêt
     {
-        FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
-    }
+        FLAG_ASSERV.etat_distance = FIN_DEPLACEMENT;
+    }*/
        
 }
 
@@ -544,13 +556,18 @@ void asserv_vitesse_distance (void)
 
         saturation_vitesse_max(ASSERV_POSITION);
     }
-    if (FLAG_ASSERV.brake == OFF)
-        fonction_PID(KP_HYBRIDE);
-    else
-        KP_hybride = 1;
     
-     VITESSE[ROUE_DROITE].consigne += VITESSE[SYS_ROBOT].theorique * KP_hybride;
-     VITESSE[ROUE_GAUCHE].consigne += VITESSE[SYS_ROBOT].theorique * KP_hybride;
+    if (FLAG_ASSERV.orientation == ON)
+    {
+        fonction_PID(KP_HYBRIDE);
+        VITESSE[ROUE_DROITE].consigne += VITESSE[SYS_ROBOT].theorique * KP_hybride;
+        VITESSE[ROUE_GAUCHE].consigne += VITESSE[SYS_ROBOT].theorique * KP_hybride;
+    }
+    else
+    {
+        VITESSE[ROUE_DROITE].consigne += VITESSE[SYS_ROBOT].theorique;
+        VITESSE[ROUE_GAUCHE].consigne += VITESSE[SYS_ROBOT].theorique;
+    }
 }
 
 
@@ -563,7 +580,7 @@ void asserv_orientation (void)
 
     angle_restant = fonction_PID(ASSERV_ORIENTATION); 
 
-    if ( (angle_restant >  Pi / 180 * ENTRAXE_TICKS) || (angle_restant < - Pi / 180 * ENTRAXE_TICKS)) //2°
+    if ( (angle_restant >  0.1 * Pi / 180 * ENTRAXE_TICKS) || (angle_restant < - 0.1 * Pi / 180 * ENTRAXE_TICKS ))//|| FLAG_ASSERV.position == ON)) //2°
     {
         FLAG_ASSERV.etat_angle = EN_COURS;
 
@@ -594,6 +611,7 @@ void asserv_orientation (void)
     }
     else //(FLAG_ASSERV.vitesse_fin_nulle == ON)
     {
+        VITESSE_ORIENTATION[SYS_ROBOT].theorique = 0;
         FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
         FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
     }
@@ -681,21 +699,26 @@ double fonction_PID (unsigned char type)
     {
         static double duty;
 
-        if ((ORIENTATION.consigne - ORIENTATION.actuelle) > Pi * ENTRAXE_TICKS/2)
+        /*if ((ORIENTATION.consigne - ORIENTATION.actuelle) > Pi * ENTRAXE_TICKS/2)
             ORIENTATION.consigne -= Pi * ENTRAXE_TICKS;
         else if (ORIENTATION.consigne - ORIENTATION.actuelle < - Pi * ENTRAXE_TICKS/2)
-            ORIENTATION.consigne += Pi * ENTRAXE_TICKS;
+            ORIENTATION.consigne += Pi * ENTRAXE_TICKS;*/
+       /* while (ORIENTATION.consigne > Pi * ENTRAXE_TICKS/2)
+            ORIENTATION.consigne -= Pi * ENTRAXE_TICKS;
+        while (ORIENTATION.consigne < - Pi * ENTRAXE_TICKS/2)
+            ORIENTATION.consigne += Pi * ENTRAXE_TICKS/2;*/
+
 
         ERREUR_ORIENTATION.actuelle = ORIENTATION.consigne - ORIENTATION.actuelle;
 
-        if (ERREUR_ORIENTATION.actuelle > (Pi * ENTRAXE_TICKS/2))
+        while (ERREUR_ORIENTATION.actuelle > (Pi * ENTRAXE_TICKS/2))
             ERREUR_ORIENTATION.actuelle -=  Pi * ENTRAXE_TICKS;
-        else if (ERREUR_ORIENTATION.actuelle < - Pi * ENTRAXE_TICKS/2)
+        while (ERREUR_ORIENTATION.actuelle < - Pi * ENTRAXE_TICKS/2)
             ERREUR_ORIENTATION.actuelle +=  Pi * ENTRAXE_TICKS;
 
         ERREUR_ORIENTATION.integralle += ERREUR_ORIENTATION.actuelle;
 
-         duty =  ERREUR_ORIENTATION.actuelle * PID.ORIENTATION.KP  + ERREUR_ORIENTATION.integralle * PID.ORIENTATION.KI - (ERREUR_ORIENTATION.actuelle - ERREUR_ORIENTATION.precedente) * PID.ORIENTATION.KD;
+         duty =  ERREUR_ORIENTATION.actuelle; // * PID.ORIENTATION.KP + ERREUR_ORIENTATION.integralle * PID.ORIENTATION.KI - (ERREUR_ORIENTATION.actuelle - ERREUR_ORIENTATION.precedente) * PID.ORIENTATION.KD;
         ERREUR_ORIENTATION.precedente = ERREUR_ORIENTATION.actuelle;
 
         return duty;

@@ -38,10 +38,10 @@ extern "C" {
     //Paramètres Vitesse Asserv
         //Association distance - Vitesse - Accélérations max
     #define _VITESSE_CONSIGNE_MAX_MM     3.
-    #define _DISTANCE_CONSIGNE_MM        50.
+    #define _DISTANCE_CONSIGNE_MM        500. 
 
     #define _ACC_POSITION_CONSIGNE       2.
-    #define _DCC_POSITION_CONSIGNE       4.
+    #define _DCC_POSITION_CONSIGNE       3.5 //4
 
         //Association Angle - Vitesse - Accélérations max
     #define _VITESSE_ANGLE_MAX           0.02
@@ -51,7 +51,7 @@ extern "C" {
     #define _DCC_ORIENTATION_CONSIGNE    6.
 
         //Autres réglages asserv
-    #define _SEUIL_IMMOBILITE            100
+    #define _SEUIL_IMMOBILITE            200
    
     //PID
     #define _VITESSE_DIS_KP              0.4  //0.2
