@@ -151,25 +151,30 @@ int main(int argc, char** argv)
 
     init_flag();
 
-    /*//cibler(500, 0, 100);
-    rejoindre(500, 0, 100);
-    orienter (90, 100);
+    //cibler(500, 0, 100);
+    rejoindre(500, 0, MARCHE_ARRIERE, 100);
+   // orienter (90, 100);
     //cibler(500, 500, 100);
-
-    rejoindre (500, 500, 100);
-    orienter(180, 100);
+    rejoindre (500, 500, MARCHE_ARRIERE, 100);
+    //orienter(180, 100);
     //cibler (0, 500, 100);
-    rejoindre (0, 500, 100);
-    orienter(-90, 100);
+    rejoindre (0, 500,MARCHE_ARRIERE, 100);
+    //orienter(-90, 100);
     //cibler (0, 0, 100);
-    rejoindre(0, 0, 100);
-    orienter(0, 100);
-    //cibler(250, 0, 100);*/
+    rejoindre(0, 0, MARCHE_ARRIERE, 100);
+    //orienter(0, 100);
+    //cibler(250, 0, 100);
 
-    passe_part(500, 0, 100);
-    passe_part2 (500, 500, 100, OFF);
-    passe_part2 (0, 500, 100, OFF);
-    passe_part2(0, 0, 100, ON);
+   /* //trapèze type 8
+    passe_part(1000, 500, 50);
+    passe_part2 (1000, 0, 50, OFF);
+    passe_part2 (0, 500, 50, OFF);
+    passe_part2(0, 0, 50, ON);*/
+
+    /*passe_part(450, 0, 100);
+    passe_part2 (450, -300, 100, OFF);
+    passe_part2 (100, -400, 100, ON);
+    orienter(180, 100);*/
 
 
     /*avancer_reculer(1500, 100);

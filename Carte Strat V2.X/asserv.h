@@ -45,6 +45,7 @@
 
 #define ORIENTER                    0
 #define AVANCER                     1
+#define PASSE_PART                  2
 
 #define DEBUT_DEPLACEMENT           0
 #define FIN_DEPLACEMENT             1
@@ -185,7 +186,7 @@
         char vitesse;
         char orientation;
         char brake;
-        char sens_deplacement;
+        int8_t sens_deplacement;
         char etat_angle;
         char etat_distance;
         char type_deplacement;

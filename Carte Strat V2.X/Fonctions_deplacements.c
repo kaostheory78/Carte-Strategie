@@ -79,12 +79,12 @@ void orienter (double angle, double pourcentage_vitesse)
 }
 
 
-void rejoindre (double x, double y, double pourcentage_vitesse)
+void rejoindre (double x, double y, int8_t sens_marche, double pourcentage_vitesse)
 {
-    _rejoindre(x, y, pourcentage_vitesse, ON);
+    _rejoindre(x, y,sens_marche, pourcentage_vitesse, ON);
 }
 
-void _rejoindre (double x, double y, double pourcentage_vitesse, char vitesse_fin_deplacement_nulle)
+void _rejoindre (double x, double y,int8_t sens_marche, double pourcentage_vitesse, char vitesse_fin_deplacement_nulle)
 {
     FLAG_ASSERV.brake = OFF;
     delay_ms(10);
@@ -95,6 +95,8 @@ void _rejoindre (double x, double y, double pourcentage_vitesse, char vitesse_fi
     Y.consigne = y * TICKS_PAR_MM;
 
     TYPE_CONSIGNE = XY;
+
+    FLAG_ASSERV.sens_deplacement = sens_marche;
 
     calcul_vitesse_position(pourcentage_vitesse);
     calcul_acceleration_position();
@@ -152,12 +154,13 @@ void avancer_reculer (double distance, double pourcentage_vitesse)
 
 void passe_part (double x, double y, double pourcentage_vitesse)
 {
-    _rejoindre(x, y, pourcentage_vitesse, OFF);
+    FLAG_ASSERV.type_deplacement = PASSE_PART;
+    _rejoindre(x, y, MARCHE_AVANT, pourcentage_vitesse, OFF);
 }
 
 void passe_part2 (double x, double y, double pourcentage_vitesse, char last)
 {
-    reinit_asserv();
+    FLAG_ASSERV.type_deplacement = PASSE_PART;
     X.consigne = x * TICKS_PAR_MM;
     Y.consigne = y * TICKS_PAR_MM;
 
