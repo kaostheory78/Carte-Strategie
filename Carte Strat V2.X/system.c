@@ -15,6 +15,46 @@
 
 
 /******************************************************************************/
+/******************************************************************************/
+/******************************************************************************/
+
+void init_system (void)
+{
+    init_clock();
+
+    OVERFLOW_CODEUR[CODEUR_D] = PAS_D_OVERFLOW_CODEUR;
+    OVERFLOW_CODEUR[CODEUR_G] = PAS_D_OVERFLOW_CODEUR;
+
+    position[CODEUR_D].ancien = 0;
+    position[CODEUR_G].ancien = 0;
+    position[CODEUR_D].nouvelle = 0;
+    position[CODEUR_G].nouvelle = 0;
+
+
+    config_timer_10ms();
+    config_timer_5ms();
+    config_timer_90s();
+
+    ConfigMapping ();
+    ConfigPorts ();
+    ConfigQEI ();
+    ConfigInterrupt ();
+    ConfigPWM();
+
+    InitUART(UART_XBEE, 115200);
+    InitUART(UART_AX12, 115200);
+
+    DETECTION = OFF;
+    EVITEMENT_ADV_AVANT = ON;
+
+    TIMER_5ms = ACTIVE;
+    TIMER_10ms = ACTIVE;
+    init_flag();
+}
+
+
+
+/******************************************************************************/
 /***************************** Configurations Timers **************************/
 /******************************************************************************/
 void config_timer_5ms()
@@ -410,7 +450,7 @@ void ConfigInterrupt (void)
 	IPC6bits.DMA2IP		= 0x00;						//
 
 	// IPC7
-	IPC7bits.U2TXIP		= 0;
+	IPC7bits.U2TXIP		= PRIO_INTER_UART2_TX;
 	IPC7bits.U2RXIP		= PRIO_INTER_UART2_RX;		// UART2 RX
 	IPC7bits.INT2IP		= 0x00;						//
 	IPC7bits.T5IP		= PRIO_INTER_TIMER5;						//
@@ -487,7 +527,7 @@ void ConfigInterrupt (void)
 	IEC0bits.INT0IE		= 0;                            // NC
 
 	// IEC1
-	IEC1bits.U2TXIE		= 0;                            // Interruption TX sur UART2
+	IEC1bits.U2TXIE		= ACTIV_INTER_UART2_TX;                            // Interruption TX sur UART2
 	IEC1bits.U2RXIE		= ACTIV_INTER_UART2_RX;		// Interruption RX sur UART2
 	IEC1bits.INT2IE		= 0;                    	// NC
 	IEC1bits.T5IE		= ACTIV_INTER_TIMER5;    	// Interruption sur Timer5

@@ -76,8 +76,7 @@ void init_position_robot (float x0, float y0, uint32_t teta0)
     X.actuelle = ROBOT.X_mm * TICKS_PAR_MM;
     Y.actuelle = ROBOT.Y_mm * TICKS_PAR_MM;
     
-    ROBOT.orientation_init = teta0 * Pi / 180 * ENTRAXE_TICKS/2;
-    ORIENTATION.actuelle = ROBOT.orientation_init;
+    ORIENTATION.actuelle =  teta0 * Pi / 180 * ENTRAXE_TICKS/2;
 }
 
 void init_commande_moteur(void)
@@ -93,60 +92,47 @@ void reinit_asserv(void)
     FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
     FLAG_ASSERV.phase_deceleration_distance = PHASE_NORMAL;
 
-   // if (FLAG_ASSERV.vitesse_fin_nulle == ON)
-    //{
-        FLAG_ASSERV.immobilite = 0;
+    FLAG_ASSERV.immobilite = 0;
 
-        DISTANCE.actuelle = 0;
-        DISTANCE.theorique = 0;
-        DISTANCE.consigne = 0;
-        //ORIENTATION.actuelle = 0;
-        ORIENTATION.theorique = 0;
-        ORIENTATION.consigne = 0;
+    DISTANCE.actuelle = 0;
+    DISTANCE.theorique = 0;
+    DISTANCE.consigne = 0;
 
-        ERREUR_DISTANCE.actuelle = 0;
-        ERREUR_DISTANCE.integralle = 0;
-        ERREUR_DISTANCE.precedente = 0;
+    ORIENTATION.theorique = 0;
+    ORIENTATION.consigne = 0;
 
-        ERREUR_ORIENTATION.actuelle = 0;
-        ERREUR_ORIENTATION.precedente = 0;
-        ERREUR_ORIENTATION.integralle = 0;
+    ERREUR_DISTANCE.actuelle = 0;
+    ERREUR_DISTANCE.integralle = 0;
+    ERREUR_DISTANCE.precedente = 0;
 
-        ERREUR_VITESSE[ROUE_DROITE].actuelle = 0;
-        ERREUR_VITESSE[ROUE_DROITE].integralle = 0;
-        ERREUR_VITESSE[ROUE_DROITE].precedente = 0;
+    ERREUR_ORIENTATION.actuelle = 0;
+    ERREUR_ORIENTATION.precedente = 0;
+    ERREUR_ORIENTATION.integralle = 0;
 
-        ERREUR_VITESSE[ROUE_GAUCHE].actuelle = 0;
-        ERREUR_VITESSE[ROUE_GAUCHE].integralle = 0;
-        ERREUR_VITESSE[ROUE_GAUCHE].precedente = 0;
+    ERREUR_VITESSE[ROUE_DROITE].actuelle = 0;
+    ERREUR_VITESSE[ROUE_DROITE].integralle = 0;
+    ERREUR_VITESSE[ROUE_DROITE].precedente = 0;
 
-        ERREUR_BRAKE[ROUE_DROITE].actuelle = 0;
-        ERREUR_BRAKE[ROUE_DROITE].integralle = 0;
-        ERREUR_BRAKE[ROUE_DROITE].precedente = 0;
+    ERREUR_VITESSE[ROUE_GAUCHE].actuelle = 0;
+    ERREUR_VITESSE[ROUE_GAUCHE].integralle = 0;
+    ERREUR_VITESSE[ROUE_GAUCHE].precedente = 0;
 
-        ERREUR_BRAKE[ROUE_GAUCHE].actuelle = 0;
-        ERREUR_BRAKE[ROUE_GAUCHE].integralle = 0;
-        ERREUR_BRAKE[ROUE_GAUCHE].precedente = 0;
+    VITESSE[ROUE_DROITE].actuelle = 0;
+    VITESSE[ROUE_DROITE].consigne = 0;
+    VITESSE[ROUE_DROITE].theorique = 0;
 
-        BRAKE[ROUE_DROITE].actuelle = 0;
-        BRAKE[ROUE_GAUCHE].actuelle = 0;
+    VITESSE[ROUE_GAUCHE].actuelle = 0;
+    VITESSE[ROUE_GAUCHE].consigne = 0;
+    VITESSE[ROUE_GAUCHE].theorique = 0;
 
-        VITESSE[ROUE_DROITE].actuelle = 0;
-        VITESSE[ROUE_DROITE].consigne = 0;
-        VITESSE[ROUE_DROITE].theorique = 0;
+    VITESSE_ORIENTATION[ROUE_DROITE].actuelle = 0;
+    VITESSE_ORIENTATION[ROUE_DROITE].consigne = 0;
+    VITESSE_ORIENTATION[ROUE_DROITE].theorique = 0;
 
-        VITESSE[ROUE_GAUCHE].actuelle = 0;
-        VITESSE[ROUE_GAUCHE].consigne = 0;
-        VITESSE[ROUE_GAUCHE].theorique = 0;
+    VITESSE_ORIENTATION[ROUE_GAUCHE].actuelle = 0;
+    VITESSE_ORIENTATION[ROUE_GAUCHE].consigne = 0;
+    VITESSE_ORIENTATION[ROUE_GAUCHE].theorique = 0;
 
-        VITESSE_ORIENTATION[ROUE_DROITE].actuelle = 0;
-        VITESSE_ORIENTATION[ROUE_DROITE].consigne = 0;
-        VITESSE_ORIENTATION[ROUE_DROITE].theorique = 0;
-
-        VITESSE_ORIENTATION[ROUE_GAUCHE].actuelle = 0;
-        VITESSE_ORIENTATION[ROUE_GAUCHE].consigne = 0;
-        VITESSE_ORIENTATION[ROUE_GAUCHE].theorique = 0;
-   // }
     PORTCbits.RC5 = 1;
 
     
@@ -221,6 +207,26 @@ void saturation_erreur_integralle_vitesse (void)
         ERREUR_VITESSE[ROUE_GAUCHE].integralle = MAX_ERREUR_INTEGRALLE_V;
     else if (ERREUR_VITESSE[ROUE_GAUCHE].integralle < - MAX_ERREUR_INTEGRALLE_V)
         ERREUR_VITESSE[ROUE_GAUCHE].integralle = - MAX_ERREUR_INTEGRALLE_V;
+}
+
+void detection_blocage (void)
+{
+    if (VITESSE[ROUE_DROITE].actuelle < 0.2 * (VITESSE[ROUE_DROITE].consigne))
+    {
+        if (ERREUR_VITESSE[ROUE_DROITE].integralle == MAX_ERREUR_INTEGRALLE_V || ERREUR_VITESSE[ROUE_DROITE].integralle == - MAX_ERREUR_INTEGRALLE_V)
+        {
+            FLAG_ASSERV.immobilite++;
+        }
+    }
+    else if (VITESSE[ROUE_DROITE].actuelle < 0.2 * (VITESSE[ROUE_DROITE].consigne))
+    {
+        if (ERREUR_VITESSE[ROUE_GAUCHE].integralle == MAX_ERREUR_INTEGRALLE_V || ERREUR_VITESSE[ROUE_GAUCHE].integralle == - MAX_ERREUR_INTEGRALLE_V)
+        {
+            FLAG_ASSERV.immobilite++;
+        }
+    }
+    else
+        FLAG_ASSERV.immobilite = 0;
 }
 
 void calcul_vitesse_position (double pourcentage_vitesse)
@@ -371,8 +377,47 @@ void calcul_distance_consigne_XY (void)
 
 void brake(void)
 {
-    reinit_asserv();
+    ERREUR_BRAKE[ROUE_DROITE].actuelle = 0;
+    ERREUR_BRAKE[ROUE_DROITE].integralle = 0;
+    ERREUR_BRAKE[ROUE_DROITE].precedente = 0;
+
+    ERREUR_BRAKE[ROUE_GAUCHE].actuelle = 0;
+    ERREUR_BRAKE[ROUE_GAUCHE].integralle = 0;
+    ERREUR_BRAKE[ROUE_GAUCHE].precedente = 0;
+
+    BRAKE[ROUE_DROITE].actuelle = 0;
+    BRAKE[ROUE_GAUCHE].actuelle = 0;
+
     FLAG_ASSERV.brake = ON;
+}
+
+void unbrake (void)
+{
+    ERREUR_VITESSE[ROUE_DROITE].actuelle = 0;
+    ERREUR_VITESSE[ROUE_DROITE].integralle = 0;
+    ERREUR_VITESSE[ROUE_DROITE].precedente = 0;
+
+    ERREUR_VITESSE[ROUE_GAUCHE].actuelle = 0;
+    ERREUR_VITESSE[ROUE_GAUCHE].integralle = 0;
+    ERREUR_VITESSE[ROUE_GAUCHE].precedente = 0;
+
+    VITESSE[ROUE_DROITE].actuelle = 0;
+    VITESSE[ROUE_DROITE].consigne = 0;
+    VITESSE[ROUE_DROITE].theorique = 0;
+
+    VITESSE[ROUE_GAUCHE].actuelle = 0;
+    VITESSE[ROUE_GAUCHE].consigne = 0;
+    VITESSE[ROUE_GAUCHE].theorique = 0;
+
+    VITESSE_ORIENTATION[ROUE_DROITE].actuelle = 0;
+    VITESSE_ORIENTATION[ROUE_DROITE].consigne = 0;
+    VITESSE_ORIENTATION[ROUE_DROITE].theorique = 0;
+
+    VITESSE_ORIENTATION[ROUE_GAUCHE].actuelle = 0;
+    VITESSE_ORIENTATION[ROUE_GAUCHE].consigne = 0;
+    VITESSE_ORIENTATION[ROUE_GAUCHE].theorique = 0;
+
+    FLAG_ASSERV.brake = OFF;
 }
 
 //Fonction principale de l'asserv, qui permet d'activer les différents asserv
@@ -396,6 +441,14 @@ void asserv()
             FLAG_ASSERV.fin_deplacement = FIN_DEPLACEMENT;
         else if (FLAG_ASSERV.vitesse_fin_nulle == OFF)
             FLAG_ASSERV.fin_deplacement = FIN_DEPLACEMENT;
+    }
+    else
+    {
+        if (FLAG_ASSERV.immobilite > 100)
+        {
+            FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
+            FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
+        }
     }
 
     //Fonction d'appel de l'asserv
@@ -506,7 +559,7 @@ void asserv_distance(void)
 
         if (FLAG_ASSERV.vitesse_fin_nulle == OFF)
         {
-            if (distance_restante < 150 * TICKS_PAR_MM)
+            if (distance_restante < 150 * TICKS_PAR_MM) //150
             {
                 FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
                 FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
@@ -540,17 +593,8 @@ void asserv_distance(void)
             // Si le robot doit freiner
             if (temps_freinage > temps_restant)
             {
-                //if (FLAG_ASSERV.vitesse_fin_nulle == ON)
-                //{
                     FLAG_ASSERV.phase_deceleration_distance = EN_COURS;
                     VITESSE[SYS_ROBOT].consigne = 0;
-                //}
-                //else
-                //{
-                 //   FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
-                 //   FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
-               // }
-
             }
         }
         
@@ -702,6 +746,7 @@ double fonction_PID (unsigned char type)
         ERREUR_VITESSE[ROUE_GAUCHE].integralle += ERREUR_VITESSE[ROUE_GAUCHE].actuelle;
 
         saturation_erreur_integralle_vitesse();
+        detection_blocage();
 
         COMMANDE.droit  = ERREUR_VITESSE[ROUE_DROITE].actuelle * PID.VITESSE_DIS.KP + ERREUR_VITESSE[ROUE_DROITE].integralle * PID.VITESSE_DIS.KI + (ERREUR_VITESSE[ROUE_DROITE].actuelle - ERREUR_VITESSE[ROUE_DROITE].precedente ) * PID.VITESSE_DIS.KD;
         COMMANDE.gauche = ERREUR_VITESSE[ROUE_GAUCHE].actuelle * PID.VITESSE_DIS.KP + ERREUR_VITESSE[ROUE_GAUCHE].integralle * PID.VITESSE_DIS.KI + (ERREUR_VITESSE[ROUE_GAUCHE].actuelle - ERREUR_VITESSE[ROUE_GAUCHE].precedente ) * PID.VITESSE_DIS.KD;
@@ -759,7 +804,7 @@ double fonction_PID (unsigned char type)
             KP_hybride = - ERREUR_ORIENTATION.actuelle / (Pi * (ENTRAXE_TICKS/2));
 
         if (FLAG_ASSERV.type_deplacement == PASSE_PART)
-            KP_hybride *= 0.03;
+            KP_hybride *= 0.03; //0.03
         KP_hybride = 1 - KP_hybride;
         VITESSE[SYS_ROBOT].theorique *= KP_hybride;
     }
@@ -807,11 +852,8 @@ void calcul_position_robot (void)
     else if(ORIENTATION.actuelle < - Pi * (ENTRAXE_TICKS/2))
         ORIENTATION.actuelle += Pi * ENTRAXE_TICKS;
 
-    //calul de l'angle en pas
-    alpha_ticks += delta_o;
-
     //Orientation en radian
-    ROBOT.orientation = (double) ROBOT.orientation_init + alpha_ticks / (ENTRAXE_TICKS / 2);
+    ROBOT.orientation = (double) ORIENTATION.actuelle / (ENTRAXE_TICKS / 2);
 
     //Calcul des positions
     d_X = (double) cos (ROBOT.orientation) * delta_d;
@@ -821,9 +863,9 @@ void calcul_position_robot (void)
     Y.actuelle += d_Y;
 
     //pas besoin de le calculer toutes les 5 ms --> perte de temps innutile
-    //ROBOT.X_mm += d_X * MM_PAR_TICKS;
-    //ROBOT.Y_mm += d_Y * MM_PAR_TICKS;
-    //ROBOT.orientation_degre = ROBOT.orientation * 180 / Pi;
+    ROBOT.X_mm += d_X * MM_PAR_TICKS;
+    ROBOT.Y_mm += d_Y * MM_PAR_TICKS;
+    ROBOT.orientation_degre = ROBOT.orientation * 180 / Pi;
 }
 
 

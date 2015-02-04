@@ -18,7 +18,7 @@ extern "C" {
     #include <libpic30.h>
     #include <p33FJ128MC804.h>
     #include <stdint.h>
-    #include <stdio.h>
+   // #include <stdio.h>
     #include <stdlib.h>
     #include "codeurs.h"
     #include <math.h>
@@ -28,6 +28,8 @@ extern "C" {
     #include "pwm.h"
     #include "Config_robots.h"
     #include "fonctions_deplacements.h"
+    #include "gestion_AX12.h"
+    #include "autom.h"
     
 
 /******************************************************************************/
@@ -68,7 +70,7 @@ extern "C" {
 
 #define XBEE_RESET              PORTAbits.RA7
 #define INHIBIT_AX12            PORTAbits.RA10
-#define DIR_UART_AX12           PORTBbits.RB7 
+#define DIR_UART_AX12           PORTBbits.RB7
 
 /******************************************************************************/
 /******************************* Interruptions  *******************************/
@@ -84,13 +86,14 @@ extern "C" {
 /******************************************************************************/
 
 #define PRIO_INTER_TIMER1               5   // Timer Assev
-#define PRIO_INTER_TIMER2               0   // Timer 2 en mode 32 bits
+#define PRIO_INTER_TIMER2               0   // Timer 2 en mode 32 bits (couplé à T3 donc osef)
 #define PRIO_INTER_UART1_RX             1   // Prio XBEE
 #define PRIO_INTER_TIMER3               6   // Timer Fin de match
 #define PRIO_INTER_I2C_MAITRE           5   // I²C désactivé pour le moment
 #define PRIO_INTER_I2C_ESCLAVE          4   // I²C désactivé pour le moment
 #define PRIO_INTER_TIMER4               2   // Autom
 #define PRIO_INTER_TIMER5               1   //Prio Timer debug
+#define PRIO_INTER_UART2_TX             3   // AX12
 #define PRIO_INTER_UART2_RX             3   // AX12
 #define PRIO_INTER_QEI1                 7   // Codeurs : prio la plus haute
 #define PRIO_INTER_QEI2                 7   // Codeurs : prio la plus haute
@@ -99,6 +102,7 @@ extern "C" {
 #define ACTIV_INTER_TIMER3              1   // Timer 90 secondes : fin de match
 #define ACTIV_INTER_TIMER2              0   // Osef : TIMER 2 et 3 sur 32 bits
 #define ACTIV_INTER_TIMER1              1   // Timer asserv : 5 ms
+#define ACTIV_INTER_UART2_TX            1   // UART AX12 : Acquittement trame envoyée
 #define ACTIV_INTER_UART2_RX            1   // UART AX12
 #define ACTIV_INTER_TIMER4              1   // Timer Autom : 10 ms
 #define ACTIV_INTER_TIMER5              1   // Timer debug : 200 ms
@@ -140,10 +144,18 @@ extern "C" {
 
     extern char TYPE_CONSIGNE;
 
+
+    extern uint8_t DETECTION;
+    extern uint8_t EVITEMENT_ADV_AVANT;
+    extern uint8_t STOP_DETECTION;
+
+    extern _ax12 ax12;
+
 /******************************************************************************/
 /****************************** Prototypes ************************************/
 /******************************************************************************/
 
+    void init_system (void);
     void init_clock(void);
     void config_timer_5ms();
     void config_timer_10ms();

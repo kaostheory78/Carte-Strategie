@@ -76,12 +76,12 @@ void InitUART (int8_t channel, uint32_t baud)
             // U2STA
             U2MODEbits.UARTEN 	= 0;		// Desctivation de l'uart2
             U2STAbits.ADDEN 	= 0;		// Address detect mode desactive
-            U2STAbits.URXISEL 	= 0;		// Interruption sur RX d'un caractere
+            U2STAbits.URXISEL 	= 0;		// Interruption sur RX d'un caractère
             U2STAbits.UTXBRK 	= 0;		// Sync Break desactivee
 
             U2STAbits.UTXINV 	= 0;		// Polarite non inversee
-            U2STAbits.UTXISEL0 	= 0;		// TX interruption sur transmission d'un caractere
-            U2STAbits.UTXISEL1 	= 0;		// TX interruption sur transmission d'un caractere
+            U2STAbits.UTXISEL0 	= 1;		// TX interruption sur fin de transmission d'une trame (buffer vide)
+            U2STAbits.UTXISEL1 	= 0;		// TX interruption sur fin de transmission d'une trame (buffer vide)
             U2STAbits.URXISEL0 	= 0;		// RX interruption sur reception d'un caractere
             U2STAbits.URXISEL1 	= 0;		// RX interruption sur reception d'un caractere
 
@@ -100,6 +100,8 @@ void InitUART (int8_t channel, uint32_t baud)
 
             U2MODEbits.UARTEN 	= 1;		// Activation de l'uart2
             U2STAbits.UTXEN 	= 1;		// TX actif
+
+            INHIBIT_AX12 = ALLUME;
 	}
 }
 
@@ -149,6 +151,13 @@ void modifier_vitesse_com_uart (int8_t uart, uint32_t baud)
          U1BRG = calcul_baud (baud);
          U1MODEbits.UARTEN 	= 1; 
     }
+    else
+    {
+         U2MODEbits.UARTEN 	= 0;
+         // on vide luart
+         U2BRG = calcul_baud (baud);
+         U2MODEbits.UARTEN 	= 1;
+    }
 }
 
 
@@ -164,6 +173,7 @@ void PutcUART (int8_t channel, uint8_t octet)
 	// UART2 : AX12
 	else if (channel == UART_AX12)
 	{
+                ax12.etat_uart = EN_COURS_ENVOIT;
 		while (U2STAbits.UTXBF); U2TXREG = octet;
 	}
 }

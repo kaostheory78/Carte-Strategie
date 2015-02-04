@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=main.c system.c asserv.c Uart.c interruptions.c codeurs.c debug.c pwm.c Fonctions_deplacements.c
+SOURCEFILES_QUOTED_IF_SPACED=main.c system.c asserv.c Uart.c interruptions.c codeurs.c debug.c pwm.c Fonctions_deplacements.c gestion_AX12.c autom.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/system.o ${OBJECTDIR}/asserv.o ${OBJECTDIR}/Uart.o ${OBJECTDIR}/interruptions.o ${OBJECTDIR}/codeurs.o ${OBJECTDIR}/debug.o ${OBJECTDIR}/pwm.o ${OBJECTDIR}/Fonctions_deplacements.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/system.o.d ${OBJECTDIR}/asserv.o.d ${OBJECTDIR}/Uart.o.d ${OBJECTDIR}/interruptions.o.d ${OBJECTDIR}/codeurs.o.d ${OBJECTDIR}/debug.o.d ${OBJECTDIR}/pwm.o.d ${OBJECTDIR}/Fonctions_deplacements.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/system.o ${OBJECTDIR}/asserv.o ${OBJECTDIR}/Uart.o ${OBJECTDIR}/interruptions.o ${OBJECTDIR}/codeurs.o ${OBJECTDIR}/debug.o ${OBJECTDIR}/pwm.o ${OBJECTDIR}/Fonctions_deplacements.o ${OBJECTDIR}/gestion_AX12.o ${OBJECTDIR}/autom.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/system.o.d ${OBJECTDIR}/asserv.o.d ${OBJECTDIR}/Uart.o.d ${OBJECTDIR}/interruptions.o.d ${OBJECTDIR}/codeurs.o.d ${OBJECTDIR}/debug.o.d ${OBJECTDIR}/pwm.o.d ${OBJECTDIR}/Fonctions_deplacements.o.d ${OBJECTDIR}/gestion_AX12.o.d ${OBJECTDIR}/autom.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/system.o ${OBJECTDIR}/asserv.o ${OBJECTDIR}/Uart.o ${OBJECTDIR}/interruptions.o ${OBJECTDIR}/codeurs.o ${OBJECTDIR}/debug.o ${OBJECTDIR}/pwm.o ${OBJECTDIR}/Fonctions_deplacements.o
+OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/system.o ${OBJECTDIR}/asserv.o ${OBJECTDIR}/Uart.o ${OBJECTDIR}/interruptions.o ${OBJECTDIR}/codeurs.o ${OBJECTDIR}/debug.o ${OBJECTDIR}/pwm.o ${OBJECTDIR}/Fonctions_deplacements.o ${OBJECTDIR}/gestion_AX12.o ${OBJECTDIR}/autom.o
 
 # Source Files
-SOURCEFILES=main.c system.c asserv.c Uart.c interruptions.c codeurs.c debug.c pwm.c Fonctions_deplacements.c
+SOURCEFILES=main.c system.c asserv.c Uart.c interruptions.c codeurs.c debug.c pwm.c Fonctions_deplacements.c gestion_AX12.c autom.c
 
 
 CFLAGS=
@@ -145,6 +145,20 @@ ${OBJECTDIR}/Fonctions_deplacements.o: Fonctions_deplacements.c  nbproject/Makef
 	${MP_CC} $(MP_EXTRA_CC_PRE)  Fonctions_deplacements.c  -o ${OBJECTDIR}/Fonctions_deplacements.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Fonctions_deplacements.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -fno-short-double -mconst-in-auxflash -mnear-chars -O0 -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/Fonctions_deplacements.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+${OBJECTDIR}/gestion_AX12.o: gestion_AX12.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR} 
+	@${RM} ${OBJECTDIR}/gestion_AX12.o.d 
+	@${RM} ${OBJECTDIR}/gestion_AX12.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  gestion_AX12.c  -o ${OBJECTDIR}/gestion_AX12.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/gestion_AX12.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -fno-short-double -mconst-in-auxflash -mnear-chars -O0 -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/gestion_AX12.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/autom.o: autom.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR} 
+	@${RM} ${OBJECTDIR}/autom.o.d 
+	@${RM} ${OBJECTDIR}/autom.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  autom.c  -o ${OBJECTDIR}/autom.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/autom.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -fno-short-double -mconst-in-auxflash -mnear-chars -O0 -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/autom.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
 else
 ${OBJECTDIR}/main.o: main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR} 
@@ -208,6 +222,20 @@ ${OBJECTDIR}/Fonctions_deplacements.o: Fonctions_deplacements.c  nbproject/Makef
 	@${RM} ${OBJECTDIR}/Fonctions_deplacements.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  Fonctions_deplacements.c  -o ${OBJECTDIR}/Fonctions_deplacements.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Fonctions_deplacements.o.d"        -g -omf=elf -fno-short-double -mconst-in-auxflash -mnear-chars -O0 -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/Fonctions_deplacements.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/gestion_AX12.o: gestion_AX12.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR} 
+	@${RM} ${OBJECTDIR}/gestion_AX12.o.d 
+	@${RM} ${OBJECTDIR}/gestion_AX12.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  gestion_AX12.c  -o ${OBJECTDIR}/gestion_AX12.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/gestion_AX12.o.d"        -g -omf=elf -fno-short-double -mconst-in-auxflash -mnear-chars -O0 -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/gestion_AX12.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/autom.o: autom.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR} 
+	@${RM} ${OBJECTDIR}/autom.o.d 
+	@${RM} ${OBJECTDIR}/autom.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  autom.c  -o ${OBJECTDIR}/autom.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/autom.o.d"        -g -omf=elf -fno-short-double -mconst-in-auxflash -mnear-chars -O0 -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/autom.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 

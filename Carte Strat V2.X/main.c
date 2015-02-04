@@ -67,111 +67,68 @@
 
 int main(int argc, char** argv)
 {
-    delay_ms(500);
-    init_clock();
-
-    TRISCbits.TRISC5 = 0; //led en sortie
-
-
-    /**************************************************************************/
-    /******************* Init variables olables *******************************/
-    /**************************************************************************/
-
-    OVERFLOW_CODEUR[CODEUR_D] = PAS_D_OVERFLOW_CODEUR;
-    OVERFLOW_CODEUR[CODEUR_G] = PAS_D_OVERFLOW_CODEUR;
-
-    position[CODEUR_D].ancien = 0;
-    position[CODEUR_G].ancien = 0;
-    position[CODEUR_D].nouvelle = 0;
-    position[CODEUR_G].nouvelle = 0;
-
+    init_system();
     init_position_robot (0, 0, 0);
 
-    
-
-
-
-    /**************************************************************************/
-    /*********************** Lancement des inits ******************************/
-    /**************************************************************************/
-
-    config_timer_10ms();
-    config_timer_5ms();
-    config_timer_90s();
-
-    ConfigMapping ();
-    ConfigPorts ();
-    ConfigQEI ();
-    ConfigInterrupt ();
-
-    InitUART(UART_XBEE, 115200);
-    PutsUART(UART_XBEE, "UART configure \n\r");
-
-    ConfigPWM();
-    PutsUART(UART_XBEE, "PWM configure \n\r");
-
-   /* envoit_pwm(MOTEUR_DROIT, 0);
-    envoit_pwm(MOTEUR_GAUCHE, 0);
-
-    delay_ms(270);
-    envoit_pwm(MOTEUR_DROIT, 2046 * 3,3 / 10.8);
-    envoit_pwm(MOTEUR_GAUCHE, 2046 * 3,3 / 10,8);
-
-    delay_ms(40);
-
-    envoit_pwm (MOTEUR_DROIT, 1800);
-    envoit_pwm (MOTEUR_GAUCHE, 1800);
-
-    delay_ms(5000);
-
-    envoit_pwm (MOTEUR_DROIT, 0);
-    envoit_pwm (MOTEUR_GAUCHE, 0);*/
-
     /**************************************************************************/
     /**************************************************************************/
     /**************************************************************************/
 
-
- 
-    //TIMER_10ms = ACTIVE;
-    TIMER_5ms = ACTIVE;
-    //TIMER_90s = ACTIVE;
     //TIMER_DEBUG = ACTIVE;
 
-    PutsUART(UART_XBEE, "TIMER active \n\r");
     delay_ms(500);
+    PutsUART(UART_XBEE, "\n\n\n\n\r INIT ROBOT : \n\n\r");
 
-    delay_ms(300);
-    
+    //configurer_status_returning_level(TOUS_LES_AX12, TOUTES_LES_INFOS);
+    allumer_LED_AX12(TOUS_LES_AX12);
+    PORTCbits.RC5 = 0;
+    angle_AX12(24, 512, 1023, SANS_ATTENTE);
+    angle_AX12(24, 100, 1023, SANS_ATTENTE);
+    angle_AX12(24, 700, 1023, SANS_ATTENTE);
 
-    PutsUART(UART_XBEE, "\n\n\rasserv active \n\n\n\r");
-    delay_ms(500);
 
-    TIMER_DEBUG = ACTIVE;
-
-    init_flag();
-
-    //cibler(500, 0, 100);
-    rejoindre(500, 0, MARCHE_ARRIERE, 100);
+  /* //cibler(500, 0, 100);
+    rejoindre(500, 0, MARCHE_AVANT, 100);
    // orienter (90, 100);
     //cibler(500, 500, 100);
-    rejoindre (500, 500, MARCHE_ARRIERE, 100);
+    rejoindre (500, 500, MARCHE_AVANT, 100);
     //orienter(180, 100);
     //cibler (0, 500, 100);
-    rejoindre (0, 500,MARCHE_ARRIERE, 100);
+    rejoindre (0, 500,MARCHE_AVANT, 100);
     //orienter(-90, 100);
     //cibler (0, 0, 100);
-    rejoindre(0, 0, MARCHE_ARRIERE, 100);
+    rejoindre(0, 0, MARCHE_AVANT, 100);
     //orienter(0, 100);
-    //cibler(250, 0, 100);
+    //cibler(250, 0, 100);*/
 
-   /* //trapèze type 8
-    passe_part(1000, 500, 50);
+    //trapèze type 8
+    /*passe_part(1000, 500, 50);
     passe_part2 (1000, 0, 50, OFF);
     passe_part2 (0, 500, 50, OFF);
     passe_part2(0, 0, 50, ON);*/
 
-    /*passe_part(450, 0, 100);
+
+    //grand demi cercle
+    /*
+    passe_part(200, 0, 500);
+    passe_part2(700, 134 , 100, OFF);
+    passe_part2 (1066, 500, 100, OFF);
+    passe_part2 (1200, 1000, 100, OFF);
+    passe_part2 (1066, 1500, 100, OFF);
+    passe_part2 (700, 1866, 100, OFF);
+    passe_part2 (200, 2000, 100, ON);*/
+
+    //petit demi cercle
+    
+    /*passe_part(200, 0, 500);
+    passe_part2(450, 67 , 100, OFF);
+    passe_part2 (633, 250, 100, OFF);
+    passe_part2 (700, 500, 100, OFF);
+    passe_part2 (633, 750, 100, OFF);
+    passe_part2 (450, 933, 100, OFF);
+    passe_part2 (200, 1000, 100, ON);*/
+
+   /* passe_part(450, 0, 100);
     passe_part2 (450, -300, 100, OFF);
     passe_part2 (100, -400, 100, ON);
     orienter(180, 100);*/

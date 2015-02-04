@@ -51,7 +51,7 @@ extern "C" {
     #define _DCC_ORIENTATION_CONSIGNE    6.
 
         //Autres réglages asserv
-    #define _SEUIL_IMMOBILITE            50 //200
+    #define _SEUIL_IMMOBILITE            100 //200
    
     //PID
     #define _VITESSE_DIS_KP              0.4  //0.2

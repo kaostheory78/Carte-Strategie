@@ -1,8 +1,8 @@
-build/default/production/system.o:  \
-system.c  \
+build/default/production/gestion_AX12.o:  \
+gestion_AX12.c  \
 system.h  \
-codeurs.h  \
- Config_robots.h  \
+ codeurs.h  \
+Config_robots.h  \
 Uart.h  \
 interruptions.h  \
 asserv.h  \

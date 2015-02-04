@@ -12,6 +12,8 @@
       <itemPath>asserv.h</itemPath>
       <itemPath>Config_robots.h</itemPath>
       <itemPath>fonctions_deplacements.h</itemPath>
+      <itemPath>gestion_AX12.h</itemPath>
+      <itemPath>autom.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -29,6 +31,8 @@
       <itemPath>debug.c</itemPath>
       <itemPath>pwm.c</itemPath>
       <itemPath>Fonctions_deplacements.c</itemPath>
+      <itemPath>gestion_AX12.c</itemPath>
+      <itemPath>autom.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

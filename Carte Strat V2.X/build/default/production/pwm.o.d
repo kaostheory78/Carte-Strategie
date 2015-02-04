@@ -7,4 +7,6 @@ Config_robots.h  \
 interruptions.h  \
 asserv.h  \
 pwm.h  \
-fonctions_deplacements.h 
+fonctions_deplacements.h  \
+ gestion_AX12.h  \
+autom.h 

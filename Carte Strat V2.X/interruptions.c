@@ -66,15 +66,17 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
  */
 void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
 {
-
+    TIMER_10ms = DESACTIVE;
     FLAG_TIMER_10ms = 0;        //On clear le flag d'interruption du timer
+    autom_10ms();
+
+    TIMER_10ms = ACTIVE;
 }
 
 void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void)
 {
     debug();
     FLAG_TIMER_DEBUG = 0;        //On clear le flag d'interruption du timer
-    //debug();
 }
 
 /******************************************************************************/
@@ -129,36 +131,19 @@ void __attribute__ ((interrupt, no_auto_psv)) 	_U1RXInterrupt (void)
 
 void __attribute__ ((interrupt, no_auto_psv)) 	_U2RXInterrupt (void)
 {
-    /*
-    int erreur = 0;
+    IEC1bits.U2RXIE = 0;
+    IFS1bits.U2RXIF = 0;
 
-	// Desactivation de l'interruption
-	IEC1bits.U2RXIE	= 0;
-	IFS1bits.U2RXIF = 0;
+    reception_uart_ax12();
 
-	uint8_t buf = U2RXREG;
-
-	// On attend des données
-	if (ax12.nb_octet_attente > 0)
-	{
-		ax12.buffer[ax12.offset] = buf;
-		ax12.offset++;
-
-		// Si les 1ers octets sont mauvais
-		if ((ax12.offset >= 1) && (ax12.buffer[0] != START_BYTE)) erreur = 1;
-		if ((ax12.offset >= 2) && (ax12.buffer[1] != START_BYTE)) erreur = 1;
-
-		// En cas d'erreur on reset
-		if (erreur == 1)
-		{
-			ax12.offset	= 0;
-		}
-	}
-
-	// Activation de l'interruption
-	IEC1bits.U2RXIE	= 1;*/
+    IEC1bits.U2RXIE = 1;
 }
 
+void __attribute__ ((interrupt, no_auto_psv)) 	_U2TXInterrupt (void)
+{
+    IFS1bits.U2TXIF = 0; //remise du flag à 0 quand le buffer de transmission est vide
+    ax12.etat_uart = ENVOIT_FINI;
+}
 
 
 
