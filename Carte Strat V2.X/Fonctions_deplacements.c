@@ -18,6 +18,15 @@
 
 #include "system.h"
 
+/*/uint8_t couleur_depart()
+{
+    if (SYS_COULEUR == 0)
+        return JAUNE;
+    else
+        return VERT;
+}*/
+
+
 void cibler (double x, double y, double pourcentage_vitesse)
 {
     FLAG_ASSERV.brake = OFF;

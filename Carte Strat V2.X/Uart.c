@@ -137,7 +137,7 @@ uint16_t calcul_baud (uint32_t baud)
             return 1041;
             break;
         default :
-            return ((FCY/baud/4) - 1);
+            return (uint16_t) ((FCY/baud/4) - 1);
             break;
     }
 }
@@ -157,6 +157,25 @@ void modifier_vitesse_com_uart (int8_t uart, uint32_t baud)
          // on vide luart
          U2BRG = calcul_baud (baud);
          U2MODEbits.UARTEN 	= 1;
+    }
+}
+
+void vider_buffer_reception_uart (uint8_t uart)
+{
+    uint8_t buf;
+    if (uart == UART_AX12)
+    {
+        while(U2STAbits.URXDA == 1)
+        {
+            buf = U2RXREG;
+        }
+    }
+    else
+    {
+        while(U1STAbits.URXDA == 1)
+        {
+            buf = U1RXREG;
+        }
     }
 }
 

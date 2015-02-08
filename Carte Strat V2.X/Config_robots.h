@@ -29,6 +29,8 @@ extern "C" {
 #define _Pi                             3.14159265359 
 
 #ifdef GROS_ROBOT
+    
+    #define CARTE_V1
 
     //Paramètres Odométrie
     #define _ENTRAXE_MM                  306.4
@@ -74,7 +76,7 @@ extern "C" {
     #define _TENSION_MOTEUR_DROIT        24L
     #define _TENSION_MOTEUR_GAUCHE       24L
 
-    #define _TENSION_SORTIE_PTN          34L
+    #define _TENSION_SORTIE_PTN          34L 
 
 
     //Paramètres codeurs, et moteurs
@@ -89,11 +91,11 @@ extern "C" {
     #define _RESOLUTION_LOGICIELLE       1
 
     //PWM
-    #define _AVANCER_MOTEUR_D            1 //0
-    #define _RECULER_MOTEUR_D            0   //1
+    #define _AVANCER_MOTEUR_D            1 
+    #define _RECULER_MOTEUR_D            0   
 
-    #define _AVANCER_MOTEUR_G            0 //1
-    #define _RECULER_MOTEUR_G            1   //0
+    #define _AVANCER_MOTEUR_G            0
+    #define _RECULER_MOTEUR_G            1
 
 
 

@@ -20,6 +20,13 @@ uint8_t DETECTION;
 uint8_t EVITEMENT_ADV_AVANT;
 uint8_t STOP_DETECTION;
 
+void jack()
+{
+    while(!SYS_JACK);
+    while(SYS_JACK);
+}
+
+
 void autom_10ms (void)
 {
 

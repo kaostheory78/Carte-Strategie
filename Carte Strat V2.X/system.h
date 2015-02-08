@@ -72,6 +72,12 @@ extern "C" {
 #define INHIBIT_AX12            PORTAbits.RA10
 #define DIR_UART_AX12           PORTBbits.RB7
 
+/*#define SYS_JACK
+#define SYS_COULEUR
+#define SYS_STRAT
+
+#define */
+
 /******************************************************************************/
 /******************************* Interruptions  *******************************/
 /******************************************************************************/
@@ -148,6 +154,7 @@ extern "C" {
     extern uint8_t DETECTION;
     extern uint8_t EVITEMENT_ADV_AVANT;
     extern uint8_t STOP_DETECTION;
+    //extern uint8_t COULEUR;
 
     extern _ax12 ax12;
 
@@ -163,11 +170,11 @@ extern "C" {
 
     void start_timer_90s (void);
 
-    void odometrie (unsigned char mode);
-
     void ConfigInterrupt (void);
     void ConfigPorts (void);
     void ConfigMapping (void);
+
+    void strategie();
     
 
 

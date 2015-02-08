@@ -32,15 +32,18 @@ void ConfigPWM (void)
 
         P1TCONbits.PTSIDL       = 1;            //continu en idle
         P1TCONbits.PTOPS        = 0;            //Postscaller 1 : 1
-        P1TCONbits.PTCKPS       = 0;            //Prescaller 1 : 1
+        P1TCONbits.PTCKPS       = 0;            //Prescaller  1 : 1
 
-	P1TCONbits.PTMOD	= 0;		//Base de temps en free running mode (11 bits vmax= 2048)
+	P1TCONbits.PTMOD	= 0;		//Base de temps en free running mode (11 bits vmax = 2048)
 	
         P1TPER                  = 999;		//F=40kHz 11 bits
 
 
-	PWM1CON1bits.PMOD1	= 0;		//Mode complementaire sur pwm1L1
-	PWM1CON1bits.PMOD2	= 0;		//Mode complementaire sur pwm1L2
+	PWM1CON1bits.PMOD1	= 1;		//Mode indépendant             //Mode complementaire sur pwm1L1
+	PWM1CON1bits.PMOD2	= 1;		//Mode indépendant             //Mode complementaire sur pwm1L2
+        PWM1CON1bits.PMOD3      = 1;            //Mode indépendant         
+
+    #ifdef CARTE_V1
 	PWM1CON1bits.PEN1H	= 0;		//PWM1H1 inactif
 	PWM1CON1bits.PEN1L	= 0;		//PWM1L1 inactif => I/O
 	PWM1CON1bits.PEN2H	= 1;		//PWM1H2 pour PWM_GAUCHE
@@ -50,11 +53,27 @@ void ConfigPWM (void)
 
 	PWM2CON1bits.PEN1H	= 0;		//PWM2H1 inactif => I/O
 	PWM2CON1bits.PEN1L	= 0;		//PWM2L1 inactif => I/O
+    #endif
+
+    #ifdef CARTE_V2
+	PWM1CON1bits.PEN1H	= 1;		//PWM1H1 pour PWM moteur X
+	PWM1CON1bits.PEN1L	= 0;		//PWM1L1 inactif => I/O
+	PWM1CON1bits.PEN2H	= 0;		//PWM1H2 inactif => I/O
+	PWM1CON1bits.PEN2L	= 1;		//PWM1L2 pour PWM moteur droit
+	PWM1CON1bits.PEN3H	= 0;		//PWM1H3 inactif => I/O
+	PWM1CON1bits.PEN3L	= 1;		//PWM1L3 pour PWM moteur gauche
+
+	PWM2CON1bits.PEN1H	= 0;		//PWM2H1 inactif => I/O
+	PWM2CON1bits.PEN1L	= 0;		//PWM2L1 inactif => I/O
+    #endif
 
 
 	// Mise a zero des PWM
-	P1DC2				= 0;
-	P1DC3				= 0;
+	REGISTRE_MOTEUR_D       = 0;
+	REGISTRE_MOTEUR_G	= 0;
+    #ifdef CARTE_V2
+        REGISTRE_MOTEUR_X       = 0;
+    #endif
 }
 
 void envoit_pwm (char moteur, int32_t valeur)
@@ -71,14 +90,14 @@ void envoit_pwm (char moteur, int32_t valeur)
 
         if (valeur < (int32_t) 0) //>
         {
-           PORTBbits.RB11 = AVANCER_MOTEUR_D;
+           SENS_MOTEUR_DROIT = AVANCER_MOTEUR_D;
         }
         else
         {
-            PORTBbits.RB11 = RECULER_MOTEUR_D;
+            SENS_MOTEUR_DROIT = RECULER_MOTEUR_D;
         } 
 
-        P1DC3 = abs_valeur;
+        REGISTRE_MOTEUR_D = abs_valeur;
     }
     else if (moteur == MOTEUR_GAUCHE)
     {
@@ -86,11 +105,11 @@ void envoit_pwm (char moteur, int32_t valeur)
             abs_valeur = PWM_DROIT_VALEUR_MAX;
 
         if (valeur < (int32_t) 0)
-            PORTBbits.RB13 = RECULER_MOTEUR_G;
+            SENS_MOTEUR_GAUCHE = RECULER_MOTEUR_G;
         else
-            PORTBbits.RB13 = AVANCER_MOTEUR_G;
+            SENS_MOTEUR_GAUCHE = AVANCER_MOTEUR_G;
 
-        P1DC2 = abs_valeur;
+        REGISTRE_MOTEUR_G = abs_valeur;
     }
 }
 

@@ -82,9 +82,13 @@ int main(int argc, char** argv)
     //configurer_status_returning_level(TOUS_LES_AX12, TOUTES_LES_INFOS);
     allumer_LED_AX12(TOUS_LES_AX12);
     PORTCbits.RC5 = 0;
-    angle_AX12(24, 512, 1023, SANS_ATTENTE);
-    angle_AX12(24, 100, 1023, SANS_ATTENTE);
-    angle_AX12(24, 700, 1023, SANS_ATTENTE);
+    /*while(1)
+    {
+
+        angle_AX12(13, 0, 1023, SANS_ATTENTE);
+    }*/
+
+    //angle_AX12(24, 700, 1023, SANS_ATTENTE);
 
 
   /* //cibler(500, 0, 100);
@@ -109,14 +113,14 @@ int main(int argc, char** argv)
 
 
     //grand demi cercle
-    /*
+    
     passe_part(200, 0, 500);
     passe_part2(700, 134 , 100, OFF);
     passe_part2 (1066, 500, 100, OFF);
     passe_part2 (1200, 1000, 100, OFF);
     passe_part2 (1066, 1500, 100, OFF);
     passe_part2 (700, 1866, 100, OFF);
-    passe_part2 (200, 2000, 100, ON);*/
+    passe_part2 (200, 2000, 100, ON);
 
     //petit demi cercle
     

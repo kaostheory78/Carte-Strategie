@@ -42,7 +42,7 @@ void init_system (void)
     ConfigPWM();
 
     InitUART(UART_XBEE, 115200);
-    InitUART(UART_AX12, 115200);
+    InitUART(UART_AX12, 500000);
 
     DETECTION = OFF;
     EVITEMENT_ADV_AVANT = ON;
@@ -189,13 +189,25 @@ void init_clock(void)
 
 void ConfigMapping (void)
 {
-	// Mapping UART1 : XBee
+    #ifdef CARTE_V1
+        // Mapping UART1 : XBee
 	_U1RXR	= 0x0E;		// IN	: UART1 RX sur RP14
 	_RP15R	= 0x03;		// OUT	: UART1 TX sur RP15
 
 	// Mapping UART2 : AX12
 	_U2RXR	= 0x05;         // IN	: UART2 RX sur RP5
 	_RP6R	= 0x05;         // OUT	: UART2 TX sur RP6
+    #endif
+
+    #ifdef CARTE_V2
+        // Mapping UART1 : XBee
+	_U1RXR	= 0x05;		// IN	: UART1 RX sur RP5
+	_RP6R	= 0x03;		// OUT	: UART1 TX sur RP6
+
+	// Mapping UART2 : AX12
+	_U2RXR	= 0x02;         // IN	: UART2 RX sur RP2
+	_RP3R	= 0x05;         // OUT	: UART2 TX sur RP3
+    #endif
 
 	// Mapping QEI1 : Codeur Droit
 	_QEB1R	= 0x19;         // IN	: QEB1 sur RP25
@@ -204,7 +216,7 @@ void ConfigMapping (void)
 	// Mapping QEI2 : Codeur Gauche
 	_QEB2R	= 0x17;		// QEB2 sur RP23
 	_QEA2R	= 0x16;		// QEA2 sur RP12
-
+    
 	// Temporisation
 	delay_ms (50);
 }
@@ -236,7 +248,7 @@ void ConfigPorts (void)
 	_PEN3H		= 0;
 
 
-
+    #ifdef CARTE_V1
 	//****************
 	// PORT x
 	//****************
@@ -244,12 +256,13 @@ void ConfigPorts (void)
 	// Config PORTA
 	_TRISA0		= 1;	_CN2IE	= 0;	_CN2PUE		= 0;	// IN  : (ANALOG) Courant_G (AN0)
 	_TRISA1		= 1;	_CN3IE	= 0;	_CN3PUE		= 0;	// IN  : (ANALOG) Courant_D (AN1)
-	_TRISA3		= 1;	_CN29IE	= 0;	_CN29PUE	= 0;	// IN  : (DIGIT) capteur 1
-	_TRISA4		= 1;	_CN0IE	= 0;	_CN0PUE		= 0;	// IN  : (DIGIT) capteur 2
+        _TRISA2         = 1;                                            // IN  : (DIGIT) capteur 1
+	_TRISA3		= 1;	_CN29IE	= 0;	_CN29PUE	= 0;	// IN  : (DIGIT) capteur 2
+	_TRISA4		= 1;	_CN0IE	= 0;	_CN0PUE		= 0;	// IN  : (DIGIT) capteur 3
         _TRISA7		= 0;						// OUT : (DIGIT) XBEE RSET
-	_TRISA8		= 1;						// IN  : (DIGIT) capteur 3
-	_TRISA9		= 1;						// IN  : (DIGIT)  capteur 4
-	_TRISA10	= 0;						// OUT : (DIGIT)  Commande Alim AX12
+	_TRISA8		= 1;						// IN  : (DIGIT) capteur 4
+	_TRISA9		= 1;						// IN  : (DIGIT) capteur 5
+	_TRISA10	= 0;						// OUT : (DIGIT) Commande Alim AX12
 
 	// Config PORTB
 	_TRISB0		= 0;	_CN4IE	= 0;	_CN4PUE		= 0;	// RES : PGED1 pour programmation
@@ -281,7 +294,55 @@ void ConfigPorts (void)
 	_TRISC8		= 1;	_CN20IE	= 0;	_CN20PUE	= 0;	// IN  : QEA1
 	_TRISC9		= 1;	_CN19IE	= 0;	_CN19PUE	= 0;	// IN  : QEB1
 
+    #endif
 
+    #ifdef CARTE_V2
+	//****************
+	// PORT x
+	//****************
+	//_CNxIE  : interrup sur broche	| _CN6PUE : pull-up sur broche
+	// Config PORTA
+	_TRISA0		= 0;	_CN2IE	= 0;	_CN2PUE		= 0;	// OUT : (DIGIT) : Inhibit AX12
+	_TRISA1		= 0;	_CN3IE	= 0;	_CN3PUE		= 0;	// OUT : (DIGIT) : DIR_UART_AX12
+        _TRIS2          = 1;                                            // IN  : (DIGIT) : Capteur 1
+	_TRISA3		= 1;	_CN29IE	= 0;	_CN29PUE	= 0;	// IN  : (DIGIT) : capteur 2
+	_TRISA4		= 1;	_CN0IE	= 0;	_CN0PUE		= 0;	// IN  : (DIGIT) : capteur 3
+        _TRISA7		= 0;						// OUT : PWM Y
+	_TRISA8		= 1;						// IN  : (DIGIT) : capteur 4
+	_TRISA9		= 1;						// IN  : (DIGIT) : couleur
+	_TRISA10	= 0;						// OUT : (DIGIT) : Commande Alim AX12
+
+	// Config PORTB
+	_TRISB0		= 0;	_CN4IE	= 0;	_CN4PUE		= 0;	// RES : PGED1 pour programmation
+	_TRISB1		= 0;	_CN5IE	= 0;	_CN5PUE		= 0;	// RES : PGEC1 pour programmation
+	_TRISB2		= 1;	_CN6IE	= 0;	_CN6PUE		= 0;	// INT : (UART)  : RX AX12
+	_TRISB3		= 0;	_CN7IE	= 0;	_CN7PUE		= 0;	// OUT : (UART)  : TX AX12
+	_TRISB4		= 1;	_CN1IE	= 0;	_CN1PUE		= 0;	// IN  : (DIGIT) : Capteur 5
+	_TRISB5		= 1;	_CN27IE	= 0;	_CN27PUE	= 0;	// IN  : (UART)  : RX XBEE
+	_TRISB6		= 0;	_CN24IE	= 0;	_CN24PUE	= 0;	// OUT : (UART)  : TX XBEE
+	_TRISB7		= 0;	_CN23IE	= 0;	_CN23PUE	= 0;	// OUT : (DIGIT) : RESET XBEE
+	_TRISB8		= 0;	_CN22IE	= 0;	_CN22PUE	= 0;	// RES : (I²C)   : SCL1
+	_TRISB9		= 0;	_CN21IE	= 0;	_CN21PUE	= 0;	// RES : (I²C)   : SDA1
+	_TRISB10	= 0;	_CN16IE	= 0;	_CN16PUE	= 0;	// OUT : (DIGIT) : sens moteur gauche
+	_TRISB11	= 0;	_CN15IE	= 0;	_CN15PUE	= 0;	// OUT : (PWM)   : PWM1L3 (moteur gauche)
+	_TRISB12	= 0;	_CN14IE	= 0;	_CN14PUE	= 0;	// OUT : (DIGIT) : sens moteur droit
+	_TRISB13	= 0;	_CN13IE	= 0;	_CN13PUE	= 0;	// OUT : (PWM)   : PWM1L2 (moteur droit)
+	_TRISB14	= 0;	_CN12IE	= 0;	_CN12PUE	= 0;	// OUT : (PWM)   : PWM1H1 (moteur X)
+	_TRISB15	= 0;	_CN11IE	= 0;	_CN11PUE	= 0;	// OUT : (DIGIT) : sens moteur X
+
+	// Config PORTC
+	_TRISC0		= 1;	_CN8IE	= 0;	_CN8PUE		= 0;	// IN  : (ANALOG/DIGIT) : capteur 6 (AN6)
+	_TRISC1		= 1;	_CN9IE	= 0;	_CN9PUE		= 0;	// IN  : (ANALOG/DIGIT) : capteur 7 (AN7)
+	_TRISC2		= 1;	_CN10IE	= 0;	_CN10PUE	= 0;	// IN  : (ANALOG/DIGIT) : capteur 8 (AN8)
+	_TRISC3		= 1;	_CN28IE	= 0;	_CN28PUE	= 0;	// IN  : (DIGIT) : Jack
+	_TRISC4		= 1;	_CN25IE	= 0;	_CN25PUE	= 0;	// IN  : (DIGIT) : Strat
+	_TRISC5		= 0;	_CN26IE	= 0;	_CN26PUE	= 0;	// OUT : (DIGIT) : LED Debug
+	_TRISC6		= 1;	_CN18IE	= 0;	_CN18PUE	= 0;	// IN  : QEA2
+	_TRISC7		= 1;	_CN17IE	= 0;	_CN17PUE	= 0;	// IN  : QEB2
+	_TRISC8		= 1;	_CN20IE	= 0;	_CN20PUE	= 0;	// IN  : QEA1
+	_TRISC9		= 1;	_CN19IE	= 0;	_CN19PUE	= 0;	// IN  : QEB1
+
+    #endif
 
 	//****************
 	// INITIALISATION
