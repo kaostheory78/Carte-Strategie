@@ -41,6 +41,8 @@ extern "C" {
 
 #define PAS_D_ERREUR            0
 #define TIME_OUT                1
+#define REPONSE_OK              2
+#define PAS_DE_REPONSE          3
 
 #define EMISSION                1
 #define RECEPTION               0
@@ -233,6 +235,19 @@ void reinit_buffer (void);
  */
 void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t param1, uint8_t param2, uint8_t param3, uint8_t param4, uint8_t param5);
 
+/**
+ *  Fonction qui demande une donnée à un AX-12
+ * @param ID : AX12 de qui on peut connaitre la donnée
+ * @param type_donnee : temps de réponse    : LIRE_TEMPS_REPONSE (valeur * 2µs)\n
+ *                      position actuelle   : LIRE_POSITION_ACTU\n
+ *                      vitesse actuelle    : LIRE_VITESSE_ACTU\n
+ *                      tension de l'AX12   : LIRE_TENSION (valeur / 10)\n
+ *                      Température interne : LIRE_TEMPERATURE\n
+ *                      Est en mouvement ?  : LIRE_MOUV_FLAG\n
+ * @return Renvoit la donnée 
+ */
+uint16_t read_data (uint8_t ID, uint8_t type_donnee);
+
 
 /**
  *  Fonction qui permet de calculer le checksum de vérification de trames
@@ -264,6 +279,24 @@ uint8_t calcul_checksum (uint8_t ID, uint8_t longueur, uint8_t instruction, uint
  * @param type_de_retour : TOUTES_LES_INFOS, READ_ONLY, AUCUNE_INFO
  */
 void configurer_status_returning_level (uint8_t ID, uint8_t type_de_retour);
+
+
+/**
+ * Permet de modifier le temps mort de réponse entre l'envoit de la donnée, et la réponse de l'AX12
+ * \n
+ * DANS LE ROBOT, IL FAUT CONFIGURER LES AX12 POUR 20us
+ * @param   ID                      : un ID, ou TOUS_LES_AX12
+ * @param   temps_de_reponse_us     : Temps en µ secondes
+ */
+void configurer_temps_de_reponse_AX12 (uint8_t ID, uint16_t  temps_de_reponse_us);
+
+
+/**
+ * Fonction qui vérifie la présence d'un AX12
+ * @param ID
+ * @return : renvoit REPONSE_OK ou PAS_DE_REPONSE
+ */
+uint8_t Ping (uint8_t ID);
 
 /**
 * configure l'AX12 à l'état d'usine

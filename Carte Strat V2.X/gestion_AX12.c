@@ -161,7 +161,7 @@ void calcul_modif_angle (uint8_t ID, float angle)
  * @param vitesse : VIT_AX_NORMAL, VIT_AX_REDUITE, VIT_AX_MOITIE ( de 0 à 1023)
  * @param attente : AVEC_ATTENTE, SANS_ATTENTE, pour permettre de synchro les mouvements
  */
-/*/void synchro_AX12 (uint8_t ID, float angle, uint16_t vitesse, uint8_t attente)
+void synchro_AX12 (uint8_t ID, float angle, uint16_t vitesse, uint8_t attente)
 {
     if (COULEUR == JAUNE)
     {
@@ -177,7 +177,7 @@ void calcul_modif_angle (uint8_t ID, float angle)
     }
 
     angle_AX12(ID, calcul_position(ID, angle), vitesse, attente);
-}*/
+}
 
 
 //Bouge les AX12 à partir d'une position donnée comprise entre 0 et 1023
@@ -283,6 +283,37 @@ void configurer_status_returning_level (uint8_t ID, uint8_t type_de_retour)
 {
     commande_AX12(ID, _4PARAM, WRITE_DATA,  0x10, type_de_retour, NC, NC, NC);
     delay_ms(100);
+}
+
+
+/**
+ * Permet de modifier le temps mort de réponse entre l'envoit de la donnée, et la réponse de l'AX12
+ * \n
+ * DANS LE ROBOT, IL FAUT CONFIGURER LES AX12 POUR 20us
+ * @param   ID                      : un ID, ou TOUS_LES_AX12
+ * @param   temps_de_reponse_us     : Temps en µ secondes
+ */
+void configurer_temps_de_reponse_AX12 (uint8_t ID, uint16_t  temps_de_reponse_us)
+{
+    uint8_t buf;
+    buf = (uint8_t) (temps_de_reponse_us/2);
+    commande_AX12(ID, _4PARAM, WRITE_DATA, LIRE_TEMPS_REPONSE, buf, NC, NC, NC);
+}
+
+
+/**
+ * Fonction qui vérifie la présence d'un AX12
+ * @param ID
+ * @return : renvoit REPONSE_OK ou PAS_DE_REPONSE
+ */
+uint8_t Ping (uint8_t ID)
+{
+    commande_AX12(ID, _2PARAM, PING, NC, NC, NC, NC, NC);
+
+    if (ax12.erreur == PAS_D_ERREUR)
+        return REPONSE_OK;
+    else
+        return PAS_DE_REPONSE;
 }
 
 /**
@@ -547,6 +578,7 @@ uint8_t calcul_checksum (uint8_t ID, uint8_t longueur, uint8_t instruction, uint
 
     return (uint8_t) buffer;
 }
+
 
 uint16_t read_data (uint8_t ID, uint8_t type_donnee)
 {

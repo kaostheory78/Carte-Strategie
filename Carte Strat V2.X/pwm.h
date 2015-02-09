@@ -46,20 +46,12 @@ extern "C" {
 /***************************** MAPPING ****************************************/
 /******************************************************************************/
 
-#if CARTE_V1
-    #define SENS_MOTEUR_DROIT   PORTBbits.RB11;
-    #define SENS_MOTEUR_GAUCHE  PORTBbits.RB13;
-
+#ifdef CARTE_V1
     #define REGISTRE_MOTEUR_D   PDC3
     #define REGISTRE_MOTEUR_G   PDC2
 #endif
 
 #if CARTE_V2
-    #define SENS_MOTEUR_DROIT   PORTBbits.RB12;
-    #define SENS_MOTEUR_GAUCHE  PORTBbits.RB10;
-    #define SENS_MOTEUR_X       PORTBbits.RB15;
-    #define SENS_MOTEUR_Y       PORTAbits.RA10;
-
     #define REGISTRE_MOTEUR_D   PDC2
     #define REGISTRE_MOTEUR_G   PDC3
     #define REGISTRE_MOTEUR_X   PDC1

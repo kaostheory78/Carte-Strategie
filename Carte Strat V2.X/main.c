@@ -82,6 +82,9 @@ int main(int argc, char** argv)
     //configurer_status_returning_level(TOUS_LES_AX12, TOUTES_LES_INFOS);
     allumer_LED_AX12(TOUS_LES_AX12);
     PORTCbits.RC5 = 0;
+
+
+    strategie();
     /*while(1)
     {
 
@@ -113,14 +116,14 @@ int main(int argc, char** argv)
 
 
     //grand demi cercle
-    
+    /*
     passe_part(200, 0, 500);
     passe_part2(700, 134 , 100, OFF);
     passe_part2 (1066, 500, 100, OFF);
     passe_part2 (1200, 1000, 100, OFF);
     passe_part2 (1066, 1500, 100, OFF);
     passe_part2 (700, 1866, 100, OFF);
-    passe_part2 (200, 2000, 100, ON);
+    passe_part2 (200, 2000, 100, ON);*/
 
     //petit demi cercle
     

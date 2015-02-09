@@ -45,6 +45,8 @@ extern "C" {
     void passe_part (double x, double y, double pourcentage_vitesse);
     void passe_part2 (double x, double y, double pourcentage_vitesse, char last);
     void _rejoindre (double x, double y, int8_t sens_marche, double pourcentage_vitesse, char vitesse_fin_deplacement_nulle);
+    double inversion_couleur (double param_inversable);
+    uint8_t couleur_depart();
 
 
 #ifdef	__cplusplus

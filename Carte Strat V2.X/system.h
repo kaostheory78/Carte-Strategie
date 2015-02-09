@@ -18,7 +18,6 @@ extern "C" {
     #include <libpic30.h>
     #include <p33FJ128MC804.h>
     #include <stdint.h>
-   // #include <stdio.h>
     #include <stdlib.h>
     #include "codeurs.h"
     #include <math.h>
@@ -65,18 +64,53 @@ extern "C" {
 /********************************  PORT CARTE   *******************************/
 /******************************************************************************/
 
-#define SENS_MOTEUR_GAUCHE      (PORTBbits.RB13)
-#define SENS_MOTEUR_DROIT       (PORTBbits.RB11)
-
 #define XBEE_RESET              PORTAbits.RA7
 #define INHIBIT_AX12            PORTAbits.RA10
 #define DIR_UART_AX12           PORTBbits.RB7
 
-/*#define SYS_JACK
-#define SYS_COULEUR
-#define SYS_STRAT
+#ifdef CARTE_V1
+    #define SENS_MOTEUR_DROIT   PORTBbits.RB11
+    #define SENS_MOTEUR_GAUCHE  PORTBbits.RB13
 
-#define */
+    #define SYS_JACK            PORTBbits.RB4
+
+    //Du JACK  vers les codeurs
+    #define CAPTEUR1            PORTAbits.RA4
+    #define CAPTEUR2            PORTAbits.RA9
+    #define CAPTEUR3            PORTCbits.RC3
+    #define CAPTEUR4            PORTCbits.RC4
+
+    //Carte d'extenssion
+    //De la gauche vers la droite (nappe en bas)
+    #define CAPTEUR5            PORTAbits.RA8
+    #define CAPTEUR6            PORTAbits.RA3
+    #define CAPTEUR7            PORTAbits.RA2
+    #define CAPTEUR8            PORTCbits.RC1
+    #define CAPTEUR9            PORTCbits.RC2
+    #define CAPTEUR10           PORTCbits.RC0
+#endif
+#ifdef CARTE_V2
+    #define SENS_MOTEUR_DROIT   PORTBbits.RB12
+    #define SENS_MOTEUR_GAUCHE  PORTBbits.RB10
+    #define SENS_MOTEUR_X       PORTBbits.RB15
+    #define SENS_MOTEUR_Y       PORTAbits.RA10
+
+    #define SYS_JACK            PORTCbits.RC3
+    #define _SYS_COULEUR        PORTAbits.RA9
+    #define _SYS_STRAT          PORTCbits.RC4
+
+    #define CAPTEUR1            PORTCbits.RC0
+    #define CAPTEUR2            PORTCbits.RC1
+    #define CAPTEUR3            PORTCbits.RC2
+    #define CAPTEUR4            PORTAbits.RA2
+    #define CAPTEUR5            PORTAbits.RA3
+    #define CAPTEUR6            PORTAbits.RA8
+    #define CAPTEUR7            PORTBbits.RB4
+    #define CAPTEUR8            PORTAbits.RA4
+#endif
+
+#define SYS_COULEUR             _SYS_COULEUR
+#define SYS_STRAT               _SYS_STRAT
 
 /******************************************************************************/
 /******************************* Interruptions  *******************************/
@@ -148,13 +182,13 @@ extern "C" {
 
     extern _commande_moteur COMMANDE;
 
-    extern char TYPE_CONSIGNE;
+    extern uint8_t TYPE_CONSIGNE;
 
 
     extern uint8_t DETECTION;
     extern uint8_t EVITEMENT_ADV_AVANT;
     extern uint8_t STOP_DETECTION;
-    //extern uint8_t COULEUR;
+    extern uint8_t COULEUR;
 
     extern _ax12 ax12;
 
@@ -162,18 +196,57 @@ extern "C" {
 /****************************** Prototypes ************************************/
 /******************************************************************************/
 
+    /**
+     * Fonction qui initialise tous les systèmes de la carte
+     * Uart, Timer, PWM, mapping ....
+     */
     void init_system (void);
+
+
+    /**
+     * Fonction qui rèfle l'horloge à 80Mhz
+     */
     void init_clock(void);
+
+    /**
+     * Fonction qui init le Timer asserv
+     */
     void config_timer_5ms();
+
+
+    /**
+     * Focntion qui init le Timer d'autom
+     */
     void config_timer_10ms();
-    void config_timer_90s();
 
-    void start_timer_90s (void);
 
+    /**
+     * Fonction qui init le timer de fin de match
+     */
+    void config_timer_90s(void);
+
+
+    /**
+     * Fonction qui configure toutes les interruptions
+     * Ainsi que les priorités
+     */
     void ConfigInterrupt (void);
+
+
+    /**
+     * Fonction qui configure toures les broches entrées sorties
+     */
     void ConfigPorts (void);
+
+
+    /**
+     * Configure le mappage des modules spéciaux : UART, QEI
+     */
     void ConfigMapping (void);
 
+    /**
+     * Fonction stratégie du robot
+     */
     void strategie();
     
 

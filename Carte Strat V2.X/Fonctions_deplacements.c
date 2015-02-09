@@ -15,20 +15,29 @@
 /******************************** INCLUDES ************************************/
 /******************************************************************************/
 
-
 #include "system.h"
 
-/*/uint8_t couleur_depart()
+uint8_t COULEUR;
+
+uint8_t couleur_depart()
 {
     if (SYS_COULEUR == 0)
         return JAUNE;
     else
         return VERT;
-}*/
+}
 
+double inversion_couleur (double param_inversable)
+{
+    if (COULEUR == JAUNE)
+        return param_inversable;
+    else
+        return (- param_inversable);
+}
 
 void cibler (double x, double y, double pourcentage_vitesse)
 {
+    y = inversion_couleur(y);
     FLAG_ASSERV.brake = OFF;
     delay_ms(10);
 
@@ -50,6 +59,8 @@ void cibler (double x, double y, double pourcentage_vitesse)
         FLAG_ASSERV.orientation = ON;
         FLAG_ASSERV.vitesse = ON;
 
+        FLAG_ASSERV.type_deplacement = ORIENTER;
+
         FLAG_ASSERV.etat_angle = EN_COURS;
         FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
         FLAG_ASSERV.immobilite = 0;
@@ -62,6 +73,7 @@ void cibler (double x, double y, double pourcentage_vitesse)
  
 void orienter (double angle, double pourcentage_vitesse)
 {
+    angle = inversion_couleur(angle);
     FLAG_ASSERV.brake = OFF;
     delay_ms(10);
 
@@ -77,6 +89,8 @@ void orienter (double angle, double pourcentage_vitesse)
     FLAG_ASSERV.position = OFF;
     FLAG_ASSERV.orientation = ON;
     FLAG_ASSERV.vitesse = ON;
+
+    FLAG_ASSERV.type_deplacement = ORIENTER;
 
     FLAG_ASSERV.etat_angle = EN_COURS;
     FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
@@ -95,6 +109,7 @@ void rejoindre (double x, double y, int8_t sens_marche, double pourcentage_vites
 
 void _rejoindre (double x, double y,int8_t sens_marche, double pourcentage_vitesse, char vitesse_fin_deplacement_nulle)
 {
+    y = inversion_couleur(y);
     FLAG_ASSERV.brake = OFF;
     delay_ms(10);
 
@@ -163,18 +178,57 @@ void avancer_reculer (double distance, double pourcentage_vitesse)
 
 void passe_part (double x, double y, double pourcentage_vitesse)
 {
+
+
+    y = inversion_couleur(y);
+    FLAG_ASSERV.brake = OFF;
+    delay_ms(10);
+
+    reinit_asserv();
+
+    X.consigne = x * TICKS_PAR_MM;
+    Y.consigne = y * TICKS_PAR_MM;
+
+    TYPE_CONSIGNE = XY;
+
+    FLAG_ASSERV.sens_deplacement = MARCHE_AVANT;
+
+    calcul_vitesse_position(pourcentage_vitesse);
+    calcul_acceleration_position();
+
+    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
+    acc.acceleration.orientation = ACC_ORIENTATION_CONSIGNE;
+    acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
+
+    FLAG_ASSERV.position = ON;
+    FLAG_ASSERV.orientation = ON;
+    FLAG_ASSERV.vitesse = ON;
+
+    FLAG_ASSERV.etat_angle = EN_COURS;
+    FLAG_ASSERV.etat_distance = EN_COURS;
     FLAG_ASSERV.type_deplacement = PASSE_PART;
-    _rejoindre(x, y, MARCHE_AVANT, pourcentage_vitesse, OFF);
+    FLAG_ASSERV.vitesse_fin_nulle = OFF;
+
+    FLAG_ASSERV.immobilite = 0;
+
+
+    FLAG_ASSERV.fin_deplacement = DEBUT_DEPLACEMENT;
+    while (FLAG_ASSERV.fin_deplacement != FIN_DEPLACEMENT);
 }
 
 void passe_part2 (double x, double y, double pourcentage_vitesse, char last)
 {
+    y = inversion_couleur(y);
     FLAG_ASSERV.type_deplacement = PASSE_PART;
     X.consigne = x * TICKS_PAR_MM;
     Y.consigne = y * TICKS_PAR_MM;
 
     calcul_vitesse_position(pourcentage_vitesse);
     calcul_acceleration_position();
+
+    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
+    acc.acceleration.orientation = ACC_ORIENTATION_CONSIGNE;
+    acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
 
     FLAG_ASSERV.position = ON;
     FLAG_ASSERV.orientation = ON;
@@ -184,6 +238,8 @@ void passe_part2 (double x, double y, double pourcentage_vitesse, char last)
 
     FLAG_ASSERV.etat_angle = EN_COURS;
     FLAG_ASSERV.etat_distance = EN_COURS;
+
+    FLAG_ASSERV.immobilite = 0;
 
     if (last == ON)
         FLAG_ASSERV.vitesse_fin_nulle = ON;

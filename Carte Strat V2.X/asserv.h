@@ -143,6 +143,7 @@
         _vitesse deceleration;
     }_acc;
 
+    
     typedef struct
     {
         double KP;

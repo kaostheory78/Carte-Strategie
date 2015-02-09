@@ -283,11 +283,11 @@ void ConfigPorts (void)
 	_TRISB15	= 0;	_CN11IE	= 0;	_CN11PUE	= 0;	// OUT : TX XBEE
 
 	// Config PORTC
-	_TRISC0		= 1;	_CN8IE	= 0;	_CN8PUE		= 0;	// IN  : (ANALOG/DIGIT)  capteur 5 (AN6)
-	_TRISC1		= 1;	_CN9IE	= 0;	_CN9PUE		= 0;	// IN  : (ANALOG/DIGIT)  capteur 6 (AN7)
-	_TRISC2		= 1;	_CN10IE	= 0;	_CN10PUE	= 0;	// IN  : (ANALOG/DIGIT)  capteur 7 (AN8)
-	_TRISC3		= 1;	_CN28IE	= 0;	_CN28PUE	= 0;	// IN  : (DIGIT) : capteur 8
-	_TRISC4		= 1;	_CN25IE	= 0;	_CN25PUE	= 0;	// IN  : (DIGIT) : capteur 9
+	_TRISC0		= 1;	_CN8IE	= 0;	_CN8PUE		= 0;	// IN  : (ANALOG/DIGIT)  capteur 6 (AN6)
+	_TRISC1		= 1;	_CN9IE	= 0;	_CN9PUE		= 0;	// IN  : (ANALOG/DIGIT)  capteur 7 (AN7)
+	_TRISC2		= 1;	_CN10IE	= 0;	_CN10PUE	= 0;	// IN  : (ANALOG/DIGIT)  capteur 8 (AN8)
+	_TRISC3		= 1;	_CN28IE	= 0;	_CN28PUE	= 0;	// IN  : (DIGIT) : capteur 9
+	_TRISC4		= 1;	_CN25IE	= 0;	_CN25PUE	= 0;	// IN  : (DIGIT) : capteur 10
 	_TRISC5		= 0;	_CN26IE	= 0;	_CN26PUE	= 0;	// OUT : (DIGIT) : LED Debug
 	_TRISC6		= 1;	_CN18IE	= 0;	_CN18PUE	= 0;	// IN  : QEA2
 	_TRISC7		= 1;	_CN17IE	= 0;	_CN17PUE	= 0;	// IN  : QEB2
