@@ -46,9 +46,11 @@ void init_system (void)
 
     DETECTION = OFF;
     EVITEMENT_ADV_AVANT = ON;
+    STRATEGIE_EVITEMENT = STOP;
 
     TIMER_5ms = ACTIVE;
     TIMER_10ms = ACTIVE;
+    
     init_flag();
 }
 
@@ -480,55 +482,55 @@ void ConfigInterrupt (void)
 	// Priorites
 	//****************
 	// IPC0
-	IPC0bits.T1IP		= PRIO_INTER_TIMER1;						//
-	IPC0bits.OC1IP		= 0x00;						//
-	IPC0bits.IC1IP		= 0x00;						//
+	IPC0bits.T1IP		= PRIO_INTER_TIMER1;		//
+	IPC0bits.OC1IP		= 0x00;				//
+	IPC0bits.IC1IP		= 0x00;				//
 	IPC0bits.INT0IP		= 0x00;                         //Pas de INT0
 
 	// IPC1
 	IPC1bits.T2IP		= PRIO_INTER_TIMER2;		// Timer2
-	IPC1bits.OC2IP		= 0x00;						//
-	IPC1bits.IC2IP		= 0x00;						//
-	IPC1bits.DMA0IP		= 0x00;						//
+	IPC1bits.OC2IP		= 0x00;				//
+	IPC1bits.IC2IP		= 0x00;				//
+	IPC1bits.DMA0IP		= 0x00;				//
 
 	// IPC2
 	IPC2bits.U1RXIP		= PRIO_INTER_UART1_RX;		// UART1 RX
-	IPC2bits.SPI1IP		= 0x00;						//
-	IPC2bits.SPI1EIP	= 0x00;						//
+	IPC2bits.SPI1IP		= 0x00;				//
+	IPC2bits.SPI1EIP	= 0x00;				//
 	IPC2bits.T3IP		= PRIO_INTER_TIMER3;		// Timer 3
 
 	// IPC3
-	IPC3bits.DMA1IP		= 0x00;						//
-	IPC3bits.AD1IP		= 0x00;						//
-	IPC3bits.U1TXIP		= 0x00;						//
+	IPC3bits.DMA1IP		= 0x00;				//
+	IPC3bits.AD1IP		= 0x00;				//
+	IPC3bits.U1TXIP		= 0x00;				//
 
 	// IPC4
-	IPC4bits.CNIP		= 0x00;						//
+	IPC4bits.CNIP		= 0x00;				//
 	IPC4bits.MI2C1IP	= PRIO_INTER_I2C_MAITRE;	// Maitre I2C1
 	IPC4bits.SI2C1IP	= PRIO_INTER_I2C_ESCLAVE; 	// Esclave I2C1
 
 	// IPC5
-	IPC5bits.IC8IP		= 0x00;						//
-	IPC5bits.IC7IP		= 0x00;						//
-	IPC5bits.INT1IP		= 0x00;						//
+	IPC5bits.IC8IP		= 0x00;				//
+	IPC5bits.IC7IP		= 0x00;				//
+	IPC5bits.INT1IP		= 0x00;				//
 
 	// IPC6
 	IPC6bits.T4IP		= PRIO_INTER_TIMER4;		// Timer 4
-	IPC6bits.OC4IP		= 0x00;						//
-	IPC6bits.OC3IP		= 0x00;						//
-	IPC6bits.DMA2IP		= 0x00;						//
+	IPC6bits.OC4IP		= 0x00;				//
+	IPC6bits.OC3IP		= 0x00;				//
+	IPC6bits.DMA2IP		= 0x00;				//
 
 	// IPC7
 	IPC7bits.U2TXIP		= PRIO_INTER_UART2_TX;
 	IPC7bits.U2RXIP		= PRIO_INTER_UART2_RX;		// UART2 RX
-	IPC7bits.INT2IP		= 0x00;						//
-	IPC7bits.T5IP		= PRIO_INTER_TIMER5;						//
+	IPC7bits.INT2IP		= 0x00;				//
+	IPC7bits.T5IP		= PRIO_INTER_TIMER5;		//
 
 	// IPC8
-	IPC8bits.C1IP		= 0x00;						//
-	IPC8bits.C1RXIP		= 0x00;						//
-	IPC8bits.SPI2IP		= 0x00;						//
-	IPC8bits.SPI2EIP	= 0x00;						//
+	IPC8bits.C1IP		= 0x00;				//
+	IPC8bits.C1RXIP		= 0x00;				//
+	IPC8bits.SPI2IP		= 0x00;				//
+	IPC8bits.SPI2EIP	= 0x00;				//
 
 	// IPC9
 	IPC9bits.DMA3IP		= 0x00;			
@@ -596,7 +598,7 @@ void ConfigInterrupt (void)
 	IEC0bits.INT0IE		= 0;                            // NC
 
 	// IEC1
-	IEC1bits.U2TXIE		= ACTIV_INTER_UART2_TX;                            // Interruption TX sur UART2
+	IEC1bits.U2TXIE		= ACTIV_INTER_UART2_TX;         // Interruption TX sur UART2
 	IEC1bits.U2RXIE		= ACTIV_INTER_UART2_RX;		// Interruption RX sur UART2
 	IEC1bits.INT2IE		= 0;                    	// NC
 	IEC1bits.T5IE		= ACTIV_INTER_TIMER5;    	// Interruption sur Timer5

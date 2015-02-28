@@ -174,7 +174,7 @@ void avancer_reculer (double distance, double pourcentage_vitesse)
 
 void passe_part (double x, double y, int8_t sens_marche, double pourcentage_vitesse, char last)
 {
-    uint8_t erreur = passe_part (x, y, sens_marche, pourcentage_vitesse, last);
+    uint8_t erreur = _passe_part (x, y, sens_marche, pourcentage_vitesse, last);
     if ( erreur == EVITEMENT)
     {
         if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)

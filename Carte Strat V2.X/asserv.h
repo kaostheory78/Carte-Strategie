@@ -319,7 +319,7 @@ double get_orientation (void);
  * @param y0 : en mm
  * @param teta0 : en degré
  */
-void init_position_robot (float x0, float y0, uint32_t teta0);
+void init_position_robot (double x0, double y0, uint32_t teta0);
 
 
 /**

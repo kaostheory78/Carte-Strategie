@@ -163,14 +163,14 @@ extern "C" {
 /*************************** Variables Globales *******************************/
 /******************************************************************************/
 
+    //Codeurs
     extern int OVERFLOW_CODEUR[3] ;
     extern _position position[3];
+
+    //Asserv
     extern _robot ROBOT;
-
     extern _acc acc;
-
     extern _PID PID;
-
     extern _flag_asserv FLAG_ASSERV;
 
     extern _systeme_asserv X;
@@ -191,7 +191,7 @@ extern "C" {
 
     extern uint8_t TYPE_CONSIGNE;
 
-
+    //Evitement adversaire
     extern uint8_t DETECTION;
     extern uint8_t EVITEMENT_ADV_AVANT;
     extern uint8_t STRATEGIE_EVITEMENT;
