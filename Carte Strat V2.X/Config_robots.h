@@ -26,13 +26,15 @@ extern "C" {
 /******************************************************************************/
 
 #define GROS_ROBOT
+//#define PETIT_ROBOT
 //#define ROBOT_TEST
 
-#define _Pi                             3.14159265359 
+#define _Pi                             3.14159265359
+
 
 #ifdef GROS_ROBOT
     
-    #define CARTE_V1
+    #define CARTE_V2
 
     /**************************************************************************/
     /****************************** ODOMETRIE *********************************/
@@ -60,6 +62,7 @@ extern "C" {
 
         //Autres réglages asserv
     #define _SEUIL_IMMOBILITE            100 //200
+    #define _MAX_ERREUR_INTEGRALLE_V     2000
 
     /**************************************************************************/
     /********************************* PID ************************************/
@@ -99,6 +102,132 @@ extern "C" {
 
 
     //Paramètres codeurs, et moteurs
+    #define _RAPPORT_REDUCTION           1
+
+    #define _CODEUR_D_NB_IMP             3600
+    #define _CODEUR_G_NB_IMP             3600
+
+    #define _RESOLUTION_LOGICIELLE       1
+
+    //PWM
+#ifdef CARTE_V1
+    #define _SENS_ROT_D                  1L
+    #define _SENS_ROT_G                  -1L
+
+    #define _AVANCER_MOTEUR_D            1 
+    #define _RECULER_MOTEUR_D            0   
+
+    #define _AVANCER_MOTEUR_G            0
+    #define _RECULER_MOTEUR_G            1
+#endif
+#ifdef CARTE_V2
+    #define _SENS_ROT_D                  -1L
+    #define _SENS_ROT_G                  1L
+
+    #define _AVANCER_MOTEUR_D            0
+    #define _RECULER_MOTEUR_D            1
+
+    #define _AVANCER_MOTEUR_G            1
+    #define _RECULER_MOTEUR_G            0
+#endif
+
+    /**************************************************************************/
+    /***************************** PORTS CARTE ********************************/
+    /**************************************************************************/
+
+    
+    //La définition des ports relatif à chaque carte se trouve
+    //Dans le fichier system.h
+    
+    #define CAPT_US_BALISE              CAPTEUR1
+
+#ifdef CARTE_V1
+    #define _SYS_COULEUR                CAPTEUR2
+#endif
+
+
+    /**************************************************************************/
+    /**************************************************************************/
+    /**************************************************************************/
+
+
+
+#endif
+
+
+
+
+    #ifdef PETIT_ROBOT
+
+    #define CARTE_V1
+
+    /**************************************************************************/
+    /****************************** ODOMETRIE *********************************/
+    /**************************************************************************/
+    #define _ENTRAXE_MM                  234.
+    #define _DIAMETRE_ROUE_CODEUSE       51.5
+    #define _PERIMETRE_ROUE_MM           (_DIAMETRE_ROUE_CODEUSE * _Pi)
+
+    /**************************************************************************/
+    /******************************** ASSERV **********************************/
+    /**************************************************************************/
+        //Association distance - Vitesse - Accélérations max
+    #define _VITESSE_CONSIGNE_MAX_MM     2.5
+    #define _DISTANCE_CONSIGNE_MM        500.
+
+    #define _ACC_POSITION_CONSIGNE       0.5
+    #define _DCC_POSITION_CONSIGNE       1. //4
+
+        //Association Angle - Vitesse - Accélérations max
+    #define _VITESSE_ANGLE_MAX           0.02 //0.02
+    #define _ORIENTATION_CONSIGNE_DEG    90.
+
+    #define _ACC_ORIENTATION_CONSIGNE    4.
+    #define _DCC_ORIENTATION_CONSIGNE    6.
+
+        //Autres réglages asserv
+    #define _SEUIL_IMMOBILITE            1000 //200
+    #define _MAX_ERREUR_INTEGRALLE_V     30000
+
+    /**************************************************************************/
+    /********************************* PID ************************************/
+    /**************************************************************************/
+
+    //PID
+    #define _VITESSE_DIS_KP              0.05  //0.2
+    #define _VITESSE_DIS_KI              0.02 //0.02
+    #define _VITESSE_DIS_KD              0.1
+
+    #define _POSITION_KP                 1.
+    #define _POSITION_KI                 0.
+    #define _POSITION_KD                 0.
+
+    #define _ORIENTATION_KP              1.
+    #define _ORIENTATION_KI              0.
+    #define _ORIENTATION_KD              0.
+
+    #define KP_BRAKE                    0.005
+    #define KI_BRAKE                    0.001
+    #define KD_BRAKE                    0. //0.006
+
+    /**************************************************************************/
+    /******************************* TENSIONS *********************************/
+    /**************************************************************************/
+
+    //Tensions d'alimentations
+    #define _TENSION_MOTEUR_DROIT        22L
+    #define _TENSION_MOTEUR_GAUCHE       22L
+
+    #define _TENSION_SORTIE_PTN          22L
+
+
+    /**************************************************************************/
+    /*************************** CONFIGS MOTEURS ******************************/
+    /**************************************************************************/
+
+
+    //Paramètres codeurs, et moteurs
+    //Sens rotation codeur
     #define _SENS_ROT_D                  1L
     #define _SENS_ROT_G                  -1L
 
@@ -109,9 +238,9 @@ extern "C" {
 
     #define _RESOLUTION_LOGICIELLE       1
 
-    //PWM
-    #define _AVANCER_MOTEUR_D            1 
-    #define _RECULER_MOTEUR_D            0   
+    //PWM : sens de rotation du moteur
+    #define _AVANCER_MOTEUR_D            0
+    #define _RECULER_MOTEUR_D            1
 
     #define _AVANCER_MOTEUR_G            0
     #define _RECULER_MOTEUR_G            1
@@ -120,10 +249,10 @@ extern "C" {
     /***************************** PORTS CARTE ********************************/
     /**************************************************************************/
 
-    
+
     //La définition des ports relatif à chaque carte se trouve
     //Dans le fichier system.h
-    
+
     #define CAPT_US_BALISE              CAPTEUR1
     #define _SYS_COULEUR                CAPTEUR2
 
@@ -136,6 +265,7 @@ extern "C" {
 
 
 #endif
+
 
 
 #ifdef ROBOT_TEST

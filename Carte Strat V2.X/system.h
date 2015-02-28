@@ -64,13 +64,18 @@ extern "C" {
 /********************************  PORT CARTE   *******************************/
 /******************************************************************************/
 
-#define XBEE_RESET              PORTAbits.RA7
-#define INHIBIT_AX12            PORTAbits.RA10
-#define DIR_UART_AX12           PORTBbits.RB7
+#define SYS_COULEUR             _SYS_COULEUR
+#define SYS_STRAT               _SYS_STRAT
+
 
 #ifdef CARTE_V1
     #define SENS_MOTEUR_DROIT   PORTBbits.RB11
     #define SENS_MOTEUR_GAUCHE  PORTBbits.RB13
+
+    #define XBEE_RESET          PORTAbits.RA7
+    #define INHIBIT_AX12        PORTAbits.RA10
+    #define DIR_UART_AX12       PORTBbits.RB7
+
 
     #define SYS_JACK            PORTBbits.RB4
 
@@ -92,8 +97,12 @@ extern "C" {
 #ifdef CARTE_V2
     #define SENS_MOTEUR_DROIT   PORTBbits.RB12
     #define SENS_MOTEUR_GAUCHE  PORTBbits.RB10
-    #define SENS_MOTEUR_X       PORTBbits.RB15
+    #define SENS_MOTEUR_X       PORTBbits.RB14
     #define SENS_MOTEUR_Y       PORTAbits.RA10
+
+    #define XBEE_RESET          PORTAbits.RB7
+    #define INHIBIT_AX12        PORTAbits.RA0
+    #define DIR_UART_AX12       PORTAbits.RA1
 
     #define SYS_JACK            PORTCbits.RC3
     #define _SYS_COULEUR        PORTAbits.RA9
@@ -109,8 +118,6 @@ extern "C" {
     #define CAPTEUR8            PORTAbits.RA4
 #endif
 
-#define SYS_COULEUR             _SYS_COULEUR
-#define SYS_STRAT               _SYS_STRAT
 
 /******************************************************************************/
 /******************************* Interruptions  *******************************/
@@ -138,7 +145,7 @@ extern "C" {
 #define PRIO_INTER_QEI1                 7   // Codeurs : prio la plus haute
 #define PRIO_INTER_QEI2                 7   // Codeurs : prio la plus haute
 
-#define ACTIV_INTER_UART1_RX            0   // Uart XBEE
+#define ACTIV_INTER_UART1_RX            1   // Uart XBEE
 #define ACTIV_INTER_TIMER3              1   // Timer 90 secondes : fin de match
 #define ACTIV_INTER_TIMER2              0   // Osef : TIMER 2 et 3 sur 32 bits
 #define ACTIV_INTER_TIMER1              1   // Timer asserv : 5 ms
@@ -187,7 +194,7 @@ extern "C" {
 
     extern uint8_t DETECTION;
     extern uint8_t EVITEMENT_ADV_AVANT;
-    extern uint8_t STOP_DETECTION;
+    extern uint8_t STRATEGIE_EVITEMENT;
     extern uint8_t COULEUR;
 
     extern _ax12 ax12;

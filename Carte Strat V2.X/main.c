@@ -67,103 +67,44 @@
 
 int main(int argc, char** argv)
 {
-    init_system();
-    init_position_robot (0, 0, 0);
+    
 
     /**************************************************************************/
+    /******************* DECLARATION DES VARIABLES GLOBALES *******************/
     /**************************************************************************/
+
+    uint8_t COULEUR;
+    
+    uint8_t DETECTION;
+    uint8_t EVITEMENT_ADV_AVANT;
+    uint8_t STRATEGIE_EVITEMENT;
+
     /**************************************************************************/
+    /*************************** INIT ROBOT ***********************************/
+    /**************************************************************************/
+
+    init_system();
 
     //TIMER_DEBUG = ACTIVE;
+    //TIMER_90s = ACTIVE;
 
     delay_ms(500);
-    PutsUART(UART_XBEE, "\n\n\n\n\r INIT ROBOT : \n\n\r");
 
-    //configurer_status_returning_level(TOUS_LES_AX12, TOUTES_LES_INFOS);
-    allumer_LED_AX12(TOUS_LES_AX12);
-    PORTCbits.RC5 = 0;
+    PutsUART(UART_XBEE, "\n\n\n\n\r INIT ROBOT : \n\n\n\n\n\n\r");
 
+    /**************************************************************************/
+    /**************************************************************************/
+    /**************************************************************************/
 
+    //jack();
     strategie();
-    /*while(1)
-    {
+   
 
-        angle_AX12(13, 0, 1023, SANS_ATTENTE);
-    }*/
-
-    //angle_AX12(24, 700, 1023, SANS_ATTENTE);
-
-
-  /* //cibler(500, 0, 100);
-    rejoindre(500, 0, MARCHE_AVANT, 100);
-   // orienter (90, 100);
-    //cibler(500, 500, 100);
-    rejoindre (500, 500, MARCHE_AVANT, 100);
-    //orienter(180, 100);
-    //cibler (0, 500, 100);
-    rejoindre (0, 500,MARCHE_AVANT, 100);
-    //orienter(-90, 100);
-    //cibler (0, 0, 100);
-    rejoindre(0, 0, MARCHE_AVANT, 100);
-    //orienter(0, 100);
-    //cibler(250, 0, 100);*/
-
-    //trapèze type 8
-    /*passe_part(1000, 500, 50);
-    passe_part2 (1000, 0, 50, OFF);
-    passe_part2 (0, 500, 50, OFF);
-    passe_part2(0, 0, 50, ON);*/
-
-
-    //grand demi cercle
-    /*
-    passe_part(200, 0, 500);
-    passe_part2(700, 134 , 100, OFF);
-    passe_part2 (1066, 500, 100, OFF);
-    passe_part2 (1200, 1000, 100, OFF);
-    passe_part2 (1066, 1500, 100, OFF);
-    passe_part2 (700, 1866, 100, OFF);
-    passe_part2 (200, 2000, 100, ON);*/
-
-    //petit demi cercle
-    
-    /*passe_part(200, 0, 500);
-    passe_part2(450, 67 , 100, OFF);
-    passe_part2 (633, 250, 100, OFF);
-    passe_part2 (700, 500, 100, OFF);
-    passe_part2 (633, 750, 100, OFF);
-    passe_part2 (450, 933, 100, OFF);
-    passe_part2 (200, 1000, 100, ON);*/
-
-   /* passe_part(450, 0, 100);
-    passe_part2 (450, -300, 100, OFF);
-    passe_part2 (100, -400, 100, ON);
-    orienter(180, 100);*/
-
-
-    /*avancer_reculer(1500, 100);
-    orienter(90, 100);
-    avancer_reculer(500, 100);
-    orienter(180, 100);
-    avancer_reculer (1000, 100);
-    orienter(-90, 100);
-    avancer_reculer (500, 100);
-    orienter(0, 100);
-    avancer_reculer(-500, 100);*/
-
-    /*orienter(180, 100);
-    orienter(170, 100);
-    orienter (-170, 100);
-    orienter(0, 100);*/
-
-
-
-    //rejoindre(-500, 0, 100);
-    //brake();
-
+    /**************************************************************************/
+    /**************************************************************************/
+    /**************************************************************************/
 
     while(1);
-
     return (EXIT_SUCCESS);
 }
 

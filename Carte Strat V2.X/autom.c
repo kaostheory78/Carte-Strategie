@@ -16,15 +16,20 @@
 
 #include "system.h"
 
-uint8_t DETECTION;
-uint8_t EVITEMENT_ADV_AVANT;
-uint8_t STOP_DETECTION;
+/******************************************************************************/
+/***************************** FONCTIONS DIVERSES *****************************/
+/******************************************************************************/
 
 void jack()
 {
     while(!SYS_JACK);
     while(SYS_JACK);
 }
+
+
+/******************************************************************************/
+/******************************** FONCTION BOUCLE *****************************/
+/******************************************************************************/
 
 
 void autom_10ms (void)
@@ -47,27 +52,31 @@ void autom_10ms (void)
         }*/
 
         /**********************************************************************/
-        /**************************** Evitemenr *******************************/
+        /**************************** Evitement *******************************/
         /**********************************************************************/
 
 
         //Fonction permettant de lancer la fonction d'évitement
-        if(EVITEMENT_ADV_AVANT == ON)
+        if(EVITEMENT_ADV_AVANT == STOP)
         {
             if (CAPT_US_BALISE == 1 && DETECTION == OFF)
             {
                 DETECTION = ON;
-                STOP_DETECTION = ON;
+                FLAG_ASSERV.erreur = EVITEMENT;
                 brake();
             }
-            else if (DETECTION == ON )//&& CAPT_US_BALISE == 0)
+            else if (DETECTION == ON && STRATEGIE_EVITEMENT == STOP)
             {
-                //if (CAPT_US_BALISE == 0)
-                {
-                    DETECTION = OFF;
-                    delay_ms(200);
-                    unbrake();
-                }
+                DETECTION = OFF;
+                delay_ms(200);
+                unbrake();
+                
+            }
+            else if (DETECTION == ON && (STRATEGIE_EVITEMENT == ACTION_EVITEMENT || STRATEGIE_EVITEMENT == EVITEMENT_NORMAL ))
+            {
+                DETECTION = OFF;
+                delay_ms(200);
+                fin_deplacement();
             }
         }
 

@@ -23,22 +23,14 @@
 void strategie()
 {
     COULEUR = couleur_depart();
-
-
+    
     #ifdef GROS_ROBOT
+        init_position_robot (0, 0, 0);
 
-        //petit demi cercle
+    #endif
 
-    passe_part(200, 0, 500);
-    passe_part2(450, 67 , 100, OFF);
-    passe_part2 (633, 250, 100, OFF);
-    passe_part2 (700, 500, 100, OFF);
-    passe_part2 (633, 750, 100, OFF);
-    passe_part2 (450, 933, 100, OFF);
-    //rejoindre (200, 1000,MARCHE_AVANT,  100);
-    passe_part2 (200, 1000, 100, ON);
-
-    //cibler(-200, 0, 100);
-
+        
+    #ifdef PETIT_ROBOT
+        //avancer_reculer(1000, 100);
     #endif
 }

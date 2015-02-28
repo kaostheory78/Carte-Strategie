@@ -35,22 +35,25 @@ extern "C" {
     /**************************************************************************/
 
     //Couleurs de départs
-#define VERT            0
-#define JAUNE           1
+#define VERT                0
+#define JAUNE               1
 
     //Conditions
 
-#define NON             2
-#define OUI             3
-#define EN_ATTENTE      4
+#define NON                 2
+#define OUI                 3
+#define EN_ATTENTE          4
 
     //Evitement
-#define ACTIF           0
-#define INACTIF         1
-#define STOP            5
+#define ACTIF               0
+#define INACTIF             1
 
-#define DISTANCE_STOP   5
-#define ANGLE_STOP      5
+#define ACTION_EVITEMENT    2
+#define EVITEMENT_NORMAL    3
+#define STOP                5
+
+#define DISTANCE_STOP       5
+#define ANGLE_STOP          5
 
 
 /******************************************************************************/
@@ -63,8 +66,12 @@ extern "C" {
 /****************************** Prototypes ************************************/
 /******************************************************************************/
 
-
+    void jack();
     void autom_10ms (void);
+
+/******************************************************************************/
+/******************************************************************************/
+/******************************************************************************/
 
 #ifdef	__cplusplus
 }

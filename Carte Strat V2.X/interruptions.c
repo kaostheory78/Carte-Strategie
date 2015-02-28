@@ -120,6 +120,17 @@ void __attribute__ ((interrupt, no_auto_psv)) 	_U1RXInterrupt (void)
 	IEC0bits.U1RXIE	= 0;
 	IFS0bits.U1RXIF = 0;
 
+        uint8_t buf;
+        static uint8_t value = 0;
+        buf= U1RXREG;
+
+        PORTCbits.RC5 = value;
+
+        if (value == 0)
+            value = 1;
+        else
+            value = 0;
+        
 	// Traitement
 	//char buff = U1RXREG;
 

@@ -55,6 +55,7 @@ void init_flag()
     FLAG_ASSERV.orientation = OFF;
     FLAG_ASSERV.fin_deplacement = FIN_DEPLACEMENT;
     FLAG_ASSERV.brake = OFF;
+    FLAG_ASSERV.erreur = DEPLACEMENT_NORMAL;
     
     FLAG_ASSERV.vitesse_fin_nulle = ON;
     FLAG_ASSERV.sens_deplacement = MARCHE_AVANT;
@@ -66,15 +67,29 @@ void init_flag()
     FLAG_ASSERV.totale = ON;
 }
 
-void init_position_robot (float x0, float y0, uint32_t teta0)
+void init_position_robot (double x0, double y0, uint32_t teta0)
 {
-    ROBOT.X_mm = x0;
-    ROBOT.Y_mm = y0;
+    init_X (x0);
+    init_Y (y0);
+    init_orientation (teta0);
+}
 
+void init_X (double x)
+{
+    ROBOT.X_mm = x;
     X.actuelle = ROBOT.X_mm * TICKS_PAR_MM;
+}
+
+void init_Y (double y)
+{
+    ROBOT.Y_mm = inversion_couleur(y);
     Y.actuelle = ROBOT.Y_mm * TICKS_PAR_MM;
-    
-    ORIENTATION.actuelle =  teta0 * Pi / 180 * ENTRAXE_TICKS/2;
+}
+
+void init_orientation (double teta)
+{
+    teta = inversion_couleur(teta);
+    ORIENTATION.actuelle =  teta * Pi / 180 * ENTRAXE_TICKS/2;
 }
 
 void init_commande_moteur(void)
@@ -87,6 +102,7 @@ void reinit_asserv(void)
 {
 
     FLAG_ASSERV.brake = OFF;
+    FLAG_ASSERV.erreur = DEPLACEMENT_NORMAL;
     FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
     FLAG_ASSERV.phase_deceleration_distance = PHASE_NORMAL;
 
@@ -135,6 +151,26 @@ void reinit_asserv(void)
 
     
 }
+
+/******************************************************************************/
+/***************************  Fonctions Getters  ******************************/
+/******************************************************************************/
+
+double get_X (void)
+{
+    return ROBOT.X_mm;
+}
+
+double get_Y (void)
+{
+    return inversion_couleur (ROBOT.Y_mm);
+}
+
+double get_orientation (void)
+{
+    return inversion_couleur(ROBOT.orientation_degre);
+}
+
 
 
 /******************************************************************************/
@@ -209,11 +245,12 @@ void saturation_erreur_integralle_vitesse (void)
 
 void detection_blocage (void)
 {
-    if (VITESSE[ROUE_DROITE].actuelle < 0.2 * (VITESSE[ROUE_DROITE].consigne))
+   if (VITESSE[ROUE_DROITE].actuelle < 0.2 * (VITESSE[ROUE_DROITE].consigne))
     {
         if (ERREUR_VITESSE[ROUE_DROITE].integralle == MAX_ERREUR_INTEGRALLE_V || ERREUR_VITESSE[ROUE_DROITE].integralle == - MAX_ERREUR_INTEGRALLE_V)
         {
             FLAG_ASSERV.immobilite++;
+            FLAG_ASSERV.erreur = BLOCAGE;
         }
     }
     else if (VITESSE[ROUE_DROITE].actuelle < 0.2 * (VITESSE[ROUE_DROITE].consigne))
@@ -221,10 +258,14 @@ void detection_blocage (void)
         if (ERREUR_VITESSE[ROUE_GAUCHE].integralle == MAX_ERREUR_INTEGRALLE_V || ERREUR_VITESSE[ROUE_GAUCHE].integralle == - MAX_ERREUR_INTEGRALLE_V)
         {
             FLAG_ASSERV.immobilite++;
+            FLAG_ASSERV.erreur = BLOCAGE;
         }
     }
     else
+    {
         FLAG_ASSERV.immobilite = 0;
+        FLAG_ASSERV.erreur = DEPLACEMENT_NORMAL;
+    }
 }
 
 void calcul_vitesse_position (double pourcentage_vitesse)
@@ -415,7 +456,15 @@ void unbrake (void)
     VITESSE_ORIENTATION[ROUE_GAUCHE].consigne = 0;
     VITESSE_ORIENTATION[ROUE_GAUCHE].theorique = 0;
 
+    FLAG_ASSERV.erreur = DEPLACEMENT_NORMAL;
     FLAG_ASSERV.brake = OFF;
+}
+
+void fin_deplacement (void)
+{
+    FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
+    FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
+    FLAG_ASSERV.fin_deplacement = FIN_DEPLACEMENT;
 }
 
 //Fonction principale de l'asserv, qui permet d'activer les différents asserv

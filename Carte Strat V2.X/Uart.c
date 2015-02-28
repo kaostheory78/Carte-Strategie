@@ -1,15 +1,24 @@
-/*********************************************************
- * CARTE Pirincipal robot - DSPIC33FJ128MC804
- *********************************************************
+/*******************************************************************************
+ *                 CARTE PRINCIPAL ROBOT - DSPIC33FJ128MC804
+ *******************************************************************************
  * Fichier 	: Uart.c
  * Auteur  	: Quentin
  * Revision	: 1.0
  * Date		: 08/11/2014
- *********************************************************
+ *******************************************************************************
  *
  *
- *********************************************************/
+ ******************************************************************************/
+
+/******************************************************************************/
+/******************************** INCLUDES ************************************/
+/******************************************************************************/
+
 #include "system.h"
+
+/******************************************************************************/
+/******************************* CONFIG UART **********************************/
+/******************************************************************************/
 
 void InitUART (int8_t channel, uint32_t baud)
 {
@@ -88,12 +97,12 @@ void InitUART (int8_t channel, uint32_t baud)
             // U2MODE
             U2MODEbits.STSEL	= 0;		// 1 bit d'arret
             U2MODEbits.PDSEL	= 0;		// 8 bit de donnee, pas de parite
-            U2MODEbits.BRGH		= 1;		// Vitesse élevée
+            U2MODEbits.BRGH     = 1;		// Vitesse élevée
             U2MODEbits.URXINV 	= 0;		// Polarite non inversee
             U2MODEbits.ABAUD 	= 0;		// Baud non automatique
             U2MODEbits.LPBACK 	= 0;		// Mode Loopback desactive
             U2MODEbits.WAKE 	= 0;		// Wake-up desactive
-            U2MODEbits.UEN 		= 0;		// TX et RX actif, CTS et RTS non
+            U2MODEbits.UEN 	= 0;		// TX et RX actif, CTS et RTS non
             U2MODEbits.RTSMD 	= 0;		// Non utilise
             U2MODEbits.IREN 	= 0;		// IR non utilise
             U2MODEbits.USIDL 	= 0;		// Mode continu en IDLE
@@ -142,6 +151,10 @@ uint16_t calcul_baud (uint32_t baud)
     }
 }
 
+/******************************************************************************/
+/*************************** GESTION DE L'UART ********************************/
+/******************************************************************************/
+
 void modifier_vitesse_com_uart (int8_t uart, uint32_t baud)
 {
     if (uart == UART_XBEE)
@@ -180,7 +193,10 @@ void vider_buffer_reception_uart (uint8_t uart)
 }
 
 
-/*********************************************************/
+/******************************************************************************/
+/************************* FONCTIONS DE COM UART ******************************/
+/******************************************************************************/
+
 void PutcUART (int8_t channel, uint8_t octet)
 {
 	// UART1 : XBEE
@@ -197,8 +213,6 @@ void PutcUART (int8_t channel, uint8_t octet)
 	}
 }
 
-
-/*********************************************************/
 void PutsUART (int8_t channel, const char *chaine)
 {
 	do
@@ -208,8 +222,6 @@ void PutsUART (int8_t channel, const char *chaine)
 	while (*chaine++);
 }
 
-
-/*********************************************************/
 void Puts2UART (int8_t channel, uint8_t *chaine, uint16_t taille_chaine)
 {
 	int i;
@@ -234,7 +246,6 @@ void Puts2UART (int8_t channel, uint8_t *chaine, uint16_t taille_chaine)
 }
 
 
-/*********************************************************/
 char *IntToC (int16_t nb)
 {
 	// Delarations locales
@@ -268,7 +279,6 @@ char *IntToC (int16_t nb)
 }
 
 
-/*********************************************************/
 char *LongToC (int32_t nb)
 {
 	//4294967296
@@ -317,16 +327,17 @@ char *LongToC (int32_t nb)
 	return out;
 }
 
-
-/*********************************************************/
 void PutIntUART (int16_t nb)
 {
 	PutsUART (UART_XBEE, IntToC (nb));
 }
 
-
-/*********************************************************/
 void PutLongUART (int32_t nb)
 {
 	PutsUART (UART_XBEE, LongToC (nb));
 }
+
+
+/******************************************************************************/
+/******************************************************************************/
+/******************************************************************************/

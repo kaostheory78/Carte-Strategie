@@ -48,12 +48,7 @@ extern "C" {
 #define MAX_CODEUR_D_LOGICIEL           (RESOLUTION_LOGICIELLE * CODEUR_D_NB_IMP * 4 * RAPPORT_REDUCTION - 1)
 #define MAX_CODEUR_G_LOGICIEL           (RESOLUTION_LOGICIELLE * CODEUR_G_NB_IMP * 4 * RAPPORT_REDUCTION -- 1)
 
-
-
-
 #define PAS_D_OVERFLOW_CODEUR           0
-//#define OVERFLOW_CODEUR                 1
-//#define UNDERFLOW_CODEUR               -1
 
 #define STANDART                        0
 #define INTER_CODEUR_D_OVERFLOW         1
@@ -93,6 +88,10 @@ extern "C" {
 
 
      void debug(void);
+
+/******************************************************************************/
+/******************************************************************************/
+/******************************************************************************/
 
 
 #ifdef	__cplusplus

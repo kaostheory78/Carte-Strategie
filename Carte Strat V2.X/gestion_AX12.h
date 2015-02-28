@@ -44,8 +44,9 @@ extern "C" {
 #define REPONSE_OK              2
 #define PAS_DE_REPONSE          3
 
-#define EMISSION                1
-#define RECEPTION               0
+
+    #define EMISSION                1
+    #define RECEPTION               0
 
 #define MAX_TENTATIVES          5
 

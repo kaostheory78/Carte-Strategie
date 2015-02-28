@@ -197,6 +197,14 @@ void ConfigMapping (void)
 	// Mapping UART2 : AX12
 	_U2RXR	= 0x05;         // IN	: UART2 RX sur RP5
 	_RP6R	= 0x05;         // OUT	: UART2 TX sur RP6
+
+        // Mapping QEI1 : Codeur Droit
+	_QEB1R	= 0x19;         // IN	: QEB1 sur RP25
+	_QEA1R	= 0x18;         // IN	: QEA1 sur RP24
+
+	// Mapping QEI2 : Codeur Gauche
+	_QEB2R	= 0x17;		// QEB2 sur RP23
+	_QEA2R	= 0x16;		// QEA2 sur RP22
     #endif
 
     #ifdef CARTE_V2
@@ -205,18 +213,18 @@ void ConfigMapping (void)
 	_RP6R	= 0x03;		// OUT	: UART1 TX sur RP6
 
 	// Mapping UART2 : AX12
-	_U2RXR	= 0x02;         // IN	: UART2 RX sur RP2
-	_RP3R	= 0x05;         // OUT	: UART2 TX sur RP3
-    #endif
+	_U2RXR	= 0x03;         // IN	: UART2 RX sur RP3
+	_RP2R	= 0x05;         // OUT	: UART2 TX sur RP2
 
-	// Mapping QEI1 : Codeur Droit
-	_QEB1R	= 0x19;         // IN	: QEB1 sur RP25
-	_QEA1R	= 0x18;         // IN	: QEA1 sur RP24
+        // Mapping QEI1 : Codeur Droit
+	_QEB1R	= 0x18;         // IN	: QEB1 sur RP24
+	_QEA1R	= 0x19;         // IN	: QEA1 sur RP25
 
 	// Mapping QEI2 : Codeur Gauche
-	_QEB2R	= 0x17;		// QEB2 sur RP23
-	_QEA2R	= 0x16;		// QEA2 sur RP12
-    
+	_QEB2R	= 0x16;		// QEB2 sur RP22
+	_QEA2R	= 0x17;		// QEA2 sur RP23
+    #endif
+
 	// Temporisation
 	delay_ms (50);
 }
@@ -304,7 +312,7 @@ void ConfigPorts (void)
 	// Config PORTA
 	_TRISA0		= 0;	_CN2IE	= 0;	_CN2PUE		= 0;	// OUT : (DIGIT) : Inhibit AX12
 	_TRISA1		= 0;	_CN3IE	= 0;	_CN3PUE		= 0;	// OUT : (DIGIT) : DIR_UART_AX12
-        _TRIS2          = 1;                                            // IN  : (DIGIT) : Capteur 1
+        _TRISA2         = 1;                                            // IN  : (DIGIT) : Capteur 1
 	_TRISA3		= 1;	_CN29IE	= 0;	_CN29PUE	= 0;	// IN  : (DIGIT) : capteur 2
 	_TRISA4		= 1;	_CN0IE	= 0;	_CN0PUE		= 0;	// IN  : (DIGIT) : capteur 3
         _TRISA7		= 0;						// OUT : PWM Y
@@ -315,8 +323,8 @@ void ConfigPorts (void)
 	// Config PORTB
 	_TRISB0		= 0;	_CN4IE	= 0;	_CN4PUE		= 0;	// RES : PGED1 pour programmation
 	_TRISB1		= 0;	_CN5IE	= 0;	_CN5PUE		= 0;	// RES : PGEC1 pour programmation
-	_TRISB2		= 1;	_CN6IE	= 0;	_CN6PUE		= 0;	// INT : (UART)  : RX AX12
-	_TRISB3		= 0;	_CN7IE	= 0;	_CN7PUE		= 0;	// OUT : (UART)  : TX AX12
+	_TRISB2		= 0;	_CN6IE	= 0;	_CN6PUE		= 0;	// INT : (UART)  : TX AX12
+	_TRISB3		= 1;	_CN7IE	= 0;	_CN7PUE		= 0;	// OUT : (UART)  : RX AX12
 	_TRISB4		= 1;	_CN1IE	= 0;	_CN1PUE		= 0;	// IN  : (DIGIT) : Capteur 5
 	_TRISB5		= 1;	_CN27IE	= 0;	_CN27PUE	= 0;	// IN  : (UART)  : RX XBEE
 	_TRISB6		= 0;	_CN24IE	= 0;	_CN24PUE	= 0;	// OUT : (UART)  : TX XBEE
@@ -327,8 +335,8 @@ void ConfigPorts (void)
 	_TRISB11	= 0;	_CN15IE	= 0;	_CN15PUE	= 0;	// OUT : (PWM)   : PWM1L3 (moteur gauche)
 	_TRISB12	= 0;	_CN14IE	= 0;	_CN14PUE	= 0;	// OUT : (DIGIT) : sens moteur droit
 	_TRISB13	= 0;	_CN13IE	= 0;	_CN13PUE	= 0;	// OUT : (PWM)   : PWM1L2 (moteur droit)
-	_TRISB14	= 0;	_CN12IE	= 0;	_CN12PUE	= 0;	// OUT : (PWM)   : PWM1H1 (moteur X)
-	_TRISB15	= 0;	_CN11IE	= 0;	_CN11PUE	= 0;	// OUT : (DIGIT) : sens moteur X
+	_TRISB14	= 0;	_CN12IE	= 0;	_CN12PUE	= 0;	// OUT : (DIGIT) : sens moteur X
+	_TRISB15	= 0;	_CN11IE	= 0;	_CN11PUE	= 0;	// OUT : (PWM)   : PWM1H1 (moteur X)
 
 	// Config PORTC
 	_TRISC0		= 1;	_CN8IE	= 0;	_CN8PUE		= 0;	// IN  : (ANALOG/DIGIT) : capteur 6 (AN6)

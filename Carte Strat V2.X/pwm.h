@@ -51,11 +51,10 @@ extern "C" {
     #define REGISTRE_MOTEUR_G   PDC2
 #endif
 
-#if CARTE_V2
+#ifdef CARTE_V2
     #define REGISTRE_MOTEUR_D   PDC2
     #define REGISTRE_MOTEUR_G   PDC3
     #define REGISTRE_MOTEUR_X   PDC1
-    #define REGISTRE_MOTEUR_Y
 #endif
 
 

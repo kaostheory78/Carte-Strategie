@@ -16,7 +16,6 @@
 
 #include "system.h"
 
-
 /******************************************************************************/
 /**************************** Configurations Des PWM **************************/
 /******************************************************************************/
@@ -35,9 +34,8 @@ void ConfigPWM (void)
         P1TCONbits.PTCKPS       = 0;            //Prescaller  1 : 1
 
 	P1TCONbits.PTMOD	= 0;		//Base de temps en free running mode (11 bits vmax = 2048)
-	
-        P1TPER                  = 999;		//F=40kHz 11 bits
 
+        P1TPER                  = 999;		//F=20kHz 11 bits
 
 	PWM1CON1bits.PMOD1	= 1;		//Mode indépendant             //Mode complementaire sur pwm1L1
 	PWM1CON1bits.PMOD2	= 1;		//Mode indépendant             //Mode complementaire sur pwm1L2
@@ -56,8 +54,8 @@ void ConfigPWM (void)
     #endif
 
     #ifdef CARTE_V2
-	PWM1CON1bits.PEN1H	= 1;		//PWM1H1 pour PWM moteur X
-	PWM1CON1bits.PEN1L	= 0;		//PWM1L1 inactif => I/O
+	PWM1CON1bits.PEN1L	= 1;		//PWM1L1 pour PWM moteur X
+	PWM1CON1bits.PEN1H	= 0;		//PWM1H1 inactif => I/O
 	PWM1CON1bits.PEN2H	= 0;		//PWM1H2 inactif => I/O
 	PWM1CON1bits.PEN2L	= 1;		//PWM1L2 pour PWM moteur droit
 	PWM1CON1bits.PEN3H	= 0;		//PWM1H3 inactif => I/O
@@ -76,11 +74,20 @@ void ConfigPWM (void)
     #endif
 }
 
+
+/******************************************************************************/
+/******************************** MODFIFS PWM *********************************/
+/******************************************************************************/
+
 void envoit_pwm (char moteur, int32_t valeur)
 {
     uint16_t abs_valeur;
 
-    abs_valeur = (uint16_t) abs(valeur);
+    if (valeur < 0)
+        abs_valeur = (uint16_t) (-valeur);
+    else
+      abs_valeur = (uint16_t) valeur;
+
     abs_valeur *= PWM_DROIT_VALEUR_MAX / 100;
 
     if (moteur == MOTEUR_DROIT)
@@ -113,3 +120,7 @@ void envoit_pwm (char moteur, int32_t valeur)
     }
 }
 
+
+/******************************************************************************/
+/******************************************************************************/
+/******************************************************************************/
