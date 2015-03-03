@@ -25,8 +25,8 @@ extern "C" {
 /***************************** Defines ****************************************/
 /******************************************************************************/
 
-#define GROS_ROBOT
-//#define PETIT_ROBOT
+//#define GROS_ROBOT
+#define PETIT_ROBOT
 //#define ROBOT_TEST
 
 #define _Pi                             3.14159265359
@@ -63,6 +63,7 @@ extern "C" {
         //Autres réglages asserv
     #define _SEUIL_IMMOBILITE            100 //200
     #define _MAX_ERREUR_INTEGRALLE_V     2000
+    #define _MAX_E_INTEGRALLE_BRAKE      500.
 
     /**************************************************************************/
     /********************************* PID ************************************/
@@ -159,7 +160,8 @@ extern "C" {
 
     #ifdef PETIT_ROBOT
 
-    #define CARTE_V1
+    //#define CARTE_V1
+    #define CARTE_V2
 
     /**************************************************************************/
     /****************************** ODOMETRIE *********************************/
@@ -175,8 +177,8 @@ extern "C" {
     #define _VITESSE_CONSIGNE_MAX_MM     2.5
     #define _DISTANCE_CONSIGNE_MM        500.
 
-    #define _ACC_POSITION_CONSIGNE       0.5
-    #define _DCC_POSITION_CONSIGNE       1. //4
+    #define _ACC_POSITION_CONSIGNE       2.3    //0.5
+    #define _DCC_POSITION_CONSIGNE       2.5 //4
 
         //Association Angle - Vitesse - Accélérations max
     #define _VITESSE_ANGLE_MAX           0.02 //0.02
@@ -186,17 +188,18 @@ extern "C" {
     #define _DCC_ORIENTATION_CONSIGNE    6.
 
         //Autres réglages asserv
-    #define _SEUIL_IMMOBILITE            1000 //200
+    #define _SEUIL_IMMOBILITE            300 //200
     #define _MAX_ERREUR_INTEGRALLE_V     30000
+    #define _MAX_E_INTEGRALLE_BRAKE      100.
 
     /**************************************************************************/
     /********************************* PID ************************************/
     /**************************************************************************/
 
     //PID
-    #define _VITESSE_DIS_KP              0.05  //0.2
-    #define _VITESSE_DIS_KI              0.02 //0.02
-    #define _VITESSE_DIS_KD              0.1
+    #define _VITESSE_DIS_KP              0.12 //0.15
+    #define _VITESSE_DIS_KI              0.028 //0.008 0.024
+    #define _VITESSE_DIS_KD              1.3 //0.8
 
     #define _POSITION_KP                 1.
     #define _POSITION_KI                 0.
@@ -206,9 +209,13 @@ extern "C" {
     #define _ORIENTATION_KI              0.
     #define _ORIENTATION_KD              0.
 
+    //#define KP_BRAKE                    0.005
+    //#define KI_BRAKE                    0.001
+    //#define KD_BRAKE                    0. //0.006
+
     #define KP_BRAKE                    0.005
-    #define KI_BRAKE                    0.001
-    #define KD_BRAKE                    0. //0.006
+    #define KI_BRAKE                    0.00001
+    #define KD_BRAKE                    0.07 //0.01
 
     /**************************************************************************/
     /******************************* TENSIONS *********************************/
@@ -228,8 +235,8 @@ extern "C" {
 
     //Paramètres codeurs, et moteurs
     //Sens rotation codeur
-    #define _SENS_ROT_D                  1L
-    #define _SENS_ROT_G                  -1L
+    #define _SENS_ROT_D                  -1L
+    #define _SENS_ROT_G                  1L
 
     #define _RAPPORT_REDUCTION           1
 
@@ -254,8 +261,10 @@ extern "C" {
     //Dans le fichier system.h
 
     #define CAPT_US_BALISE              CAPTEUR1
-    #define _SYS_COULEUR                CAPTEUR2
 
+#ifdef CARTE_V1
+    #define _SYS_COULEUR                CAPTEUR2
+#endif
 
 
     /**************************************************************************/

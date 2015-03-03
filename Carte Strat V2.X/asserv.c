@@ -1,9 +1,9 @@
 /******************************************************************************/
 /************** Carte principale Robot 1 : DSPIC33FJ128MC804*******************/
 /******************************************************************************/
-/* Fichier 	: sserv.c
+/* Fichier 	: asserv.c
  * Auteur  	: Quentin
- * Revision	: 1.0
+ * Revision	: 1.2
  * Date		: 08/11/2014
  *******************************************************************************
  *
@@ -271,8 +271,19 @@ void detection_blocage (void)
 void calcul_vitesse_position (double pourcentage_vitesse)
 {
     calcul_distance_consigne_XY();
+    double temp;
 
-    VITESSE_MAX_POSITION = VITESSE_CONSIGNE_MAX_PAS * DISTANCE.consigne;
+    if (DISTANCE.consigne > DISTANCE_CONSIGNE_PAS)
+    {
+        temp =  DISTANCE.consigne - DISTANCE_CONSIGNE_PAS;
+        temp /= 2;
+        temp += DISTANCE_CONSIGNE_PAS;
+    }
+    else
+        temp = DISTANCE.consigne;
+
+
+    VITESSE_MAX_POSITION = VITESSE_CONSIGNE_MAX_PAS * temp;
     VITESSE_MAX_POSITION /= DISTANCE_CONSIGNE_PAS;
     VITESSE_MAX_POSITION *= pourcentage_vitesse;
     VITESSE_MAX_POSITION /= 100;
@@ -557,15 +568,15 @@ void asserv_brake(void)
     ERREUR_BRAKE[ROUE_DROITE].integralle += ERREUR_BRAKE[ROUE_DROITE].actuelle;
     ERREUR_BRAKE[ROUE_GAUCHE].integralle += ERREUR_BRAKE[ROUE_GAUCHE].actuelle;
 
-    if (ERREUR_BRAKE[ROUE_DROITE].integralle > 500)
-        ERREUR_BRAKE[ROUE_DROITE].integralle = 500;
-    if (ERREUR_BRAKE[ROUE_GAUCHE].integralle > 500)
-        ERREUR_BRAKE[ROUE_GAUCHE].integralle = 500;
+    if (ERREUR_BRAKE[ROUE_DROITE].integralle > MAX_E_INTEGRALLE_BRAKE)
+        ERREUR_BRAKE[ROUE_DROITE].integralle = MAX_E_INTEGRALLE_BRAKE;
+    if (ERREUR_BRAKE[ROUE_GAUCHE].integralle > MAX_E_INTEGRALLE_BRAKE)
+        ERREUR_BRAKE[ROUE_GAUCHE].integralle = MAX_E_INTEGRALLE_BRAKE;
 
-    if (ERREUR_BRAKE[ROUE_DROITE].integralle < -500)
-        ERREUR_BRAKE[ROUE_DROITE].integralle = -500;
-    if (ERREUR_BRAKE[ROUE_GAUCHE].integralle < -500)
-        ERREUR_BRAKE[ROUE_GAUCHE].integralle = -500;
+    if (ERREUR_BRAKE[ROUE_DROITE].integralle < -MAX_E_INTEGRALLE_BRAKE)
+        ERREUR_BRAKE[ROUE_DROITE].integralle = -MAX_ERREUR_INTEGRALLE_V;
+    if (ERREUR_BRAKE[ROUE_GAUCHE].integralle < -MAX_E_INTEGRALLE_BRAKE)
+        ERREUR_BRAKE[ROUE_GAUCHE].integralle = -MAX_E_INTEGRALLE_BRAKE;
 
     COMMANDE.droit  =  ERREUR_BRAKE[ROUE_DROITE].actuelle * KP_BRAKE + ERREUR_BRAKE[ROUE_DROITE].integralle * KI_BRAKE + (ERREUR_BRAKE[ROUE_DROITE].actuelle - ERREUR_BRAKE[ROUE_DROITE].precedente ) * KD_BRAKE;
     COMMANDE.gauche =  ERREUR_BRAKE[ROUE_GAUCHE].actuelle * KP_BRAKE + ERREUR_BRAKE[ROUE_GAUCHE].integralle * KI_BRAKE + (ERREUR_BRAKE[ROUE_GAUCHE].actuelle - ERREUR_BRAKE[ROUE_GAUCHE].precedente ) * KD_BRAKE;
@@ -606,7 +617,7 @@ void asserv_distance(void)
 
         if (FLAG_ASSERV.vitesse_fin_nulle == OFF)
         {
-            if (distance_restante < 150 * TICKS_PAR_MM) //150
+            if (FLAG_ASSERV.sens_deplacement * distance_restante < 150 * TICKS_PAR_MM) //150
             {
                 FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
                 //FLAG_ASSERV.position = OFF;

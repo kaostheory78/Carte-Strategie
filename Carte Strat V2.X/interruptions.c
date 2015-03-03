@@ -75,8 +75,10 @@ void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
 
 void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void)
 {
+    TIMER_DEBUG = DESACTIVE;
     debug();
     FLAG_TIMER_DEBUG = 0;        //On clear le flag d'interruption du timer
+    TIMER_DEBUG = ACTIVE;
 }
 
 /******************************************************************************/

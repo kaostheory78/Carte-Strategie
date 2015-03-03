@@ -65,6 +65,7 @@
 #define VITESSE_DIS_KD              _VITESSE_DIS_KD
 
 #define MAX_ERREUR_INTEGRALLE_V     _MAX_ERREUR_INTEGRALLE_V
+#define MAX_E_INTEGRALLE_BRAKE      _MAX_E_INTEGRALLE_BRAKE
 
 #define POSITION_KP                 _POSITION_KP
 #define POSITION_KI                 _POSITION_KI
