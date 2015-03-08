@@ -174,32 +174,33 @@ extern "C" {
     /******************************** ASSERV **********************************/
     /**************************************************************************/
         //Association distance - Vitesse - Accélérations max
-    #define _VITESSE_CONSIGNE_MAX_MM     2.5
+    #define _VITESSE_CONSIGNE_MAX_MM     2.8 //2.5
+    #define _VITESSE_MAX_MM_TENSION      3.
     #define _DISTANCE_CONSIGNE_MM        500.
 
-    #define _ACC_POSITION_CONSIGNE       2.3    //0.5
-    #define _DCC_POSITION_CONSIGNE       2.5 //4
+    #define _ACC_POSITION_CONSIGNE       2.5//2.3
+    #define _DCC_POSITION_CONSIGNE       2.5 //2.5
 
         //Association Angle - Vitesse - Accélérations max
-    #define _VITESSE_ANGLE_MAX           0.02 //0.02
+    #define _VITESSE_ANGLE_MAX           0.015 //0.02
     #define _ORIENTATION_CONSIGNE_DEG    90.
 
-    #define _ACC_ORIENTATION_CONSIGNE    4.
-    #define _DCC_ORIENTATION_CONSIGNE    6.
+    #define _ACC_ORIENTATION_CONSIGNE    4. //2.
+    #define _DCC_ORIENTATION_CONSIGNE    3. //2.
 
         //Autres réglages asserv
     #define _SEUIL_IMMOBILITE            300 //200
-    #define _MAX_ERREUR_INTEGRALLE_V     30000
-    #define _MAX_E_INTEGRALLE_BRAKE      100.
+    #define _MAX_ERREUR_INTEGRALLE_V     3500
+    #define _MAX_E_INTEGRALLE_BRAKE      1000.
 
     /**************************************************************************/
     /********************************* PID ************************************/
     /**************************************************************************/
 
     //PID
-    #define _VITESSE_DIS_KP              0.12 //0.15
-    #define _VITESSE_DIS_KI              0.028 //0.008 0.024
-    #define _VITESSE_DIS_KD              1.3 //0.8
+    #define _VITESSE_DIS_KP              0.8 //0.6
+    #define _VITESSE_DIS_KI              0.03//0.055 //0.2
+    #define _VITESSE_DIS_KD              0.2//0.85
 
     #define _POSITION_KP                 1.
     #define _POSITION_KI                 0.
@@ -213,19 +214,19 @@ extern "C" {
     //#define KI_BRAKE                    0.001
     //#define KD_BRAKE                    0. //0.006
 
-    #define KP_BRAKE                    0.005
-    #define KI_BRAKE                    0.00001
-    #define KD_BRAKE                    0.07 //0.01
+    #define KP_BRAKE                    0.06
+    #define KI_BRAKE                    0.008
+    #define KD_BRAKE                    1.5 //0.01
 
     /**************************************************************************/
     /******************************* TENSIONS *********************************/
     /**************************************************************************/
 
     //Tensions d'alimentations
-    #define _TENSION_MOTEUR_DROIT        22L
-    #define _TENSION_MOTEUR_GAUCHE       22L
+    #define _TENSION_MOTEUR_DROIT        12L
+    #define _TENSION_MOTEUR_GAUCHE       12L
 
-    #define _TENSION_SORTIE_PTN          22L
+    #define _TENSION_SORTIE_PTN          17L
 
 
     /**************************************************************************/
@@ -260,7 +261,8 @@ extern "C" {
     //La définition des ports relatif à chaque carte se trouve
     //Dans le fichier system.h
 
-    #define CAPT_US_BALISE              CAPTEUR1
+    #define CAPT_PINCE                 CAPTEUR1
+    #define CAPT_US_BALISE              CAPTEUR2
 
 #ifdef CARTE_V1
     #define _SYS_COULEUR                CAPTEUR2

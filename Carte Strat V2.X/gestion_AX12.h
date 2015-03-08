@@ -119,16 +119,16 @@ extern "C" {
     /**************************************************************************/
 
     //paramètres réglage décalage AX12
-#define DEPENDANT           1
-#define INDEPENDANT         0
+#define DEPENDANT               1
+#define INDEPENDANT             0
 
-#define PAS_DE_SYMETRIQUE   0
+#define PAS_DE_SYMETRIQUE       0
 
-#define SENS_INDIRECT       -1
-#define ROT_EN_BAS          -1
-#define SENS_DIRECT         1
-#define ROT_EN_HAUT         1
-#define AUCUN_AX            -30
+#define SENS_INDIRECT           -1
+#define ROT_EN_BAS              -1
+#define SENS_DIRECT             1
+#define ROT_EN_HAUT             1
+#define AUCUN_AX                -30
 
 
     /**************************************************************************/
@@ -136,28 +136,28 @@ extern "C" {
     /**************************************************************************/
 
     //valeurs par defaut AX12
-#define POINT_MINI_DEFAUT   0
-#define POINT_MAXI_DEFAUT   1023
+#define POINT_MINI_DEFAUT       0
+#define POINT_MAXI_DEFAUT       1023
 
     //ID AX12
-#define TOUS_LES_AX12       0xFE
-#define ID_MAX_AX12         26
+#define TOUS_LES_AX12           0xFE
+#define ID_MAX_AX12             26
 
     //Paramètres spéciaux
-#define POSITION_MAX_AX     1024.
-#define ANGLE_MAX_AX        300.
+#define POSITION_MAX_AX         1024.
+#define ANGLE_MAX_AX            300.
 #define PAS_DE_CORRECTION_ANGLE_FIN 3000
 
     //defines vitesses de com
-#define _9600b              0xCF
-#define _19200b             0x67
-#define _57600b             0x22
-#define _115200b            0x10
-#define _200000b            0x09
-#define _250000b            0x07
-#define _400000b            0x04
-#define _500000b            0x03
-#define _1000000b           0x01
+#define _9600b                  0xCF
+#define _19200b                 0x67
+#define _57600b                 0x22
+#define _115200b                0x10
+#define _200000b                0x09
+#define _250000b                0x07
+#define _400000b                0x04
+#define _500000b                0x03
+#define _1000000b               0x01
 
 
 /******************************************************************************/
@@ -200,6 +200,9 @@ extern "C" {
 /******************************************************************************/
 /****************************** Prototypes ************************************/
 /******************************************************************************/
+
+    void lecture_position_AX12 (uint8_t *ax12, int taille);
+
 
 /**
  *  @brief : Fonction qui est appelé lors de l'interrution de reception sur l'uart AX12

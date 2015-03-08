@@ -28,6 +28,57 @@ void jack()
 
 
 /******************************************************************************/
+/********************************  FONCTION AX12  *****************************/
+/******************************************************************************/
+
+void pinces (uint8_t ID, uint8_t etat)
+{
+    if (ID == PINCE_ASCENSEUR)
+    {
+        switch (etat)
+        {
+            case FERMER :
+                angle_AX12(ID, PINCE_ASC_FERME, 1023, SANS_ATTENTE);
+                break;
+            case RELACHE :
+                angle_AX12(ID, PINCE_ASC_RELACHE, 1023, SANS_ATTENTE);
+                break;
+            case RACLETTE :
+                angle_AX12(ID, PINCE_ASC_RACLETTE, 1023, SANS_ATTENTE);
+                break;
+            case RANGEMENT :
+                angle_AX12(ID, PINCE_ASC_RANGE, 1023, SANS_ATTENTE);
+                break;
+        }
+    }
+    else 
+    {
+        switch (etat)
+        {
+            case FERMER :
+                angle_AX12(ID, PINCES_FERME, 1023, SANS_ATTENTE);
+                break;
+            case RELACHE :
+                angle_AX12(ID, PINCES_RELACHE, 1023, SANS_ATTENTE);
+                break;
+            case RANGEMENT :
+                angle_AX12(ID, PINCES_RANGE, 1023, SANS_ATTENTE);
+        }
+    }
+}
+
+void ascenseur (uint8_t direction)
+{
+    if (direction == MONTER)
+        angle_AX12(ASCENSEUR, ASC_HAUT, 1023, SANS_ATTENTE);
+    else if (direction == DESCENDRE)
+        angle_AX12(ASCENSEUR, ASC_BAS, 1023, SANS_ATTENTE);
+    else if (direction == HAUTEUR_DEMMARAGE)
+        angle_AX12(ASCENSEUR, ASC_DEMARAGE, 1023, SANS_ATTENTE);
+}
+
+
+/******************************************************************************/
 /******************************** FONCTION BOUCLE *****************************/
 /******************************************************************************/
 
@@ -40,7 +91,7 @@ void autom_10ms (void)
         /**********************************************************************/
         /******************************* Autom ********************************/
         /**********************************************************************/
-
+        static uint8_t etat_pince_asc = LIBRE, etat_pince_haut = RANGEMENT, etat_ascenseur = HAUTEUR_DEMMARAGE;
 
         //fonction qui definit les actions
 /*        switch (FLAG_ACTION)
@@ -50,6 +101,60 @@ void autom_10ms (void)
             default :
                 break;
         }*/
+
+      /*  if (CAPT_PINCE == 0 && etat_pince_asc == LIBRE)
+        {
+            pinces(PINCE_ASCENSEUR, FERMER);
+            etat_pince_asc = EN_COURS;
+        }
+        else if (etat_pince_asc == EN_COURS)
+        {
+            if (read_data(PINCE_ASCENSEUR, LIRE_MOUV_FLAG) == 0 )
+            {
+                etat_pince_asc = FERMER;
+                ascenseur(MONTER);
+                etat_ascenseur = EN_MONTER;
+                pinces(PINCE_BAS, RELACHE);
+                pinces(PINCE_MILIEU, RELACHE);
+                pinces(PINCE_HAUT, RELACHE);
+            }
+        }
+        if (etat_ascenseur == EN_MONTER)
+        {
+            if (read_data(ASCENSEUR, LIRE_MOUV_FLAG) == 0)
+            {
+                etat_ascenseur = MONTER;
+                pinces(PINCE_BAS, FERMER);
+                pinces(PINCE_MILIEU, FERMER);
+                pinces(PINCE_HAUT, FERMER);
+                etat_pince_haut = EN_COURS;
+            }
+        }
+        if (etat_pince_haut == EN_COURS)
+        {
+            if (read_data(PINCE_BAS, LIRE_MOUV_FLAG) == 0 )
+            {
+                etat_pince_haut = FERMER;
+                pinces(PINCE_ASCENSEUR, RELACHE);
+                etat_ascenseur = EN_DESCENTE;
+                delay_ms(10);
+               ascenseur(DESCENDRE);
+            }
+        }
+        if (etat_ascenseur == EN_DESCENTE)
+        {
+            pinces(PINCE_ASCENSEUR, RACLETTE);
+            if (read_data(ASCENSEUR, LIRE_MOUV_FLAG) == 0)
+            {
+                etat_ascenseur = DESCENDRE;
+                etat_pince_asc = LIBRE;
+            }
+                
+        }*/
+
+
+        
+
 
         /**********************************************************************/
         /**************************** Evitement *******************************/

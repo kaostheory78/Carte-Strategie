@@ -290,6 +290,9 @@ void calcul_vitesse_position (double pourcentage_vitesse)
 
     if (VITESSE_MAX_POSITION < 0)
         VITESSE_MAX_POSITION *= -1;
+
+    if (VITESSE_MAX_POSITION > VITESSE_MAX_TENSION)
+        VITESSE_MAX_POSITION = VITESSE_MAX_TENSION;
 }
 
 void calcul_acceleration_position (void)
@@ -346,6 +349,9 @@ void calcul_vitesse_orientation (double pourcentage_vitesse)
 
     if (VITESSE_MAX_ORIENTATION < 0)
         VITESSE_MAX_ORIENTATION *= - 1;
+
+    if (VITESSE_MAX_ORIENTATION > VITESSE_MAX_TENSION)
+        VITESSE_MAX_POSITION = VITESSE_MAX_TENSION;
 }
 
 void calcul_acceleration_orientation (void)
@@ -597,7 +603,7 @@ void asserv_distance(void)
     if ((FLAG_ASSERV.sens_deplacement * distance_restante > 2 * TICKS_PAR_MM))
     {
         //si on se trouve dans un cercle de 5 cm autour du point d'arrivé
-        if (FLAG_ASSERV.sens_deplacement * distance_restante < 30 * TICKS_PAR_MM) //20
+        if (FLAG_ASSERV.sens_deplacement * distance_restante < 30 * TICKS_PAR_MM) //30
         {
             FLAG_ASSERV.orientation = OFF;
             //SI on s'éloigne de notre consigne on s'arrête

@@ -434,7 +434,7 @@ void traitement_reception_ax12 ()
         if (checksum != ax12.buffer[CHSUM])
         {
             ax12.erreur = ERREUR_CS;
-            PutsUART(UART_XBEE, "ERREUR Checksum \r\n");
+            //PutsUART(UART_XBEE, "ERREUR Checksum \r\n");
         }
     }
 
@@ -538,12 +538,12 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
     {
         nb2++;
     }
-    PutIntUART(nb1);
-    PutsUART(UART_XBEE, " ");
-    PutIntUART(nb2);
+    //PutIntUART(nb1);
     //PutsUART(UART_XBEE, " ");
-    //PutIntUART(nb3 - (nb1 + nb2));
-    PutsUART(UART_XBEE, "\r");
+    //PutIntUART(nb2);
+    ////PutsUART(UART_XBEE, " ");
+    ////PutIntUART(nb3 - (nb1 + nb2));
+    //PutsUART(UART_XBEE, "\r");
 }
 
 
@@ -614,4 +614,21 @@ uint16_t read_data (uint8_t ID, uint8_t type_donnee)
         buffer = ax12.buffer[PARAM1] + ax12.buffer[PARAM2] * 256;
 
     return buffer;
+}
+
+void lecture_position_AX12 (uint8_t *ax12, int taille)
+{
+    uint8_t i;
+    while(1)
+    {
+        for (i = 0 ; i < (uint8_t) taille ; i++)
+        {
+            PutsUART(UART_XBEE, "  ID ");
+            PutIntUART( (int) ax12[i]);
+            PutsUART(UART_XBEE, " : ");
+            PutIntUART( read_data(ax12[i], LIRE_POSITION_ACTU) );
+        }
+        PutsUART(UART_XBEE, "\r");
+    }
+
 }

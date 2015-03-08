@@ -31,7 +31,7 @@ extern "C" {
 
 
     /**************************************************************************/
-    /*************************** Define Général *******************************/
+    /*************************** DEFINE Général *******************************/
     /**************************************************************************/
 
     //Couleurs de départs
@@ -42,7 +42,11 @@ extern "C" {
 
 #define NON                 2
 #define OUI                 3
-#define EN_ATTENTE          4
+#define EN_ATTENTE          17
+#define EN_DESCENTE         18
+    //EN_COURS = 6
+#define EN_MONTER           16
+#define LIBRE               15
 
     //Evitement
 #define ACTIF               0
@@ -54,6 +58,49 @@ extern "C" {
 
 #define DISTANCE_STOP       5
 #define ANGLE_STOP          5
+
+    /**************************************************************************/
+    /*************************** DEFINE ID AX12 *******************************/
+    /**************************************************************************/
+
+#define PINCE_ASCENSEUR     9
+#define PINCE_BAS           15
+#define PINCE_MILIEU        8
+#define PINCE_HAUT          5
+#define ASCENSEUR           13
+#define BRAS_DROIT          7
+#define BRAS_GAUCHE         4
+
+    /**************************************************************************/
+    /*************************** POSITIONS AX12 *******************************/
+    /**************************************************************************/
+
+#define PINCE_ASC_FERME     780//760
+#define PINCE_ASC_RELACHE   738 
+#define PINCE_ASC_RACLETTE  658
+#define PINCE_ASC_RANGE     516
+
+#define PINCES_FERME        520//538
+#define PINCES_RELACHE      570//545
+#define PINCES_RANGE        770
+
+#define ASC_BAS             0
+#define ASC_DEMARAGE        500
+#define ASC_HAUT            975
+
+    /**************************************************************************/
+    /************************* DEFINE ETAT PINCES *****************************/
+    /**************************************************************************/
+
+#define FERMER              0
+#define RELACHE             1
+#define RACLETTE            2
+#define RANGEMENT           3
+
+#define MONTER              4
+#define DESCENDRE           5
+//#define EN_COURS            6 -> fichier asserv
+#define HAUTEUR_DEMMARAGE   7
 
 
 /******************************************************************************/
@@ -69,6 +116,11 @@ extern "C" {
     void jack();
     void autom_10ms (void);
 
+
+
+    //Fonctions autom ax12
+    void pinces (uint8_t ID, uint8_t etat);
+    void ascenseur (uint8_t direction);
 /******************************************************************************/
 /******************************************************************************/
 /******************************************************************************/

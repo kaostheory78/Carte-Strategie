@@ -285,8 +285,14 @@ uint8_t _rejoindre (double x, double y, int8_t sens_marche, double pourcentage_v
     calcul_acceleration_position();
 
     VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
+#ifdef PETIT_ROBOT
+    acc.acceleration.orientation = DCC_ORIENTATION_CONSIGNE;
+    acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
+#else
     acc.acceleration.orientation = ACC_ORIENTATION_CONSIGNE;
     acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
+#endif
+    
 
     FLAG_ASSERV.position = ON;
     FLAG_ASSERV.orientation = ON;
