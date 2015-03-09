@@ -266,6 +266,71 @@ uint8_t _orienter (double angle, double pourcentage_vitesse)
     return FLAG_ASSERV.erreur;
 }
 
+void faire_des_tours (int nb_tour)
+{
+    int i;
+    double j;
+
+    if (nb_tour < 0)
+    {
+        nb_tour *= -1;
+        j = -1.;
+    }
+    else
+        j= 1.;
+
+    _fdt (120 * j  , DEBUT_TRAJECTOIRE);
+    for (i = 0 ; i < nb_tour - 1 ; i++)
+    {
+        _fdt(- 120 * j, MILIEU_TRAJECTOIRE);
+        _fdt (0,  MILIEU_TRAJECTOIRE);
+        _fdt (120 * j, MILIEU_TRAJECTOIRE);
+    }
+
+    _fdt (- 120 * j, MILIEU_TRAJECTOIRE);
+    _fdt (0, FIN_TRAJECTOIRE);
+}
+
+void _fdt (double angle, char last)
+{
+     if (last == DEBUT_TRAJECTOIRE)
+    {
+        FLAG_ASSERV.brake = OFF;
+        delay_ms(10);
+        reinit_asserv();
+
+        TYPE_CONSIGNE = MM;
+    }
+
+    angle = inversion_couleur(angle);
+
+    ORIENTATION.consigne = (angle * Pi)/ 180 * (ENTRAXE_TICKS/2);
+
+    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
+    acc.acceleration.orientation = ACC_ORIENTATION_CONSIGNE;
+    acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
+
+    FLAG_ASSERV.position = OFF;
+    FLAG_ASSERV.orientation = ON;
+    FLAG_ASSERV.vitesse = ON;
+    FLAG_ASSERV.phase_deceleration_distance = PHASE_NORMAL;
+    FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
+
+    FLAG_ASSERV.type_deplacement = FAIRE_DES_TOURS;
+    FLAG_ASSERV.etat_angle = EN_COURS;
+    FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
+
+    FLAG_ASSERV.immobilite = 0;
+
+    if (last == FIN_TRAJECTOIRE)
+        FLAG_ASSERV.vitesse_fin_nulle = ON;
+    else
+        FLAG_ASSERV.vitesse_fin_nulle = OFF;
+
+    FLAG_ASSERV.fin_deplacement = DEBUT_DEPLACEMENT;
+    while (FLAG_ASSERV.fin_deplacement != FIN_DEPLACEMENT);
+}
+
 uint8_t _rejoindre (double x, double y, int8_t sens_marche, double pourcentage_vitesse)
 {
     y = inversion_couleur(y);

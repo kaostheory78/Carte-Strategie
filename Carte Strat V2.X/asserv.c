@@ -740,11 +740,16 @@ void asserv_orientation (void)
         if (temps_restant <0)
             temps_restant *= -1;
 
+
         if (temps_freinage > temps_restant)
         {
             if (FLAG_ASSERV.type_deplacement == ORIENTER)
                 FLAG_ASSERV.phase_decelaration_orientation = EN_COURS;
-            VITESSE_ORIENTATION[SYS_ROBOT].consigne = 0;
+
+            if (FLAG_ASSERV.type_deplacement == FAIRE_DES_TOURS && FLAG_ASSERV.vitesse_fin_nulle == OFF)
+                FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
+            else
+                VITESSE_ORIENTATION[SYS_ROBOT].consigne = 0;
         }
     }
     else //(FLAG_ASSERV.vitesse_fin_nulle == ON)
@@ -903,6 +908,9 @@ void calcul_position_robot (void)
 
     get_valeur_codeur (CODEUR_D);
     get_valeur_codeur (CODEUR_G);
+
+    position[CODEUR_D].ecart *= COEF_D;
+    position[CODEUR_G].ecart *= COEF_G;
 
     //calcul des modifs
     delta_o = (position[CODEUR_D].ecart - position[CODEUR_G].ecart) /2;

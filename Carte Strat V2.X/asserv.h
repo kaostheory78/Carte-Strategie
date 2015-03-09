@@ -39,6 +39,7 @@
 #define ORIENTER                    0
 #define AVANCER                     1
 #define PASSE_PART                  2
+#define FAIRE_DES_TOURS             3
 
 #define DEBUT_DEPLACEMENT           0
 #define FIN_DEPLACEMENT             1
@@ -82,6 +83,9 @@
 #define ENTRAXE_MM                  _ENTRAXE_MM
 #define DIAMETRE_ROUE_CODEUSE       _DIAMETRE_ROUE_CODEUSE
 #define PERIMETRE_ROUE_MM           _PERIMETRE_ROUE_MM
+
+#define COEF_D                      _COEF_D
+#define COEF_G                      _COEF_G
 
 
 #define MM_PAR_TICKS                (double) ( PERIMETRE_ROUE_MM / CODEUR_D_NB_IMP_LOG )

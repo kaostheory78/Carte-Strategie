@@ -47,7 +47,7 @@ void strategie()
         
     #ifdef PETIT_ROBOT
         init_position_robot (0, 0, 0);
-        TIMER_DEBUG = ACTIVE;
+       // TIMER_DEBUG = ACTIVE;
 
        /* uint8_t tab[5];
         tab[0] = 9;
@@ -58,9 +58,17 @@ void strategie()
 
        lecture_position_AX12 (tab, 5);*/
 
-        rejoindre(750, 0, MARCHE_AVANT, 100);
+        //rejoindre(2000, 0, MARCHE_AVANT,  10);
+        faire_des_tours(-32);
+        //rejoindre(750, 0, MARCHE_AVANT, 100);
 
-        TIMER_DEBUG = DESACTIVE;
+        //TIMER_DEBUG = DESACTIVE;
+        PutsUART(UART_XBEE, " X : ");
+        PutLongUART((int32_t) get_X());
+        PutsUART(UART_XBEE, " Y : ");
+        PutLongUART((int32_t) get_Y());
+        PutsUART(UART_XBEE, " Teta : ");
+        PutLongUART((int32_t) get_orientation());
         while(1);
 
         

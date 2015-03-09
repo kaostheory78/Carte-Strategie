@@ -94,7 +94,7 @@ void autom_10ms (void)
         static uint8_t etat_pince_asc = LIBRE, etat_pince_haut = RANGEMENT, etat_ascenseur = HAUTEUR_DEMMARAGE;
 
         //fonction qui definit les actions
-/*        switch (FLAG_ACTION)
+/*       switch (FLAG_ACTION)
         {
             case NE_RIEN_FAIRE:
                 break;
@@ -102,7 +102,7 @@ void autom_10ms (void)
                 break;
         }*/
 
-      /*  if (CAPT_PINCE == 0 && etat_pince_asc == LIBRE)
+     /*   if (CAPT_PINCE == 0 && etat_pince_asc == LIBRE)
         {
             pinces(PINCE_ASCENSEUR, FERMER);
             etat_pince_asc = EN_COURS;

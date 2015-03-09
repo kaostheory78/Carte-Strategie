@@ -37,6 +37,8 @@ extern "C" {
 /**************************** FONCTIONS COULEURS ******************************/
 /******************************************************************************/
 
+    void _fdt (double angle, char last);
+    void faire_des_tours (int nb_tour);
 /**
  * Fonction qui retourne la valeur du bouton de couleur pour savoir de quel côté du terrain on démare
  * @return JAUNE ou VERT
