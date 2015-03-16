@@ -71,6 +71,8 @@
     uint8_t DETECTION;
     uint8_t EVITEMENT_ADV_AVANT;
     uint8_t STRATEGIE_EVITEMENT;
+    uint16_t FLAG_ACTION;
+    uint8_t ETAT_AUTOM;
 
 /******************************************************************************/
 /******************************************************************************/
@@ -98,6 +100,14 @@ int main(int argc, char** argv)
 
     //jack();
     strategie();
+
+    PutsUART(UART_XBEE, " X : ");
+    PutLongUART((int32_t) get_X());
+    PutsUART(UART_XBEE, " Y : ");
+    PutLongUART((int32_t) get_Y());
+    PutsUART(UART_XBEE, " Teta : ");
+    PutLongUART((int32_t) get_orientation());
+
    
 
     /**************************************************************************/

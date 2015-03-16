@@ -613,10 +613,6 @@ void asserv_distance(void)
                 FLAG_ASSERV.orientation = OFF;
                 FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
                 FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
-
-                //if (FLAG_ASSERV.vitesse_fin_nulle == OFF)
-                //     FLAG_ASSERV.fin_deplacement = FIN_DEPLACEMENT;
-                
                 return;
             }
         }
@@ -884,7 +880,14 @@ double fonction_PID (unsigned char type)
         if (FLAG_ASSERV.type_deplacement == PASSE_PART)
         {
             if (FLAG_ASSERV.phase_deceleration_distance == PHASE_NORMAL)
-                KP_hybride *= 0.05;
+            {
+                #ifdef PETIT_ROBOT
+                    KP_hybride *= 0.2;
+                #else
+                    KP_hybride *= 0.05;
+                #endif
+            }
+                
         }
 
         KP_hybride = 1 - KP_hybride;

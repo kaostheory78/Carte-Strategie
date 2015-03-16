@@ -167,10 +167,12 @@ extern "C" {
     /****************************** ODOMETRIE *********************************/
     /**************************************************************************/
     #define _ENTRAXE_MM                  236.1
-    #define _DIAMETRE_ROUE_CODEUSE       51.975
+    #define _DIAMETRE_ROUE_CODEUSE       51.98//51.9715     //Toujours dans le sens de l'erreur : aler plus loin = diminuer D
     #define _PERIMETRE_ROUE_MM           (_DIAMETRE_ROUE_CODEUSE * _Pi)
 
-    #define  _COEF_D                    (double) 1.0005
+
+    //+COEF_D -> + a droite
+    #define  _COEF_D                    (double) 1.00372
     #define  _COEF_G                    (double) 1.
 
     /**************************************************************************/
@@ -194,7 +196,7 @@ extern "C" {
         //Autres réglages asserv
     #define _SEUIL_IMMOBILITE            300 //200
     #define _MAX_ERREUR_INTEGRALLE_V     3500
-    #define _MAX_E_INTEGRALLE_BRAKE      1000.
+    #define _MAX_E_INTEGRALLE_BRAKE      12000.
 
     /**************************************************************************/
     /********************************* PID ************************************/
@@ -213,13 +215,13 @@ extern "C" {
     #define _ORIENTATION_KI              0.
     #define _ORIENTATION_KD              0.
 
-    //#define KP_BRAKE                    0.005
-    //#define KI_BRAKE                    0.001
-    //#define KD_BRAKE                    0. //0.006
+    //#define KP_BRAKE                    0.06
+    //#define KI_BRAKE                    0.008
+    //#define KD_BRAKE                    1.5 //0.01
 
-    #define KP_BRAKE                    0.06
-    #define KI_BRAKE                    0.008
-    #define KD_BRAKE                    1.5 //0.01
+    #define KP_BRAKE                    0.04 //0.15
+    #define KI_BRAKE                    0.0015
+    #define KD_BRAKE                    0.8//1.5 //0.01
 
     /**************************************************************************/
     /******************************* TENSIONS *********************************/

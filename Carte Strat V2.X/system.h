@@ -37,9 +37,9 @@ extern "C" {
 
 
     //Macro pour les tempos
-#define FOSC             80017142LL      //80000000
+#define FOSC        80000000LL     //80017142LL      //80000000
 #define FCY             (FOSC/2)
-#define delay_us(x) __delay32(((x*FCY)/1000000L)) // delays x us
+#define delay_us(x) __delay32(((x*FCY)/1000000L))   // delays x us
 #define delay_ms(x) __delay32(((x*FCY)/1000L))      // delays x ms
 
 
@@ -196,6 +196,8 @@ extern "C" {
     extern uint8_t EVITEMENT_ADV_AVANT;
     extern uint8_t STRATEGIE_EVITEMENT;
     extern uint8_t COULEUR;
+    extern uint16_t FLAG_ACTION;
+    extern uint8_t ETAT_AUTOM;
 
     extern _ax12 ax12;
 

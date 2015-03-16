@@ -27,13 +27,24 @@
  */
 void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
 {
+    /*static int led = 1;
+    if (led == 1)
+        led = 0;
+    else 
+        led = 1;
+        
+    CAPTEUR2 = led;
+
+    */
+
+
     FLAG_TIMER_5ms = 0;
 
    calcul_position_robot();
    if (FLAG_ASSERV.totale == ON)
         asserv();
 
-  
+   Nop();
    
 }
 
