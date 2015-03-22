@@ -19,8 +19,6 @@
 
 void debug ()
 {
-    static int compteur = 0;
-    compteur++;
     /*PutcUART(UART_XBEE, '[');
     PutLongUART (position[CODEUR_D].totale);
     PutcUART(UART_XBEE, ']');

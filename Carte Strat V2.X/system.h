@@ -104,8 +104,8 @@ extern "C" {
     #define INHIBIT_AX12        PORTAbits.RA0
     #define DIR_UART_AX12       PORTAbits.RA1
 
-    #define SYS_JACK            PORTCbits.RC3
-    #define _SYS_COULEUR        PORTAbits.RA9
+    #define SYS_JACK            PORTAbits.RA9
+    #define _SYS_COULEUR        PORTCbits.RC3
     #define _SYS_STRAT          PORTCbits.RC4
 
     #define CAPTEUR1            PORTCbits.RC0

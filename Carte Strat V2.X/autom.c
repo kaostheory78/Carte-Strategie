@@ -87,6 +87,7 @@ void init_pinces_jack()
     ascenseur(HAUTEUR_DEMMARAGE);
     while(read_data(ASCENSEUR, LIRE_MOUV_FLAG) != 0);
     pinces(PINCE_ASCENSEUR, RANGEMENT);
+    init_balle();
 }
 
 void init_balle()
@@ -103,11 +104,11 @@ void init_pinces_demarage()
         pinces(PINCE_MILIEU, RELACHE);
         pinces(PINCE_BAS, RELACHE);
         pinces(PINCE_ASCENSEUR, RACLETTE);
-        init_balle();
         etat_pince_demarage = 1;
     }
     else if (read_data(PINCE_ASCENSEUR, LIRE_MOUV_FLAG) == 0)
-    {  
+    {
+        ejecter_balle();
         ascenseur(DESCENDRE);
         FLAG_ACTION = ATTRAPE_PIEDS;
     }

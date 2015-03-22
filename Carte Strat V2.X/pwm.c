@@ -118,6 +118,18 @@ void envoit_pwm (char moteur, int32_t valeur)
 
         REGISTRE_MOTEUR_G = abs_valeur;
     }
+    else if (moteur == MOTEUR_X)
+    {
+        if (abs_valeur > PWM_X_VALEUR_MAX)
+            abs_valeur = PWM_X_VALEUR_MAX;
+
+        if (valeur < (int32_t) 0)
+            SENS_MOTEUR_X = RECULER_MOTEUR_X;
+        else
+            SENS_MOTEUR_X = AVANCER_MOTEUR_X;
+
+        REGISTRE_MOTEUR_X = abs_valeur;
+    }
 }
 
 

@@ -43,6 +43,11 @@ extern "C" {
     #define _DIAMETRE_ROUE_CODEUSE       0
     #define _PERIMETRE_ROUE_MM           194.4
 
+        //+COEF_D -> + a droite
+    #define  _COEF_D                    (double) 1.
+    #define  _COEF_G                    (double) 1.
+
+
     /**************************************************************************/
     /******************************** ASSERV **********************************/
     /**************************************************************************/
@@ -94,6 +99,8 @@ extern "C" {
     #define _TENSION_MOTEUR_DROIT        24L
     #define _TENSION_MOTEUR_GAUCHE       24L
 
+    #define _TENSION_MOTEUR_X            12L
+
     #define _TENSION_SORTIE_PTN          34L
 
 
@@ -130,6 +137,9 @@ extern "C" {
 
     #define _AVANCER_MOTEUR_G            1
     #define _RECULER_MOTEUR_G            0
+
+    #define _AVANCER_MOTEUR_X            0
+    #define _AVANCER_MOTEUR_X            1
 #endif
 
     /**************************************************************************/
@@ -166,14 +176,14 @@ extern "C" {
     /**************************************************************************/
     /****************************** ODOMETRIE *********************************/
     /**************************************************************************/
-    #define _ENTRAXE_MM                  236.1
+    #define _ENTRAXE_MM                  236.11
     #define _DIAMETRE_ROUE_CODEUSE       51.98//51.9715     //Toujours dans le sens de l'erreur : aler plus loin = diminuer D
     #define _PERIMETRE_ROUE_MM           (_DIAMETRE_ROUE_CODEUSE * _Pi)
 
 
     //+COEF_D -> + a droite
-    #define  _COEF_D                    (double) 1.00372
-    #define  _COEF_G                    (double) 1.
+    #define  _COEF_D                    (double) 1.  //346  //1.00372
+    #define  _COEF_G                    (double) 1.00341
 
     /**************************************************************************/
     /******************************** ASSERV **********************************/
@@ -194,7 +204,7 @@ extern "C" {
     #define _DCC_ORIENTATION_CONSIGNE    3. //2.
 
         //Autres réglages asserv
-    #define _SEUIL_IMMOBILITE            300 //200
+    #define _SEUIL_IMMOBILITE            150 //200
     #define _MAX_ERREUR_INTEGRALLE_V     3500
     #define _MAX_E_INTEGRALLE_BRAKE      12000.
 
@@ -215,10 +225,6 @@ extern "C" {
     #define _ORIENTATION_KI              0.
     #define _ORIENTATION_KD              0.
 
-    //#define KP_BRAKE                    0.06
-    //#define KI_BRAKE                    0.008
-    //#define KD_BRAKE                    1.5 //0.01
-
     #define KP_BRAKE                    0.04 //0.15
     #define KI_BRAKE                    0.0015
     #define KD_BRAKE                    0.8//1.5 //0.01
@@ -230,6 +236,8 @@ extern "C" {
     //Tensions d'alimentations
     #define _TENSION_MOTEUR_DROIT        12L
     #define _TENSION_MOTEUR_GAUCHE       12L
+
+    #define _TENSION_MOTEUR_X            12L
 
     #define _TENSION_SORTIE_PTN          17L
 
@@ -257,6 +265,9 @@ extern "C" {
 
     #define _AVANCER_MOTEUR_G            0
     #define _RECULER_MOTEUR_G            1
+
+    #define _AVANCER_MOTEUR_X            0
+    #define _RECULER_MOTEUR_X            1
 
     /**************************************************************************/
     /***************************** PORTS CARTE ********************************/

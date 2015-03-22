@@ -86,7 +86,7 @@ extern "C" {
 #define PINCES_RANGE        770
 
 #define ASC_BAS             0
-#define ASC_DEPOSE          320
+#define ASC_DEPOSE          330
 #define ASC_DEMARAGE        500
 #define ASC_HAUT            975
 

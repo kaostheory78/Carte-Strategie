@@ -46,38 +46,42 @@ void strategie()
 
         
     #ifdef PETIT_ROBOT
-        init_position_robot (145, 1045, 0);
-        
-       // TIMER_DEBUG = ACTIVE;
+        //init_position_robot (145, 1045, 0);
+        init_position_robot (153, 1030, 0);
+       // init_position_robot (0, 0, 0);
 
-        /*/uint8_t tab[5];
-        tab[0] = 11;
-        tab[1] = 15;
-        tab[2] = 8;
-        tab[3] = 5;
-        tab[4] = 13;
+       /* rejoindre(2500, 1030, MARCHE_AVANT, 100);
+        rejoindre(500, 1030, MARCHE_AVANT, 100);
+        rejoindre(2500, 1030, MARCHE_AVANT, 100);
+        rejoindre(500, 1030, MARCHE_AVANT, 100);
+        rejoindre(2500, 1030, MARCHE_AVANT, 100);
+        rejoindre(500, 1030, MARCHE_AVANT, 100);
+        rejoindre(2500, 1030, MARCHE_AVANT, 100);
+        rejoindre(500, 1030, MARCHE_AVANT, 100);
+        rejoindre(2500, 1030, MARCHE_AVANT, 100);
+        rejoindre(300, 1030, MARCHE_AVANT, 100);
+        rejoindre(500, 1030, MARCHE_AVANT, 100);
 
-       lecture_position_AX12 (tab, 5);
-        while(1)*/
 
-        do
-        {
-        init_balle();
-        delay_ms(2000);
+        while(1);*/
 
-        angle_AX12(PINCE_HAUT, 550, 1023, SANS_ATTENTE);
-        //delay_ms(1000);
-        ejecter_balle();
-        delay_ms(2000);
-        }while(1);
+        faire_des_tours(32);
+       /* trapeze(MARCHE_AVANT);
+        trapeze(MARCHE_AVANT);
+        trapeze(MARCHE_AVANT);
+        trapeze(MARCHE_AVANT);
+        trapeze(MARCHE_AVANT);
+        trapeze(MARCHE_AVANT);
+        trapeze(MARCHE_AVANT);
+        rejoindre(100, 0, MARCHE_AVANT, 50);*/
+        while(1);
 
         //Init départ
         init_pinces_jack();
-        rejoindre (490, 1045, MARCHE_AVANT, 100);
-        cibler(1300, 600, 100);
+        rejoindre (490, 1030, MARCHE_AVANT, 50);
+        cibler(1300, 600, 80);
 
-        //JACK
-        //delay_ms(2000);
+        while(!SYS_JACK);
 
         FLAG_ACTION = INIT_PINCES_DEMARRAGE;
         //Pieds 1
@@ -86,6 +90,10 @@ void strategie()
         rejoindre (1140, 330, MARCHE_AVANT, 100);
         //Pieds 3
         rejoindre (940, 580, MARCHE_AVANT, 100);
+
+
+        /******** Dépose pile de 3 */
+        /*
         //Placement dépose
         rejoindre(1355, 265, MARCHE_AVANT, 100);
 
@@ -109,7 +117,16 @@ void strategie()
         rejoindre (1245, 187, MARCHE_AVANT, 50);
 
         FLAG_ACTION = ATTRAPE_BALLE;
-        //delay_ms(500);
+        //delay_ms(500);*/
+
+
+        passe_part(600, 200, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+        envoit_pwm(MOTEUR_X, 100);
+        passe_part(300, 200, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        passe_part(115, 200, MARCHE_ARRIERE, 50, FIN_TRAJECTOIRE);
+
+        rejoindre( 500, 200, MARCHE_AVANT, 100);
+
 
         /******** Récup gobelet en passe part*/
         /*
