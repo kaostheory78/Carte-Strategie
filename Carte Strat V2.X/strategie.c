@@ -50,7 +50,10 @@ void strategie()
         init_position_robot (153, 1030, 0);
        // init_position_robot (0, 0, 0);
 
-       /* rejoindre(2500, 1030, MARCHE_AVANT, 100);
+        //envoit_pwm(MOTEUR_X, 100);
+        //while(1);
+
+        /*rejoindre(2500, 1030, MARCHE_AVANT, 100);
         rejoindre(500, 1030, MARCHE_AVANT, 100);
         rejoindre(2500, 1030, MARCHE_AVANT, 100);
         rejoindre(500, 1030, MARCHE_AVANT, 100);
@@ -63,9 +66,7 @@ void strategie()
         rejoindre(500, 1030, MARCHE_AVANT, 100);
 
 
-        while(1);*/
-
-        faire_des_tours(32);
+        //faire_des_tours(32);
        /* trapeze(MARCHE_AVANT);
         trapeze(MARCHE_AVANT);
         trapeze(MARCHE_AVANT);
@@ -73,8 +74,16 @@ void strategie()
         trapeze(MARCHE_AVANT);
         trapeze(MARCHE_AVANT);
         trapeze(MARCHE_AVANT);
-        rejoindre(100, 0, MARCHE_AVANT, 50);*/
-        while(1);
+        rejoindre(100, 0, MARCHE_AVANT, 50);
+
+        delay_ms(5000);
+        PutsUART(UART_XBEE, " X : ");
+        PutLongUART((int32_t) get_X());
+        PutsUART(UART_XBEE, " Y : ");
+        PutLongUART((int32_t) get_Y());
+        PutsUART(UART_XBEE, " Teta : ");
+        PutLongUART((int32_t) get_orientation());
+        while(1);*/
 
         //Init départ
         init_pinces_jack();
@@ -120,12 +129,19 @@ void strategie()
         //delay_ms(500);*/
 
 
-        passe_part(600, 200, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
         envoit_pwm(MOTEUR_X, 100);
+        passe_part(600, 200, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE); 
         passe_part(300, 200, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-        passe_part(115, 200, MARCHE_ARRIERE, 50, FIN_TRAJECTOIRE);
+        passe_part(150, 200, MARCHE_ARRIERE, 100, FIN_TRAJECTOIRE);
 
-        rejoindre( 500, 200, MARCHE_AVANT, 100);
+        avancer_reculer(-1000, 100);
+
+        ouvrir_bras(BRAS_GAUCHE);
+        passe_part(170, 200, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+        passe_part(245, 145, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+        passe_part(890, 145, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        passe_part(540, 800, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        passe_part(540, 1100, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
 
 
         /******** Récup gobelet en passe part*/

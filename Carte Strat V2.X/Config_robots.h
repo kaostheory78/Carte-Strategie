@@ -183,7 +183,7 @@ extern "C" {
 
     //+COEF_D -> + a droite
     #define  _COEF_D                    (double) 1.  //346  //1.00372
-    #define  _COEF_G                    (double) 1.00341
+    #define  _COEF_G                    (double) 1.0034
 
     /**************************************************************************/
     /******************************** ASSERV **********************************/
@@ -278,7 +278,12 @@ extern "C" {
     //Dans le fichier system.h
 
     #define CAPT_PINCE                 CAPTEUR1
-    #define CAPT_US_BALISE              CAPTEUR2
+    #define CAPT_IR_ARRIERE_GAUCHE     CAPTEUR2
+    #define CAPT_IR_ARRIERE_DROIT      CAPTEUR6
+    #define CAPT_IR_ARRIERE_CENTRE     CAPTEUR7
+    #define CAPT_US_DROIT              CAPTEUR5
+    #define CAPT_US_GAUCHE             CAPTEUR8
+    #define CAPT_US_BALISE             CAPTEUR2
 
 #ifdef CARTE_V1
     #define _SYS_COULEUR                CAPTEUR2

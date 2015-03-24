@@ -245,7 +245,7 @@ void saturation_erreur_integralle_vitesse (void)
 
 void detection_blocage (void)
 {
-   if (VITESSE[ROUE_DROITE].actuelle < 0.2 * (VITESSE[ROUE_DROITE].consigne))
+    if (VITESSE[ROUE_DROITE].actuelle < 0.2 * (VITESSE[ROUE_DROITE].consigne * FLAG_ASSERV.sens_deplacement))
     {
         if (ERREUR_VITESSE[ROUE_DROITE].integralle == MAX_ERREUR_INTEGRALLE_V || ERREUR_VITESSE[ROUE_DROITE].integralle == - MAX_ERREUR_INTEGRALLE_V)
         {
@@ -253,7 +253,7 @@ void detection_blocage (void)
             FLAG_ASSERV.erreur = BLOCAGE;
         }
     }
-    else if (VITESSE[ROUE_DROITE].actuelle < 0.2 * (VITESSE[ROUE_DROITE].consigne))
+    else if (VITESSE[ROUE_GAUCHE].actuelle < 0.2 * (VITESSE[ROUE_GAUCHE].consigne * FLAG_ASSERV.sens_deplacement))
     {
         if (ERREUR_VITESSE[ROUE_GAUCHE].integralle == MAX_ERREUR_INTEGRALLE_V || ERREUR_VITESSE[ROUE_GAUCHE].integralle == - MAX_ERREUR_INTEGRALLE_V)
         {

@@ -56,12 +56,28 @@ void init_decalage_AX12 (void)      //Declaration de l'enchainement de montage d
     decalage[AX_US].suivant = AUCUN_AX;
     decalage[AX_US].sens_rotation = ROT_EN_HAUT;
     decalage[AX_US].symetrique = PAS_DE_SYMETRIQUE;*/
+
+    decalage[BRAS_DROIT].angle = 0;
+    decalage[BRAS_DROIT].position = 512;
+    decalage[BRAS_DROIT].etat = INDEPENDANT;
+    decalage[BRAS_DROIT].suivant = AUCUN_AX;
+    decalage[BRAS_DROIT].sens_rotation = SENS_DIRECT;
+    decalage[BRAS_DROIT].symetrique = BRAS_GAUCHE;
+
+    decalage[BRAS_GAUCHE].angle = 0;
+    decalage[BRAS_GAUCHE].position = 512;
+    decalage[BRAS_GAUCHE].etat = INDEPENDANT;
+    decalage[BRAS_GAUCHE].suivant = AUCUN_AX;
+    decalage[BRAS_GAUCHE].sens_rotation = SENS_INDIRECT;
+    decalage[BRAS_GAUCHE].symetrique = BRAS_DROIT;
 }
 
 void init_position_AX12 (void)      //Force l'état premier des AX12 à l'angle 0
 {
     //us
     //calcul_position(AX_US, 0);
+    calcul_position(BRAS_DROIT,0);
+    calcul_position(BRAS_GAUCHE,0);
 }
 
 /******************************************************************************/

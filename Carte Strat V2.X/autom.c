@@ -67,6 +67,16 @@ void pinces (uint8_t ID, uint8_t etat)
     }
 }
 
+void ouvrir_bras (uint8_t bras)
+{
+    synchro_AX12(bras, 0, 1023, SANS_ATTENTE);
+}
+
+void fermer_brad (uint8_t bras)
+{
+    synchro_AX12(bras, -75, 1023, SANS_ATTENTE);
+}
+
 void ascenseur (uint8_t direction)
 {
     if (direction == MONTER)

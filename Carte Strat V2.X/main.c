@@ -98,10 +98,15 @@ int main(int argc, char** argv)
     /**************************************************************************/
     /**************************************************************************/
 
+    /*    uint8_t tab[5];
+        tab[0] = 7;
+        tab[1] = 4;
+       lecture_position_AX12 (tab, 2);*/
+
+    init_decalage_AX12 ();
+
     while(SYS_JACK);
     strategie();
-
-    delay_ms(5000);
 
     PutsUART(UART_XBEE, " X : ");
     PutLongUART((int32_t) get_X());

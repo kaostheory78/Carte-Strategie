@@ -143,6 +143,8 @@ extern "C" {
     void attrape_gobelet();
     void depose_gobelet();
     void attrape_balle();
+    void ouvrir_bras (uint8_t);
+    void fermer_bras (uint8_t);
 
     void ejecter_balle();
     void init_balle();
