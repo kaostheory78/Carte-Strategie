@@ -56,7 +56,7 @@ void init_decalage_AX12 (void)      //Declaration de l'enchainement de montage d
     decalage[AX_US].suivant = AUCUN_AX;
     decalage[AX_US].sens_rotation = ROT_EN_HAUT;
     decalage[AX_US].symetrique = PAS_DE_SYMETRIQUE;*/
-
+#ifdef PETIT_ROBOT
     decalage[BRAS_DROIT].angle = 0;
     decalage[BRAS_DROIT].position = 512;
     decalage[BRAS_DROIT].etat = INDEPENDANT;
@@ -70,14 +70,17 @@ void init_decalage_AX12 (void)      //Declaration de l'enchainement de montage d
     decalage[BRAS_GAUCHE].suivant = AUCUN_AX;
     decalage[BRAS_GAUCHE].sens_rotation = SENS_INDIRECT;
     decalage[BRAS_GAUCHE].symetrique = BRAS_DROIT;
+#endif
 }
 
 void init_position_AX12 (void)      //Force l'état premier des AX12 à l'angle 0
 {
     //us
     //calcul_position(AX_US, 0);
+#ifdef PETIT_ROBOT
     calcul_position(BRAS_DROIT,0);
     calcul_position(BRAS_GAUCHE,0);
+#endif
 }
 
 /******************************************************************************/
@@ -541,25 +544,25 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
             traitement_reception_ax12();
         };
 
-        delay_us(10);
+        //delay_us(10);
 
     }while (ax12.erreur != PAS_D_ERREUR && ax12.tentatives < MAX_TENTATIVES );
 
 
-    if(ax12.erreur != PAS_D_ERREUR)
-    {
-        nb1++;
-    }
-    else
-    {
-        nb2++;
-    }
-    //PutIntUART(nb1);
-    //PutsUART(UART_XBEE, " ");
-    //PutIntUART(nb2);
-    ////PutsUART(UART_XBEE, " ");
-    ////PutIntUART(nb3 - (nb1 + nb2));
-    //PutsUART(UART_XBEE, "\r");
+//    if(ax12.erreur != PAS_D_ERREUR)
+//    {
+//        nb1++;
+//    }
+//    else
+//    {
+//        nb2++;
+//    }
+//    PutIntUART(nb1);
+//    PutsUART(UART_XBEE, " ");
+//    PutIntUART(nb2);
+//    //PutsUART(UART_XBEE, " ");
+//    //PutIntUART(nb3 - (nb1 + nb2));
+//    PutsUART(UART_XBEE, "\r");
 }
 
 
@@ -624,12 +627,19 @@ uint16_t read_data (uint8_t ID, uint8_t type_donnee)
 
     commande_AX12(ID, _4PARAM,  READ_DATA, type_donnee, nombre_octets_a_recevoir, NC, NC, NC);
 
-    if (nombre_octets_a_recevoir == 1)
-        buffer = ax12.buffer[PARAM1];
-    else if (nombre_octets_a_recevoir == 2)
-        buffer = ax12.buffer[PARAM1] + ax12.buffer[PARAM2] * 256;
+    if (ax12.erreur != PAS_D_ERREUR)
+    {
+        return -1;
+    }
+    else
+    {
+        if (nombre_octets_a_recevoir == 1)
+            buffer = ax12.buffer[PARAM1];
+        else if (nombre_octets_a_recevoir == 2)
+            buffer = ax12.buffer[PARAM1] + ax12.buffer[PARAM2] * 256;
 
-    return buffer;
+        return buffer;
+    }
 }
 
 void lecture_position_AX12 (uint8_t *ax12, int taille)

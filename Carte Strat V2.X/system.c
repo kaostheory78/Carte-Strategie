@@ -52,6 +52,8 @@ void init_system (void)
 
     TIMER_5ms = ACTIVE;
     TIMER_10ms = ACTIVE;
+
+    TRISCbits.TRISC2 = 0;
     
     init_flag();
 }

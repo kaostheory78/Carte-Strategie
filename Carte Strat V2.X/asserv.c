@@ -293,6 +293,8 @@ void calcul_vitesse_position (double pourcentage_vitesse)
 
     if (VITESSE_MAX_POSITION > VITESSE_MAX_TENSION)
         VITESSE_MAX_POSITION = VITESSE_MAX_TENSION;
+    else if (VITESSE_MAX_POSITION < VITESSE_DISTANCE_MIN)
+        VITESSE_MAX_POSITION = VITESSE_DISTANCE_MIN;
 }
 
 void calcul_acceleration_position (void)
@@ -333,6 +335,11 @@ void calcul_acceleration_position (void)
             acc.deceleration.position = ACC_POSITION_CONSIGNE;
         }
     }
+
+    if (acc.acceleration.position < ACC_POSITION_MIN)
+        acc.acceleration.position = ACC_POSITION_MIN;
+    if (acc.deceleration.position > DCC_POSITION_MIN)
+        acc.deceleration.position = DCC_POSITION_MIN;
 }
 
 void calcul_vitesse_orientation (double pourcentage_vitesse)
@@ -342,7 +349,7 @@ void calcul_vitesse_orientation (double pourcentage_vitesse)
     fonction_PID(ASSERV_ORIENTATION);
 
     VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
-    VITESSE_MAX_ORIENTATION *= ERREUR_ORIENTATION.actuelle; // / ORIENTATION_CONSIGNE_PAS;
+    VITESSE_MAX_ORIENTATION *= ERREUR_ORIENTATION.actuelle; // orientation restante à parcourir
     VITESSE_MAX_ORIENTATION /= ORIENTATION_CONSIGNE_PAS;
     VITESSE_MAX_ORIENTATION *= pourcentage_vitesse;
     VITESSE_MAX_ORIENTATION /= 100;
@@ -351,7 +358,9 @@ void calcul_vitesse_orientation (double pourcentage_vitesse)
         VITESSE_MAX_ORIENTATION *= - 1;
 
     if (VITESSE_MAX_ORIENTATION > VITESSE_MAX_TENSION)
-        VITESSE_MAX_POSITION = VITESSE_MAX_TENSION;
+        VITESSE_MAX_ORIENTATION = VITESSE_MAX_TENSION;
+    else if (VITESSE_MAX_ORIENTATION < VITESSE_ANGLE_MIN)
+        VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_MIN;
 }
 
 void calcul_acceleration_orientation (void)
@@ -392,6 +401,11 @@ void calcul_acceleration_orientation (void)
             acc.deceleration.orientation = ACC_ORIENTATION_CONSIGNE;
         }
     }
+
+    if (acc.acceleration.orientation < ACC_ORIENTATION_MIN)
+        acc.acceleration.orientation = ACC_ORIENTATION_MIN;
+    if (acc.deceleration.orientation < DCC_ORIENTATION_MIN)
+        acc.deceleration.orientation = DCC_ORIENTATION_MIN;
 }
 
 void calcul_distance_consigne_XY (void)
@@ -508,7 +522,7 @@ void asserv()
     }
     else
     {
-        if (FLAG_ASSERV.immobilite > 100)
+        if (FLAG_ASSERV.immobilite > 150)
         {
             FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
             FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
@@ -603,7 +617,7 @@ void asserv_distance(void)
     if ((FLAG_ASSERV.sens_deplacement * distance_restante > 2 * TICKS_PAR_MM))
     {
         //si on se trouve dans un cercle de 5 cm autour du point d'arrivé
-        if (FLAG_ASSERV.sens_deplacement * distance_restante < 30 * TICKS_PAR_MM) //30
+        if (FLAG_ASSERV.sens_deplacement * distance_restante < 20 * TICKS_PAR_MM) //30
         {
             FLAG_ASSERV.orientation = OFF;
             //SI on s'éloigne de notre consigne on s'arrête
@@ -882,7 +896,7 @@ double fonction_PID (unsigned char type)
             if (FLAG_ASSERV.phase_deceleration_distance == PHASE_NORMAL)
             {
                 #ifdef PETIT_ROBOT
-                    KP_hybride *= 0.2;
+                    KP_hybride *= 0.1; //0.2
                 #else
                     KP_hybride *= 0.05;
                 #endif

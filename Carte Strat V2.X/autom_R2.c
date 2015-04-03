@@ -20,10 +20,22 @@
 /***************************** FONCTIONS DIVERSES *****************************/
 /******************************************************************************/
 
+#ifdef PETIT_ROBOT
+
 void jack()
 {
     while(!SYS_JACK);
     while(SYS_JACK);
+}
+
+void allumer_pompes ()
+{
+    envoit_pwm(MOTEUR_X, 100);
+}
+
+void eteindre_pompe ()
+{
+    envoit_pwm(MOTEUR_X, 0);
 }
 
 
@@ -69,12 +81,12 @@ void pinces (uint8_t ID, uint8_t etat)
 
 void ouvrir_bras (uint8_t bras)
 {
-    synchro_AX12(bras, 0, 1023, SANS_ATTENTE);
+    synchro_AX12(bras, 5, 1023, SANS_ATTENTE);
 }
 
-void fermer_brad (uint8_t bras)
+void fermer_bras (uint8_t bras)
 {
-    synchro_AX12(bras, -75, 1023, SANS_ATTENTE);
+    synchro_AX12(bras, -85, 1023, SANS_ATTENTE);
 }
 
 void ascenseur (uint8_t direction)
@@ -98,6 +110,8 @@ void init_pinces_jack()
     while(read_data(ASCENSEUR, LIRE_MOUV_FLAG) != 0);
     pinces(PINCE_ASCENSEUR, RANGEMENT);
     init_balle();
+    fermer_bras(BRAS_DROIT);
+    fermer_bras(BRAS_GAUCHE);
 }
 
 void init_balle()
@@ -118,7 +132,6 @@ void init_pinces_demarage()
     }
     else if (read_data(PINCE_ASCENSEUR, LIRE_MOUV_FLAG) == 0)
     {
-        ejecter_balle();
         ascenseur(DESCENDRE);
         FLAG_ACTION = ATTRAPE_PIEDS;
     }
@@ -126,7 +139,7 @@ void init_pinces_demarage()
 
 void ejecter_balle()
 {
-    angle_AX12(SYS_BALLE, EJECTER_BALLE, 400, SANS_ATTENTE);
+    angle_AX12(SYS_BALLE, EJECTER_BALLE, 20, SANS_ATTENTE);
 }
 
 void depose_pieds ()
@@ -351,6 +364,97 @@ void attrape_balle ()
     }
 }
 
+void faire_les_claps()
+{
+    static int etat_bras = ON;
+    if (get_X() > 400.0 && get_X() < 640.0 && etat_bras == ON )
+    {
+        //fermer_bras(GAUCHE);
+        angle_AX12(BRAS_DROIT, 200, 1023, SANS_ATTENTE);
+        etat_bras = OFF;
+    }
+    else if (get_X() > 640 && etat_bras == OFF)
+    {
+        //ouvrir_bras(GAUCHE);
+        angle_AX12(BRAS_DROIT, 512, 1023, SANS_ATTENTE);
+        etat_bras = ON;
+        FLAG_ACTION = NE_RIEN_FAIRE;
+    }
+}
+
+void empilement(int taille_max)
+{
+    static uint8_t etat_pince_asc = LIBRE, etat_pince_haut = RANGEMENT, etat_ascenseur = HAUTEUR_DEMMARAGE, compteur_pieds = 0, retard = 0;
+
+    if (etat_pince_asc == LIBRE && CAPT_PINCE == 0)
+    {
+        if ((compteur_pieds < taille_max))
+        {
+            compteur_pieds++;
+            etat_pince_asc = EN_COURS;
+        }
+        else
+            FLAG_ACTION = NE_RIEN_FAIRE;
+
+        pinces(PINCE_ASCENSEUR, FERMER);
+    }
+    else if (etat_pince_asc == EN_COURS)
+    {
+        if (read_data(PINCE_ASCENSEUR, LIRE_MOUV_FLAG) == 0 )
+        { 
+            ascenseur(MONTER);
+            etat_pince_asc = FERMER;
+            etat_ascenseur = EN_MONTER;
+            retard = 0;
+            if (taille_max == 4)
+            {
+                pinces(PINCE_BAS, RELACHE);
+                pinces(PINCE_MILIEU, RELACHE);
+                pinces(PINCE_HAUT, RELACHE);
+            }
+            else
+            {
+                angle_AX12(PINCE_HAUT, 555, 1023, SANS_ATTENTE);
+                angle_AX12(PINCE_MILIEU, 555, 1023, SANS_ATTENTE);
+                angle_AX12(PINCE_BAS, 555, 1023, SANS_ATTENTE);
+            }
+        }
+    }
+    else if (etat_ascenseur == EN_MONTER)
+    {
+        if (read_data(ASCENSEUR, LIRE_MOUV_FLAG) == 0)
+        {
+            etat_ascenseur = MONTER;
+            pinces(PINCE_BAS, FERMER);
+            pinces(PINCE_MILIEU, FERMER);
+            pinces(PINCE_HAUT, FERMER);
+            etat_pince_haut = EN_COURS;
+        }
+    }
+    else if (etat_pince_haut == EN_COURS)
+    {
+        if (read_data(PINCE_BAS, LIRE_MOUV_FLAG) == 0 )
+        {
+            etat_pince_haut = FERMER;
+            pinces(PINCE_ASCENSEUR, RELACHE);
+            etat_ascenseur = EN_DESCENTE;
+            //delay_ms(10);
+           ascenseur(DESCENDRE);
+        }
+    }
+    else if (etat_ascenseur == EN_DESCENTE)
+    {
+        pinces(PINCE_ASCENSEUR, RACLETTE);
+        if (read_data(ASCENSEUR, LIRE_MOUV_FLAG) == 0)
+        {
+            etat_pince_haut = RANGEMENT;
+            etat_ascenseur = DESCENDRE;
+            etat_pince_asc = LIBRE;
+        }
+    }
+
+}
+
 /******************************************************************************/
 /******************************** FONCTION BOUCLE *****************************/
 /******************************************************************************/
@@ -364,7 +468,6 @@ void autom_10ms (void)
         /**********************************************************************/
         /******************************* Autom ********************************/
         /**********************************************************************/
-        static uint8_t etat_pince_asc = LIBRE, etat_pince_haut = RANGEMENT, etat_ascenseur = HAUTEUR_DEMMARAGE, compteur_pieds = 0;
 
         //fonction qui definit les actions
         switch (FLAG_ACTION)
@@ -372,8 +475,7 @@ void autom_10ms (void)
             case NE_RIEN_FAIRE:
                 break;
             case ATTRAPE_PIEDS :
-                ETAT_AUTOM = ATTRAPE_PIEDS;
-                FLAG_ACTION = NE_RIEN_FAIRE;
+                empilement(3);
                 break;
             case INIT_PINCES_DEMARRAGE :
                 init_pinces_demarage();
@@ -392,69 +494,24 @@ void autom_10ms (void)
             case ATTRAPE_BALLE :
                 attrape_balle();
                 break;
+            case CLAP :
+                faire_les_claps();
+                break;
+            case ZONE_DEPART :
+                empilement(5);
+                break;
+            case FERMETURE_PINCE :
+                pinces(PINCE_ASCENSEUR, FERMER);
+                FLAG_ACTION = NE_RIEN_FAIRE;
+                break;
+            case PIEDS_4 :
+                pinces(PINCE_ASCENSEUR, RACLETTE);
+                FLAG_ACTION = ATTRAPE_PIEDS;
+                break;
+
             default :
                 break;
         }
-
-        if (ETAT_AUTOM == ATTRAPE_PIEDS)
-        {
-
-            if (CAPT_PINCE == 0 && etat_pince_asc == LIBRE)
-            {
-                pinces(PINCE_ASCENSEUR, FERMER);
-                if (compteur_pieds < 3)
-                    etat_pince_asc = EN_COURS;
-                else 
-                    ETAT_AUTOM = ACCOMPLI;
-                compteur_pieds++;
-            }
-            else if (etat_pince_asc == EN_COURS)
-            {
-                if (read_data(PINCE_ASCENSEUR, LIRE_MOUV_FLAG) == 0 )
-                {
-                    etat_pince_asc = FERMER;
-                    ascenseur(MONTER);
-                    etat_ascenseur = EN_MONTER;
-                    pinces(PINCE_BAS, RELACHE);
-                    pinces(PINCE_MILIEU, RELACHE);
-                    pinces(PINCE_HAUT, RELACHE);
-                }
-            }
-            if (etat_ascenseur == EN_MONTER)
-            {
-                if (read_data(ASCENSEUR, LIRE_MOUV_FLAG) == 0)
-                {
-                    etat_ascenseur = MONTER;
-                    pinces(PINCE_BAS, FERMER);
-                    pinces(PINCE_MILIEU, FERMER);
-                    pinces(PINCE_HAUT, FERMER);
-                    etat_pince_haut = EN_COURS;
-                }
-            }
-            if (etat_pince_haut == EN_COURS)
-            {
-                if (read_data(PINCE_BAS, LIRE_MOUV_FLAG) == 0 )
-                {
-                    etat_pince_haut = FERMER;
-                    pinces(PINCE_ASCENSEUR, RELACHE);
-                    etat_ascenseur = EN_DESCENTE;
-                    delay_ms(10);
-                   ascenseur(DESCENDRE);
-                }
-            }
-            if (etat_ascenseur == EN_DESCENTE)
-            {
-                pinces(PINCE_ASCENSEUR, RACLETTE);
-                if (read_data(ASCENSEUR, LIRE_MOUV_FLAG) == 0)
-                {
-                    etat_ascenseur = DESCENDRE;
-                    etat_pince_asc = LIBRE;
-                }
-            }
-        }
-
-        
-
 
         /**********************************************************************/
         /**************************** Evitement *******************************/
@@ -501,3 +558,5 @@ void autom_10ms (void)
             }
         }*/
 }
+
+#endif

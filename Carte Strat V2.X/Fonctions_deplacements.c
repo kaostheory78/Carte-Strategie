@@ -202,7 +202,7 @@ uint8_t _cibler (double x, double y, double pourcentage_vitesse)
 {
     y = inversion_couleur(y);
     FLAG_ASSERV.brake = OFF;
-    delay_ms(10);
+    //delay_ms(10);
 
     reinit_asserv();
 
@@ -239,7 +239,7 @@ uint8_t _orienter (double angle, double pourcentage_vitesse)
 {
     angle = inversion_couleur(angle);
     FLAG_ASSERV.brake = OFF;
-    delay_ms(10);
+    //delay_ms(10);
 
     reinit_asserv();
     
@@ -296,7 +296,7 @@ void _fdt (double angle, char last)
      if (last == DEBUT_TRAJECTOIRE)
     {
         FLAG_ASSERV.brake = OFF;
-        delay_ms(10);
+       // delay_ms(10);
         reinit_asserv();
 
         TYPE_CONSIGNE = MM;
@@ -335,7 +335,7 @@ uint8_t _rejoindre (double x, double y, int8_t sens_marche, double pourcentage_v
 {
     y = inversion_couleur(y);
     FLAG_ASSERV.brake = OFF;
-    delay_ms(10);
+    //delay_ms(10);
 
     reinit_asserv();
     
@@ -410,7 +410,7 @@ uint8_t _passe_part (double x, double y, int8_t sens_marche, double pourcentage_
     if (last == DEBUT_TRAJECTOIRE)
     {
         FLAG_ASSERV.brake = OFF;
-        delay_ms(10);
+      //  delay_ms(10);
         reinit_asserv();
 
         TYPE_CONSIGNE = XY;

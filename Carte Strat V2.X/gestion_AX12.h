@@ -37,7 +37,7 @@ extern "C" {
 
 
 #define START_BYTE              0xFF
-#define TIME_LIMIT              9000//3200//740000L//100000L
+#define TIME_LIMIT              1500//3200//740000L//100000L
 
 #define PAS_D_ERREUR            0
 #define TIME_OUT                1

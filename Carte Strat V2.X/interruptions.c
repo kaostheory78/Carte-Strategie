@@ -27,15 +27,7 @@
  */
 void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
 {
-    /*static int led = 1;
-    if (led == 1)
-        led = 0;
-    else 
-        led = 1;
-        
-    CAPTEUR2 = led;
 
-    */
 
 
     FLAG_TIMER_5ms = 0;
@@ -78,9 +70,23 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
 void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
 {
     TIMER_10ms = DESACTIVE;
-    FLAG_TIMER_10ms = 0;        //On clear le flag d'interruption du timer
     autom_10ms();
 
+    static int led = 1, compteur = 0;
+    compteur++;
+
+    if (compteur == 100)
+    {
+       if (led == 1)
+            led = 0;
+        else
+            led = 1;
+        CAPTEUR3 = led;
+        compteur = 0;
+    }
+
+    TMR4 = 0;
+    FLAG_TIMER_10ms = 0;        //On clear le flag d'interruption du timer
     TIMER_10ms = ACTIVE;
 }
 

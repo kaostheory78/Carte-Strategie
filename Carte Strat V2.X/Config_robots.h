@@ -53,17 +53,24 @@ extern "C" {
     /**************************************************************************/
         //Association distance - Vitesse - Accélérations max
     #define _VITESSE_CONSIGNE_MAX_MM     3.
+    #define _VITESSE_DISTANCE_MIN        1.
+    #define _VITESSE_MAX_MM_TENSION      4.
     #define _DISTANCE_CONSIGNE_MM        500. 
 
     #define _ACC_POSITION_CONSIGNE       2.
     #define _DCC_POSITION_CONSIGNE       3.5 //4
+    #define _ACC_POSITION_MIN             1.5
+    #define _DCC_POSITION_MIN             1.5
 
         //Association Angle - Vitesse - Accélérations max
     #define _VITESSE_ANGLE_MAX           0.02 //0.02
+    #define _VITESSE_ANGLE_MIN           0.005
     #define _ORIENTATION_CONSIGNE_DEG    90.
 
     #define _ACC_ORIENTATION_CONSIGNE    4.
     #define _DCC_ORIENTATION_CONSIGNE    6.
+    #define _ACC_ORIENTATION_MIN         2.
+    #define _DCC_ORIENTATION_MIN         3.
 
         //Autres réglages asserv
     #define _SEUIL_IMMOBILITE            100 //200
@@ -139,7 +146,7 @@ extern "C" {
     #define _RECULER_MOTEUR_G            0
 
     #define _AVANCER_MOTEUR_X            0
-    #define _AVANCER_MOTEUR_X            1
+    #define _RECULER_MOTEUR_X            1
 #endif
 
     /**************************************************************************/
@@ -189,22 +196,28 @@ extern "C" {
     /******************************** ASSERV **********************************/
     /**************************************************************************/
         //Association distance - Vitesse - Accélérations max
-    #define _VITESSE_CONSIGNE_MAX_MM     2.8 //2.5
+    #define _VITESSE_CONSIGNE_MAX_MM     2.8 
+    #define _VITESSE_DISTANCE_MIN        0.3
     #define _VITESSE_MAX_MM_TENSION      3.
     #define _DISTANCE_CONSIGNE_MM        500.
 
-    #define _ACC_POSITION_CONSIGNE       2.5//2.3
-    #define _DCC_POSITION_CONSIGNE       2.5 //2.5
+    #define _ACC_POSITION_CONSIGNE       2.5
+    #define _DCC_POSITION_CONSIGNE       2.8 //2.5
+    #define _ACC_POSITION_MIN             1.
+    #define _DCC_POSITION_MIN             1.
 
         //Association Angle - Vitesse - Accélérations max
-    #define _VITESSE_ANGLE_MAX           0.015 //0.02
+    #define _VITESSE_ANGLE_MAX           0.015 
+    #define _VITESSE_ANGLE_MIN           0.005
     #define _ORIENTATION_CONSIGNE_DEG    90.
 
-    #define _ACC_ORIENTATION_CONSIGNE    4. //2.
-    #define _DCC_ORIENTATION_CONSIGNE    3. //2.
+    #define _ACC_ORIENTATION_CONSIGNE    4. 
+    #define _DCC_ORIENTATION_CONSIGNE    3. 
+    #define _ACC_ORIENTATION_MIN         0.5
+    #define _DCC_ORIENTATION_MIN         0.5
 
         //Autres réglages asserv
-    #define _SEUIL_IMMOBILITE            150 //200
+    #define _SEUIL_IMMOBILITE            75 //200
     #define _MAX_ERREUR_INTEGRALLE_V     3500
     #define _MAX_E_INTEGRALLE_BRAKE      12000.
 
@@ -213,9 +226,9 @@ extern "C" {
     /**************************************************************************/
 
     //PID
-    #define _VITESSE_DIS_KP              0.8 //0.6
-    #define _VITESSE_DIS_KI              0.03//0.055 //0.2
-    #define _VITESSE_DIS_KD              0.2//0.85
+    #define _VITESSE_DIS_KP              0.8 
+    #define _VITESSE_DIS_KI              0.03
+    #define _VITESSE_DIS_KD              0.2
 
     #define _POSITION_KP                 1.
     #define _POSITION_KI                 0.
@@ -225,9 +238,9 @@ extern "C" {
     #define _ORIENTATION_KI              0.
     #define _ORIENTATION_KD              0.
 
-    #define KP_BRAKE                    0.04 //0.15
+    #define KP_BRAKE                    0.04 
     #define KI_BRAKE                    0.0015
-    #define KD_BRAKE                    0.8//1.5 //0.01
+    #define KD_BRAKE                    0.8
 
     /**************************************************************************/
     /******************************* TENSIONS *********************************/

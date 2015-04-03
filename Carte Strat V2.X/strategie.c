@@ -25,22 +25,11 @@ void strategie()
     COULEUR = couleur_depart();
     
     #ifdef GROS_ROBOT
-        init_position_robot (0, 0, 0);
-        int8_t sens_marche = MARCHE_AVANT;
-    /*passe_part (200, 0,    sens_marche, 300, DEBUT_TRAJECTOIRE);
-    passe_part (450, 67,   sens_marche, 100, MILIEU_TRAJECTOIRE);
-    passe_part (633, 250,  sens_marche, 100, MILIEU_TRAJECTOIRE);
-    sens_marche = MARCHE_ARRIERE;
-    passe_part (700, 500,  sens_marche, 100, MILIEU_TRAJECTOIRE);
-    passe_part (633, 750,  sens_marche, 100, MILIEU_TRAJECTOIRE);
-    passe_part (450, 933,  sens_marche, 100, MILIEU_TRAJECTOIRE);
-    passe_part (200, 1000, sens_marche, 100, FIN_TRAJECTOIRE);*/
+        init_position_robot (185, 1000, 0);
 
-        passe_part(300, 0, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-        passe_part(600, 0, MARCHE_ARRIERE, 100, MILIEU_TRAJECTOIRE);
-        passe_part(900, 0, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-        passe_part(1200, 0, MARCHE_ARRIERE, 100, MILIEU_TRAJECTOIRE);
-        passe_part(1500, 0, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+        passe_part(600,1000,MARCHE_AVANT,100,DEBUT_TRAJECTOIRE);
+        passe_part(650,600,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+        passe_part(360,335,MARCHE_AVANT,100,FIN_TRAJECTOIRE);
 
     #endif
 
@@ -49,9 +38,6 @@ void strategie()
         //init_position_robot (145, 1045, 0);
         init_position_robot (153, 1030, 0);
        // init_position_robot (0, 0, 0);
-
-        //envoit_pwm(MOTEUR_X, 100);
-        //while(1);
 
         /*rejoindre(2500, 1030, MARCHE_AVANT, 100);
         rejoindre(500, 1030, MARCHE_AVANT, 100);
@@ -93,12 +79,20 @@ void strategie()
         while(!SYS_JACK);
 
         FLAG_ACTION = INIT_PINCES_DEMARRAGE;
+
+
+        
+
         //Pieds 1
-        rejoindre(1200, 660, MARCHE_AVANT, 100);
+        rejoindre(1210, 645, MARCHE_AVANT, 100);
+        delay_ms(1000);     //1 sec
         //Pieds 2
-        rejoindre (1140, 330, MARCHE_AVANT, 100);
+        rejoindre (1125, 330, MARCHE_AVANT, 100);
+        delay_ms(1000);
         //Pieds 3
-        rejoindre (940, 580, MARCHE_AVANT, 100);
+        rejoindre (935, 570, MARCHE_AVANT, 100);
+        delay_ms(1000);
+
 
 
         /******** Dépose pile de 3 */
@@ -128,20 +122,99 @@ void strategie()
         FLAG_ACTION = ATTRAPE_BALLE;
         //delay_ms(500);*/
 
+        //Alignement vers les pieds
+        passe_part(600, 200, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+        FLAG_ACTION = FERMETURE_PINCE;
+        //Confirmation de l'axe des Y
+        passe_part(300, 200, MARCHE_ARRIERE, 100, MILIEU_TRAJECTOIRE);
+        //on recule jusqu'au pieds
+        allumer_pompes();
+        passe_part(148, 200, MARCHE_ARRIERE, 50, FIN_TRAJECTOIRE);
 
-        envoit_pwm(MOTEUR_X, 100);
-        passe_part(600, 200, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE); 
-        passe_part(300, 200, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-        passe_part(150, 200, MARCHE_ARRIERE, 100, FIN_TRAJECTOIRE);
-
-        avancer_reculer(-1000, 100);
+        //Danse du cul pour les chopper
+        orienter(20, 100);
+        orienter(0, 100);
+        avancer_reculer(-20, 200);
+        //orienter(-20, 200);
 
         ouvrir_bras(BRAS_GAUCHE);
-        passe_part(170, 200, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-        passe_part(245, 145, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-        passe_part(890, 145, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-        passe_part(540, 800, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-        passe_part(540, 1100, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+        FLAG_ACTION = CLAP;
+        passe_part(200, 170, MARCHE_AVANT, 50, DEBUT_TRAJECTOIRE);
+        //claps
+        passe_part(500, 160, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
+        passe_part(890, 160, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+
+        //dernier clap
+        passe_part(1100, 240, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        fermer_bras(BRAS_GAUCHE);
+
+        //direction depose centre
+        passe_part(600, 800, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        passe_part(460, 1010, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+        //passe_part(650, 600, MARCHE_AVANT, 200, MILIEU_TRAJECTOIRE);
+        //passe_part(550, 800, MARCHE_AVANT, 200, MILIEU_TRAJECTOIRE);
+        //passe_part(540, 1060, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+
+        //réalignement
+        orienter(90, 500);
+
+        //Dépose des pieds
+        eteindre_pompe();
+        FLAG_ACTION = PIEDS_4;
+
+ 
+
+        //Sortie zone de départ
+        passe_part(700, 1300, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+
+        passe_part (580, 1670, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+
+        ////Récupération 4ème pieds
+        passe_part(170, 1770, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+
+        //Aspiration 2 pieds
+        rejoindre(680, 1780, MARCHE_ARRIERE, 100);
+        allumer_pompes();
+        rejoindre(770, 1820, MARCHE_ARRIERE, 50);
+        orienter(180, 100);
+        avancer_reculer(-20, 100);
+        orienter(-70, 100);
+        avancer_reculer(-20, 100);
+
+        //Placement zone départ empilement
+        passe_part(620, 1800, MARCHE_AVANT, 50, DEBUT_TRAJECTOIRE);
+        passe_part(600, 1500, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
+        passe_part(720, 1370, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        passe_part(1000, 1130, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        passe_part(900, 970, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+
+        //rentrée dans la zone de départ
+        passe_part(700, 970, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+
+        //Montage de la tour (dépassement des 350, ejection de la balle
+        angle_AX12(PINCE_HAUT, 555, 1023, SANS_ATTENTE);
+        angle_AX12(PINCE_MILIEU, 555, 1023, SANS_ATTENTE);
+        angle_AX12(PINCE_BAS, 555, 1023, SANS_ATTENTE);
+        delay_ms(500);
+        pinces(PINCE_HAUT, FERMER);
+        pinces(PINCE_MILIEU, FERMER);
+        pinces(PINCE_BAS, FERMER);
+        delay_ms(500);
+        ejecter_balle();
+        delay_ms(4000);
+        FLAG_ACTION = ZONE_DEPART;
+        delay_ms (4000);
+        FLAG_ACTION = NE_RIEN_FAIRE;
+
+        //Pieds 5
+        rejoindre(625, 955, MARCHE_AVANT, 100);
+        FLAG_ACTION = ZONE_DEPART;
+        delay_ms(3000);
+        FLAG_ACTION = NE_RIEN_FAIRE;
+
+        // Pieds 6
+        rejoindre(505, 955, MARCHE_AVANT, 100);
+        FLAG_ACTION = ZONE_DEPART;
 
 
         /******** Récup gobelet en passe part*/

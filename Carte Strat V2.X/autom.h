@@ -42,11 +42,7 @@ extern "C" {
 
 #define NON                 2
 #define OUI                 3
-#define EN_ATTENTE          17
-#define EN_DESCENTE         18
     //EN_COURS = 6
-#define EN_MONTER           16
-#define LIBRE               15
 
     //Evitement
 #define ACTIF               0
@@ -63,65 +59,97 @@ extern "C" {
     /*************************** DEFINE ID AX12 *******************************/
     /**************************************************************************/
 
-#define PINCE_ASCENSEUR     9
-#define PINCE_BAS           15
-#define PINCE_MILIEU        8
-#define PINCE_HAUT          5
-#define ASCENSEUR           13
-#define BRAS_DROIT          7
-#define BRAS_GAUCHE         4
-#define SYS_BALLE           11
+#ifdef PETIT_ROBOT
+    #define PINCE_ASCENSEUR     9
+    #define PINCE_BAS           15
+    #define PINCE_MILIEU        8
+    #define PINCE_HAUT          5
+    #define ASCENSEUR           13
+    #define BRAS_DROIT          7
+    #define BRAS_GAUCHE         4
+    #define SYS_BALLE           11
+#endif
+
+#ifdef  GROS_ROBOT
+
+#endif
 
     /**************************************************************************/
     /*************************** POSITIONS AX12 *******************************/
     /**************************************************************************/
 
-#define PINCE_ASC_FERME     780//760
-#define PINCE_ASC_RELACHE   738 
-#define PINCE_ASC_RACLETTE  658
-#define PINCE_ASC_RANGE     516
+#ifdef  PETIT_ROBOT
+    #define PINCE_ASC_FERME     780//760
+    #define PINCE_ASC_RELACHE   738
+    #define PINCE_ASC_RACLETTE  658
+    #define PINCE_ASC_RANGE     516
 
-#define PINCES_FERME        520//538
-#define PINCES_RELACHE      570//545
-#define PINCES_RANGE        770
+    #define PINCES_FERME        520//538
+    #define PINCES_RELACHE      570//545
+    #define PINCES_RANGE        770
 
-#define ASC_BAS             0
-#define ASC_DEPOSE          330
-#define ASC_DEMARAGE        500
-#define ASC_HAUT            975
+    #define ASC_BAS             0
+    #define ASC_DEPOSE          330
+    #define ASC_DEMARAGE        500
+    #define ASC_HAUT            975
 
-#define INIT_BALLE          735
-#define EJECTER_BALLE       470
+    #define INIT_BALLE          735
+    #define EJECTER_BALLE       470
+#endif
+
+#ifdef GROS_ROBOT
+
+#endif
 
     /**************************************************************************/
     /************************* DEFINE ETAT PINCES *****************************/
     /**************************************************************************/
 
-#define FERMER              0
-#define RELACHE             1
-#define RACLETTE            2
-#define RANGEMENT           3
+#define FERMER              1
+#define RELACHE             2
+#define RACLETTE            3
+#define RANGEMENT           4
 
-#define MONTER              4
-#define DESCENDRE           5
+#define MONTER              5
+#define DESCENDRE           7
 //#define EN_COURS            6 -> fichier asserv
-#define HAUTEUR_DEMMARAGE   7
-#define EN_HAUT             8
-#define ACCOMPLI            9
-#define DEPOSE              10
+#define HAUTEUR_DEMMARAGE   8
+#define EN_HAUT             9
+#define ACCOMPLI            10
+#define DEPOSE              11
+
+#define EN_ATTENTE          16
+#define EN_DESCENTE         17
+#define EN_MONTER           18
+#define LIBRE               19
+
+#define DROITE              30
+#define GAUCHE              31
 
     /**************************************************************************/
     /************************* DEFINE FLAG_ACTION *****************************/
     /**************************************************************************/
 
-#define NE_RIEN_FAIRE               0
-#define ATTRAPE_PIEDS               1
-#define INIT_PINCES_DEMARRAGE       2
-#define DEPOSE_PIEDS                3
-#define PREPARATION_DEPOSE_PIEDS    4
-#define ATTRAPE_GOBELET             5
-#define DEPOSE_GOBELET              6
-#define ATTRAPE_BALLE               7
+#define NE_RIEN_FAIRE                   0
+
+#ifdef  PETIT_ROBOT
+    #define ATTRAPE_PIEDS               1
+    #define INIT_PINCES_DEMARRAGE       2
+    #define DEPOSE_PIEDS                3
+    #define PREPARATION_DEPOSE_PIEDS    4
+    #define ATTRAPE_GOBELET             5
+    #define DEPOSE_GOBELET              6
+    #define ATTRAPE_BALLE               7
+    #define CLAP                        8
+    #define ZONE_DEPART                 9
+    #define FERMETURE_PINCE             10
+    #define PIEDS_4                     11
+    #define EMPILEMENT                  12
+#endif
+
+#ifdef GROS_ROBOT
+
+#endif
 
 /******************************************************************************/
 /******************************************************************************/
@@ -134,6 +162,11 @@ extern "C" {
 /******************************************************************************/
 
     void jack();
+    void allumer_pompes ();
+    void eteindre_pompe();
+
+#ifdef  PETIT_ROBOT
+
     void autom_10ms (void);
     void init_pinces_demarage();
     void init_pinces_jack();
@@ -145,6 +178,8 @@ extern "C" {
     void attrape_balle();
     void ouvrir_bras (uint8_t);
     void fermer_bras (uint8_t);
+    void faire_les_claps();
+    void empilement(int taille_max);
 
     void ejecter_balle();
     void init_balle();
@@ -152,6 +187,13 @@ extern "C" {
     //Fonctions autom ax12
     void pinces (uint8_t ID, uint8_t etat);
     void ascenseur (uint8_t direction);
+#endif
+
+#ifdef  GROS_ROBOT
+
+#endif
+
+
 /******************************************************************************/
 /******************************************************************************/
 /******************************************************************************/
