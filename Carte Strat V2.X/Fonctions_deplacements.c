@@ -45,10 +45,15 @@ double inversion_couleur (double param_inversable)
 void trapeze (int8_t sens_marche)
 {
     //trapèze type 8
-    passe_part (1000, 500, sens_marche, 50, DEBUT_TRAJECTOIRE);
-    passe_part (1000, 0  , sens_marche, 50, MILIEU_TRAJECTOIRE);
-    passe_part (0   , 500, sens_marche, 50, MILIEU_TRAJECTOIRE);
-    passe_part (0   , 0  , sens_marche, 50, FIN_TRAJECTOIRE);
+//    passe_part (1000, 500, sens_marche, 50, DEBUT_TRAJECTOIRE);
+//    passe_part (1000, 0  , sens_marche, 50, MILIEU_TRAJECTOIRE);
+//    passe_part (0   , 500, sens_marche, 50, MILIEU_TRAJECTOIRE);
+//    passe_part (0   , 0  , sens_marche, 50, FIN_TRAJECTOIRE);
+    rejoindre (1000, 500, sens_marche, 100);
+    rejoindre (1000, 0  , sens_marche, 100);
+    rejoindre (0   , 500, sens_marche, 100);
+    rejoindre (0   , 0  , sens_marche, 100);
+    orienter(0, 100);
 }
 
 void petit_demi_cercle (int8_t sens_marche)

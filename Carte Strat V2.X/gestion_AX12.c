@@ -50,12 +50,14 @@ pos position_AX12[ID_MAX_AX12];
 void init_decalage_AX12 (void)      //Declaration de l'enchainement de montage des AX12
 {
     //US
-    /*decalage[AX_US].angle = 0;
+#ifdef GROS_ROBOT
+    decalage[AX_US].angle = 0;
     decalage[AX_US].position = 512;
     decalage[AX_US].etat = INDEPENDANT;
     decalage[AX_US].suivant = AUCUN_AX;
     decalage[AX_US].sens_rotation = ROT_EN_HAUT;
-    decalage[AX_US].symetrique = PAS_DE_SYMETRIQUE;*/
+    decalage[AX_US].symetrique = PAS_DE_SYMETRIQUE;
+#endif
 #ifdef PETIT_ROBOT
     decalage[BRAS_DROIT].angle = 0;
     decalage[BRAS_DROIT].position = 512;
@@ -75,8 +77,11 @@ void init_decalage_AX12 (void)      //Declaration de l'enchainement de montage d
 
 void init_position_AX12 (void)      //Force l'état premier des AX12 à l'angle 0
 {
+#ifdef GROS_ROBOT
     //us
-    //calcul_position(AX_US, 0);
+    calcul_position(AX_US, 0);
+#endif
+    
 #ifdef PETIT_ROBOT
     calcul_position(BRAS_DROIT,0);
     calcul_position(BRAS_GAUCHE,0);

@@ -79,14 +79,14 @@ void ConfigPWM (void)
 /******************************** MODFIFS PWM *********************************/
 /******************************************************************************/
 
-void envoit_pwm (char moteur, int32_t valeur)
+void envoit_pwm (char moteur, double valeur)
 {
-    uint16_t abs_valeur;
+    double abs_valeur;
 
     if (valeur < 0)
-        abs_valeur = (uint16_t) (-valeur);
+        abs_valeur = (double) (-valeur);
     else
-      abs_valeur = (uint16_t) valeur;
+      abs_valeur = (double) valeur;
 
     abs_valeur *= PWM_DROIT_VALEUR_MAX / 100;
 
@@ -95,7 +95,7 @@ void envoit_pwm (char moteur, int32_t valeur)
         if (abs_valeur > PWM_DROIT_VALEUR_MAX)
             abs_valeur = PWM_DROIT_VALEUR_MAX;
 
-        if (valeur < (int32_t) 0) //>
+        if (valeur < (double) 0.) //>
         {
            SENS_MOTEUR_DROIT = AVANCER_MOTEUR_D;
         }
@@ -104,31 +104,31 @@ void envoit_pwm (char moteur, int32_t valeur)
             SENS_MOTEUR_DROIT = RECULER_MOTEUR_D;
         } 
 
-        REGISTRE_MOTEUR_D = abs_valeur;
+        REGISTRE_MOTEUR_D = (uint16_t) abs_valeur;
     }
     else if (moteur == MOTEUR_GAUCHE)
     {
          if (abs_valeur > PWM_DROIT_VALEUR_MAX)
             abs_valeur = PWM_DROIT_VALEUR_MAX;
 
-        if (valeur < (int32_t) 0)
+        if (valeur < (int32_t) 0.)
             SENS_MOTEUR_GAUCHE = RECULER_MOTEUR_G;
         else
             SENS_MOTEUR_GAUCHE = AVANCER_MOTEUR_G;
 
-        REGISTRE_MOTEUR_G = abs_valeur;
+        REGISTRE_MOTEUR_G = (uint16_t) abs_valeur;
     }
     else if (moteur == MOTEUR_X)
     {
         if (abs_valeur > PWM_X_VALEUR_MAX)
             abs_valeur = PWM_X_VALEUR_MAX;
 
-        if (valeur < (int32_t) 0)
+        if (valeur < (double) 0.)
             SENS_MOTEUR_X = RECULER_MOTEUR_X;
         else
             SENS_MOTEUR_X = AVANCER_MOTEUR_X;
 
-        REGISTRE_MOTEUR_X = abs_valeur;
+        REGISTRE_MOTEUR_X = (uint16_t) abs_valeur;
     }
 }
 

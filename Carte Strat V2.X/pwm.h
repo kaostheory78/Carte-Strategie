@@ -67,7 +67,7 @@ extern "C" {
 
 
     void ConfigPWM (void);
-    void envoit_pwm (char moteur, int32_t valeur);
+    void envoit_pwm (char moteur, double valeur);
 
 
 #ifdef	__cplusplus

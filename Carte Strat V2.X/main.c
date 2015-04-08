@@ -70,6 +70,7 @@
 
     uint8_t DETECTION;
     uint8_t EVITEMENT_ADV_AVANT;
+    uint8_t EVITEMENT_ADV_ARRIERE;
     uint8_t STRATEGIE_EVITEMENT;
     uint16_t FLAG_ACTION;
     uint8_t ETAT_AUTOM;
@@ -89,7 +90,7 @@ int main(int argc, char** argv)
 
     //TIMER_DEBUG = ACTIVE;
     //TIMER_90s = ACTIVE;
-
+    
     delay_ms(500);
 
     PutsUART(UART_XBEE, "\n\n\n\n\r INIT ROBOT : \n\n\n\n\n\n\r");
@@ -98,22 +99,31 @@ int main(int argc, char** argv)
     /**************************************************************************/
     /**************************************************************************/
 
-    /*    uint8_t tab[5];
-        tab[0] = 7;
-        tab[1] = 4;
-       lecture_position_AX12 (tab, 2);*/
+      /* uint8_t tab[5];
+        tab[0] = DEPOSE_TAPIS_D;
+        tab[1] = DEPOSE_TAPIS_G;
+        tab[2] = PINCE_TAPIS_D;
+        tab[3] = PINCE_TAPIS_G;
+
+       lecture_position_AX12 (tab, 4);*/
 
     init_decalage_AX12 ();
 
     while(SYS_JACK);
     strategie();
 
-    PutsUART(UART_XBEE, " X : ");
+    PutsUART(UART_XBEE, "\n\n\n\r X : ");
     PutLongUART((int32_t) get_X());
+    PutcUART(UART_XBEE, '.');
+    PutcUART(UART_XBEE, ((uint8_t)((int32_t) ((double) get_X() * 10)) - (((int32_t) get_X()) * 10 )) +48);
     PutsUART(UART_XBEE, " Y : ");
     PutLongUART((int32_t) get_Y());
+    PutcUART(UART_XBEE, '.');
+    PutcUART(UART_XBEE, ((uint8_t)( (int32_t) ((double) (get_Y() * 10))) - (((int32_t) get_Y()) * 10 )) +48);
     PutsUART(UART_XBEE, " Teta : ");
     PutLongUART((int32_t) get_orientation());
+    PutcUART(UART_XBEE, '.');
+    PutcUART(UART_XBEE, ((uint8_t)( (int32_t) ((double) (get_orientation() * 10))) - (((int32_t) get_orientation()) * 10 )) +48);
 
    
 

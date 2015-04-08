@@ -406,7 +406,7 @@ void empilement(int taille_max)
             etat_pince_asc = FERMER;
             etat_ascenseur = EN_MONTER;
             retard = 0;
-            if (taille_max == 4)
+            if (taille_max == 3)
             {
                 pinces(PINCE_BAS, RELACHE);
                 pinces(PINCE_MILIEU, RELACHE);
@@ -463,7 +463,8 @@ void empilement(int taille_max)
 void autom_10ms (void)
 {
 
-
+        static uint16_t compteur = 0;
+        static uint8_t  evitement_en_cours = OFF;
 
         /**********************************************************************/
         /******************************* Autom ********************************/
@@ -482,6 +483,7 @@ void autom_10ms (void)
                 break;
             case DEPOSE_PIEDS :
                 depose_pieds();
+                break;
             case PREPARATION_DEPOSE_PIEDS :
                 preparation_descente_pieds();
                 break;
@@ -519,44 +521,86 @@ void autom_10ms (void)
 
 
         //Fonction permettant de lancer la fonction d'évitement
-        if(EVITEMENT_ADV_AVANT == STOP)
+        if(EVITEMENT_ADV_AVANT == ON)
         {
-            if (CAPT_US_BALISE == 1 && DETECTION == OFF)
+            if ( (CAPT_US_GAUCHE == 1 || CAPT_US_BALISE == 1 || CAPT_US_DROIT == 1)  && DETECTION == OFF)
             {
+                compteur = 0;
                 DETECTION = ON;
+                evitement_en_cours = OFF;
                 FLAG_ASSERV.erreur = EVITEMENT;
                 brake();
             }
             else if (DETECTION == ON && STRATEGIE_EVITEMENT == STOP)
             {
-                DETECTION = OFF;
-                delay_ms(200);
-                unbrake();
-                
+                compteur ++;
+                if (compteur > 20)
+                {
+                    compteur = 20;
+                    if (CAPT_US_GAUCHE == 0 && CAPT_US_BALISE == 0 && CAPT_US_DROIT == 0)
+                    {
+                        DETECTION = OFF;
+                        unbrake();
+                    }
+                }
             }
             else if (DETECTION == ON && (STRATEGIE_EVITEMENT == ACTION_EVITEMENT || STRATEGIE_EVITEMENT == EVITEMENT_NORMAL ))
             {
-                DETECTION = OFF;
-                delay_ms(200);
-                fin_deplacement();
+                if (evitement_en_cours == OFF)
+                {
+                    compteur ++;
+                    if (compteur > 40)
+                    {
+                        evitement_en_cours = ON;
+                        compteur = 0;
+                        fin_deplacement();
+                    }
+                }
             }
         }
 
-      /*  if (EVITEMENT_ADV_ARRIERE == STOP)
+        else if (EVITEMENT_ADV_ARRIERE == ON)
         {
-            if ( DETECTION == OFF && (CAPT_US_ARRIERE_D == 1 || CAPT_US_ARRIERE_G == 1) )//Rajouter des capteurs IR ?
+            if ( (CAPT_IR_ARRIERE_CENTRE == 0 || CAPT_IR_ARRIERE_DROIT == 0 || CAPT_IR_ARRIERE_GAUCHE == 0)  && DETECTION == OFF)
             {
+                compteur = 0;
                 DETECTION = ON;
-                STOP_DETECTION_AR = ON;
+                evitement_en_cours = OFF;
+                FLAG_ASSERV.erreur = EVITEMENT;
                 brake();
             }
-            else if (DETECTION == ON)
+            else if (DETECTION == ON && STRATEGIE_EVITEMENT == STOP)
             {
-                DETECTION = OFF;
-                delay_ms(200);
-                unbrake();
+                compteur ++;
+                if (compteur > 20)
+                {
+                    compteur = 20;
+                    if (CAPT_IR_ARRIERE_CENTRE == 1 && CAPT_IR_ARRIERE_DROIT == 1 && CAPT_IR_ARRIERE_GAUCHE == 1)
+                    {
+                        DETECTION = OFF;
+                        unbrake();
+                    }
+                }
             }
-        }*/
+            else if (DETECTION == ON && (STRATEGIE_EVITEMENT == ACTION_EVITEMENT || STRATEGIE_EVITEMENT == EVITEMENT_NORMAL ))
+            {
+                if (evitement_en_cours == OFF)
+                {
+                    compteur ++;
+                    if (compteur > 40)
+                    {
+                        evitement_en_cours = ON;
+                        compteur = 0;
+                        fin_deplacement();
+                    }
+                }
+            }
+        }
+        else if (DETECTION == ON)
+        {
+            DETECTION = OFF;
+            unbrake();
+        }
 }
 
 #endif

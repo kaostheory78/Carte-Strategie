@@ -565,8 +565,8 @@ void asserv()
         ecretage_consignes();
 
         //envoit sur les moteurs
-        envoit_pwm(MOTEUR_DROIT, (int32_t) COMMANDE.droit);
-        envoit_pwm(MOTEUR_GAUCHE, (int32_t) COMMANDE.gauche);
+        envoit_pwm(MOTEUR_DROIT,  COMMANDE.droit);
+        envoit_pwm(MOTEUR_GAUCHE, COMMANDE.gauche);
         
     }
     else
@@ -617,7 +617,7 @@ void asserv_distance(void)
     if ((FLAG_ASSERV.sens_deplacement * distance_restante > 2 * TICKS_PAR_MM))
     {
         //si on se trouve dans un cercle de 5 cm autour du point d'arrivé
-        if (FLAG_ASSERV.sens_deplacement * distance_restante < 20 * TICKS_PAR_MM) //30
+        if (FLAG_ASSERV.sens_deplacement * distance_restante < 30 * TICKS_PAR_MM) //30
         {
             FLAG_ASSERV.orientation = OFF;
             //SI on s'éloigne de notre consigne on s'arrête

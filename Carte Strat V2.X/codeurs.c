@@ -88,6 +88,11 @@ void get_valeur_codeur (int codeur)
     static uint16_t max_codeur;
     int etat_overflow, sens_rotation;
 
+
+
+    etat_overflow = OVERFLOW_CODEUR [codeur];
+    OVERFLOW_CODEUR [codeur] = PAS_D_OVERFLOW_CODEUR;
+
     if (codeur == CODEUR_D)
     {
         position [codeur].nouvelle = POS1CNT;
@@ -100,10 +105,6 @@ void get_valeur_codeur (int codeur)
         max_codeur = MAX_CODEUR_G;
         sens_rotation = SENS_ROT_G;
     }
-        
-
-    etat_overflow = OVERFLOW_CODEUR [codeur];
-    OVERFLOW_CODEUR [codeur] = PAS_D_OVERFLOW_CODEUR;
 
     res = (int32_t)( (int32_t) position[codeur].nouvelle - (int32_t) position[codeur].ancien );
     if (etat_overflow != PAS_D_OVERFLOW_CODEUR)

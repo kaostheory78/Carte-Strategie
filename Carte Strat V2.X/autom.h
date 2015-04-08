@@ -71,7 +71,12 @@ extern "C" {
 #endif
 
 #ifdef  GROS_ROBOT
-
+    #define PINCE                   10
+    #define DEPOSE_TAPIS_D          25
+    #define DEPOSE_TAPIS_G          12
+    #define PINCE_TAPIS_D           26
+    #define PINCE_TAPIS_G           1
+    #define AX_US                   17
 #endif
 
     /**************************************************************************/
@@ -93,7 +98,7 @@ extern "C" {
     #define ASC_DEMARAGE        500
     #define ASC_HAUT            975
 
-    #define INIT_BALLE          735
+    #define INIT_BALLE          785
     #define EJECTER_BALLE       470
 #endif
 
@@ -106,17 +111,18 @@ extern "C" {
     /**************************************************************************/
 
 #define FERMER              1
-#define RELACHE             2
-#define RACLETTE            3
-#define RANGEMENT           4
-
-#define MONTER              5
-#define DESCENDRE           7
+#define OUVERTE             2
+#define RELACHE             3
+#define RACLETTE            4
+#define RANGEMENT           5
 //#define EN_COURS            6 -> fichier asserv
-#define HAUTEUR_DEMMARAGE   8
-#define EN_HAUT             9
-#define ACCOMPLI            10
-#define DEPOSE              11
+#define MONTER              7
+#define DESCENDRE           8
+#define HAUTEUR_DEMMARAGE   9
+#define EN_HAUT             10
+#define ACCOMPLI            11
+#define DEPOSE              12
+#define EN_BAS              13
 
 #define EN_ATTENTE          16
 #define EN_DESCENTE         17
@@ -148,6 +154,10 @@ extern "C" {
 #endif
 
 #ifdef GROS_ROBOT
+    #define ATTRAPE_GOBELET             1
+    #define INIT_DEPART                 2
+    #define INIT_JACK                   3
+
 
 #endif
 
@@ -164,10 +174,11 @@ extern "C" {
     void jack();
     void allumer_pompes ();
     void eteindre_pompe();
+    void autom_10ms (void);
 
 #ifdef  PETIT_ROBOT
 
-    void autom_10ms (void);
+    
     void init_pinces_demarage();
     void init_pinces_jack();
     void depose_pieds();
@@ -190,6 +201,13 @@ extern "C" {
 #endif
 
 #ifdef  GROS_ROBOT
+
+    void rotation_us(void);
+    void pince(uint8_t action);
+    void eclairage_robot (void);
+    void attrape_gobelet (void);
+    void init_jack();
+    void init_depart();
 
 #endif
 

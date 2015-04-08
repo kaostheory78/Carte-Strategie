@@ -37,7 +37,7 @@ extern "C" {
 
 
 #define START_BYTE              0xFF
-#define TIME_LIMIT              1500//3200//740000L//100000L
+#define TIME_LIMIT              1250//3200//740000L//100000L
 
 #define PAS_D_ERREUR            0
 #define TIME_OUT                1
@@ -48,7 +48,7 @@ extern "C" {
     #define EMISSION                1
     #define RECEPTION               0
 
-#define MAX_TENTATIVES          5
+#define MAX_TENTATIVES          10
 
 #define ETEINT                  0
 #define ALLUME                  1

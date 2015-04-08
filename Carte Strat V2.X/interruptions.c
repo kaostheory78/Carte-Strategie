@@ -60,6 +60,10 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
     TIMER_90s = DESACTIVE;
     TIMER_DEBUG = DESACTIVE;
 
+    envoit_pwm(MOTEUR_DROIT, 0);
+    envoit_pwm(MOTEUR_GAUCHE, 0);
+    envoit_pwm(MOTEUR_X, 0);
+
     while(1);
     FLAG_TIMER_90s = 0;        //On clear le flag d'interruption du timer
 }
@@ -121,8 +125,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _QEI1Interrupt(void)
 void __attribute__((__interrupt__, no_auto_psv)) _QEI2Interrupt(void)
 {
     IFS4bits.QEI2IF = 0;            //Clear du flag de l'event
-
-
     if (QEI2CONbits.UPDN == 1)      //codeur croit
         OVERFLOW_CODEUR [CODEUR_G] ++;
     else                            // codeur decroit

@@ -194,6 +194,7 @@ extern "C" {
     //Evitement adversaire
     extern uint8_t DETECTION;
     extern uint8_t EVITEMENT_ADV_AVANT;
+    extern uint8_t EVITEMENT_ADV_ARRIERE;
     extern uint8_t STRATEGIE_EVITEMENT;
     extern uint8_t COULEUR;
     extern uint16_t FLAG_ACTION;
@@ -224,7 +225,7 @@ extern "C" {
 
 
     /**
-     * Focntion qui init le Timer d'autom
+     * Fonction qui init le Timer d'autom
      */
     void config_timer_10ms();
 

@@ -25,8 +25,8 @@ extern "C" {
 /***************************** Defines ****************************************/
 /******************************************************************************/
 
-//#define GROS_ROBOT
-#define PETIT_ROBOT
+#define GROS_ROBOT
+//#define PETIT_ROBOT
 //#define ROBOT_TEST
 
 #define _Pi                             3.14159265359
@@ -39,12 +39,12 @@ extern "C" {
     /**************************************************************************/
     /****************************** ODOMETRIE *********************************/
     /**************************************************************************/
-    #define _ENTRAXE_MM                  306.4
+    #define _ENTRAXE_MM                  308.58 //308.2     //Pas assez tourné -> augmenter entraxe
     #define _DIAMETRE_ROUE_CODEUSE       0
-    #define _PERIMETRE_ROUE_MM           194.4
+    #define _PERIMETRE_ROUE_MM           194.46 //194.4      // Si distance parcourue trop grande -> Augmenter la taille des roues
 
         //+COEF_D -> + a droite
-    #define  _COEF_D                    (double) 1.
+    #define  _COEF_D                    (double) 1.00531 //1.0055
     #define  _COEF_G                    (double) 1.
 
 
@@ -108,7 +108,7 @@ extern "C" {
 
     #define _TENSION_MOTEUR_X            12L
 
-    #define _TENSION_SORTIE_PTN          34L
+    #define _TENSION_SORTIE_PTN          34L 
 
 
     /**************************************************************************/
@@ -157,7 +157,8 @@ extern "C" {
     //La définition des ports relatif à chaque carte se trouve
     //Dans le fichier system.h
     
-    #define CAPT_US_BALISE              CAPTEUR1
+    #define CAPT_US_BALISE              CAPTEUR4
+    #define CAPT_GOBELET                CAPTEUR1
 
 #ifdef CARTE_V1
     #define _SYS_COULEUR                CAPTEUR2
@@ -295,8 +296,8 @@ extern "C" {
     #define CAPT_IR_ARRIERE_DROIT      CAPTEUR6
     #define CAPT_IR_ARRIERE_CENTRE     CAPTEUR7
     #define CAPT_US_DROIT              CAPTEUR5
-    #define CAPT_US_GAUCHE             CAPTEUR8
-    #define CAPT_US_BALISE             CAPTEUR2
+    #define CAPT_US_GAUCHE             CAPTEUR4
+    #define CAPT_US_BALISE             CAPTEUR8
 
 #ifdef CARTE_V1
     #define _SYS_COULEUR                CAPTEUR2
