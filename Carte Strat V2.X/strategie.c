@@ -26,8 +26,7 @@ void strategie()
     
     #ifdef GROS_ROBOT
 
-    carre(MARCHE_ARRIERE);
-    while(1);
+
         init_position_robot (185, 1000, 0);
         FLAG_ACTION = INIT_JACK;
 
