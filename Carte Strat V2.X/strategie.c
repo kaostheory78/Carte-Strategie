@@ -26,8 +26,7 @@ void strategie()
     
     #ifdef GROS_ROBOT
 
-    carre(MARCHE_ARRIERE);
-    while(1);
+    
         init_position_robot (185, 1000, 0);
         FLAG_ACTION = INIT_JACK;
 
@@ -91,7 +90,7 @@ void strategie()
         delay_ms(1000);
         init_Y(1370);
         init_orientation(90);
-        rejoindre(1225,940,MARCHE_ARRIERE, 50);
+        rejoindre(1225,1000,MARCHE_ARRIERE, 50);
         
  pince_tapis(EN_HAUT,GAUCHE);
     #endif
