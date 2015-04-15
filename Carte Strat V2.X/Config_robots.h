@@ -160,6 +160,10 @@ extern "C" {
     #define CAPT_US_BALISE              CAPTEUR4
     #define CAPT_GOBELET                CAPTEUR1
 
+    #define _CAPTEUR1_ANALOGIQUE        DIGITAL
+    #define _CAPTEUR2_ANALOGIQUE        ANALOGIQUE
+    #define _CAPTEUR3_ANALOGIQUE        DIGITAL
+
 #ifdef CARTE_V1
     #define _SYS_COULEUR                CAPTEUR2
 #endif
@@ -198,13 +202,13 @@ extern "C" {
     /**************************************************************************/
         //Association distance - Vitesse - Accélérations max
     #define _VITESSE_CONSIGNE_MAX_MM     2.8 
-    #define _VITESSE_DISTANCE_MIN        0.3
+    #define _VITESSE_DISTANCE_MIN        0.6
     #define _VITESSE_MAX_MM_TENSION      3.
     #define _DISTANCE_CONSIGNE_MM        500.
 
     #define _ACC_POSITION_CONSIGNE       2.5
-    #define _DCC_POSITION_CONSIGNE       2.8 //2.5
-    #define _ACC_POSITION_MIN             1.
+    #define _DCC_POSITION_CONSIGNE       2.8 //2.8
+    #define _ACC_POSITION_MIN             1.5 //1.
     #define _DCC_POSITION_MIN             1.
 
         //Association Angle - Vitesse - Accélérations max
@@ -298,6 +302,10 @@ extern "C" {
     #define CAPT_US_DROIT              CAPTEUR5
     #define CAPT_US_GAUCHE             CAPTEUR4
     #define CAPT_US_BALISE             CAPTEUR8
+
+    #define _CAPTEUR1_ANALOGIQUE        DIGITAL
+    #define _CAPTEUR2_ANALOGIQUE        DIGITAL
+    #define _CAPTEUR3_ANALOGIQUE        DIGITAL
 
 #ifdef CARTE_V1
     #define _SYS_COULEUR                CAPTEUR2

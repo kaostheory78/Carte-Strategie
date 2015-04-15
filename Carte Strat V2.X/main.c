@@ -109,8 +109,22 @@ int main(int argc, char** argv)
 
     init_decalage_AX12 ();
 
+    while(1)
+    {
+        static uint16_t compteur = 0;
+
+        compteur ++;
+        if (compteur > 65530)
+        {
+            compteur = 0;
+            PutIntUART( ADC1BUF0);
+            PutsUART(UART_XBEE, "\n\r");
+        }
+    }
+    
     while(SYS_JACK);
-    strategie();
+    //strategie();
+    homologation();
 
     PutsUART(UART_XBEE, "\n\n\n\r X : ");
     PutLongUART((int32_t) get_X());

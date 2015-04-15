@@ -139,6 +139,10 @@ void reinit_asserv(void)
     VITESSE[ROUE_GAUCHE].consigne = 0;
     VITESSE[ROUE_GAUCHE].theorique = 0;
 
+    VITESSE[SYS_ROBOT].theorique = 0;
+    VITESSE[SYS_ROBOT].consigne = 0;
+    VITESSE[SYS_ROBOT].actuelle = 0;
+
     VITESSE_ORIENTATION[ROUE_DROITE].actuelle = 0;
     VITESSE_ORIENTATION[ROUE_DROITE].consigne = 0;
     VITESSE_ORIENTATION[ROUE_DROITE].theorique = 0;
@@ -613,6 +617,14 @@ void asserv_distance(void)
     
     calcul_distance_consigne_XY();
     distance_restante = fonction_PID(ASSERV_POSITION);
+
+    if (TYPE_CONSIGNE == MM)
+    {
+        if (distance_restante < 0)
+            FLAG_ASSERV.sens_deplacement = MARCHE_ARRIERE;
+        else
+            FLAG_ASSERV.sens_deplacement = MARCHE_AVANT;
+    }
 
     if ((FLAG_ASSERV.sens_deplacement * distance_restante > 2 * TICKS_PAR_MM))
     {

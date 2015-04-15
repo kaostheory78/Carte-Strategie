@@ -388,8 +388,9 @@ uint8_t _avancer_reculer (double distance, double pourcentage_vitesse)
 
     TYPE_CONSIGNE = MM;
 
-    DISTANCE.consigne = distance * TICKS_PAR_MM;
-    if (distance < 0)
+    DISTANCE.consigne = distance * (TICKS_PAR_MM);
+
+    if (distance < 0.)
         FLAG_ASSERV.sens_deplacement = MARCHE_ARRIERE;
     else
         FLAG_ASSERV.sens_deplacement = MARCHE_AVANT;

@@ -50,6 +50,9 @@ extern "C" {
 #define ACTIVE                  0b1
 #define DESACTIVE               0b0
 
+#define DIGITAL                 1
+#define ANALOGIQUE              0
+
 #define TIMER_5ms               T1CONbits.TON
 #define TIMER_10ms              T4CONbits.TON
 #define TIMER_90s               T2CONbits.TON
@@ -100,7 +103,7 @@ extern "C" {
     #define SENS_MOTEUR_X       PORTBbits.RB14
     #define SENS_MOTEUR_Y       PORTAbits.RA10
 
-    #define XBEE_RESET          PORTAbits.RB7
+    #define XBEE_RESET          PORTBbits.RB7
     #define INHIBIT_AX12        PORTAbits.RA0
     #define DIR_UART_AX12       PORTAbits.RA1
 
@@ -116,6 +119,11 @@ extern "C" {
     #define CAPTEUR6            PORTAbits.RA8
     #define CAPTEUR7            PORTBbits.RB4
     #define CAPTEUR8            PORTAbits.RA4
+
+    #define CAPTEUR1_ANALOGIQUE _CAPTEUR1_ANALOGIQUE
+    #define CAPTEUR2_ANALOGIQUE _CAPTEUR2_ANALOGIQUE
+    #define CAPTEUR3_ANALOGIQUE _CAPTEUR3_ANALOGIQUE
+
 #endif
 
 
@@ -206,6 +214,8 @@ extern "C" {
 /****************************** Prototypes ************************************/
 /******************************************************************************/
 
+    void ConfigADC (void);
+
     /**
      * Fonction qui initialise tous les systèmes de la carte
      * Uart, Timer, PWM, mapping ....
@@ -258,6 +268,8 @@ extern "C" {
      * Fonction stratégie du robot
      */
     void strategie();
+
+    void homologation();
     
 
 

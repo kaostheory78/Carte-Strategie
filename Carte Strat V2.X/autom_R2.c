@@ -38,6 +38,11 @@ void eteindre_pompe ()
     envoit_pwm(MOTEUR_X, 0);
 }
 
+void son_evitement (uint8_t melodie)
+{
+    commande_AX12(100, _4PARAM, WRITE_DATA, 0x29, 10, NC, NC, NC);
+    commande_AX12(100, _4PARAM, WRITE_DATA, 0x28, melodie, NC, NC, NC);
+}
 
 /******************************************************************************/
 /********************************  FONCTION AX12  *****************************/
@@ -523,13 +528,19 @@ void autom_10ms (void)
         //Fonction permettant de lancer la fonction d'évitement
         if(EVITEMENT_ADV_AVANT == ON)
         {
-            if ( (CAPT_US_GAUCHE == 1 || CAPT_US_BALISE == 1 || CAPT_US_DROIT == 1)  && DETECTION == OFF)
+            if ( (CAPT_US_GAUCHE == 1 || CAPT_US_BALISE == 1 || CAPT_US_DROIT == 1) )
             {
-                compteur = 0;
-                DETECTION = ON;
-                evitement_en_cours = OFF;
-                FLAG_ASSERV.erreur = EVITEMENT;
-                brake();
+                if ( DETECTION == OFF)
+                {
+                    compteur = 0;
+                    DETECTION = ON;
+                    evitement_en_cours = OFF;
+                    FLAG_ASSERV.erreur = EVITEMENT;
+                    brake();
+                    son_evitement(49);
+                }
+                else
+                    son_evitement(2);
             }
             else if (DETECTION == ON && STRATEGIE_EVITEMENT == STOP)
             {

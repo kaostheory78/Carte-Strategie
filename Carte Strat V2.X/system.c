@@ -40,6 +40,7 @@ void init_system (void)
     ConfigQEI ();
     ConfigInterrupt ();
     ConfigPWM();
+    ConfigADC();
 
     InitUART(UART_XBEE, 115200);
     InitUART(UART_AX12, 500000);
@@ -50,6 +51,7 @@ void init_system (void)
     STRATEGIE_EVITEMENT = STOP;
     FLAG_ACTION = NE_RIEN_FAIRE;
     ETAT_AUTOM = NE_RIEN_FAIRE;
+    COULEUR = JAUNE;
 
     TIMER_5ms = ACTIVE;
     TIMER_10ms = ACTIVE;
@@ -655,7 +657,61 @@ void ConfigInterrupt (void)
 
 void ConfigADC (void)
 {
-	// #if CONFIG_CAPTEUR_1 == CAPTEUR_ANALOGIQUE
 
-	Nop ();
+    if (CAPTEUR1_ANALOGIQUE == ANALOGIQUE ||CAPTEUR2_ANALOGIQUE == ANALOGIQUE || CAPTEUR3_ANALOGIQUE == ANALOGIQUE)
+    {
+      // Entrée digitale / Analogique
+        AD1PCFGLbits.PCFG0 = 0;
+        AD1PCFGLbits.PCFG1 = 0;
+        AD1PCFGLbits.PCFG2 = 0;
+        AD1PCFGLbits.PCFG3 = 0;
+        AD1PCFGLbits.PCFG4 = 0;
+        AD1PCFGLbits.PCFG5 = 0;
+        AD1PCFGLbits.PCFG6 = CAPTEUR1_ANALOGIQUE;
+        AD1PCFGLbits.PCFG7 = CAPTEUR2_ANALOGIQUE;
+        AD1PCFGLbits.PCFG8 = CAPTEUR3_ANALOGIQUE;
+
+        /*AD1CHS0bits.CH0NB = 0;                                  // VREF- = 0V
+        AD1CHS0bits.CH0NA = 0;                                  // VREF- = 0V
+
+        if (CAPTEUR1_ANALOGIQUE == ANALOGIQUE)
+        {
+            AD1CHS0bits.CH0SB = 0b00110;
+            AD1CHS0bits.CH0SA = 0b00110;
+        }
+        else if (CAPTEUR2_ANALOGIQUE == ANALOGIQUE)
+        {
+            AD1CHS0bits.CH0SB = 0b00111;
+            AD1CHS0bits.CH0SA = 0b00111;
+        }
+        else if (CAPTEUR3_ANALOGIQUE == ANALOGIQUE)
+        {
+            AD1CHS0bits.CH0SB = 0b 1000;
+            AD1CHS0bits.CH0SA = 0b 1000;
+        }*/
+
+        AD1CON2bits.VCFG = 0;                                   // VDD, VSS
+        AD1CON2bits.SMPI = 0;                                   // Incréement du DMA à chaque échantillon
+        AD1CON2bits.BUFM = 0;                                   // On commence à 0x0
+        AD1CON2bits.ALTS = 0;                                   //
+        AD1CON2bits.CSCNA = 1;                                   //
+
+        AD1CON3bits.ADRC = 0;
+        AD1CON3bits.ADCS = 254;                                 // TAD = 25 * TCY
+
+        AD1CON1bits.ADDMABM = 0;                                // ?
+        AD1CON1bits.AD12B = 1;                                  // 1 channel de 12 bits
+        AD1CON1bits.FORM = 0b00;                                // Fractionnaire non signé Dout = dddd dddd dddd 0000
+        AD1CON1bits.SSRC = 0b111;                               // Auto convert
+        AD1CON1bits.ASAM = 1;                                   // Auto reload
+
+
+        AD1CON3bits.SAMC = 0;//0b11111;                             // Sample Time = 31 TAD;
+
+        AD1CON4bits.DMABL = 0;                                  // 1 mot dans le buffer
+
+        AD1CON1bits.ADON = 1;                                   // ADC ON
+
+    }
+    
 }
