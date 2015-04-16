@@ -157,11 +157,14 @@ extern "C" {
     //La définition des ports relatif à chaque carte se trouve
     //Dans le fichier system.h
     
-    #define CAPT_US_BALISE              CAPTEUR4
+    #define CAPT_US_BALISE              CAPTEUR3
     #define CAPT_GOBELET                CAPTEUR1
+    #define CAPT_IR_AR_CENTRE           CAPTEUR2
+    #define CAPT_US_AR_GAUCHE           CAPTEUR4
+    #define CAPT_US_AR_DROIT            CAPTEUR8
 
     #define _CAPTEUR1_ANALOGIQUE        DIGITAL
-    #define _CAPTEUR2_ANALOGIQUE        ANALOGIQUE
+    #define _CAPTEUR2_ANALOGIQUE        DIGITAL
     #define _CAPTEUR3_ANALOGIQUE        DIGITAL
 
 #ifdef CARTE_V1

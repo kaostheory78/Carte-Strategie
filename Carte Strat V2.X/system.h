@@ -115,9 +115,9 @@ extern "C" {
     #define CAPTEUR2            PORTCbits.RC1
     #define CAPTEUR3            PORTCbits.RC2
     #define CAPTEUR4            PORTAbits.RA2
-    #define CAPTEUR5            PORTAbits.RA3
-    #define CAPTEUR6            PORTAbits.RA8
-    #define CAPTEUR7            PORTBbits.RB4
+    #define CAPTEUR5            PORTAbits.RA3 //bug gros robot
+    #define CAPTEUR6            PORTAbits.RA8   //bug gros robot
+    #define CAPTEUR7            PORTBbits.RB4   //bug gros robot
     #define CAPTEUR8            PORTAbits.RA4
 
     #define CAPTEUR1_ANALOGIQUE _CAPTEUR1_ANALOGIQUE
@@ -204,6 +204,25 @@ extern "C" {
     extern uint8_t EVITEMENT_ADV_AVANT;
     extern uint8_t EVITEMENT_ADV_ARRIERE;
     extern uint8_t STRATEGIE_EVITEMENT;
+
+    extern int obstacle[x_max][y_max];
+    extern int curseur;
+    extern int curseur_obstacle;
+    extern int itineraire[nb_point_max][3];
+    extern int itineraire_basique[nb_point_max][3];
+    extern int itineraire_court[nb_point_max][3];
+    extern int point_obstacle[nb_point_max][3];
+    extern int x_actuel;
+    extern int y_actuel;
+    extern int x_obj;
+    extern int y_obj;
+    extern int id_evitement;
+    extern int id_evitement_initial;
+    extern int chemin_court;
+    extern int compteur_evitement;
+
+
+    // FLAG Automs
     extern uint8_t COULEUR;
     extern uint16_t FLAG_ACTION;
     extern uint8_t ETAT_AUTOM;

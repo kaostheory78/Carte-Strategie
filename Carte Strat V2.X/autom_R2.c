@@ -375,13 +375,20 @@ void faire_les_claps()
     if (get_X() > 400.0 && get_X() < 640.0 && etat_bras == ON )
     {
         //fermer_bras(GAUCHE);
-        angle_AX12(BRAS_DROIT, 200, 1023, SANS_ATTENTE);
+        if (COULEUR == JAUNE)
+            angle_AX12(BRAS_DROIT, 240, 1023, SANS_ATTENTE);
+        else
+            angle_AX12(BRAS_GAUCHE, 784, 1023, SANS_ATTENTE);
+        
         etat_bras = OFF;
     }
     else if (get_X() > 640 && etat_bras == OFF)
     {
         //ouvrir_bras(GAUCHE);
-        angle_AX12(BRAS_DROIT, 512, 1023, SANS_ATTENTE);
+        if (COULEUR == JAUNE)
+            angle_AX12(BRAS_DROIT, 512, 1023, SANS_ATTENTE);
+        else
+            angle_AX12(BRAS_GAUCHE, 512, 1023, SANS_ATTENTE);
         etat_bras = ON;
         FLAG_ACTION = NE_RIEN_FAIRE;
     }
@@ -565,7 +572,13 @@ void autom_10ms (void)
                         evitement_en_cours = ON;
                         compteur = 0;
                         fin_deplacement();
+                        son_evitement(30);
                     }
+                    else
+                    {
+                        son_evitement(2);
+                    }
+
                 }
             }
         }
@@ -603,6 +616,11 @@ void autom_10ms (void)
                         evitement_en_cours = ON;
                         compteur = 0;
                         fin_deplacement();
+                        son_evitement(30);
+                    }
+                     else
+                     {
+                        son_evitement(2);
                     }
                 }
             }

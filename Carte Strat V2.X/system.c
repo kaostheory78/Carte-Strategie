@@ -40,13 +40,13 @@ void init_system (void)
     ConfigQEI ();
     ConfigInterrupt ();
     ConfigPWM();
-    ConfigADC();
+    //ConfigADC();
 
     InitUART(UART_XBEE, 115200);
     InitUART(UART_AX12, 500000);
 
     DETECTION = OFF;
-    EVITEMENT_ADV_AVANT = ON;
+    EVITEMENT_ADV_AVANT = OFF;
     EVITEMENT_ADV_ARRIERE = OFF;
     STRATEGIE_EVITEMENT = STOP;
     FLAG_ACTION = NE_RIEN_FAIRE;
@@ -56,7 +56,12 @@ void init_system (void)
     TIMER_5ms = ACTIVE;
     TIMER_10ms = ACTIVE;
 
+#ifdef PETIT_ROBOT
     TRISCbits.TRISC2 = 0;
+#endif
+#ifdef GROS_ROBOT
+    TRISAbits.TRISA3 = 0;
+#endif
     
     init_flag();
 }

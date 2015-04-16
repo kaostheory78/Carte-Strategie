@@ -94,7 +94,7 @@ void carre (int8_t sens_marche)
 
 void action_evitement (void)
 {
-    //Stratégie alternatives possibles en focntion des évitements 
+    //Stratégie alternatives possibles en focntion des évitements
 }
 
 void cibler (double x, double y, double pourcentage_vitesse)
@@ -109,6 +109,7 @@ void cibler (double x, double y, double pourcentage_vitesse)
         else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
         {
             //action en cas d'évitements
+            cibler(x,y,pourcentage_vitesse);
         }
     }
     else if (erreur == BLOCAGE)
@@ -129,6 +130,7 @@ void orienter (double angle, double pourcentage_vitesse)
         else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
         {
             //action en cas d'évitements
+            orienter ( angle, pourcentage_vitesse);
         }
     }
     else if (erreur == BLOCAGE)
@@ -148,7 +150,7 @@ void rejoindre (double x, double y, int8_t sens_marche, double pourcentage_vites
         }
         else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
         {
-            //action en cas d'évitements
+            plus_court(x,y,sens_marche,pourcentage_vitesse,rej);
         }
     }
     else if (erreur == BLOCAGE)
@@ -188,8 +190,9 @@ void passe_part (double x, double y, int8_t sens_marche, double pourcentage_vite
         }
         else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
         {
-            //action en cas d'évitements
-        } 
+
+            plus_court(x,y,sens_marche,pourcentage_vitesse,last);
+        }
     }
     else if (erreur == BLOCAGE)
     {
@@ -459,3 +462,2089 @@ uint8_t _passe_part (double x, double y, int8_t sens_marche, double pourcentage_
 /******************************************************************************/
 /******************************************************************************/
 /******************************************************************************/
+
+
+/******************************************************************************/
+/******************************************************************************/
+/******************************************************************************/
+
+
+/*direction et repere dans le terrain
+    *
+    * 812 1 => y+1
+    * 703 5 => y-1
+    * 654 3 => x+1
+    *
+    *
+ * direction et repere dans la matrice
+ *    654
+ *    703
+ *    812
+    *repere => 0:0 en bas a gauche quand on fait face au robotmovie (jaune a gauche et vert à CAPT_US_DROIT)
+    *
+*/
+
+
+void deplacement(int8_t sens_marche,double pourcentage_deplacement,char last) //transforme les points en commandes de deplacements
+{
+    int i=0;
+    int angle;
+    int id = id_evitement;
+
+    DETECTION = OFF;
+
+    if(itineraire_court[i+1][0] != -1);
+    cibler((double)(itineraire_court[i+1][0]*100)+50,(double)((y_max - itineraire_court[i+1][1])*100)+50,pourcentage_deplacement);
+
+    while(i<curseur-1 && id == id_evitement && itineraire_court[i+1][0] != -1 )//affiche l'itineraire
+    {
+
+
+        if(last == rej)
+        {
+            DETECTION = OFF;
+            PutsUART(UART_XBEE, "rejoindre, je suis a ");
+            PutcUART (UART_XBEE, '{');
+            PutIntUART(get_X());
+            PutcUART (UART_XBEE, ' ');
+            PutIntUART (get_Y());
+            PutcUART (UART_XBEE, '}');
+            PutsUART(UART_XBEE, " etje vais a ");
+            PutcUART (UART_XBEE, '{');
+            PutIntUART(get_X());
+            PutcUART (UART_XBEE, ' ');
+            PutIntUART (get_Y());
+            PutcUART (UART_XBEE, '}');
+            PutsUART(UART_XBEE, "\n\r");
+
+
+            rejoindre((double)(itineraire_court[i+1][0]*100)+50,(double)((y_max - itineraire_court[i+1][1])*100)+50,sens_marche,pourcentage_deplacement);
+        }
+        else
+        {
+
+            PutsUART(UART_XBEE, "passe part");
+            DETECTION = OFF;
+            if(i == 0)
+            {
+                last = DEBUT_TRAJECTOIRE;
+            }
+            else
+            {
+                last = MILIEU_TRAJECTOIRE;
+            }
+            passe_part((double)(itineraire_court[i+1][0]*100)+50,(double)((y_max - itineraire_court[i+1][1])*100)+50,sens_marche,pourcentage_deplacement,last);
+        }
+
+        //passe_part ((double)(itineraire_court[i+1][0]*100), (double)((y_max - itineraire_court[i+1][1])*100), sens_marche,pourcentage_deplacement, last);
+
+        //rejoindre((double)(itineraire_court[i+1][0]*100),(double)((y_max - itineraire_court[i+1][1])*100),MARCHE_AVANT,pourcentage_deplacement);
+        i++;
+    }
+
+}
+
+int distance()
+{
+    int i=0;
+    int dist = 0;
+    int addition;
+    while(itineraire[i][0]!=-1 && compteur_evitement < ATTENTE_EVITEMENT)
+    {
+        addition = itineraire[i][0] - itineraire[i+1][0];
+        if(addition < 0)
+            addition = addition * -1;
+        dist = dist + addition;
+        addition = itineraire[i][1] - itineraire[i+1][1];
+        if(addition < 0)
+            addition = addition * -1;
+        dist = dist + addition;
+        i++;
+    }
+    return dist;
+}
+
+
+void init_evitement()
+{
+    int i,j;
+
+    //le 0;0 de la matrice correspond au 0;y_max du terrain
+
+    id_evitement = 0;
+    id_evitement_initial = 0;
+    curseur_obstacle=0;
+
+    for (j=0; j<y_max; j++) // initialisation de la carte et de ses contours
+    {
+        for(i=0; i<x_max; i++)
+        {
+            if(i<1 || i > x_max-2 || j<1 || j>y_max-2)
+                obstacle[i][j]=1;
+            else
+                obstacle[i][j]=0;
+        }
+    }
+
+    for(i=9; i<=20; i++) //escalier
+    {
+        for(j=0; j<=7; j++)
+        {
+            obstacle[i][j]=1;
+        }
+    }
+
+    for(i=10; i<=19; i++) // marche rose
+    {
+        for(j=18; j<=19; j++)
+        {
+            obstacle[i][j] =1;
+        }
+    }
+
+    if(COULEUR == JAUNE)
+    {
+        for(i=0; i<=4; i++) //carre gauche haut
+        {
+            for(j=4; j<=7; j++)
+            {
+                obstacle[i][j]=1;
+            }
+        }
+
+        for(i=0; i<=4; i++) //carre gauche bas
+        {
+            for(j=12; j<=15; j++)
+            {
+                obstacle[i][j]=1;
+            }
+        }
+
+        for(i=23; i<=x_max; i++) //zone depart adverse
+        {
+            for(j=7; j<=13; j++)
+            {
+                obstacle[i][j]=1;
+            }
+        }
+
+
+    }
+    else
+    {
+        for(i=25; i<=x_max; i++) //carre droit haut
+        {
+            for(j=4; j<=7; j++)
+            {
+                obstacle[i][j]=1;
+            }
+        }
+
+        for(i=25; i<=x_max; i++) //carre droit bas
+        {
+            for(j=12; j<=15; j++)
+            {
+                obstacle[i][j]=1;
+            }
+        }
+
+        for(i=0; i<=6; i++) //zone depart adverse
+        {
+            for(j=7; j<=13; j++)
+            {
+                obstacle[i][j]=1;
+            }
+        }
+    }
+
+
+}
+
+
+int conversion_direction(int direction)//transforme la direction du blocage en une direction de longement
+{
+    switch (direction)
+    {
+    case 1://5 ou 7
+        return 5;
+        break;
+    case 3://2 ou 4
+        return 2;
+        break;
+    case 5://6 ou 8
+        return 6;
+        break;
+    case 7://1 ou 3
+        return 1;
+        break;
+    }
+    return -1;
+}
+
+int longement ( int x_objectif,int y_objectif,int direction_longement) //longe un obstacle selon une direction de longement donnée
+{
+    int nombre_point_parcouru=0;
+
+    switch (direction_longement)
+    {
+    case 1 :
+        while (y_actuel+1 <= y_max-1 //tant que l'on est toujours dans la matrice, que l'on est pas en dehors
+                && obstacle [x_actuel][y_actuel+1] == 0 //tant que l'on peut monter
+                && obstacle [x_actuel-1][y_actuel] != 0 //et que la gauche de notre emplacement est condamnee
+                && !(x_actuel == x_objectif && y_actuel == y_objectif)
+                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
+        {
+            y_actuel = y_actuel+1; // on monte d'une case
+            nombre_point_parcouru=nombre_point_parcouru+1;
+        }
+
+        if (obstacle [x_actuel-1][y_actuel] == 0 //si on peut aller a gauche, si on a trouve un passage
+                || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
+        {
+            if(nombre_point_parcouru!=0)
+            {
+                itineraire [curseur][2] = 1; // pour aller de la derniere case enregistree a la case presente, on doit prendre cette direction
+
+                curseur = curseur +1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                itineraire [curseur][2]=7;
+
+
+                curseur = curseur +1;
+                x_actuel=x_actuel-1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+
+            }
+            return 0; // on a trouve un passage
+        }
+        else if((y_actuel == y_max-1 || obstacle [x_actuel][y_actuel+1] != 0) && obstacle [x_actuel+1][y_actuel] == 0)  //si on ne peut aller ni en haut ni a gauche mais a CAPT_US_DROIT
+        {
+            if(nombre_point_parcouru!=0)
+            {
+                itineraire [curseur][2] = 1; // pour aller de la derniere case enregistree a la case presente, on doit prendre cette direction
+
+                curseur = curseur +1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                itineraire [curseur][2]=3;
+
+
+                curseur = curseur +1;
+                x_actuel=x_actuel+1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+            }
+            return 5; // on renvoie la direction de longement a essayer
+
+        }
+        else   // si on ne peut aller ni a gauche, ni en haut, ni a CAPT_US_DROIT
+        {
+            return -1; //la recherche de passage de ce cote n'est pas fructueuse, on est dans un cul de sac
+        }
+
+        break;
+
+
+    case 2 :
+        while (y_actuel+1 <= y_max-1 //tant que l'on est toujours dans la matrice, que l'on est pas en dehors
+                && obstacle [x_actuel][y_actuel+1] == 0 //tant que l'on peut monter
+                && obstacle [x_actuel+1][y_actuel] != 0 //et que la CAPT_US_DROIT de notre emplacement est condamnee
+                && !(x_actuel == x_objectif && y_actuel == y_objectif)
+                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
+        {
+            y_actuel = y_actuel+1; // on monte d'une case
+            nombre_point_parcouru=nombre_point_parcouru+1;
+        }
+
+
+        if (obstacle [x_actuel+1][y_actuel] == 0 //si on peut aller a CAPT_US_DROIT, si on a trouve un passage
+                || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
+        {
+            if(nombre_point_parcouru!=0)
+            {
+                itineraire [curseur][2] = 1; // pour aller de la derniere case enregistree a la case presente, on doit prendre cette direction
+
+                curseur = curseur +1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                itineraire [curseur][2]=3;
+
+                curseur = curseur +1;
+                x_actuel=x_actuel+1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+            }
+            return 0; // on a trouve un passage
+        }
+        else if((y_actuel == y_max-1 ||obstacle [x_actuel][y_actuel+1] != 0 )&& obstacle [x_actuel-1][y_actuel] == 0)  //si on ne peut aller ni en haut ni a CAPT_US_DROIT mais a gauche
+        {
+            if(nombre_point_parcouru!=0)
+            {
+                itineraire [curseur][2] = 1; // pour aller de la derniere case enregistree a la case presente, on doit prendre cette direction
+
+                curseur = curseur +1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                itineraire [curseur][2]=7;
+
+                curseur = curseur +1;
+                x_actuel=x_actuel-1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+            }
+            return 7; // on renvoie la direction de longement a essayer
+
+        }
+        else   // si on ne peut aller ni a gauche, ni en haut, ni a CAPT_US_DROIT
+        {
+            return -1; //la recherche de passage de ce cote n'est pas fructueuse, on est dans un cul de sac
+        }
+
+        break;
+
+
+    case 3 :
+        while (y_actuel -1 >=0 //tant que l'on est toujours dans la matrice, que l'on est pas en dehors
+                && obstacle [x_actuel][y_actuel-1] == 0 //tant que l'on peut descendre
+                && obstacle [x_actuel-1][y_actuel] != 0 //et que la gauche de notre emplacement est condamnee
+                && !(x_actuel == x_objectif && y_actuel == y_objectif)
+                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
+        {
+            y_actuel = y_actuel-1; // on descend d'une case
+            nombre_point_parcouru=nombre_point_parcouru+1;
+        }
+
+
+        if (obstacle [x_actuel-1][y_actuel] == 0 //si on peut aller a gauche, si on a trouve un passage
+                || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
+        {
+            if(nombre_point_parcouru!=0)
+            {
+                itineraire [curseur][2] = 5; // pour aller de la derniere case enregistree a la case presente, on doit prendre cette direction
+
+                curseur = curseur +1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                itineraire [curseur][2]=7;
+
+                curseur = curseur +1;
+                x_actuel=x_actuel-1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+            }
+            return 0; // on a trouve un passage
+        }
+        else if((y_actuel == 0 || obstacle [x_actuel][y_actuel-1] != 0) && obstacle [x_actuel+1][y_actuel] == 0)  //si on ne peut aller ni en bas ni a gauche mais a CAPT_US_DROIT
+        {
+            if(nombre_point_parcouru!=0)
+            {
+                itineraire [curseur][2] = 5; // pour aller de la derniere case enregistree a la case presente, on doit prendre cette direction
+
+                curseur = curseur +1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                itineraire [curseur][2]=3;
+
+                curseur = curseur +1;
+                x_actuel=x_actuel+1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+            }
+            return 6; // on renvoie la direction de longement a essayer
+
+        }
+        else   // si on ne peut aller ni a gauche, ni en bas, ni a CAPT_US_DROIT
+        {
+            return -1; //la recherche de passage de ce cote n'est pas fructueuse, on est dans un cul de sac
+        }
+
+        break;
+
+
+    case 4 :
+        while (y_actuel -1 >=0 //tant que l'on est toujours dans la matrice, que l'on est pas en dehors
+                && obstacle [x_actuel][y_actuel-1] == 0 //tant que l'on peut descendre
+                && obstacle [x_actuel+1][y_actuel] != 0 //et que la CAPT_US_DROIT de notre emplacement est condamnee
+                && !(x_actuel == x_objectif && y_actuel == y_objectif)
+                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
+        {
+            y_actuel = y_actuel-1; // on descend d'une case
+            nombre_point_parcouru=nombre_point_parcouru+1;
+        }
+
+        if (obstacle [x_actuel+1][y_actuel] == 0 //si on peut aller a CAPT_US_DROIT, si on a trouve un passage
+                || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
+        {
+            if(nombre_point_parcouru!=0)
+            {
+                itineraire [curseur][2] = 5; // pour aller de la derniere case enregistree a la case presente, on doit prendre cette direction
+
+                curseur = curseur +1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                itineraire [curseur][2]=3;
+
+                curseur = curseur +1;
+                x_actuel=x_actuel+1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+            }
+            return 0; // on a trouve un passage
+        }
+        else if((y_actuel == 0 || obstacle [x_actuel][y_actuel-1] != 0) && obstacle [x_actuel-1][y_actuel] == 0)  //si on ne peut aller ni en bas ni a CAPT_US_DROIT mais a gauche
+        {
+            if(nombre_point_parcouru!=0)
+            {
+                itineraire [curseur][2] = 5; // pour aller de la derniere case enregistree a la case presente, on doit prendre cette direction
+
+                curseur = curseur +1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                itineraire [curseur][2]=7;
+
+                curseur = curseur +1;
+                x_actuel=x_actuel-1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+            }
+            return 8; // on renvoie la direction de longement a essayer
+
+        }
+        else   // si on ne peut aller ni a gauche, ni en bas, ni a CAPT_US_DROIT
+        {
+            return -1; //la recherche de passage de ce cote n'est pas fructueuse, on est dans un cul de sac
+        }
+
+        break;
+
+
+    case 5 :
+        while (x_actuel +1 <=x_max-1 //tant que l'on est toujours dans la matrice, que l'on est pas en dehors
+                && obstacle [x_actuel+1][y_actuel] == 0 //tant que l'on peut aller sur la CAPT_US_DROIT
+                && obstacle [x_actuel][y_actuel+1] != 0 //et que en haut de notre emplacement est condamnee
+                && !(x_actuel == x_objectif && y_actuel == y_objectif)
+                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
+        {
+            x_actuel = x_actuel+1; // on va sur la CAPT_US_DROIT de une case
+            nombre_point_parcouru=nombre_point_parcouru+1;
+        }
+
+        if (x_actuel == x_max)  // si on est en dehors de la matrice
+        {
+
+            return -1; // la recherche de passage de ce cote n'est pas fructueuse. peut être remplacé
+        }
+
+        else
+        {
+            if (obstacle [x_actuel][y_actuel+1] == 0 //si on peut aller en haut, si on a trouve un passage
+                    || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
+            {
+                if(nombre_point_parcouru!=0)
+                {
+                    itineraire [curseur][2] = 3; // pour aller de la derniere case enregistree a la case presente, on doit prendre cette direction
+
+                    curseur = curseur +1;
+                    itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                    itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                    itineraire [curseur][2]=1;
+
+                    curseur = curseur +1;
+                    y_actuel=y_actuel+1;
+                    itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                    itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                }
+                return 0; // on a trouve un passage
+            }
+            else if((x_actuel == x_max-1 || obstacle [x_actuel+1][y_actuel] != 0 )&& obstacle [x_actuel][y_actuel-1] == 0)  //si on ne peut aller ni en haut ni a CAPT_US_DROIT mais en bas
+            {
+                if(nombre_point_parcouru!=0)
+                {
+                    itineraire [curseur][2] = 3; // pour aller de la derniere case enregistree a la case presente, on doit prendre cette direction
+
+                    curseur = curseur +1;
+                    itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                    itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                    itineraire [curseur][2]=5;
+
+                    curseur = curseur +1;
+                    y_actuel=y_actuel-1;
+                    itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                    itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                }
+                return 4; // on renvoie la direction de longement a essayer
+
+            }
+            else   // si on ne peut aller ni a gauche, ni en haut, ni a CAPT_US_DROIT
+            {
+                return -1; //la recherche de passage de ce cote n'est pas fructueuse, on est dans un cul de sac
+            }
+        }
+        break;
+
+
+    case 6 :
+        while (x_actuel +1 <=x_max-1 //tant que l'on est toujours dans la matrice, que l'on est pas en dehors
+                && obstacle [x_actuel+1][y_actuel] == 0 //tant que l'on peut aller sur la CAPT_US_DROIT
+                && obstacle [x_actuel][y_actuel-1] != 0 //et que en bas de notre emplacement est condamnee
+                && !(x_actuel == x_objectif && y_actuel == y_objectif)
+                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
+        {
+            x_actuel = x_actuel+1; // on va sur la CAPT_US_DROIT de une case
+            nombre_point_parcouru=nombre_point_parcouru+1;
+        }
+
+
+        if (obstacle [x_actuel][y_actuel-1] == 0 //si on peut aller en bas, si on a trouve un passage
+                || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
+        {
+            if(nombre_point_parcouru!=0)
+            {
+                itineraire [curseur][2] = 3; // pour aller de la derniere case enregistree a la case presente, on doit prendre cette direction
+
+                curseur = curseur +1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                itineraire [curseur][2]=5;
+
+                curseur = curseur +1;
+                y_actuel=y_actuel-1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+            }
+            return 0; // on a trouve un passage
+        }
+        else if((x_actuel == x_max -1 || obstacle [x_actuel+1][y_actuel] != 0 )&& obstacle [x_actuel][y_actuel+1] == 0)  //si on ne peut aller ni en bas ni a CAPT_US_DROIT mais en haut
+        {
+            if(nombre_point_parcouru!=0)
+            {
+                itineraire [curseur][2] = 3; // pour aller de la derniere case enregistree a la case presente, on doit prendre cette direction
+
+                curseur = curseur +1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                itineraire [curseur][2]=1;
+
+                curseur = curseur +1;
+                y_actuel=y_actuel+1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+            }
+            return 2; // on renvoie la direction de longement a essayer
+
+        }
+        else   // si on ne peut aller ni a gauche, ni en haut, ni a CAPT_US_DROIT
+        {
+            return -1; //la recherche de passage de ce cote n'est pas fructueuse, on est dans un cul de sac
+        }
+
+        break;
+
+
+    case 7 :
+        while (x_actuel -1 >=0 //tant que l'on est toujours dans la matrice, que l'on est pas en dehors
+                && obstacle [x_actuel-1][y_actuel] == 0 //tant que l'on peut aller sur la gauche
+                && obstacle [x_actuel][y_actuel+1] != 0 //et que en haut de notre emplacement est condamnee
+                && !(x_actuel == x_objectif && y_actuel == y_objectif)
+                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
+        {
+            x_actuel = x_actuel-1; // on va sur la gauche de une case
+            nombre_point_parcouru=nombre_point_parcouru+1;
+        }
+
+
+        if (obstacle [x_actuel][y_actuel+1] == 0 //si on peut aller en haut, si on a trouve un passage
+                || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
+        {
+            if(nombre_point_parcouru!=0)
+            {
+                itineraire [curseur][2] = 7; // pour aller de la derniere case enregistree a la case presente, on doit prendre cette direction
+
+                curseur = curseur +1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                itineraire [curseur][2]=1;
+
+                curseur = curseur +1;
+                y_actuel=y_actuel+1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+            }
+            return 0; // on a trouve un passage
+        }
+        else if((x_actuel == 0 ||obstacle [x_actuel-1][y_actuel] != 0) && obstacle [x_actuel][y_actuel-1] == 0)  //si on ne peut aller ni en haut ni a gauche mais en bas
+        {
+            if(nombre_point_parcouru!=0)
+            {
+                itineraire [curseur][2] = 7; // pour aller de la derniere case enregistree a la case presente, on doit prendre cette direction
+
+                curseur = curseur +1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                itineraire [curseur][2]=5;
+
+                curseur = curseur +1;
+                y_actuel=y_actuel-1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+            }
+            return 3; // on renvoie la direction de longement a essayer
+
+        }
+        else   // si on ne peut aller ni a gauche, ni en haut, ni a CAPT_US_DROIT
+        {
+            return -1; //la recherche de passage de ce cote n'est pas fructueuse, on est dans un cul de sac
+        }
+
+        break;
+
+
+    case 8 :
+        while (x_actuel -1 >=0 //tant que l'on est toujours dans la matrice, que l'on est pas en dehors
+                && obstacle [x_actuel-1][y_actuel] == 0 //tant que l'on peut aller sur la gauche
+                && obstacle [x_actuel][y_actuel-1] != 0 //et que en bas de notre emplacement est condamnee
+                && !(x_actuel == x_objectif && y_actuel == y_objectif)
+                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
+        {
+            x_actuel = x_actuel-1; // on va sur la gauche de une case
+            nombre_point_parcouru=nombre_point_parcouru+1;
+        }
+
+
+        if (obstacle [x_actuel][y_actuel-1] == 0 //si on peut aller en bas, si on a trouve un passage
+                || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
+        {
+            if(nombre_point_parcouru!=0)
+            {
+                itineraire [curseur][2] = 7; // pour aller de la derniere case enregistree a la case presente, on doit prendre cette direction
+
+                curseur = curseur +1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                itineraire [curseur][2]=5;
+
+                curseur = curseur +1;
+                y_actuel=y_actuel-1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+            }
+            return 0; // on a trouve un passage
+        }
+        else if((x_actuel == 0 || obstacle [x_actuel-1][y_actuel] != 0) && obstacle [x_actuel][y_actuel+1] == 0)  //si on ne peut aller ni en bas ni a gauche mais en haut
+        {
+            if(nombre_point_parcouru!=0)
+            {
+                itineraire [curseur][2] = 7; // pour aller de la derniere case enregistree a la case presente, on doit prendre cette direction
+
+                curseur = curseur +1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+                itineraire [curseur][2]=1;
+
+                curseur = curseur +1;
+                y_actuel=y_actuel+1;
+                itineraire [curseur][0] = x_actuel; //coordonnee en x du nouveau point
+                itineraire [curseur][1] = y_actuel; //coordonnee en y du nouveau point
+            }
+            return 1; // on renvoie la direction de longement a essayer
+
+        }
+        else   // si on ne peut aller ni a gauche, ni en haut, ni a CAPT_US_DROIT
+        {
+            return -1; //la recherche de passage de ce cote n'est pas fructueuse, on est dans un cul de sac
+        }
+
+        break;
+    }
+    return -1;
+}
+
+int tracer_ligne_x(int x_objectif,int y_objectif) //cree une ligne CAPT_US_DROIT suivant l'axe des x. Fais avancer ou reculer sur l'axe des x
+{
+    int nombre_point_parcouru=0;
+
+    if(x_objectif>x_actuel)
+    {
+        while(x_actuel+1 <= x_max-1 //tant que l'on est dans la matrice
+                && obstacle[x_actuel+1][y_actuel]==0 //tant que l'on peut aller a CAPT_US_DROIT
+                && x_objectif!=x_actuel
+                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive au niveau des x
+        {
+            x_actuel = x_actuel+1; // on va de 1 vers la CAPT_US_DROIT
+            nombre_point_parcouru=nombre_point_parcouru+1;
+        }
+        if(nombre_point_parcouru!=0)
+        {
+            itineraire[curseur][2]=3; // donne la direction pour aller de l'ancien point au nouveau point trouve
+            curseur=curseur+1;
+            itineraire[curseur][0]=x_actuel; //coordonnee en x du nouveau point
+            itineraire[curseur][1]=y_actuel; //coordonnee en y du nouveau point
+        }
+        if(obstacle[x_actuel+1][y_actuel]!=0)
+        {
+            return 3;// retourne la direction du blocage
+        }
+        else if(x_objectif==x_actuel)
+        {
+            return 0; // pas de souci
+        }
+
+    }
+    else if (x_objectif<x_actuel)
+    {
+        while(x_actuel-1 >= 0 //tant que l'on est dans la matrice
+                && obstacle[x_actuel-1][y_actuel]==0 //tant que l'on peut aller a gauche
+                && x_objectif!=x_actuel
+                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive au niveau des x
+        {
+            x_actuel = x_actuel-1; // on va de 1 vers la gauche
+            nombre_point_parcouru=nombre_point_parcouru+1;
+        }
+        if(nombre_point_parcouru!=0)
+        {
+            itineraire[curseur][2]=7; // donne la direction pour aller de l'ancien point au nouveau point trouve
+            curseur=curseur+1;
+            itineraire[curseur][0]=x_actuel; //coordonnee en x du nouveau point
+            itineraire[curseur][1]=y_actuel; //coordonnee en y du nouveau point
+        }
+        if(obstacle[x_actuel-1][y_actuel]!=0)
+        {
+            return 7;// retourne la direction du blocage
+        }
+        else if(x_objectif==x_actuel)
+        {
+            return 0; // pas de souci
+        }
+    }
+    return -1;
+}
+
+int tracer_ligne_y(int x_objectif,int y_objectif) //cree une ligne CAPT_US_DROIT suivant l'axe des y. Fais avancer ou reculer sur l'axe des y
+{
+    int nombre_point_parcouru=0;
+
+    if(y_objectif>y_actuel)
+    {
+        while(y_actuel+1 <=y_max-1 //tant que l'on est dans la matrice
+                && obstacle[x_actuel][y_actuel+1]==0 //tant que l'on peut aller en haut
+                && y_objectif!=y_actuel
+                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive au niveau des y
+        {
+            y_actuel = y_actuel+1; // on va de 1 vers le haut
+            nombre_point_parcouru=nombre_point_parcouru+1;
+        }
+        if(nombre_point_parcouru!=0)
+        {
+            itineraire[curseur][2]=1; // donne la direction pour aller de l'ancien point au nouveau point trouve
+            curseur=curseur+1;
+            itineraire[curseur][0]=x_actuel; //coordonnee en x du nouveau point
+            itineraire[curseur][1]=y_actuel; //coordonnee en y du nouveau point
+        }
+        if(obstacle[x_actuel][y_actuel+1]!=0)
+        {
+            return 1;// retourne la direction du blocage
+        }
+        else if(y_objectif==y_actuel)
+        {
+            return 0; // pas de souci
+        }
+    }
+    else if(y_objectif<y_actuel)
+    {
+        while(y_actuel-1 >= 0 //tant que l'on est dans la matrice
+                && obstacle[x_actuel][y_actuel-1]==0 //tant que l'on peut aller en bas
+                && y_objectif!=y_actuel
+                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive au niveau des y
+        {
+            y_actuel = y_actuel-1; // on va de 1 vers le bas
+            nombre_point_parcouru=nombre_point_parcouru+1;
+        }
+        if(nombre_point_parcouru!=0)
+        {
+            itineraire[curseur][2]=5; // donne la direction pour aller de l'ancien point au nouveau point trouve
+            curseur=curseur+1;
+            itineraire[curseur][0]=x_actuel; //coordonnee en x du nouveau point
+            itineraire[curseur][1]=y_actuel; //coordonnee en y du nouveau point
+        }
+        if(obstacle[x_actuel][y_actuel-1]!=0)
+        {
+            return 5;// retourne la direction du blocage
+        }
+        else if(y_objectif==y_actuel)
+        {
+            return 0; // pas de souci
+        }
+    }
+    return -1;
+
+}
+
+void post_traitement() //simplifie le trajet en elevant le maximum de deplacements inutiles
+{
+    int i,j,k,x_temporaire,y_temporaire,cible,flag,direction;
+    for(i=0; i<=curseur; i++)
+    {
+        itineraire_basique[i][0]=itineraire[i][0];
+        itineraire_basique[i][1]=itineraire[i][1];
+        itineraire_basique[i][2]=itineraire[i][2];
+    }
+
+
+    //post traitement (1) si on passe deux fois par le meme point
+    i=0;
+    while(i<curseur+1 && compteur_evitement < ATTENTE_EVITEMENT) //s'occupe de quand on passe deux fois par le même point
+    {
+        j=curseur;
+        while(j>i && compteur_evitement < ATTENTE_EVITEMENT)
+        {
+            if(itineraire[i][0]==itineraire[j][0] && itineraire[i][1]==itineraire[j][1]) //si on a deux fois le même couple de coordonnees
+            {
+                for(k=i; k<=curseur; k++)
+                {
+                    itineraire[k][0]=itineraire[j+k-i][0];
+                    itineraire[k][1]=itineraire[j+k-i][1];
+                    itineraire[k][2]=itineraire[j+k-i][2];
+
+                }
+                curseur=curseur-(j-i);//on reduit le nombre de point pour rester cohérent
+
+            }
+            j--;
+        }
+        i++;
+    }
+    /*
+        //post traitement (2) si on a un mouvement a point puis le mouvement contraire 2 points apres
+
+        i=0;
+        while(i<=curseur-3 && compteur_evitement < ATTENTE_EVITEMENT)
+        {
+            if ((itineraire[i][2] - itineraire[i+2][2]) == 4 || (itineraire[i][2] - itineraire[i+2][2]) == -4) //si on a un mouvement a point puis le mouvement contraire 2 points apres
+            {
+                //permet d'eviter d'aller plus loin pour ensuite reculer par exemple
+
+                switch (itineraire[i+2][2])//en fonction de la direction ou l'on recule, on se place et se donne un objectif sur les x ou y
+                {
+                    case 1:
+                    x_temporaire=itineraire[i][0];
+                    y_temporaire=itineraire[i+3][1];
+                    cible=itineraire[i+3][0];
+                    break;
+                    case 3:
+                    x_temporaire=itineraire[i+3][0];
+                    y_temporaire=itineraire[i][1];
+                    cible=itineraire[i+3][1];
+                    break;
+                    case 5:
+                    x_temporaire=itineraire[i][0];
+                    y_temporaire=itineraire[i+3][1];
+                    cible=itineraire[i+3][0];
+                    break;
+                    case 7:
+                    x_temporaire=itineraire[i+3][0];
+                    y_temporaire=itineraire[i][1];
+                    cible=itineraire[i+3][1];
+                    break;
+                }
+
+                j=0;
+                flag=0;
+                switch  (itineraire[i+1][2]) //en fonction de la direction pour lier le point actuel et celui 2 point apres, on va avancer sur les x ou les y
+                {
+                    case 1:
+                    while(y_temporaire+j != cible && compteur_evitement < ATTENTE_EVITEMENT)
+                    {
+                        j++;
+                        if(obstacle[x_temporaire][y_temporaire+j] != 0) //si obstacle
+                        {
+                            j=0;
+                            x_temporaire=x_temporaire+1;
+                        }
+                    }
+                    itineraire[i+1][0]=x_temporaire;
+                    itineraire[i+1][1]=y_temporaire;
+                    itineraire[i+2][0]=x_temporaire;
+                    itineraire[i+2][1]=y_temporaire+j;
+                    if(x_temporaire == itineraire[i+3][0]) //si on a pas bouger selon les x (si on a pu faire une ligne CAPT_US_DROIT
+                    {
+                        flag=1;//flag de deplacement des points
+                    }
+                    break;
+
+                    case 3:
+                    while(x_temporaire+j != cible && compteur_evitement < ATTENTE_EVITEMENT)
+                    {
+                        j++;
+                        if(obstacle[x_temporaire+j][y_temporaire] != 0) //si obstacle
+                        {
+                            j=0;
+                            y_temporaire=y_temporaire+1;
+                        }
+                    }
+                    itineraire[i+1][0]=x_temporaire;
+                    itineraire[i+1][1]=y_temporaire;
+                    itineraire[i+2][0]=x_temporaire+j;
+                    itineraire[i+2][1]=y_temporaire;
+                    if(y_temporaire == itineraire[i+3][1]) //si on a pas bouger selon les x (si on a pu faire une ligne CAPT_US_DROIT
+                    {
+                        flag=1;//flag de deplacement des points
+                    }
+                    break;
+                    case 5:
+                    while(y_temporaire-j != cible && compteur_evitement < ATTENTE_EVITEMENT)
+                    {
+                        j++;
+                        if(obstacle[x_temporaire][y_temporaire-j] != 0) //si obstacle
+                        {
+                            j=0;
+                            x_temporaire=x_temporaire-1;
+                        }
+                    }
+                    itineraire[i+1][0]=x_temporaire;
+                    itineraire[i+1][1]=y_temporaire;
+                    itineraire[i+2][0]=x_temporaire;
+                    itineraire[i+2][1]=y_temporaire-j;
+                    if(x_temporaire == itineraire[i+3][0]) //si on a pas bouger selon les x (si on a pu faire une ligne CAPT_US_DROIT
+                    {
+                        flag=1;//flag de deplacement des points
+                    }
+                    break;
+                    case 7:
+                    while(x_temporaire-j != cible && compteur_evitement < ATTENTE_EVITEMENT)
+                    {
+                        j++;
+                        if(obstacle[x_temporaire-j][y_temporaire] != 0) //si obstacle
+                        {
+                            j=0;
+                            y_temporaire=y_temporaire-1;
+                        }
+                    }
+                    itineraire[i+1][0]=x_temporaire;
+                    itineraire[i+1][1]=y_temporaire;
+                    itineraire[i+2][0]=x_temporaire-j;
+                    itineraire[i+2][1]=y_temporaire;
+                    if(y_temporaire == itineraire[i+3][1]) //si on a pas bouger selon les x (si on a pu faire une ligne CAPT_US_DROIT
+                    {
+                        flag=1;//flag de deplacement des points
+                    }
+                    break;
+
+                    break;
+                }
+
+
+                if(flag==1)//si on doit decaler les points (cas de la ligne CAPT_US_DROIT)
+                {
+                    itineraire[i+1][2]=itineraire[i+3][2];
+
+                    for(k=i+2; k<=curseur; k++)
+                    {
+                        itineraire[k][0]=itineraire[k+1][0];
+                        itineraire[k][1]=itineraire[k+1][1];
+                        itineraire[k][2]=itineraire[k+1][2];
+
+                    }
+                    curseur=curseur-1;
+                }
+
+            }
+            i++;
+        }
+
+    */
+    //post traitement 4) diagonale
+
+    i=0;
+    while(i<curseur && compteur_evitement < ATTENTE_EVITEMENT)
+    {
+        direction=0;
+        flag =0;
+        while((itineraire[i+flag][2] == 1 && itineraire[i+1+flag][2]==3)||(itineraire[i+flag][2] == 3 && itineraire[i+1+flag][2]==1)) //diagonale bas CAPT_US_DROIT
+        {
+            flag++;
+            direction = 2;
+        }
+        while(flag ==0 && ((itineraire[i+flag][2] == 7 && itineraire[i+1+flag][2]==1)||(itineraire[i+flag][2] == 1 && itineraire[i+1+flag][2]==7))) //diagonale bas CAPT_US_DROIT
+        {
+            flag++;
+            direction = 8;
+        }
+        while(flag ==0 && ((itineraire[i+flag][2] == 3 && itineraire[i+1+flag][2]==5)||(itineraire[i+flag][2] == 5 && itineraire[i+1+flag][2]==3))) //diagonale bas CAPT_US_DROIT
+        {
+            flag++;
+            direction = 4;
+        }
+        while(flag ==0 && ((itineraire[i+flag][2] == 5 && itineraire[i+1+flag][2]==7)||(itineraire[i+flag][2] == 7 && itineraire[i+1+flag][2]==5))) //diagonale bas CAPT_US_DROIT
+        {
+            flag++;
+            direction = 6;
+        }
+
+        if(flag != 0)
+        {
+
+            itineraire[i][2]=direction;
+            for(k=i+1 ; k<=curseur-flag; k++)
+            {
+                itineraire[k][0]=itineraire[k+flag][0];
+                itineraire[k][1]=itineraire[k+flag][1];
+                itineraire[k][2]=itineraire[k+flag][2];
+            }
+            for(k=curseur-flag+1; k<=curseur+1; k++)
+            {
+                itineraire[k][0]=-1;
+                itineraire[k][1]=-1;
+                itineraire[k][2]=-1;
+
+            }
+            curseur = curseur-flag;
+            i=i-flag;
+            if(i<0)
+            {
+                i=0;
+            }
+        }
+        i++;
+    }
+
+
+
+    //post traitement 3) si deux directions consecutives sont les memes
+    i=0;
+    while(i<curseur && compteur_evitement < ATTENTE_EVITEMENT)
+    {
+        flag=0;//on a pu reduire le nombre de point de x points
+        while (itineraire[i][2]==itineraire[i+1][2] && compteur_evitement < ATTENTE_EVITEMENT) //si deux directions consecutives ou plus
+        {
+            i++;
+            flag++;
+        }
+        if(flag>0)
+        {
+            for(k=i-flag+1; k<=curseur; k++)
+            {
+                itineraire[k][0]=itineraire[k+flag][0];
+                itineraire[k][1]=itineraire[k+flag][1];
+                itineraire[k][2]=itineraire[k+flag][2];
+
+            }
+            curseur=curseur-flag;
+            i=i-flag;
+            if(i<0)
+            {
+                i=0;
+            }
+        }
+        i++;
+    }
+
+
+}
+int  aiguillage_evitement(int x_objectif, int y_objectif, int direction,int haut)  // evitement par le haut ou par le bas
+{
+    int direction_longement;
+    int cul_de_sac;
+    int curseur_initial=curseur;
+    int obstacle_initial = curseur_obstacle;
+    int i;
+    int test = 0;
+
+    while(test <=1 && compteur_evitement < ATTENTE_EVITEMENT)
+    {
+
+        curseur=curseur_initial;
+        curseur_obstacle=obstacle_initial;
+        if(haut==1)
+        {
+            direction_longement = conversion_direction(direction);//on passe de la direction du bloquage a la direction de longement
+            cul_de_sac=0;
+            while(direction_longement >0 && cul_de_sac == 0 && curseur < nb_point_max-1 && compteur_evitement < ATTENTE_EVITEMENT) //tant que l'on est bloque
+            {
+
+                direction_longement = longement(x_objectif,y_objectif,direction_longement);//on longe les obstacles
+                for(i=0; i<curseur_initial; i++)
+                {
+                    if(itineraire[i][0] == itineraire[curseur-1][0] && itineraire[i][1] == itineraire[curseur-1][1] && itineraire[i][2] == itineraire[curseur-1][2] )
+                    {
+                        cul_de_sac = -1;
+                        if(chemin_court == 0)
+                        {
+                            haut =0;
+                            test++;
+                        }
+                        else
+                        {
+                            test =2;
+                        }
+                    }
+
+                }
+
+
+            }
+        }
+        if(direction_longement ==-1 || haut == 0) //si on a atteint un cul de sac
+        {
+
+            direction_longement = conversion_direction(direction);//on reprend la valeur de longement de depart
+            direction_longement=direction_longement+2; //on lui rajoute 1. Lors d'un blocage, on peut aller dans 2 directions. On tente ici la seconde direction
+            cul_de_sac=0;
+            while(direction_longement >0 && cul_de_sac == 0 && curseur < nb_point_max-1 && compteur_evitement < ATTENTE_EVITEMENT) //tant que l'on est bloque
+            {
+                direction_longement = longement(x_objectif,y_objectif,direction_longement);//on longe les obstacles
+                for(i=0; i<curseur_initial; i++)
+                {
+                    if(itineraire[i][0] == itineraire[curseur-1][0] && itineraire[i][1] == itineraire[curseur-1][1] && itineraire[i][2] == itineraire[curseur-1][2] )
+                    {
+                        cul_de_sac = -1;
+                        if(chemin_court == 0)
+                        {
+                            haut =1;
+                            test++;
+                        }
+                        else
+                        {
+                            test =2;
+                        }
+                    }
+                }
+            }
+        }
+        if (direction_longement == 0)
+            break;
+
+    }
+    if(test >=2 || direction_longement ==-1)
+    {
+        return -1;
+    }
+    else return direction_longement;
+
+}
+
+int evitement(int x_objectif,int y_objectif,int haut) //determine l'itineraire pour aller de notre position a l'objectif en tenant compte des obstacles eventuels
+{
+    int flag=1;
+    int direction=0;
+    int direction_longement=0;
+    int a_du_longer=0;
+
+    while (flag > 0 && compteur_evitement < ATTENTE_EVITEMENT)
+    {
+
+
+
+        if(curseur >= nb_point_max-1)
+        {
+            break;
+        }
+        switch (flag)
+        {
+        case 1 :
+            direction = tracer_ligne_x(x_objectif,y_objectif);//on trace une ligne CAPT_US_DROIT et on voit si il y a bloquage
+            if(direction > 0) //si l'on est bloque
+            {
+                if(a_du_longer==0)
+                {
+
+                    a_du_longer=1;
+                    point_obstacle[curseur_obstacle][0]=curseur;
+                    point_obstacle[curseur_obstacle][1]=direction;
+                    point_obstacle[curseur_obstacle][2]=haut;
+                    curseur_obstacle++;
+
+
+                }
+                if(aiguillage_evitement(x_objectif,y_objectif,direction,haut) == -1)
+                {
+                    flag =-1;
+                }
+
+                //on ira ensuite repasser un nouveau tour du while(flag!=-1) pour continuer d'avancer sur les x
+            }
+            else if(x_actuel == x_objectif && y_actuel==y_objectif)//si on est arrive
+                flag =0; // on a trouve un chemin et on sort
+            else
+            {
+                a_du_longer=0;
+                flag = 2; // on essaye de bouger sur les y
+            }
+            break;
+
+        case 2 :
+            direction = tracer_ligne_y(x_objectif,y_objectif);//on trace une ligne CAPT_US_DROIT et on voit si il y a bloquage
+            if (direction != 0) //si blocage
+            {
+                if(a_du_longer==0)
+                {
+
+                    a_du_longer=1;
+                    point_obstacle[curseur_obstacle][0]=x_actuel;
+                    point_obstacle[curseur_obstacle][1]=y_actuel;
+                    point_obstacle[curseur_obstacle][2]=direction;
+                    point_obstacle[curseur_obstacle][3]=haut;
+                    curseur_obstacle++;
+
+                }
+                if(aiguillage_evitement(x_objectif,y_objectif,direction,haut) == -1)
+                {
+                    flag =-1;
+                }
+
+                //on ira ensuite repasser un nouveau tour du while(flag!=-1) pour continuer d'avancer sur les y
+            }
+            else if(x_actuel == x_objectif && y_actuel==y_objectif)//si on est arrive
+                flag =0; // on a trouve un chemin et on sort
+            else
+            {
+                flag = 1; // on essaye de bouger sur les y
+            }
+            break;
+        }
+
+        if(x_actuel == x_objectif && y_actuel==y_objectif)//si on est arrive
+            flag =0; // on a trouve un chemin et on sort
+
+        else if (direction_longement == -1) //si on est a un cul de sac
+        {
+            flag=-1;//on sort de cet itineraire
+        }
+
+
+
+    }
+
+    if(flag==0) //si on est arrive
+    {
+
+        post_traitement();
+
+        return 0; // on a trouve un chemin
+    }
+    else
+    {
+        return -1; // on a pas trouve de chemin
+    }
+}
+
+void nettoyage_nouvel_obstacle()
+{
+    int i,j;
+    for(i=0; i<x_max; i++)
+    {
+        for(j=0; j<y_max; j++)
+        {
+            if(obstacle[i][j] == 2)
+                obstacle[i][j] = 0;
+        }
+    }
+}
+
+void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
+{
+    int i,j;
+    int taille = 1;// il y a deja 3 de largeur, devant nous, a cette gauche et a cette droite, la taille est ce qu'on met en plus de ces 3 la
+    int taille_diago = 1;
+    int vision = 2;// pair ou impair
+    int offset=0; // en fonction de si c'est le gauche ou le droit ou la balise
+    int largeur=0; // nombre de case recouverte PAR US (balise = 2us, le gauche et le droit) en plus de la case en face de nous
+    int x_obs,y_obs;
+
+    double angle = get_orientation();
+
+#ifdef PETIT_ROBOT
+
+    if(EVITEMENT_ADV_ARRIERE == ON){
+        angle += 180;
+    }
+    if(angle < 0)
+        angle = (int)(angle + 360) % 360;
+    if(angle <= 22 || angle >= 339) //horizontale CAPT_US_DROIT
+    {
+        if ((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+        {
+            offset = - taille;
+            largeur =taille*2;
+        }
+
+        else
+        {
+
+            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                offset += 0 ;
+                largeur += taille;
+            }
+
+            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                offset += -taille;
+                largeur += taille;
+            }
+        }
+
+        for(i=0; i<vision; i++)
+        {
+            for(j=-1; j<=largeur+1; j++)
+            {
+                if(x_actuel+i+1 < x_max && y_actuel +offset +j >= 0 && y_actuel +offset +j < y_max && obstacle [x_actuel+i+1][y_actuel +offset + j] == 0)
+                    obstacle [x_actuel+i+1][y_actuel +offset + j]=2;
+            }
+        }
+    }
+
+
+    else if(angle <=68 )
+    {
+        if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+        {
+            largeur += 2*taille_diago;
+            offset += -taille_diago;
+        }
+
+        else
+        {
+            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                largeur +=taille_diago;
+                offset +=0;
+            }
+
+
+            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                largeur +=taille_diago;
+                offset += -taille_diago;
+            }
+        }
+
+        for(i=0; i<vision; i++)
+        {
+            for(j=0; j<=largeur; j++)
+            {
+                x_obs = x_actuel+1+offset+j+i;
+                y_obs = y_actuel-1+offset+j-i;
+                if(x_obs>=0 && x_obs < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs][y_obs] != 1)
+                    obstacle[x_obs][y_obs] = 2;
+                if(!(j == largeur && (((1 == CAPT_US_DROIT || 1 == CAPT_US_BALISE) && EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_GAUCHE || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON)))  && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
+                    obstacle[x_obs+1][y_obs] = 2;
+                if(!(j == 0 && (((1 == CAPT_US_GAUCHE || 1 == CAPT_US_BALISE) && EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_DROIT || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON)))&& x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
+                    obstacle[x_obs][y_obs+1] = 2;
+                if(!(j == 0 && (((1 == CAPT_US_GAUCHE || 1 == CAPT_US_BALISE) && EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_DROIT || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON)))  && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
+                    obstacle[x_obs-1][y_obs] = 2;
+                if(!(j == largeur && (((1 == CAPT_US_DROIT || 1 == CAPT_US_BALISE) && EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_GAUCHE || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON)))  && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
+                    obstacle[x_obs][y_obs-1] = 2;
+            }
+        }
+    }
+
+    else if (angle <=112) //verticale en haut
+    {
+        if ((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+        {
+            offset = - taille;
+            largeur =taille*2;
+        }
+
+        else
+        {
+            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                offset += 0 ;
+                largeur += taille;
+            }
+
+            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                offset += -taille;
+                largeur += taille;
+            }
+
+        }
+
+        for(i=0; i<vision; i++)
+        {
+            for(j=-1; j<=largeur+1; j++)
+            {
+                if(y_actuel-i-1 >= 0 && x_actuel +offset + j>= 0 && x_actuel + offset + j < x_max && obstacle [x_actuel + offset + j][y_actuel-i-1] ==0)
+                    obstacle [x_actuel + offset + j][y_actuel-i-1]=2;
+            }
+        }
+    }
+
+
+    else if(angle <=158 )
+    {
+        if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+        {
+            largeur += 2*taille_diago;
+            offset += taille_diago;
+        }
+
+        else
+        {
+
+            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                largeur +=taille_diago;
+                offset +=0;
+            }
+
+
+            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                largeur +=taille_diago;
+                offset += taille_diago;
+            }
+        }
+
+        for(i=0; i<vision; i++)
+        {
+            for(j=0; j<=largeur; j++)
+            {
+                x_obs = x_actuel-1+offset-j-i;
+                y_obs = y_actuel-1-offset+j-i;
+                if(x_obs>=0 && x_obs < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs][y_obs] != 1)
+                    obstacle[x_obs][y_obs] = 2;
+                if(!(j == 0 && (((1 == CAPT_US_DROIT || 1 == CAPT_US_BALISE) || EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_GAUCHE || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
+                    obstacle[x_obs+1][y_obs] = 2;
+                if(!(j == largeur && (((1 == CAPT_US_GAUCHE || 1 == CAPT_US_BALISE) || EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_DROIT || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
+                    obstacle[x_obs][y_obs+1] = 2;
+                if(!(j == largeur && (((1 == CAPT_US_GAUCHE || 1 == CAPT_US_BALISE) || EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_DROIT || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
+                    obstacle[x_obs-1][y_obs] = 2;
+                if(!(j == 0 && (((1 == CAPT_US_DROIT || 1 == CAPT_US_BALISE) || EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_GAUCHE || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
+                    obstacle[x_obs][y_obs-1] = 2;
+            }
+        }
+    }
+
+    else if(angle <= 202) //horizontale gauche
+    {
+
+
+        if ((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+        {
+            offset = - taille;
+            largeur =taille*2;
+        }
+        else
+        {
+            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                offset += 0 ;
+                largeur += taille;
+            }
+
+
+            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                offset += -taille;
+                largeur += taille;
+            }
+
+        }
+        for(i=0; i<vision; i++)
+        {
+            for(j=-1; j<=largeur+1; j++)
+            {
+                if(x_actuel-i-1 >=0 && y_actuel +offset + j >= 0 && y_actuel +offset + j < y_max && obstacle [x_actuel-i-1][y_actuel + offset + j]==0)
+                    obstacle [x_actuel-i-1][y_actuel +offset + j]=2;
+            }
+        }
+    }
+
+    else if(angle <=248 )
+    {
+        if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+        {
+            largeur += 2*taille_diago;
+            offset += taille_diago;
+        }
+        else
+        {
+            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                largeur +=taille_diago;
+                offset +=0;
+            }
+
+
+            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                largeur +=taille_diago;
+                offset += taille_diago;
+            }
+        }
+        for(i=0; i<vision; i++)
+        {
+            for(j=0; j<=largeur; j++)
+            {
+                x_obs = x_actuel-1-offset+j-i;
+                y_obs = y_actuel+1-offset+j+i;
+                if(x_obs>=0 && x_obs < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs][y_obs] != 1)
+                    obstacle[x_obs][y_obs] = 2;
+                if(!(j == largeur && (((1 == CAPT_US_GAUCHE || 1 == CAPT_US_BALISE) || EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_DROIT || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
+                    obstacle[x_obs+1][y_obs] = 2;
+                if(!(j == largeur && (((1 == CAPT_US_GAUCHE || 1 == CAPT_US_BALISE) || EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_DROIT || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
+                    obstacle[x_obs][y_obs+1] = 2;
+                if(!(j == 0 && (((1 == CAPT_US_DROIT || 1 == CAPT_US_BALISE) || EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_GAUCHE || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
+                    obstacle[x_obs-1][y_obs] = 2;
+                if(!(j == 0 && (((1 == CAPT_US_DROIT || 1 == CAPT_US_BALISE) || EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_GAUCHE || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
+                    obstacle[x_obs][y_obs-1] = 2;
+            }
+        }
+    }
+
+
+    else   if(angle <=292 )// verticale en bas
+    {
+
+        if ((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+        {
+            offset = - taille;
+            largeur =taille*2;
+        }
+        else
+        {
+            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                offset += 0 ;
+                largeur += taille;
+            }
+
+            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                offset += -taille;
+                largeur += taille;
+            }
+        }
+        for(i=0; i<vision; i++)
+        {
+            for(j=-1; j<=largeur+1; j++)
+            {
+                if(y_actuel+i+1 < y_max && x_actuel+ offset + j>= 0 && x_actuel + offset + j < x_max && obstacle [x_actuel + offset + j][y_actuel+i+1]==0)
+                    obstacle [x_actuel + offset + j][y_actuel+i+1]=2;
+            }
+        }
+    }
+
+    else //if(angle <=338 )
+    {
+        if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+        {
+            largeur += 2*taille_diago;
+            offset += taille_diago;
+        }
+        else
+        {
+            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                largeur +=taille_diago;
+                offset +=0;
+            }
+
+
+            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                largeur +=taille_diago;
+                offset += taille_diago;
+            }
+        }
+        for(i=0; i<vision; i++)
+        {
+            for(j=0; j<=largeur; j++)
+            {
+                x_obs = x_actuel+1+offset-j+i;
+                y_obs = y_actuel+1-offset+j+i;
+                if(x_obs>=0 && x_obs < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs][y_obs] != 1)
+                    obstacle[x_obs][y_obs] = 2;
+                if(!(j == 0 && (((1 == CAPT_US_GAUCHE || 1 == CAPT_US_BALISE) && EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_DROIT || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
+                    obstacle[x_obs+1][y_obs] = 2;
+                if(!(j == largeur && (((1 == CAPT_US_DROIT || 1 == CAPT_US_BALISE) && EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_GAUCHE || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
+                    obstacle[x_obs][y_obs+1] = 2;
+                if(!(j == largeur && (((1 == CAPT_US_DROIT || 1 == CAPT_US_BALISE) && EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_GAUCHE || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON)))  && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
+                    obstacle[x_obs-1][y_obs] = 2;
+                if(!(j == 0 && (((1 == CAPT_US_GAUCHE || 1 == CAPT_US_BALISE) && EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_DROIT || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
+                    obstacle[x_obs][y_obs-1] = 2;
+            }
+        }
+    }
+
+#endif
+
+#ifdef GROS_ROBOT
+
+#endif
+
+}
+
+void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcentage_deplacement,char last)
+{
+    int i,j;
+    int retour=0;
+    int curseur_finale;
+    int curseur_obstacle_finale;
+    int angle=0;
+    int haut;
+    int distance_courante;
+    int nouvelle_distance;
+    int id = id_evitement;
+    id_evitement++;
+    chemin_court=0;
+
+    if(pourcentage_deplacement > 50)
+    {
+        pourcentage_deplacement = 50;
+    }
+
+
+    //PutsUART(UART_XBEE,"coucou");
+
+//
+//    if(get_X() - x_objectif>20 || get_X() - x_objectif < -20 || get_Y() - y_objectif>20 || get_Y() - y_objectif < -20)
+//    {
+
+
+    //PutsUART(UART_XBEE,"1");
+
+    if(id == id_evitement_initial)
+    {
+        x_obj = (int)x_objectif/100;
+        y_obj = y_max - (int)y_objectif/100;
+        //cibler(x_objectif,y_objectif,MOYEN);
+        //angle = get_orientation();
+    }
+
+    x_actuel = (int) get_X()/100;
+    y_actuel = y_max - (int) get_Y()/100;
+
+    for(i=0; i<nb_point_max; i++)
+    {
+        itineraire[i][0]=-1;
+        itineraire[i][1]=-1;
+        itineraire[i][2]=-1;
+        itineraire_basique[i][0]=-1;
+        itineraire_basique[i][1]=-1;
+        itineraire_basique[i][2]=-1;
+        itineraire_court[i][0]=-1;
+        itineraire_court[i][1]=-1;
+        itineraire_court[i][2]=-1;
+        point_obstacle[i][0]=-1;
+        point_obstacle[i][1]=-1;
+        point_obstacle[i][2]=-1;
+    }
+    curseur_obstacle = 0;
+
+    nettoyage_nouvel_obstacle();
+    mettre_obstacle(x_actuel,y_actuel,sens_marche);
+
+/*
+    PutsUART(UART_XBEE, "\n\r");
+    PutIntUART(x_actuel);
+    PutsUART(UART_XBEE, " ");
+    PutIntUART(y_actuel);
+    PutsUART(UART_XBEE, "||");
+    PutIntUART(x_obj);
+    PutsUART(UART_XBEE, " ");
+    PutIntUART(y_obj);
+
+
+    PutsUART(UART_XBEE, "\n\r");
+    for(j=0; j<y_max; j++)
+    {
+        for(i=0; i+4<x_max; i=i+5)
+        {
+            PutIntUART(obstacle[i][j]*10000+obstacle[i+1][j]*1000+obstacle[i+2][j]*100+obstacle[i+3][j]*10+obstacle[i+4][j]);
+        }
+        PutsUART(UART_XBEE, "\n\r");
+    }
+*/
+
+    curseur =0;
+
+    itineraire[curseur][0]=x_actuel;
+    itineraire[curseur][1]=y_actuel;
+
+
+
+    if(obstacle[x_obj][y_obj]!=0 || obstacle[x_actuel][y_actuel]!=0 || (x_actuel == x_obj && y_actuel == y_obj))
+    {
+
+
+        //PutsUART(UART_XBEE,"2");
+
+        if(sens_marche == MARCHE_AVANT){
+            i=1;
+            EVITEMENT_ADV_AVANT = OFF;
+            EVITEMENT_ADV_ARRIERE = ON;
+
+        }
+        else {
+            i=-1;
+            EVITEMENT_ADV_ARRIERE = OFF;
+            EVITEMENT_ADV_AVANT = ON;
+
+        }
+
+        angle=get_orientation();
+        if(angle < 0)
+        {
+            angle = (int)(angle + 360)%360;
+        }
+        if((angle <= 22 || angle >= 339) && obstacle[x_actuel - i][y_actuel/100] == 0 && obstacle[x_actuel - 2*i][y_actuel/100] == 0 ) //horizontale CAPT_US_DROIT
+        {
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+        }
+
+        else if (angle <= 68 && obstacle[x_actuel - i][y_actuel +1*i] == 0 && obstacle[x_actuel - 2*i][y_actuel +2*i] == 0 ) //horizontale CAPT_US_DROIT
+        {
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+        }
+        else if (angle <= 112 && obstacle[x_actuel][y_actuel +i] == 0 && obstacle[x_actuel][y_actuel +2*i] == 0 ) //horizontale CAPT_US_DROIT
+        {
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+        }
+
+        else if (angle <= 158 && obstacle[x_actuel +i][y_actuel +i] == 0 && obstacle[x_actuel + 2*i][y_actuel +2*i] == 0 ) //horizontale CAPT_US_DROIT
+        {
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+        }
+
+        else if (angle <= 202 && obstacle[x_actuel +i][y_actuel] == 0 && obstacle[x_actuel + 2*i][y_actuel] == 0 ) //horizontale CAPT_US_DROIT
+        {
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+        }
+        else if (angle <= 248 && obstacle[x_actuel +i][y_actuel -i] == 0 && obstacle[x_actuel + 2*i][y_actuel -2*i] == 0 ) //horizontale CAPT_US_DROIT
+        {
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+        }
+
+        else if (angle <= 292 && obstacle[x_actuel][y_actuel -i] == 0 && obstacle[x_actuel][y_actuel -2*i] == 0 ) //horizontale CAPT_US_DROIT
+        {
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+        }
+
+        else if (obstacle[x_actuel -i][y_actuel-i] == 0 && obstacle[x_actuel - 2*i][y_actuel-2*i] == 0 ) //horizontale CAPT_US_DROIT
+        {
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+        }
+
+
+        if(sens_marche == MARCHE_AVANT){
+            EVITEMENT_ADV_AVANT = ON;
+            EVITEMENT_ADV_ARRIERE = OFF;
+        }
+        else {
+            EVITEMENT_ADV_ARRIERE = ON;
+            EVITEMENT_ADV_AVANT = OFF;
+        }
+/*
+        PutsUART(UART_XBEE,"objectif ou actuel bloque");
+        PutIntUART(x_objectif);
+        PutcUART (UART_XBEE, ' ');
+        PutIntUART(y_objectif);
+        PutcUART (UART_XBEE, ' ');
+        PutcUART (UART_XBEE, '|');
+*/
+
+        if(id_evitement_initial == id)
+        {
+            id_evitement_initial = id_evitement;
+            //PutsUART(UART_XBEE, "ordre de fin");
+            DETECTION = OFF;
+            if(last == rej)
+            {
+                rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement);
+            }
+            else
+            {
+                passe_part(x_objectif,y_objectif,sens_marche,pourcentage_deplacement,DEBUT_TRAJECTOIRE);
+            }
+        }
+    }
+
+    else
+    {
+
+
+        //PutsUART(UART_XBEE,"3");
+        retour =evitement (x_obj,y_obj,1);
+
+        if(retour == 0)
+        {
+
+
+
+            distance_courante = distance();
+
+
+            for(i=0; i<=nb_point_max; i++)
+            {
+                itineraire_court[i][0] = itineraire[i][0];
+                itineraire_court[i][1] = itineraire[i][1];
+                itineraire_court[i][2] = itineraire[i][2];
+            }
+
+            curseur_finale=curseur;
+            curseur_obstacle_finale = curseur_obstacle;
+            chemin_court=1;
+            while (curseur_obstacle> 0 && compteur_evitement < ATTENTE_EVITEMENT)
+            {
+
+                //PutIntUART(curseur_obstacle);
+                curseur=point_obstacle[curseur_obstacle-1][0];
+                for(i=0; i<curseur; i++)
+                {
+                    itineraire[i][0]=itineraire_basique[i][0];
+                    itineraire[i][1]=itineraire_basique[i][1];
+                    itineraire[i][2]=itineraire_basique[i][2];
+                }
+                x_actuel = itineraire_basique[curseur][0];
+                y_actuel = itineraire_basique[curseur][1];
+
+                itineraire[curseur][0]=x_actuel;
+                itineraire[curseur][1]=y_actuel;
+
+
+                haut = point_obstacle[curseur_obstacle-1][2];
+                if(haut == 1)
+                {
+                    haut =0;
+                }
+                else
+                {
+                    haut = 1;
+                }
+
+                retour=evitement(x_obj,y_obj,haut);
+
+                nouvelle_distance = distance();
+                if(retour == 0 &&  (curseur < curseur_finale || nouvelle_distance < distance_courante))  // si on a un chemin plus court
+                {
+                    for(i=0; i<nb_point_max; i++) // on sauvegarde le nouvel itineraire
+                    {
+                        itineraire_court[i][0] = itineraire[i][0];
+                        itineraire_court[i][1] = itineraire[i][1];
+                        itineraire_court[i][2] = itineraire[i][2];
+                    }
+                    curseur_finale = curseur;
+                    distance_courante = nouvelle_distance;
+            curseur_obstacle_finale = curseur_obstacle;
+                    //PutsUART(UART_XBEE, "chemin plus court possible ! \n\r");
+                }
+                else   // si on a pas un chemin plus court
+                {
+
+
+                    for(i=0; i<nb_point_max; i++) // on remet l'itineraire comme il etait
+                    {
+                        itineraire[i][0] = itineraire_court[i][0];
+                        itineraire[i][1] = itineraire_court[i][1];
+                        itineraire[i][2] = itineraire_court[i][2];
+                    }
+
+
+            curseur_obstacle = curseur_obstacle_finale;
+
+                }
+                curseur_obstacle=curseur_obstacle-2;//1 car il rencontre l'obstacle juste devant lui et 1 car il veut aller à l'obstacle d'avant
+                //PutIntUART(curseur_obstacle);
+            }
+
+            curseur=curseur_finale;
+            if(compteur_evitement < ATTENTE_EVITEMENT)
+            {
+
+/*
+PutsUART (UART_XBEE, "\n\r");
+
+                for(i=0; i<=curseur; i++)
+                {
+                    PutIntUART(itineraire_court[i][0]);
+                    PutcUART (UART_XBEE, ' ');
+                    PutIntUART(itineraire_court[i][1]);
+                    PutcUART (UART_XBEE, ' ');
+                    PutIntUART(itineraire_court[i][2]);
+                    PutcUART (UART_XBEE, ' ');
+                    PutcUART (UART_XBEE, '|');
+                    PutcUART (UART_XBEE, ' ');
+                }
+
+                PutcUART (UART_XBEE, '{');
+                PutIntUART(get_X());
+                PutcUART (UART_XBEE, ' ');
+                PutIntUART (get_Y());
+                PutcUART (UART_XBEE, '}');
+
+                PutcUART (UART_XBEE, '{');
+                PutIntUART(x_objectif);
+                PutcUART (UART_XBEE, ' ');
+                PutIntUART (y_objectif);
+                PutcUART (UART_XBEE, '}');
+*/
+                deplacement(sens_marche,pourcentage_deplacement,last);
+                if(id == id_evitement_initial)
+                {
+                    id_evitement_initial = id_evitement;
+
+                    PutsUART(UART_XBEE, "ordre de fin");
+                    DETECTION = OFF;
+                    if(last == rej)
+                    {
+                        rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement);
+                    }
+                    else
+                    {
+                        if(last == DEBUT_TRAJECTOIRE)
+                        {
+                            last = MILIEU_TRAJECTOIRE;
+                        }
+                        passe_part(x_objectif,y_objectif,sens_marche,pourcentage_deplacement,last);
+                    }
+
+                    /*if(last == FIN_TRAJECTOIRE){
+                        orienter(angle,pourcentage_deplacement);
+                    }*/
+                }
+            }
+        }
+        else
+        {
+
+
+        //PutsUART(UART_XBEE,"4");
+
+
+        if(sens_marche == MARCHE_AVANT){
+            i=1;
+            EVITEMENT_ADV_AVANT = OFF;
+            EVITEMENT_ADV_ARRIERE = ON;
+
+        }
+        else {
+            i=-1;
+            EVITEMENT_ADV_ARRIERE = OFF;
+            EVITEMENT_ADV_AVANT = ON;
+
+        }
+
+        angle=get_orientation();
+        if(angle < 0)
+        {
+            angle = (int)(angle + 360)%360;
+        }
+        if((angle <= 22 || angle >= 339) && obstacle[x_actuel - i][y_actuel/100] == 0 && obstacle[x_actuel - 2*i][y_actuel/100] == 0 ) //horizontale CAPT_US_DROIT
+        {
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+        }
+
+        else if (angle <= 68 && obstacle[x_actuel - i][y_actuel +1*i] == 0 && obstacle[x_actuel - 2*i][y_actuel +2*i] == 0 ) //horizontale CAPT_US_DROIT
+        {
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+        }
+        else if (angle <= 112 && obstacle[x_actuel][y_actuel +i] == 0 && obstacle[x_actuel][y_actuel +2*i] == 0 ) //horizontale CAPT_US_DROIT
+        {
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+        }
+
+        else if (angle <= 158 && obstacle[x_actuel +i][y_actuel +i] == 0 && obstacle[x_actuel + 2*i][y_actuel +2*i] == 0 ) //horizontale CAPT_US_DROIT
+        {
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+        }
+
+        else if (angle <= 202 && obstacle[x_actuel +i][y_actuel] == 0 && obstacle[x_actuel + 2*i][y_actuel] == 0 ) //horizontale CAPT_US_DROIT
+        {
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+        }
+        else if (angle <= 248 && obstacle[x_actuel +i][y_actuel -i] == 0 && obstacle[x_actuel + 2*i][y_actuel -2*i] == 0 ) //horizontale CAPT_US_DROIT
+        {
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+        }
+
+        else if (angle <= 292 && obstacle[x_actuel][y_actuel -i] == 0 && obstacle[x_actuel][y_actuel -2*i] == 0 ) //horizontale CAPT_US_DROIT
+        {
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+        }
+
+        else if (obstacle[x_actuel -i][y_actuel-i] == 0 && obstacle[x_actuel - 2*i][y_actuel-2*i] == 0 ) //horizontale CAPT_US_DROIT
+        {
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+        }
+
+
+
+        if(sens_marche == MARCHE_AVANT){
+            i=1;
+            EVITEMENT_ADV_AVANT = ON;
+            EVITEMENT_ADV_ARRIERE = OFF;
+
+        }
+        else {
+            i=-1;
+            EVITEMENT_ADV_ARRIERE = ON;
+            EVITEMENT_ADV_AVANT = OFF;
+
+        }
+/*
+            PutsUART(UART_XBEE,"cul de sac");
+            PutIntUART(x_objectif);
+            PutcUART (UART_XBEE, ' ');
+            PutIntUART(y_objectif);
+            PutcUART (UART_XBEE, ' ');
+            PutcUART (UART_XBEE, '|');
+*/
+
+            if (id == id_evitement_initial)
+            {
+                id_evitement_initial = id_evitement;
+                //PutsUART(UART_XBEE, "ordre de fin");
+                DETECTION = OFF;
+                if(last == rej)
+                {
+                    rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement);
+                }
+                else
+                {
+                    passe_part(x_objectif,y_objectif,sens_marche,pourcentage_deplacement,DEBUT_TRAJECTOIRE);
+                }
+            }
+        }
+    }
+    //}
+
+                id_evitement_initial = id_evitement;
+                //PutsUART(UART_XBEE, "ordre de fin");
+                DETECTION = OFF;
+                if(last == rej)
+                {
+                    rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement);
+                }
+                else
+                {
+                    passe_part(x_objectif,y_objectif,sens_marche,pourcentage_deplacement,DEBUT_TRAJECTOIRE);
+                }
+
+
+    //PutsUART(UART_XBEE,"5");
+
+    DETECTION = OFF;
+
+}

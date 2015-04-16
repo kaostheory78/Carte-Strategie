@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /******************************************************************************/
 /************** Carte principale Robot 1 : DSPIC33FJ128MC804*******************/
 /******************************************************************************/
@@ -27,73 +26,172 @@ void strategie()
     
     #ifdef GROS_ROBOT
 
-
-        init_position_robot (185, 1000, 0);
+        // Placement du robot sur la câle
+        init_position_robot (190, 1025, 0);
         FLAG_ACTION = INIT_JACK;
-
         delay_ms(1000);
+
+        // Attente de retirer le jack pour début de match
         while(!SYS_JACK);
         TIMER_90s = ACTIVE;
+
+
+        // Déclaration des évitements
         EVITEMENT_ADV_AVANT = ON;
+        EVITEMENT_ADV_ARRIERE = OFF;
         STRATEGIE_EVITEMENT = STOP;
         FLAG_ACTION = INIT_DEPART;
 
         //Direction premier gobelet pour libérer les deux pieds pour le gros robot
-        passe_part(600,1000,MARCHE_AVANT,100,DEBUT_TRAJECTOIRE);
+        passe_part(600,1025,MARCHE_AVANT,100,DEBUT_TRAJECTOIRE);
         passe_part(650,600,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
         FLAG_ACTION = ATTRAPE_GOBELET;
         passe_part(357,347,MARCHE_AVANT,100,FIN_TRAJECTOIRE);
 
-        //petite attente
-        //delay_ms(1000);
-
         //retour au bercail pour déposer le gobelet
+        EVITEMENT_ADV_ARRIERE = ON;
         passe_part(570,455,MARCHE_ARRIERE,100,DEBUT_TRAJECTOIRE);
         passe_part(550,550,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+        EVITEMENT_ADV_ARRIERE = OFF;
         passe_part(650,800,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
         EVITEMENT_ADV_AVANT = OFF;
         passe_part(558,990,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
         passe_part(270,990,MARCHE_AVANT,100,FIN_TRAJECTOIRE);
 
         pince(OUVERTE);
-        delay_ms(1000);
+        delay_ms(4000);
+        EVITEMENT_ADV_ARRIERE = ON;
+
 
         // direction dépose tapis
         passe_part(700, 990,MARCHE_ARRIERE,100,DEBUT_TRAJECTOIRE);
+        EVITEMENT_ADV_ARRIERE = OFF;
         EVITEMENT_ADV_AVANT = ON;
-        passe_part(920,920,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
-        passe_part(1225,940,MARCHE_AVANT,100,FIN_TRAJECTOIRE);
-        cibler (1225, 2000, 100);
-        depose_tapis(EN_BAS,DROITE);
-        delay_ms(1000);
-        depose_tapis(EN_HAUT,DROITE);
-        delay_ms(1000);
-        depose_tapis(EN_BAS,GAUCHE);
-        delay_ms(1000);
-        depose_tapis(EN_HAUT,GAUCHE);
-        delay_ms(1000);
-        avancer_reculer(400,50);
+        passe_part(950,870,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+        passe_part(1225,1225,MARCHE_AVANT,100,FIN_TRAJECTOIRE);
+        cibler(1225,2000,100);
+
+
+        //on secoue pour derouler le tapis
+
+        //d'abord le bras droit, toujours...
+
         depose_tapis(DEPOSE,DROITE);
-        delay_ms(1000);
-        pince_tapis(DEPOSE,DROITE);
-        delay_ms(1000);
+        delay_ms(500);
+        //depose_tapis(INTERMEDIAIRE,DROITE);
+        //delay_ms(1000);
+        //depose_tapis(DEPOSE,DROITE);
+        //delay_ms(1000);
         depose_tapis(EN_HAUT,DROITE);
-        delay_ms(1000);
-        pince_tapis(EN_HAUT,DROITE);
-        delay_ms(1000);
+        delay_ms(500);
+
+        //ensuite le gauche, toujours...
+
         depose_tapis(DEPOSE,GAUCHE);
-        delay_ms(1000);
-        pince_tapis(DEPOSE,GAUCHE);
-        delay_ms(1000);
+        delay_ms(500);
+        //depose_tapis(INTERMEDIAIRE,GAUCHE);
+        //delay_ms(1000);
+        //depose_tapis(DEPOSE,GAUCHE);
+        //delay_ms(1000);
         depose_tapis(EN_HAUT,GAUCHE);
-        delay_ms(1000);
-        pince_tapis(EN_HAUT,GAUCHE);
-        delay_ms(1000);
+        delay_ms(500);
+
+
+        //on se cale contre les marches et on refait son angle
+        EVITEMENT_ADV_AVANT = OFF;
+        avancer_reculer(350,50);
         init_Y(1370);
         init_orientation(90);
-        rejoindre(1225,940,MARCHE_ARRIERE, 50);
-        
+
+        //on recule un peu pour pas forcer l'AX12
+        rejoindre(1225,1350,MARCHE_ARRIERE, 100);
+
+        // Dépose des tapis 1 à 1 à cause du périmètre
+        depose_tapis(DEPOSE,DROITE);
+        delay_ms(500);
+        pince_tapis(DEPOSE,DROITE);
+        delay_ms(500);
+        depose_tapis(EN_HAUT,DROITE);
+        delay_ms(500);
+        pince_tapis(EN_HAUT,DROITE);
+        delay_ms(500);
+        depose_tapis(DEPOSE,GAUCHE);
+        delay_ms(500);
+        pince_tapis(DEPOSE,GAUCHE);
+        delay_ms(500);
+        depose_tapis(EN_HAUT,GAUCHE);
+        delay_ms(500);
         pince_tapis(EN_HAUT,GAUCHE);
+        delay_ms(500);
+
+        // On se dirige vers le gobelet près des marches
+        EVITEMENT_ADV_ARRIERE = ON;
+        rejoindre(1225,940,MARCHE_ARRIERE, 50);
+
+        EVITEMENT_ADV_ARRIERE = OFF;
+        EVITEMENT_ADV_AVANT = ON;
+
+        // Récupération du gobelet
+        rejoindre(1015,1125,MARCHE_AVANT, 50);
+        FLAG_ACTION = ATTRAPE_GOBELET;
+        delay_ms(1000);
+
+        // On va déposer dans les carrés, côté adversaire
+        EVITEMENT_ADV_AVANT = OFF;
+        EVITEMENT_ADV_ARRIERE = ON;
+        passe_part(1200,800,MARCHE_ARRIERE,100,DEBUT_TRAJECTOIRE);
+        EVITEMENT_ADV_AVANT = ON;
+        EVITEMENT_ADV_ARRIERE = OFF;
+        passe_part(2150,1000,MARCHE_AVANT,70,MILIEU_TRAJECTOIRE);
+
+
+        ///* //Carré droit
+        passe_part(2100,590,MARCHE_AVANT,50,MILIEU_TRAJECTOIRE);//case a droite
+        passe_part(2700,590,MARCHE_AVANT,50,FIN_TRAJECTOIRE);//case à droite
+        // */
+
+        /* // Carré gauche
+        passe_part(2280,1500,MARCHE_AVANT,25,MILIEU_TRAJECTOIRE);//case a gauche
+        passe_part(2700,1500,MARCHE_AVANT,25,FIN_TRAJECTOIRE);//case à gauche
+        */
+
+        // On relache le gobelet
+        pince(OUVERTE);
+        delay_ms(1000);
+
+
+        // On se cale contre la bordure du clap
+        EVITEMENT_ADV_AVANT = OFF;
+        EVITEMENT_ADV_ARRIERE = ON;
+        rejoindre(2500,590,MARCHE_ARRIERE, 50);//case à droite
+        cibler(2500,2000, 100);
+        avancer_reculer(-500,50);
+        init_Y(115);
+        init_orientation(90);
+
+        EVITEMENT_ADV_ARRIERE = OFF;
+        EVITEMENT_ADV_AVANT = ON;
+
+        // On fait le clap
+        rejoindre(2500,225,MARCHE_AVANT,50);
+        synchro_AX12(BRAS_GAUCHE,0,800,SANS_ATTENTE);
+        //deploie_bras(OUVERTE,DROITE);
+        delay_ms(500);
+        cibler(3000,225,100);
+        rejoindre(2300,225,MARCHE_ARRIERE, 50);
+        synchro_AX12(BRAS_GAUCHE,-80,800,SANS_ATTENTE);
+        //deploie_bras(RANGEMENT,DROITE);
+        delay_ms(500);
+///*
+        //code de faignant pour qu'il revienne a coté de l'ordi quand il a fini ses trucs
+        //passe_part(2250,1460,MARCHE_ARRIERE,25,DEBUT_TRAJECTOIRE);//gauche
+        passe_part(2100,600,MARCHE_ARRIERE,25,DEBUT_TRAJECTOIRE); //droite
+        passe_part(2150,1000,MARCHE_ARRIERE,25,MILIEU_TRAJECTOIRE);
+        passe_part(1200,1000,MARCHE_ARRIERE,100,MILIEU_TRAJECTOIRE);
+        passe_part(1000,1000,MARCHE_ARRIERE,100,MILIEU_TRAJECTOIRE);
+        passe_part(700,1000,MARCHE_ARRIERE,100,FIN_TRAJECTOIRE);
+        rejoindre(700,1500,MARCHE_ARRIERE,50);
+// */
     #endif
 
         
@@ -324,7 +422,7 @@ void homologation()
     COULEUR = couleur_depart();
 
 #ifdef GROS_ROBOT
-    init_position_robot (185, 1000, 0);
+        init_position_robot (190, 1025, 0);
         FLAG_ACTION = INIT_JACK;
 
         delay_ms(1000);
@@ -335,10 +433,10 @@ void homologation()
         FLAG_ACTION = INIT_DEPART;
 
         //Direction premier gobelet pour libérer les deux pieds pour le gros robot
-        rejoindre(600,1000,MARCHE_AVANT,50);
-        rejoindre(650,600,MARCHE_AVANT,50);
+        rejoindre(600, 1025, MARCHE_AVANT,50);
+        rejoindre(650, 600, MARCHE_AVANT,50);
         FLAG_ACTION = ATTRAPE_GOBELET;
-        rejoindre(357,347,MARCHE_AVANT,50);
+        rejoindre(357, 347, MARCHE_AVANT,50);
 
         //petite attente
         //delay_ms(1000);
@@ -352,44 +450,128 @@ void homologation()
         rejoindre(270,990,MARCHE_AVANT,50);
 
         pince(OUVERTE);
-        delay_ms(1000);
+        delay_ms(4000);
+        EVITEMENT_ADV_ARRIERE = ON;
+
 
         // direction dépose tapis
-        rejoindre(700, 990,MARCHE_ARRIERE,50);
+        passe_part(700, 990,MARCHE_ARRIERE,100,DEBUT_TRAJECTOIRE);
+        EVITEMENT_ADV_ARRIERE = OFF;
         EVITEMENT_ADV_AVANT = ON;
-        rejoindre(920,920,MARCHE_AVANT, 50);
-        rejoindre(1225,940,MARCHE_AVANT, 50);
-        cibler (1225, 2000, 100);
-        depose_tapis(EN_BAS,DROITE);
-        delay_ms(1000);
-        depose_tapis(EN_HAUT,DROITE);
-        delay_ms(1000);
-        depose_tapis(EN_BAS,GAUCHE);
-        delay_ms(1000);
-        depose_tapis(EN_HAUT,GAUCHE);
-        delay_ms(1000);
-        avancer_reculer(400,10);
+        passe_part(950,870,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+        passe_part(1225,1225,MARCHE_AVANT,100,FIN_TRAJECTOIRE);
+        cibler(1225,2000,100);
+
+
+        //on secoue pour derouler le tapis
+
+        //d'abord le bras droit, toujours...
+
         depose_tapis(DEPOSE,DROITE);
-        delay_ms(1000);
-        pince_tapis(DEPOSE,DROITE);
-        delay_ms(1000);
+        delay_ms(500);
+        //depose_tapis(INTERMEDIAIRE,DROITE);
+        //delay_ms(1000);
+        //depose_tapis(DEPOSE,DROITE);
+        //delay_ms(1000);
         depose_tapis(EN_HAUT,DROITE);
-        delay_ms(1000);
-        pince_tapis(EN_HAUT,DROITE);
-        delay_ms(1000);
+        delay_ms(500);
+
+        //ensuite le gauche, toujours...
+
         depose_tapis(DEPOSE,GAUCHE);
-        delay_ms(1000);
-        pince_tapis(DEPOSE,GAUCHE);
-        delay_ms(1000);
+        delay_ms(500);
+        //depose_tapis(INTERMEDIAIRE,GAUCHE);
+        //delay_ms(1000);
+        //depose_tapis(DEPOSE,GAUCHE);
+        //delay_ms(1000);
         depose_tapis(EN_HAUT,GAUCHE);
-        delay_ms(1000);
-        pince_tapis(EN_HAUT,GAUCHE);
-        delay_ms(1000);
+        delay_ms(500);
+
+
+        //on se cale contre les marches et on refait son angle
+        EVITEMENT_ADV_AVANT = OFF;
+        avancer_reculer(350,20);
         init_Y(1370);
         init_orientation(90);
-        rejoindre(1225,940,MARCHE_ARRIERE, 20);
-        
+
+        //on recule un peu pour pas forcer l'AX12
+        rejoindre(1225,1350,MARCHE_ARRIERE, 50);
+
+        // Dépose des tapis 1 à 1 à cause du périmètre
+        depose_tapis(DEPOSE,DROITE);
+        delay_ms(500);
+        pince_tapis(DEPOSE,DROITE);
+        delay_ms(500);
+        depose_tapis(EN_HAUT,DROITE);
+        delay_ms(500);
+        pince_tapis(EN_HAUT,DROITE);
+        delay_ms(500);
+        depose_tapis(DEPOSE,GAUCHE);
+        delay_ms(500);
+        pince_tapis(DEPOSE,GAUCHE);
+        delay_ms(500);
+        depose_tapis(EN_HAUT,GAUCHE);
+        delay_ms(500);
         pince_tapis(EN_HAUT,GAUCHE);
+        delay_ms(500);
+
+        // On se dirige vers le gobelet près des marches
+        EVITEMENT_ADV_ARRIERE = ON;
+        rejoindre(1225,940,MARCHE_ARRIERE, 20);
+
+        EVITEMENT_ADV_ARRIERE = OFF;
+        EVITEMENT_ADV_AVANT = ON;
+
+        // Récupération du gobelet
+        rejoindre(1015,1125,MARCHE_AVANT, 20);
+        FLAG_ACTION = ATTRAPE_GOBELET;
+        delay_ms(1000);
+
+        // On va déposer dans les carrés, côté adversaire
+        EVITEMENT_ADV_AVANT = OFF;
+        EVITEMENT_ADV_ARRIERE = ON;
+        rejoindre(1200,800,MARCHE_ARRIERE,50);
+        EVITEMENT_ADV_AVANT = ON;
+        EVITEMENT_ADV_ARRIERE = OFF;
+        rejoindre(2150,1000,MARCHE_AVANT,40);
+
+
+        ///* //Carré droit
+        rejoindre (2100,590,MARCHE_AVANT,30);//case a droite
+        rejoindre(2700,590,MARCHE_AVANT,30);//case à droite
+        // */
+
+        /* // Carré gauche
+        passe_part(2280,1500,MARCHE_AVANT,25,MILIEU_TRAJECTOIRE);//case a gauche
+        passe_part(2700,1500,MARCHE_AVANT,25,FIN_TRAJECTOIRE);//case à gauche
+        */
+
+        // On relache le gobelet
+        pince(OUVERTE);
+        delay_ms(1000);
+
+
+        // On se cale contre la bordure du clap
+        EVITEMENT_ADV_AVANT = OFF;
+        EVITEMENT_ADV_ARRIERE = ON;
+        rejoindre(2500,590,MARCHE_ARRIERE, 30);//case à droite
+        cibler(2500,2000, 100);
+        avancer_reculer(-500,30);
+        init_Y(115);
+        init_orientation(90);
+
+        EVITEMENT_ADV_ARRIERE = OFF;
+        EVITEMENT_ADV_AVANT = ON;
+
+        // On fait le clap
+        rejoindre(2500,225,MARCHE_AVANT,30);
+        synchro_AX12(BRAS_GAUCHE,0,800,SANS_ATTENTE);
+        //deploie_bras(OUVERTE,DROITE);
+        delay_ms(500);
+        cibler(3000,225,100);
+        rejoindre(2300,225,MARCHE_ARRIERE, 30);
+        synchro_AX12(BRAS_GAUCHE,-80,800,SANS_ATTENTE);
+        //deploie_bras(RANGEMENT,DROITE);
 
 #endif
 
@@ -404,6 +586,8 @@ void homologation()
         while(!SYS_JACK);
 
         EVITEMENT_ADV_AVANT = ON;
+        init_evitement();
+        STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;
         FLAG_ACTION = INIT_PINCES_DEMARRAGE;
 
         //Pieds 1
@@ -430,8 +614,9 @@ void homologation()
         orienter(20, 100);
         orienter(0, 100);
         avancer_reculer(-20, 200);
+        
+        ouvrir_bras(BRAS_GAUCHE);
 
-         ouvrir_bras(BRAS_GAUCHE);
         FLAG_ACTION = CLAP;
         EVITEMENT_ADV_AVANT = ON;
         EVITEMENT_ADV_ARRIERE = OFF;
@@ -511,328 +696,4 @@ void homologation()
 
 #endif
 
-=======
-/******************************************************************************/
-/************** Carte principale Robot 1 : DSPIC33FJ128MC804*******************/
-/******************************************************************************/
-/* Fichier 	: srategie.c
- * Auteur  	: Quentin
- * Revision	: 1.0
- * Date		: 07 février 2015, 22:47
- *******************************************************************************
- *
- *
- ******************************************************************************/
-
-/******************************************************************************/
-/******************************** INCLUDES ************************************/
-/******************************************************************************/
-
-#include "system.h"
-
-/******************************************************************************/
-/******************************************************************************/
-/******************************************************************************/
-
-void strategie()
-{
-    COULEUR = couleur_depart();
-    
-    #ifdef GROS_ROBOT
-
-    
-        init_position_robot (185, 1000, 0);
-        FLAG_ACTION = INIT_JACK;
-
-        delay_ms(1000);
-        while(!SYS_JACK);
-        TIMER_90s = ACTIVE;
-        EVITEMENT_ADV_AVANT = ON;
-        STRATEGIE_EVITEMENT = STOP;
-        FLAG_ACTION = INIT_DEPART;
-
-        //Direction premier gobelet pour libérer les deux pieds pour le gros robot
-        passe_part(600,1000,MARCHE_AVANT,100,DEBUT_TRAJECTOIRE);
-        passe_part(650,600,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
-        FLAG_ACTION = ATTRAPE_GOBELET;
-        passe_part(357,347,MARCHE_AVANT,100,FIN_TRAJECTOIRE);
-
-        //petite attente
-        //delay_ms(1000);
-
-        //retour au bercail pour déposer le gobelet
-        passe_part(570,455,MARCHE_ARRIERE,100,DEBUT_TRAJECTOIRE);
-        passe_part(550,550,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
-        passe_part(650,800,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
-        EVITEMENT_ADV_AVANT = OFF;
-        passe_part(558,990,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
-        passe_part(270,990,MARCHE_AVANT,100,FIN_TRAJECTOIRE);
-
-        pince(OUVERTE);
-        delay_ms(1000);
-
-        // direction dépose tapis
-        passe_part(700, 990,MARCHE_ARRIERE,100,DEBUT_TRAJECTOIRE);
-        EVITEMENT_ADV_AVANT = ON;
-        passe_part(920,920,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
-        passe_part(1225,940,MARCHE_AVANT,100,FIN_TRAJECTOIRE);
-        cibler (1225, 2000, 100);
-        depose_tapis(EN_BAS,DROITE);
-        delay_ms(1000);
-        depose_tapis(EN_HAUT,DROITE);
-        delay_ms(1000);
-        depose_tapis(EN_BAS,GAUCHE);
-        delay_ms(1000);
-        depose_tapis(EN_HAUT,GAUCHE);
-        delay_ms(1000);
-        avancer_reculer(400,50);
-        depose_tapis(DEPOSE,DROITE);
-        delay_ms(1000);
-        pince_tapis(DEPOSE,DROITE);
-        delay_ms(1000);
-        depose_tapis(EN_HAUT,DROITE);
-        delay_ms(1000);
-        pince_tapis(EN_HAUT,DROITE);
-        delay_ms(1000);
-        depose_tapis(DEPOSE,GAUCHE);
-        delay_ms(1000);
-        pince_tapis(DEPOSE,GAUCHE);
-        delay_ms(1000);
-        depose_tapis(EN_HAUT,GAUCHE);
-        delay_ms(1000);
-        pince_tapis(EN_HAUT,GAUCHE);
-        delay_ms(1000);
-        init_Y(1370);
-        init_orientation(90);
-        rejoindre(1225,1000,MARCHE_ARRIERE, 50);
-        
- pince_tapis(EN_HAUT,GAUCHE);
-    #endif
-
-        
-    #ifdef PETIT_ROBOT
-        //init_position_robot (145, 1045, 0);
-        init_position_robot (153, 1030, 0);
-       // init_position_robot (0, 0, 0);
-
-        /*rejoindre(2500, 1030, MARCHE_AVANT, 100);
-        rejoindre(500, 1030, MARCHE_AVANT, 100);
-        rejoindre(2500, 1030, MARCHE_AVANT, 100);
-        rejoindre(500, 1030, MARCHE_AVANT, 100);
-        rejoindre(2500, 1030, MARCHE_AVANT, 100);
-        rejoindre(500, 1030, MARCHE_AVANT, 100);
-        rejoindre(2500, 1030, MARCHE_AVANT, 100);
-        rejoindre(500, 1030, MARCHE_AVANT, 100);
-        rejoindre(2500, 1030, MARCHE_AVANT, 100);
-        rejoindre(300, 1030, MARCHE_AVANT, 100);
-        rejoindre(500, 1030, MARCHE_AVANT, 100);
-
-
-        //faire_des_tours(32);
-        while(1);*/
-
-        //Init départ
-        init_pinces_jack();
-        rejoindre (490, 1030, MARCHE_AVANT, 50);
-        cibler(1300, 600, 80);
-
-        while(!SYS_JACK);
-
-        EVITEMENT_ADV_AVANT = ON;
-        FLAG_ACTION = INIT_PINCES_DEMARRAGE;
-
-
-        
-
-        //Pieds 1
-        rejoindre(1210, 645, MARCHE_AVANT, 100);
-        delay_ms(1000);     //1 sec
-        //Pieds 2
-        rejoindre (1125, 330, MARCHE_AVANT, 100);
-        delay_ms(1000);
-        //Pieds 3
-        rejoindre (935, 570, MARCHE_AVANT, 100);
-        delay_ms(1000);
-
-
-
-        /******** Dépose pile de 3 */
-        /*
-        //Placement dépose
-        rejoindre(1355, 265, MARCHE_AVANT, 100);
-
-        orienter(-90, 100);
-
-        FLAG_ACTION = PREPARATION_DEPOSE_PIEDS;
-        delay_ms(500);
-
-        avancer_reculer(250, 50);
-        init_orientation(-90);
-        init_Y(189);
-
-        depose_banc();
-
-        //Chercher balle :
-        rejoindre (1355, 250, MARCHE_ARRIERE, 100);
-        rejoindre (1245, 250, MARCHE_AVANT, 100);
-
-        pinces(PINCE_BAS, FERMER);
-
-        rejoindre (1245, 187, MARCHE_AVANT, 50);
-
-        FLAG_ACTION = ATTRAPE_BALLE;
-        //delay_ms(500);*/
-
-        //Alignement vers les pieds
-        passe_part(600, 200, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-        FLAG_ACTION = FERMETURE_PINCE;
-        //Confirmation de l'axe des Y
-        EVITEMENT_ADV_ARRIERE = ON;
-        EVITEMENT_ADV_AVANT = OFF;
-        passe_part(300, 200, MARCHE_ARRIERE, 100, MILIEU_TRAJECTOIRE);
-        //on recule jusqu'au pieds
-        allumer_pompes();
-        passe_part(148, 200, MARCHE_ARRIERE, 50, FIN_TRAJECTOIRE);
-
-        //Danse du cul pour les chopper
-        orienter(20, 100);
-        orienter(0, 100);
-        avancer_reculer(-20, 200);
-        //orienter(-20, 200);
-
-        ouvrir_bras(BRAS_GAUCHE);
-        FLAG_ACTION = CLAP;
-        EVITEMENT_ADV_AVANT = ON;
-        EVITEMENT_ADV_ARRIERE = OFF;
-        passe_part(200, 170, MARCHE_AVANT, 50, DEBUT_TRAJECTOIRE);
-        //claps
-        passe_part(500, 160, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
-        passe_part(890, 160, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-
-        //dernier clap
-        passe_part(1100, 240, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-        fermer_bras(BRAS_GAUCHE);
-
-        //direction depose centre
-        passe_part(600, 800, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-        passe_part(460, 1010, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-        //passe_part(650, 600, MARCHE_AVANT, 200, MILIEU_TRAJECTOIRE);
-        //passe_part(550, 800, MARCHE_AVANT, 200, MILIEU_TRAJECTOIRE);
-        //passe_part(540, 1060, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-
-        //réalignement
-        orienter(90, 500);
-
-        //Dépose des pieds
-        eteindre_pompe();
-        FLAG_ACTION = PIEDS_4;
-
- 
-
-        //Sortie zone de départ
-        passe_part(700, 1300, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-
-        passe_part (580, 1670, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-
-        ////Récupération 4ème pieds
-        passe_part(170, 1770, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-
-        //Aspiration 2 pieds
-        allumer_pompes();
-        EVITEMENT_ADV_AVANT = OFF;
-        EVITEMENT_ADV_ARRIERE = ON;
-        rejoindre(785, 1745,  MARCHE_ARRIERE, 50);
-        //orienter(-170, 100);
-        //orienter(170, 100);
-        EVITEMENT_ADV_ARRIERE = OFF;
-        orienter(-90, 15);
-        rejoindre(785, 1830, MARCHE_ARRIERE, 25);
-        orienter(-70, 50);
-        //orienter(-90, 50);
-        //avancer_reculer(-5, 200);
-        //orienter(-100, 50);
-
-
-        // Placement zone de départ
-        EVITEMENT_ADV_AVANT = ON;
-        rejoindre ( 700, 1125, MARCHE_AVANT, 100);
-
-        //rentrée dans la zone de départ
-        EVITEMENT_ADV_AVANT = OFF;
-        rejoindre(640, 1090, MARCHE_AVANT, 100);
-
-        //Montage de la tour (dépassement des 350, ejection de la balle
-        //descente des pieds pour laisser passer la balle
-        angle_AX12(PINCE_HAUT, 555, 1023, SANS_ATTENTE);
-        angle_AX12(PINCE_MILIEU, 555, 1023, SANS_ATTENTE);
-        angle_AX12(PINCE_BAS, 555, 1023, SANS_ATTENTE);
-        delay_ms(2000);
-
-        //on ressert le tout pour que la tour soit bien droite
-        pinces(PINCE_HAUT, FERMER);
-        pinces(PINCE_MILIEU, FERMER);
-        pinces(PINCE_BAS, FERMER);
-
-        //Ejection de la balle
-        delay_ms(1000);
-        angle_AX12(PINCE_HAUT, 550, 1023, SANS_ATTENTE);
-        ejecter_balle();
-        delay_ms(4000);
-
-        //empilement si nécéssaire
-        FLAG_ACTION = ZONE_DEPART;
-        delay_ms (4000);
-        FLAG_ACTION = NE_RIEN_FAIRE;
-
-        //Pieds 5
-        rejoindre(550, 1000, MARCHE_AVANT, 100);
-        FLAG_ACTION = ZONE_DEPART;
-        delay_ms(3000);
-        FLAG_ACTION = NE_RIEN_FAIRE;
-
-        // Pieds 6
-        rejoindre(450, 975, MARCHE_AVANT, 100);
-        FLAG_ACTION = ZONE_DEPART;
-        delay_ms(3000);
-
-        rejoindre(300, 1000, MARCHE_AVANT, 50);
-        FLAG_ACTION = DEPOSE_PIEDS;
-        delay_ms(3000);
-        rejoindre(500, 1000, MARCHE_ARRIERE, 50);
-        
-
-
-        /******** Récup gobelet en passe part*/
-        /*
-        passe_part (1340, 400, MARCHE_ARRIERE, 100, DEBUT_TRAJECTOIRE);
-        FLAG_ACTION = ATTRAPE_GOBELET;
-        passe_part (910, 1000, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-        passe_part (910, 1250, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-        passe_part (360, 1000, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-        FLAG_ACTION = DEPOSE_GOBELET;*/
-
-        /******* Placement côté marche ***
-
-        passe_part (580, 1000, MARCHE_ARRIERE, 100, DEBUT_TRAJECTOIRE);
-        passe_part (825, 1260, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-
-        rejoindre(825, 1695, MARCHE_AVANT, 20);*/
-
-
-
-       /* while(ETAT_AUTOM != ACCOMPLI);
-        delay_ms(3000);
-        FLAG_ACTION = DEPOSE_PIEDS;*/
-        
-                
-       
-        // passe_part(630, 950, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-       // passe_part(1300, 600, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-
-        //TIMER_DEBUG = DESACTIVE;
-
-
-        
-    #endif
->>>>>>> 9a019010a256ac2bc994928a02d6bca411f60506
 }
