@@ -125,6 +125,14 @@ int main(int argc, char** argv)
     init_position_AX12();
     EVITEMENT_ADV_AVANT = ON;
 
+    while(1)
+    {
+        chenilles(DESCENDRE);
+        delay_ms(5000);
+        chenilles(MONTER);
+        delay_ms(5000);
+    }
+
     /*while(1)
     {
         static uint16_t compteur = 0;

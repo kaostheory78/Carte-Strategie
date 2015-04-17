@@ -89,7 +89,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
         CAPTEUR3 = led;
 #endif
 #ifdef GROS_ROBOT
-        CAPTEUR5 = led;
+        //CAPTEUR5 = led;
 #endif
         compteur = 0;
     }

@@ -118,6 +118,7 @@ void envoit_pwm (char moteur, double valeur)
 
         REGISTRE_MOTEUR_G = (uint16_t) abs_valeur;
     }
+#ifdef CARTE_V2
     else if (moteur == MOTEUR_X)
     {
         if (abs_valeur > PWM_X_VALEUR_MAX)
@@ -130,6 +131,7 @@ void envoit_pwm (char moteur, double valeur)
 
         REGISTRE_MOTEUR_X = (uint16_t) abs_valeur;
     }
+#endif
 }
 
 
