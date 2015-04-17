@@ -29,8 +29,7 @@ void init_system (void)
     position[CODEUR_G].ancien = 0;
     position[CODEUR_D].nouvelle = 0;
     position[CODEUR_G].nouvelle = 0;
-
-
+    
     config_timer_10ms();
     config_timer_5ms();
     config_timer_90s();

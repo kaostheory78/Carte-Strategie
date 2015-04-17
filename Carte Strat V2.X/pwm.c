@@ -83,7 +83,7 @@ void envoit_pwm (char moteur, double valeur)
 {
     double abs_valeur;
 
-    if (valeur < 0)
+    if (valeur < 0.)
         abs_valeur = (double) (-valeur);
     else
       abs_valeur = (double) valeur;
