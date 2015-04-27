@@ -20,8 +20,6 @@
 /***************************** FONCTIONS DIVERSES *****************************/
 /******************************************************************************/
 
-#ifdef PETIT_ROBOT
-
 void jack()
 {
     while(!SYS_JACK);
@@ -38,17 +36,83 @@ void eteindre_pompe ()
     envoit_pwm(MOTEUR_X, 0);
 }
 
-void son_evitement (uint8_t melodie)
-{
-    commande_AX12(100, _4PARAM, WRITE_DATA, 0x29, 10, NC, NC, NC);
-    commande_AX12(100, _4PARAM, WRITE_DATA, 0x28, melodie, NC, NC, NC);
-}
 
 /******************************************************************************/
 /********************************  FONCTION AX12  *****************************/
 /******************************************************************************/
 
-void pinces (uint8_t ID, uint8_t etat)
+void ouvrir_pince (char etat)
+{
+    
+    
+      if  (etat == FERMER)
+      {
+        angle_AX12(PINCE_MILIEU_R1,PINCE_MILIEU_FERMER,1023,SANS_ATTENTE);
+      }
+      else if (etat == RELACHE )
+      {
+          angle_AX12(PINCE_MILIEU_R1,PINCE_MILIEU_SEMIF,1023,SANS_ATTENTE);
+      }
+        
+      else if (etat == OUVERT )
+      {
+           angle_AX12(PINCE_MILIEU_R1,PINCE_MILIEU_OUVERT,1023,SANS_ATTENTE);
+      }
+
+
+}
+
+void tapis_gauche (char etats_gauche )
+{
+    if( etats_gauche == FERMER)
+    {
+    angle_AX12(BRAS_GAUCHE_R1,BRAS_GAUCHE_FERMER,350,SANS_ATTENTE);
+    angle_AX12(MAIN_GAUCHE_R1 ,MAIN_FERMER_GAUCHE_R1,1023,SANS_ATTENTE);
+    }
+    else if( etats_gauche == RELACHE)
+    {
+    angle_AX12(BRAS_GAUCHE_R1,BRAS_GAUCHE_RELACHER,350,SANS_ATTENTE);
+    angle_AX12(MAIN_GAUCHE_R1 ,MAIN_FERMER_GAUCHE_R1,1023,SANS_ATTENTE);
+    }
+    else if( etats_gauche == RANGEMENT )
+    {
+    angle_AX12(BRAS_GAUCHE_R1,BRAS_GAUCHE_FERMER,350,SANS_ATTENTE);
+    angle_AX12(MAIN_GAUCHE_R1 ,MAIN_FERMER_GAUCHE_R1,1023,SANS_ATTENTE);
+    }
+    else if( etats_gauche == OUVERT)
+    {
+    angle_AX12(BRAS_GAUCHE_R1,BRAS_GAUCHE_RELACHER,350,SANS_ATTENTE);
+    angle_AX12(MAIN_GAUCHE_R1 ,MAIN_OUVERT_GAUCHE_R1,1023,SANS_ATTENTE);
+    }
+
+}
+
+void tapis (char etats_droite )
+{
+    if( etats_droite == FERMER)
+    {
+    angle_AX12(BRAS_DROITE_R1 ,BRAS_DROITE_FERMER,350,SANS_ATTENTE);
+    angle_AX12(MAIN_DROITE_R1 , MAIN_FERMER_DROITE_R1,1023,SANS_ATTENTE);
+    }
+    else if( etats_droite == RELACHE)
+    {
+    angle_AX12(BRAS_DROITE_R1 ,BRAS_DROITE_RELACHER,350,SANS_ATTENTE);
+    angle_AX12(MAIN_DROITE_R1  , MAIN_FERMER_DROITE_R1,1023,SANS_ATTENTE);
+    }
+    else if( etats_droite == RANGEMENT )
+    {
+    angle_AX12(BRAS_DROITE_R1,BRAS_DROITE_FERMER,350,SANS_ATTENTE);
+    angle_AX12(MAIN_DROITE_R1  ,MAIN_FERMER_DROITE_R1,1023,SANS_ATTENTE);
+    }
+    else if( etats_droite == OUVERT)
+    {
+    angle_AX12(BRAS_DROITE_R1,BRAS_DROITE_RELACHER,450,SANS_ATTENTE);
+    angle_AX12(MAIN_DROITE_R1  ,MAIN_OUVERT_DROITE_R1,1023,SANS_ATTENTE);
+    }
+
+}
+
+/*void pinces (uint8_t ID, uint8_t etat)
 {
     if (ID == PINCE_ASCENSEUR)
     {
@@ -137,6 +201,7 @@ void init_pinces_demarage()
     }
     else if (read_data(PINCE_ASCENSEUR, LIRE_MOUV_FLAG) == 0)
     {
+        ejecter_balle();
         ascenseur(DESCENDRE);
         FLAG_ACTION = ATTRAPE_PIEDS;
     }
@@ -144,7 +209,7 @@ void init_pinces_demarage()
 
 void ejecter_balle()
 {
-    angle_AX12(SYS_BALLE, EJECTER_BALLE, 15, SANS_ATTENTE);
+    angle_AX12(SYS_BALLE, EJECTER_BALLE, 400, SANS_ATTENTE);
 }
 
 void depose_pieds ()
@@ -375,97 +440,17 @@ void faire_les_claps()
     if (get_X() > 400.0 && get_X() < 640.0 && etat_bras == ON )
     {
         //fermer_bras(GAUCHE);
-        if (COULEUR == JAUNE)
-            angle_AX12(BRAS_DROIT, 240, 1023, SANS_ATTENTE);
-        else
-            angle_AX12(BRAS_GAUCHE, 784, 1023, SANS_ATTENTE);
-        
+        angle_AX12(BRAS_DROIT, 200, 1023, SANS_ATTENTE);
         etat_bras = OFF;
     }
-    else if (get_X() > 680 && etat_bras == OFF)     //640 pour strat normal !!! =)
+    else if (get_X() > 640 && etat_bras == OFF)
     {
         //ouvrir_bras(GAUCHE);
-        if (COULEUR == JAUNE)
-            angle_AX12(BRAS_DROIT, 512, 1023, SANS_ATTENTE);
-        else
-            angle_AX12(BRAS_GAUCHE, 512, 1023, SANS_ATTENTE);
+        angle_AX12(BRAS_DROIT, 512, 1023, SANS_ATTENTE);
         etat_bras = ON;
         FLAG_ACTION = NE_RIEN_FAIRE;
     }
-}
-
-void empilement(int taille_max)
-{
-    static uint8_t etat_pince_asc = LIBRE, etat_pince_haut = RANGEMENT, etat_ascenseur = HAUTEUR_DEMMARAGE, compteur_pieds = 0, retard = 0;
-
-    if (etat_pince_asc == LIBRE && CAPT_PINCE == 0)
-    {
-        if ((compteur_pieds < taille_max))
-        {
-            compteur_pieds++;
-            etat_pince_asc = EN_COURS;
-        }
-        else
-            FLAG_ACTION = NE_RIEN_FAIRE;
-
-        pinces(PINCE_ASCENSEUR, FERMER);
-    }
-    else if (etat_pince_asc == EN_COURS)
-    {
-        if (read_data(PINCE_ASCENSEUR, LIRE_MOUV_FLAG) == 0 )
-        { 
-            ascenseur(MONTER);
-            etat_pince_asc = FERMER;
-            etat_ascenseur = EN_MONTER;
-            retard = 0;
-            if (taille_max == 3)
-            {
-                pinces(PINCE_BAS, RELACHE);
-                pinces(PINCE_MILIEU, RELACHE);
-                pinces(PINCE_HAUT, RELACHE);
-            }
-            else
-            {
-                angle_AX12(PINCE_HAUT, 555, 1023, SANS_ATTENTE);
-                angle_AX12(PINCE_MILIEU, 555, 1023, SANS_ATTENTE);
-                angle_AX12(PINCE_BAS, 555, 1023, SANS_ATTENTE);
-            }
-        }
-    }
-    else if (etat_ascenseur == EN_MONTER)
-    {
-        if (read_data(ASCENSEUR, LIRE_MOUV_FLAG) == 0)
-        {
-            etat_ascenseur = MONTER;
-            pinces(PINCE_BAS, FERMER);
-            pinces(PINCE_MILIEU, FERMER);
-            pinces(PINCE_HAUT, FERMER);
-            etat_pince_haut = EN_COURS;
-        }
-    }
-    else if (etat_pince_haut == EN_COURS)
-    {
-        if (read_data(PINCE_BAS, LIRE_MOUV_FLAG) == 0 )
-        {
-            etat_pince_haut = FERMER;
-            pinces(PINCE_ASCENSEUR, RELACHE);
-            etat_ascenseur = EN_DESCENTE;
-            //delay_ms(10);
-           ascenseur(DESCENDRE);
-        }
-    }
-    else if (etat_ascenseur == EN_DESCENTE)
-    {
-        pinces(PINCE_ASCENSEUR, RACLETTE);
-        if (read_data(ASCENSEUR, LIRE_MOUV_FLAG) == 0)
-        {
-            etat_pince_haut = RANGEMENT;
-            etat_ascenseur = DESCENDRE;
-            etat_pince_asc = LIBRE;
-        }
-    }
-
-}
+}*/
 
 /******************************************************************************/
 /******************************** FONCTION BOUCLE *****************************/
@@ -475,12 +460,13 @@ void empilement(int taille_max)
 void autom_10ms (void)
 {
 
-        static uint16_t compteur = 0;
-        static uint8_t  evitement_en_cours = OFF;
+
 
         /**********************************************************************/
         /******************************* Autom ********************************/
         /**********************************************************************/
+    /*
+        static uint8_t etat_pince_asc = LIBRE, etat_pince_haut = RANGEMENT, etat_ascenseur = HAUTEUR_DEMMARAGE, compteur_pieds = 0;
 
         //fonction qui definit les actions
         switch (FLAG_ACTION)
@@ -488,14 +474,14 @@ void autom_10ms (void)
             case NE_RIEN_FAIRE:
                 break;
             case ATTRAPE_PIEDS :
-                empilement(3);
+                ETAT_AUTOM = ATTRAPE_PIEDS;
+                FLAG_ACTION = NE_RIEN_FAIRE;
                 break;
             case INIT_PINCES_DEMARRAGE :
                 init_pinces_demarage();
                 break;
             case DEPOSE_PIEDS :
                 depose_pieds();
-                break;
             case PREPARATION_DEPOSE_PIEDS :
                 preparation_descente_pieds();
                 break;
@@ -511,21 +497,69 @@ void autom_10ms (void)
             case CLAP :
                 faire_les_claps();
                 break;
-            case ZONE_DEPART :
-                empilement(5);
-                break;
-            case FERMETURE_PINCE :
-                pinces(PINCE_ASCENSEUR, FERMER);
-                FLAG_ACTION = NE_RIEN_FAIRE;
-                break;
-            case PIEDS_4 :
-                pinces(PINCE_ASCENSEUR, RACLETTE);
-                FLAG_ACTION = ATTRAPE_PIEDS;
-                break;
-
             default :
                 break;
         }
+
+        if (ETAT_AUTOM == ATTRAPE_PIEDS)
+        {
+
+            if (CAPT_PINCE == 0 && etat_pince_asc == LIBRE)
+            {
+                pinces(PINCE_ASCENSEUR, FERMER);
+                if (compteur_pieds < 3)
+                    etat_pince_asc = EN_COURS;
+                else 
+                    ETAT_AUTOM = ACCOMPLI;
+                compteur_pieds++;
+            }
+            else if (etat_pince_asc == EN_COURS)
+            {
+                if (read_data(PINCE_ASCENSEUR, LIRE_MOUV_FLAG) == 0 )
+                {
+                    etat_pince_asc = FERMER;
+                    ascenseur(MONTER);
+                    etat_ascenseur = EN_MONTER;
+                    pinces(PINCE_BAS, RELACHE);
+                    pinces(PINCE_MILIEU, RELACHE);
+                    pinces(PINCE_HAUT, RELACHE);
+                }
+            }
+            if (etat_ascenseur == EN_MONTER)
+            {
+                if (read_data(ASCENSEUR, LIRE_MOUV_FLAG) == 0)
+                {
+                    etat_ascenseur = MONTER;
+                    pinces(PINCE_BAS, FERMER);
+                    pinces(PINCE_MILIEU, FERMER);
+                    pinces(PINCE_HAUT, FERMER);
+                    etat_pince_haut = EN_COURS;
+                }
+            }
+            if (etat_pince_haut == EN_COURS)
+            {
+                if (read_data(PINCE_BAS, LIRE_MOUV_FLAG) == 0 )
+                {
+                    etat_pince_haut = FERMER;
+                    pinces(PINCE_ASCENSEUR, RELACHE);
+                    etat_ascenseur = EN_DESCENTE;
+                    delay_ms(10);
+                   ascenseur(DESCENDRE);
+                }
+            }
+            if (etat_ascenseur == EN_DESCENTE)
+            {
+                pinces(PINCE_ASCENSEUR, RACLETTE);
+                if (read_data(ASCENSEUR, LIRE_MOUV_FLAG) == 0)
+                {
+                    etat_ascenseur = DESCENDRE;
+                    etat_pince_asc = LIBRE;
+                }
+            }
+        }
+*/
+        
+
 
         /**********************************************************************/
         /**************************** Evitement *******************************/
@@ -533,119 +567,43 @@ void autom_10ms (void)
 
 
         //Fonction permettant de lancer la fonction d'évitement
-        if(EVITEMENT_ADV_AVANT == ON)
+   /*
+    *      if(EVITEMENT_ADV_AVANT == STOP)
         {
-
-            if(evitement_en_cours == ON){
-                compteur_evitement++;
-            }
-            else {
-                compteur_evitement =0;
-            }
-
-            if ( (CAPT_US_GAUCHE == 1 || CAPT_US_BALISE == 1 || CAPT_US_DROIT == 1) )
+            if (CAPT_US_BALISE == 1 && DETECTION == OFF)
             {
-                if ( DETECTION == OFF)
-                {
-                    compteur = 0;
-                    DETECTION = ON;
-                    evitement_en_cours = OFF;
-                    FLAG_ASSERV.erreur = EVITEMENT;
-                    brake();
-                    son_evitement(49);
-                }
-                else
-                    son_evitement(2);
-            }
-            else if (DETECTION == ON && STRATEGIE_EVITEMENT == STOP)
-            {
-                compteur ++;
-                if (compteur > 20)
-                {
-                    compteur = 20;
-                    if (CAPT_US_GAUCHE == 0 && CAPT_US_BALISE == 0 && CAPT_US_DROIT == 0)
-                    {
-                        DETECTION = OFF;
-                        unbrake();
-                    }
-                }
-            }
-            else if (DETECTION == ON && (STRATEGIE_EVITEMENT == ACTION_EVITEMENT || STRATEGIE_EVITEMENT == EVITEMENT_NORMAL ))
-            {
-                if (evitement_en_cours == OFF)
-                {
-                    compteur ++;
-                    if (compteur > 40)
-                    {
-                        evitement_en_cours = ON;
-                        compteur = 0;
-                        fin_deplacement();
-                        son_evitement(30);
-                    }
-                    else
-                    {
-                        son_evitement(2);
-                    }
-
-                }
-            }
-        }
-
-        else if (EVITEMENT_ADV_ARRIERE == ON)
-        {
-
-            if(evitement_en_cours == ON){
-                compteur_evitement++;
-            }
-            else {
-                compteur_evitement =0;
-            }
-
-            if ( (CAPT_IR_ARRIERE_CENTRE == 0 || CAPT_IR_ARRIERE_DROIT == 0 || CAPT_IR_ARRIERE_GAUCHE == 0)  && DETECTION == OFF)
-            {
-                compteur = 0;
                 DETECTION = ON;
-                evitement_en_cours = OFF;
                 FLAG_ASSERV.erreur = EVITEMENT;
                 brake();
             }
             else if (DETECTION == ON && STRATEGIE_EVITEMENT == STOP)
             {
-                compteur ++;
-                if (compteur > 20)
-                {
-                    compteur = 20;
-                    if (CAPT_IR_ARRIERE_CENTRE == 1 && CAPT_IR_ARRIERE_DROIT == 1 && CAPT_IR_ARRIERE_GAUCHE == 1)
-                    {
-                        DETECTION = OFF;
-                        unbrake();
-                    }
-                }
+                DETECTION = OFF;
+                delay_ms(200);
+                unbrake();
+                
             }
             else if (DETECTION == ON && (STRATEGIE_EVITEMENT == ACTION_EVITEMENT || STRATEGIE_EVITEMENT == EVITEMENT_NORMAL ))
             {
-                if (evitement_en_cours == OFF)
-                {
-                    compteur ++;
-                    if (compteur > 40)
-                    {
-                        evitement_en_cours = ON;
-                        compteur = 0;
-                        fin_deplacement();
-                        son_evitement(30);
-                    }
-                     else
-                     {
-                        son_evitement(2);
-                    }
-                }
+                DETECTION = OFF;
+                delay_ms(200);
+                fin_deplacement();
             }
         }
-        else if (DETECTION == ON)
-        {
-            DETECTION = OFF;
-            unbrake();
-        }
-}
 
-#endif
+      /*  if (EVITEMENT_ADV_ARRIERE == STOP)
+        {
+            if ( DETECTION == OFF && (CAPT_US_ARRIERE_D == 1 || CAPT_US_ARRIERE_G == 1) )//Rajouter des capteurs IR ?
+            {
+                DETECTION = ON;
+                STOP_DETECTION_AR = ON;
+                brake();
+            }
+            else if (DETECTION == ON)
+            {
+                DETECTION = OFF;
+                delay_ms(200);
+                unbrake();
+            }
+        }*/
+}

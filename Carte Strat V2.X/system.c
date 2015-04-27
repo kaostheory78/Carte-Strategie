@@ -662,7 +662,7 @@ void ConfigInterrupt (void)
 
 void ConfigADC (void)
 {
-#ifdef CARTECARTE_V2
+#ifdef CARTE_V2
     if (CAPTEUR1_ANALOGIQUE == ANALOGIQUE ||CAPTEUR2_ANALOGIQUE == ANALOGIQUE || CAPTEUR3_ANALOGIQUE == ANALOGIQUE)
     {
       // Entrée digitale / Analogique
@@ -719,4 +719,5 @@ void ConfigADC (void)
 
     }
 #endif
+    
 }

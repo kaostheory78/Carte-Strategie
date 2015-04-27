@@ -242,7 +242,7 @@ uint8_t _cibler (double x, double y, double pourcentage_vitesse)
     }
     return FLAG_ASSERV.erreur;
 }
- 
+
 uint8_t _orienter (double angle, double pourcentage_vitesse)
 {
     angle = inversion_couleur(angle);
@@ -250,7 +250,7 @@ uint8_t _orienter (double angle, double pourcentage_vitesse)
     //delay_ms(10);
 
     reinit_asserv();
-    
+
     TYPE_CONSIGNE = MM;
 
     ORIENTATION.consigne = (angle * Pi)/ 180 * (ENTRAXE_TICKS/2);
@@ -301,10 +301,10 @@ void faire_des_tours (int nb_tour)
 
 void _fdt (double angle, char last)
 {
-     if (last == DEBUT_TRAJECTOIRE)
+    if (last == DEBUT_TRAJECTOIRE)
     {
         FLAG_ASSERV.brake = OFF;
-       // delay_ms(10);
+        // delay_ms(10);
         reinit_asserv();
 
         TYPE_CONSIGNE = MM;
@@ -346,7 +346,7 @@ uint8_t _rejoindre (double x, double y, int8_t sens_marche, double pourcentage_v
     //delay_ms(10);
 
     reinit_asserv();
-    
+
     X.consigne = x * TICKS_PAR_MM;
     Y.consigne = y * TICKS_PAR_MM;
 
@@ -365,7 +365,7 @@ uint8_t _rejoindre (double x, double y, int8_t sens_marche, double pourcentage_v
     acc.acceleration.orientation = ACC_ORIENTATION_CONSIGNE;
     acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
 #endif
-    
+
 
     FLAG_ASSERV.position = ON;
     FLAG_ASSERV.orientation = ON;
@@ -419,7 +419,7 @@ uint8_t _passe_part (double x, double y, int8_t sens_marche, double pourcentage_
     if (last == DEBUT_TRAJECTOIRE)
     {
         FLAG_ASSERV.brake = OFF;
-      //  delay_ms(10);
+        //  delay_ms(10);
         reinit_asserv();
 
         TYPE_CONSIGNE = XY;
@@ -436,6 +436,7 @@ uint8_t _passe_part (double x, double y, int8_t sens_marche, double pourcentage_
     acc.acceleration.orientation = ACC_ORIENTATION_CONSIGNE;
     acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
 
+    FLAG_ASSERV.erreur = DEPLACEMENT_NORMAL;
     FLAG_ASSERV.position = ON;
     FLAG_ASSERV.orientation = ON;
     FLAG_ASSERV.vitesse = ON;
@@ -491,7 +492,6 @@ void deplacement(int8_t sens_marche,double pourcentage_deplacement,char last) //
     int angle;
     int id = id_evitement;
 
-    DETECTION = OFF;
 
     if(itineraire_court[i+1][0] != -1);
     cibler((double)(itineraire_court[i+1][0]*100)+50,(double)((y_max - itineraire_court[i+1][1])*100)+50,pourcentage_deplacement);
@@ -579,13 +579,21 @@ void init_evitement()
     {
         for(i=0; i<x_max; i++)
         {
+#ifdef PETIT_ROBOT
             if(i<1 || i > x_max-2 || j<1 || j>y_max-2)
                 obstacle[i][j]=1;
+#endif
+
+#ifdef GROS_ROBOT
+            if(i<2 || i > x_max-3 || j<2 || j>y_max-3)
+                obstacle[i][j]=1;
+#endif
             else
                 obstacle[i][j]=0;
         }
     }
 
+#ifdef PETIT_ROBOT
     for(i=9; i<=20; i++) //escalier
     {
         for(j=0; j<=7; j++)
@@ -593,17 +601,38 @@ void init_evitement()
             obstacle[i][j]=1;
         }
     }
+#endif
+
+#ifdef GROS_ROBOT
+
+    for(i=9; i<=20; i++) //escalier
+    {
+        for(j=0; j<=8; j++)
+        {
+            obstacle[i][j]=1;
+        }
+    }
+#endif
 
     for(i=10; i<=19; i++) // marche rose
     {
+#ifdef PETIT_ROBOT
         for(j=18; j<=19; j++)
         {
             obstacle[i][j] =1;
         }
+#endif
+#ifdef GROS_ROBOT
+        for(j=17; j<=19; j++)
+        {
+            obstacle[i][j] =1;
+        }
+#endif
     }
 
     if(COULEUR == JAUNE)
     {
+        #ifdef PETIT_ROBOT
         for(i=0; i<=4; i++) //carre gauche haut
         {
             for(j=4; j<=7; j++)
@@ -611,7 +640,18 @@ void init_evitement()
                 obstacle[i][j]=1;
             }
         }
+        #endif
+        #ifdef GROS_ROBOT
+        for(i=0; i<=5; i++) //carre gauche haut
+        {
+            for(j=3; j<=8; j++)
+            {
+                obstacle[i][j]=1;
+            }
+        }
+        #endif
 
+#ifdef PETIT_ROBOT
         for(i=0; i<=4; i++) //carre gauche bas
         {
             for(j=12; j<=15; j++)
@@ -619,7 +659,20 @@ void init_evitement()
                 obstacle[i][j]=1;
             }
         }
+#endif
 
+#ifdef GROS_ROBOT
+
+        for(i=0; i<=5; i++) //carre gauche bas
+        {
+            for(j=11; j<=15; j++)
+            {
+                obstacle[i][j]=1;
+            }
+        }
+#endif
+
+#ifdef PETIT_ROBOT
         for(i=23; i<=x_max; i++) //zone depart adverse
         {
             for(j=7; j<=13; j++)
@@ -627,11 +680,21 @@ void init_evitement()
                 obstacle[i][j]=1;
             }
         }
-
+#endif
+#ifdef GROS_ROBOT
+        for(i=22; i<=x_max; i++) //zone depart adverse
+        {
+            for(j=6; j<=12; j++)
+            {
+                obstacle[i][j]=1;
+            }
+        }
+#endif
 
     }
     else
     {
+#ifdef PETIT_ROBOT
         for(i=25; i<=x_max; i++) //carre droit haut
         {
             for(j=4; j<=7; j++)
@@ -655,6 +718,33 @@ void init_evitement()
                 obstacle[i][j]=1;
             }
         }
+#endif
+#ifdef GROS_ROBOT
+        for(i=24; i<=x_max; i++) //carre droit haut
+        {
+            for(j=3; j<=8; j++)
+            {
+                obstacle[i][j]=1;
+            }
+        }
+
+        for(i=24; i<=x_max; i++) //carre droit bas
+        {
+            for(j=11; j<=15; j++)
+            {
+                obstacle[i][j]=1;
+            }
+        }
+
+        for(i=0; i<=7; i++) //zone depart adverse
+        {
+            for(j=6; j<=12; j++)
+            {
+                obstacle[i][j]=1;
+            }
+        }
+#endif
+        
     }
 
 
@@ -1566,7 +1656,7 @@ int  aiguillage_evitement(int x_objectif, int y_objectif, int direction,int haut
                 direction_longement = longement(x_objectif,y_objectif,direction_longement);//on longe les obstacles
                 for(i=0; i<curseur_initial; i++)
                 {
-                    if(itineraire[i][0] == itineraire[curseur-1][0] && itineraire[i][1] == itineraire[curseur-1][1] && itineraire[i][2] == itineraire[curseur-1][2] )
+                    if(itineraire[i][0] == itineraire[curseur-1][0] && itineraire[i][1] == itineraire[curseur-1][1] && itineraire[i][2] == itineraire[curseur-1][2] ) // on regarde si on est pas repasse par le meme point et la meme direction
                     {
                         cul_de_sac = -1;
                         if(chemin_court == 0)
@@ -1585,7 +1675,7 @@ int  aiguillage_evitement(int x_objectif, int y_objectif, int direction,int haut
 
             }
         }
-        if(direction_longement ==-1 || haut == 0) //si on a atteint un cul de sac
+        if(direction_longement ==-1 || haut == 0) //si on a atteint un cul de sac ou on veut aller pour le haut
         {
 
             direction_longement = conversion_direction(direction);//on reprend la valeur de longement de depart
@@ -1596,7 +1686,7 @@ int  aiguillage_evitement(int x_objectif, int y_objectif, int direction,int haut
                 direction_longement = longement(x_objectif,y_objectif,direction_longement);//on longe les obstacles
                 for(i=0; i<curseur_initial; i++)
                 {
-                    if(itineraire[i][0] == itineraire[curseur-1][0] && itineraire[i][1] == itineraire[curseur-1][1] && itineraire[i][2] == itineraire[curseur-1][2] )
+                    if(itineraire[i][0] == itineraire[curseur-1][0] && itineraire[i][1] == itineraire[curseur-1][1] && itineraire[i][2] == itineraire[curseur-1][2] )// on regarde si on est pas repasse par le meme point et la meme direction
                     {
                         cul_de_sac = -1;
                         if(chemin_court == 0)
@@ -1618,7 +1708,7 @@ int  aiguillage_evitement(int x_objectif, int y_objectif, int direction,int haut
     }
     if(test >=2 || direction_longement ==-1)
     {
-        return -1;
+        return -1; 
     }
     else return direction_longement;
 
@@ -1745,25 +1835,65 @@ void nettoyage_nouvel_obstacle()
 void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
 {
     int i,j;
+#ifdef PETIT_ROBOT
     int taille = 1;// il y a deja 3 de largeur, devant nous, a cette gauche et a cette droite, la taille est ce qu'on met en plus de ces 3 la
     int taille_diago = 1;
     int vision = 2;// pair ou impair
+#endif
+#ifdef GROS_ROBOT
+    int taille = 2;// il y a deja 3 de largeur, devant nous, a cette gauche et a cette droite, la taille est ce qu'on met en plus de ces 3 la
+    int taille_diago = 2;
+    int vision = 2;// pair ou impair
+#endif
+    
     int offset=0; // en fonction de si c'est le gauche ou le droit ou la balise
-    int largeur=0; // nombre de case recouverte PAR US (balise = 2us, le gauche et le droit) en plus de la case en face de nous
+    int largeur=0; // nombre de case recouverte PAR US (balise = 2us, le gauche et le droit) en plus des 3 cases en face de nous
     int x_obs,y_obs;
+    int droite = 0;
+    int gauche = 0;
+    int centre = 0;
 
     double angle = get_orientation();
-
-#ifdef PETIT_ROBOT
-
-    if(EVITEMENT_ADV_ARRIERE == ON){
+    if(EVITEMENT_ADV_ARRIERE == ON)
+    {
         angle += 180;
     }
     if(angle < 0)
         angle = (int)(angle + 360) % 360;
+
+#ifdef PETIT_ROBOT
+    if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+    {
+        centre = 1;
+    }
+    if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+    {
+        droite = 1;
+    }
+    if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+    {
+        gauche = 1;
+    }
+#endif
+
+#ifdef GROS_ROBOT
+    if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_AR_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+    {
+        centre = 1;
+    }
+    if(1 == CAPT_US_AR_GAUCHE && EVITEMENT_ADV_ARRIERE == ON)
+    {
+        droite = 1;
+    }
+    if(1 == CAPT_US_AR_DROIT && EVITEMENT_ADV_ARRIERE == ON)
+    {
+        gauche = 1;
+    }
+#endif
+
     if(angle <= 22 || angle >= 339) //horizontale CAPT_US_DROIT
     {
-        if ((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+        if (centre == 1)
         {
             offset = - taille;
             largeur =taille*2;
@@ -1772,13 +1902,13 @@ void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
         else
         {
 
-            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+            if(droite == 1)
             {
                 offset += 0 ;
                 largeur += taille;
             }
 
-            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+            if(gauche == 1)
             {
                 offset += -taille;
                 largeur += taille;
@@ -1798,7 +1928,7 @@ void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
 
     else if(angle <=68 )
     {
-        if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+        if(centre == 1)
         {
             largeur += 2*taille_diago;
             offset += -taille_diago;
@@ -1806,14 +1936,14 @@ void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
 
         else
         {
-            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+            if(droite == 1)
             {
                 largeur +=taille_diago;
                 offset +=0;
             }
 
 
-            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+            if(gauche == 1)
             {
                 largeur +=taille_diago;
                 offset += -taille_diago;
@@ -1828,13 +1958,13 @@ void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
                 y_obs = y_actuel-1+offset+j-i;
                 if(x_obs>=0 && x_obs < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs][y_obs] != 1)
                     obstacle[x_obs][y_obs] = 2;
-                if(!(j == largeur && (((1 == CAPT_US_DROIT || 1 == CAPT_US_BALISE) && EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_GAUCHE || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON)))  && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
+                if(!(j == largeur && (droite || centre))  && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
                     obstacle[x_obs+1][y_obs] = 2;
-                if(!(j == 0 && (((1 == CAPT_US_GAUCHE || 1 == CAPT_US_BALISE) && EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_DROIT || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON)))&& x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
+                if(!(j == 0 && (gauche || centre))&& x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
                     obstacle[x_obs][y_obs+1] = 2;
-                if(!(j == 0 && (((1 == CAPT_US_GAUCHE || 1 == CAPT_US_BALISE) && EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_DROIT || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON)))  && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
+                if(!(j == 0 && (gauche || centre))  && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
                     obstacle[x_obs-1][y_obs] = 2;
-                if(!(j == largeur && (((1 == CAPT_US_DROIT || 1 == CAPT_US_BALISE) && EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_GAUCHE || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON)))  && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
+                if(!(j == largeur && (droite || centre))  && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
                     obstacle[x_obs][y_obs-1] = 2;
             }
         }
@@ -1842,7 +1972,7 @@ void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
 
     else if (angle <=112) //verticale en haut
     {
-        if ((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+        if (centre == 1)
         {
             offset = - taille;
             largeur =taille*2;
@@ -1850,13 +1980,13 @@ void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
 
         else
         {
-            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+            if(droite)
             {
                 offset += 0 ;
                 largeur += taille;
             }
 
-            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+            if(gauche)
             {
                 offset += -taille;
                 largeur += taille;
@@ -1877,7 +2007,7 @@ void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
 
     else if(angle <=158 )
     {
-        if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+        if(centre)
         {
             largeur += 2*taille_diago;
             offset += taille_diago;
@@ -1886,14 +2016,14 @@ void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
         else
         {
 
-            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+            if(gauche)
             {
                 largeur +=taille_diago;
                 offset +=0;
             }
 
 
-            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+            if(droite)
             {
                 largeur +=taille_diago;
                 offset += taille_diago;
@@ -1908,13 +2038,13 @@ void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
                 y_obs = y_actuel-1-offset+j-i;
                 if(x_obs>=0 && x_obs < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs][y_obs] != 1)
                     obstacle[x_obs][y_obs] = 2;
-                if(!(j == 0 && (((1 == CAPT_US_DROIT || 1 == CAPT_US_BALISE) || EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_GAUCHE || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
+                if(!(j == 0 && (droite || centre)) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
                     obstacle[x_obs+1][y_obs] = 2;
-                if(!(j == largeur && (((1 == CAPT_US_GAUCHE || 1 == CAPT_US_BALISE) || EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_DROIT || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
+                if(!(j == largeur && (gauche || centre)) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
                     obstacle[x_obs][y_obs+1] = 2;
-                if(!(j == largeur && (((1 == CAPT_US_GAUCHE || 1 == CAPT_US_BALISE) || EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_DROIT || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
+                if(!(j == largeur && (gauche || centre)) && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
                     obstacle[x_obs-1][y_obs] = 2;
-                if(!(j == 0 && (((1 == CAPT_US_DROIT || 1 == CAPT_US_BALISE) || EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_GAUCHE || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
+                if(!(j == 0 && (droite || centre)) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
                     obstacle[x_obs][y_obs-1] = 2;
             }
         }
@@ -1924,21 +2054,21 @@ void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
     {
 
 
-        if ((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+        if (centre)
         {
             offset = - taille;
             largeur =taille*2;
         }
         else
         {
-            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+            if(gauche)
             {
                 offset += 0 ;
                 largeur += taille;
             }
 
 
-            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+            if(droite)
             {
                 offset += -taille;
                 largeur += taille;
@@ -1957,21 +2087,21 @@ void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
 
     else if(angle <=248 )
     {
-        if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+        if(centre)
         {
             largeur += 2*taille_diago;
             offset += taille_diago;
         }
         else
         {
-            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+            if(gauche)
             {
                 largeur +=taille_diago;
                 offset +=0;
             }
 
 
-            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+            if(droite)
             {
                 largeur +=taille_diago;
                 offset += taille_diago;
@@ -1985,13 +2115,13 @@ void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
                 y_obs = y_actuel+1-offset+j+i;
                 if(x_obs>=0 && x_obs < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs][y_obs] != 1)
                     obstacle[x_obs][y_obs] = 2;
-                if(!(j == largeur && (((1 == CAPT_US_GAUCHE || 1 == CAPT_US_BALISE) || EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_DROIT || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
+                if(!(j == largeur && (gauche)) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
                     obstacle[x_obs+1][y_obs] = 2;
-                if(!(j == largeur && (((1 == CAPT_US_GAUCHE || 1 == CAPT_US_BALISE) || EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_DROIT || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
+                if(!(j == largeur && (gauche)) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
                     obstacle[x_obs][y_obs+1] = 2;
-                if(!(j == 0 && (((1 == CAPT_US_DROIT || 1 == CAPT_US_BALISE) || EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_GAUCHE || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
+                if(!(j == 0 && (droite)) && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
                     obstacle[x_obs-1][y_obs] = 2;
-                if(!(j == 0 && (((1 == CAPT_US_DROIT || 1 == CAPT_US_BALISE) || EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_GAUCHE || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
+                if(!(j == 0 && (droite)) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
                     obstacle[x_obs][y_obs-1] = 2;
             }
         }
@@ -2001,20 +2131,20 @@ void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
     else   if(angle <=292 )// verticale en bas
     {
 
-        if ((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+        if (centre)
         {
             offset = - taille;
             largeur =taille*2;
         }
         else
         {
-            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+            if(gauche)
             {
                 offset += 0 ;
                 largeur += taille;
             }
 
-            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+            if(droite)
             {
                 offset += -taille;
                 largeur += taille;
@@ -2032,21 +2162,21 @@ void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
 
     else //if(angle <=338 )
     {
-        if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+        if(centre)
         {
             largeur += 2*taille_diago;
             offset += taille_diago;
         }
         else
         {
-            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+            if(droite)
             {
                 largeur +=taille_diago;
                 offset +=0;
             }
 
 
-            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+            if(gauche)
             {
                 largeur +=taille_diago;
                 offset += taille_diago;
@@ -2060,23 +2190,18 @@ void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
                 y_obs = y_actuel+1-offset+j+i;
                 if(x_obs>=0 && x_obs < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs][y_obs] != 1)
                     obstacle[x_obs][y_obs] = 2;
-                if(!(j == 0 && (((1 == CAPT_US_GAUCHE || 1 == CAPT_US_BALISE) && EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_DROIT || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
+                if(!(j == 0 && (gauche)) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
                     obstacle[x_obs+1][y_obs] = 2;
-                if(!(j == largeur && (((1 == CAPT_US_DROIT || 1 == CAPT_US_BALISE) && EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_GAUCHE || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
+                if(!(j == largeur && (droite)) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
                     obstacle[x_obs][y_obs+1] = 2;
-                if(!(j == largeur && (((1 == CAPT_US_DROIT || 1 == CAPT_US_BALISE) && EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_GAUCHE || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON)))  && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
+                if(!(j == largeur && (droite))  && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
                     obstacle[x_obs-1][y_obs] = 2;
-                if(!(j == 0 && (((1 == CAPT_US_GAUCHE || 1 == CAPT_US_BALISE) && EVITEMENT_ADV_AVANT == ON) || ((1 == CAPT_IR_ARRIERE_DROIT || 1 == CAPT_IR_ARRIERE_CENTRE) && EVITEMENT_ADV_ARRIERE == ON))) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
+                if(!(j == 0 && (gauche)) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
                     obstacle[x_obs][y_obs-1] = 2;
             }
         }
     }
 
-#endif
-
-#ifdef GROS_ROBOT
-
-#endif
 
 }
 
@@ -2100,27 +2225,30 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
     }
 
 
-    //PutsUART(UART_XBEE,"coucou");
+
+    PutsUART(UART_XBEE,"coucou \n\r");
 
 //
 //    if(get_X() - x_objectif>20 || get_X() - x_objectif < -20 || get_Y() - y_objectif>20 || get_Y() - y_objectif < -20)
 //    {
 
 
-    //PutsUART(UART_XBEE,"1");
+    PutsUART(UART_XBEE,"1");
 
-    if(id == id_evitement_initial)
+    if(id == id_evitement_initial) // si c'est le premier evitement lors de cette phase de deplacement
     {
-        x_obj = (int)x_objectif/100;
-        y_obj = y_max - (int)y_objectif/100;
+        //on donne la cellule d'objectif
+        x_obj = ((int)x_objectif)/100;
+        y_obj = y_max - ((int)y_objectif)/100;
         //cibler(x_objectif,y_objectif,MOYEN);
         //angle = get_orientation();
     }
 
-    x_actuel = (int) get_X()/100;
-    y_actuel = y_max - (int) get_Y()/100;
+    //on donne notre cellule de départ
+    x_actuel = ((int) get_X())/100;
+    y_actuel = y_max - ((int) get_Y())/100;
 
-    for(i=0; i<nb_point_max; i++)
+    for(i=0; i<nb_point_max; i++) // on reset les différents itineraires et les obstacles
     {
         itineraire[i][0]=-1;
         itineraire[i][1]=-1;
@@ -2135,10 +2263,10 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
         point_obstacle[i][1]=-1;
         point_obstacle[i][2]=-1;
     }
-    curseur_obstacle = 0;
+    curseur_obstacle = 0; ////on remet notre curseur de point d'obstacle au début
 
-    nettoyage_nouvel_obstacle();
-    mettre_obstacle(x_actuel,y_actuel,sens_marche);
+    nettoyage_nouvel_obstacle();// on enleve les obstacles supplémentaires qu'on a placé lors des evitements précédents
+    mettre_obstacle(x_actuel,y_actuel,sens_marche); // on place notre nouvel obstacle
 
 /*
     PutsUART(UART_XBEE, "\n\r");
@@ -2162,26 +2290,29 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
     }
 */
 
-    curseur =0;
+    curseur =0;//on remet notre curseur de point itineraire au début
 
+    //on place notre cellule actuelle comme point de départ
     itineraire[curseur][0]=x_actuel;
     itineraire[curseur][1]=y_actuel;
 
 
 
-    if(obstacle[x_obj][y_obj]!=0 || obstacle[x_actuel][y_actuel]!=0 || (x_actuel == x_obj && y_actuel == y_obj))
+    if(obstacle[x_obj][y_obj]!=0 || obstacle[x_actuel][y_actuel]!=0 || (x_actuel == x_obj && y_actuel == y_obj)) // si notre objectif est en obstacle, ou notre position, ou si on est dans la meme cellule que l'objectif
     {
+        //alors on va reculer puis repartir vers l'objectif
 
+        PutsUART(UART_XBEE,"2");
 
-        //PutsUART(UART_XBEE,"2");
-
-        if(sens_marche == MARCHE_AVANT){
+        if(sens_marche == MARCHE_AVANT) // si on est en marche avant, alors on reculera donc on multipliera -100 du avancer_reculer par 1 (i), et on change l'evitement
+        {
             i=1;
             EVITEMENT_ADV_AVANT = OFF;
             EVITEMENT_ADV_ARRIERE = ON;
 
         }
-        else {
+        else // si on est en marche arriere, alors on voudra avancer et non reculer, du coup on multpliera -100 par -1(i), et on change l'evitement
+        {
             i=-1;
             EVITEMENT_ADV_ARRIERE = OFF;
             EVITEMENT_ADV_AVANT = ON;
@@ -2189,62 +2320,95 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
         }
 
         angle=get_orientation();
-        if(angle < 0)
+        if(angle < 0) // get_orientation renvoi des valeurs négatives donc on les repasse en positif
         {
-            angle = (int)(angle + 360)%360;
+        angle = (int)(angle + 360)%360;
         }
-        if((angle <= 22 || angle >= 339) && obstacle[x_actuel - i][y_actuel/100] == 0 && obstacle[x_actuel - 2*i][y_actuel/100] == 0 ) //horizontale CAPT_US_DROIT
+        /*
+        PutsUART(UART_XBEE, "\n\r l'angle est de ");
+        PutIntUART(angle);
+        PutsUART(UART_XBEE, "\n\r");
+        PutsUART(UART_XBEE, "\n\r i est de ");
+        PutIntUART(i);
+        PutsUART(UART_XBEE, "\n\r");
+*/
+
+        //a partir de la, on va essayer de reculer si on peut ! les conditions qui suivent sont toutes les mêmes
+        //si on est dans un certain angle, on check les 2 cases derrieres ou devant lui selon le sens de la marche
+        //si elles sont libres, alors on peut reculer ou avancer
+        //si on rentre en evitement dans ce reculer ou avancer, on se stoppera et on continuera la fonction d'evitement
+
+        if(angle <= 22 || angle >= 339 ) //horizontale vers la droite
+        {
+            if(obstacle[x_actuel - i][y_actuel] == 0 && obstacle[x_actuel - 2*i][y_actuel] == 0 ){
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+            }
+        }
+
+        else if (angle <= 68) //diagonale en haut à droite
+        {
+            if( obstacle[x_actuel - i][y_actuel +1*i] == 0 && obstacle[x_actuel - 2*i][y_actuel +2*i] == 0 ){
+                DETECTION = OFF;
+                avancer_reculer(-100*i, 50);
+            }
+        }
+        else if (angle <= 112) //verticale haut
+        {
+            if(obstacle[x_actuel][y_actuel +i] == 0 && obstacle[x_actuel][y_actuel +2*i] == 0 ){
+                DETECTION = OFF;
+                avancer_reculer(-100*i, 50);
+            }
+        }
+
+        else if (angle <= 158) //diagonale en haut à gauche
+        {
+            if(obstacle[x_actuel +i][y_actuel +i] == 0 && obstacle[x_actuel + 2*i][y_actuel +2*i] == 0){
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+            }
+        }
+
+        else if (angle <= 202) //horizontale gauche
+        {
+            if(obstacle[x_actuel +i][y_actuel] == 0 && obstacle[x_actuel + 2*i][y_actuel] == 0 ){
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+            }
+        }
+        else if (angle <= 248) //diagonale bas gauche
+
+        {
+
+            if(obstacle[x_actuel +i][y_actuel -i] == 0 && obstacle[x_actuel + 2*i][y_actuel -2*i] == 0 ){
+                DETECTION = OFF;
+                
+                avancer_reculer(-100*i, 50);
+            }
+        }
+
+        else if (angle <= 292) //verticale bas
+        {
+            if( obstacle[x_actuel][y_actuel -i] == 0 && obstacle[x_actuel][y_actuel -2*i] == 0 ){
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+            }
+        }
+
+        else if (obstacle[x_actuel -i][y_actuel-i] == 0 && obstacle[x_actuel - 2*i][y_actuel-2*i] == 0 ) //diagonale bas droite
         {
             DETECTION = OFF;
             avancer_reculer(-100*i, 50);
         }
 
-        else if (angle <= 68 && obstacle[x_actuel - i][y_actuel +1*i] == 0 && obstacle[x_actuel - 2*i][y_actuel +2*i] == 0 ) //horizontale CAPT_US_DROIT
+        //on remet l'evitement comme il etait au départ
+        if(sens_marche == MARCHE_AVANT)
         {
-            DETECTION = OFF;
-            avancer_reculer(-100*i, 50);
-        }
-        else if (angle <= 112 && obstacle[x_actuel][y_actuel +i] == 0 && obstacle[x_actuel][y_actuel +2*i] == 0 ) //horizontale CAPT_US_DROIT
-        {
-            DETECTION = OFF;
-            avancer_reculer(-100*i, 50);
-        }
-
-        else if (angle <= 158 && obstacle[x_actuel +i][y_actuel +i] == 0 && obstacle[x_actuel + 2*i][y_actuel +2*i] == 0 ) //horizontale CAPT_US_DROIT
-        {
-            DETECTION = OFF;
-            avancer_reculer(-100*i, 50);
-        }
-
-        else if (angle <= 202 && obstacle[x_actuel +i][y_actuel] == 0 && obstacle[x_actuel + 2*i][y_actuel] == 0 ) //horizontale CAPT_US_DROIT
-        {
-            DETECTION = OFF;
-            avancer_reculer(-100*i, 50);
-        }
-        else if (angle <= 248 && obstacle[x_actuel +i][y_actuel -i] == 0 && obstacle[x_actuel + 2*i][y_actuel -2*i] == 0 ) //horizontale CAPT_US_DROIT
-        {
-            DETECTION = OFF;
-            avancer_reculer(-100*i, 50);
-        }
-
-        else if (angle <= 292 && obstacle[x_actuel][y_actuel -i] == 0 && obstacle[x_actuel][y_actuel -2*i] == 0 ) //horizontale CAPT_US_DROIT
-        {
-            DETECTION = OFF;
-            avancer_reculer(-100*i, 50);
-        }
-
-        else if (obstacle[x_actuel -i][y_actuel-i] == 0 && obstacle[x_actuel - 2*i][y_actuel-2*i] == 0 ) //horizontale CAPT_US_DROIT
-        {
-            DETECTION = OFF;
-            avancer_reculer(-100*i, 50);
-        }
-
-
-        if(sens_marche == MARCHE_AVANT){
             EVITEMENT_ADV_AVANT = ON;
             EVITEMENT_ADV_ARRIERE = OFF;
         }
-        else {
+        else
+        {
             EVITEMENT_ADV_ARRIERE = ON;
             EVITEMENT_ADV_AVANT = OFF;
         }
@@ -2257,37 +2421,37 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
         PutcUART (UART_XBEE, '|');
 */
 
-        if(id_evitement_initial == id)
-        {
-            id_evitement_initial = id_evitement;
-            //PutsUART(UART_XBEE, "ordre de fin");
-            DETECTION = OFF;
-            if(last == rej)
-            {
-                rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement);
-            }
-            else
-            {
-                passe_part(x_objectif,y_objectif,sens_marche,pourcentage_deplacement,DEBUT_TRAJECTOIRE);
-            }
-        }
+//        if(id_evitement_initial == id)
+//        {
+//            id_evitement_initial = id_evitement;
+//            //PutsUART(UART_XBEE, "ordre de fin");
+//            DETECTION = OFF;
+//            if(last == rej || last == FIN_TRAJECTOIRE)
+//            {
+//                rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement);
+//            }
+//            else
+//            {
+//                passe_part(x_objectif,y_objectif,sens_marche,pourcentage_deplacement,DEBUT_TRAJECTOIRE);
+//            }
+//        }
     }
 
-    else
+    else // si notre cellule et celle de l'objectif sont libres
     {
 
 
-        //PutsUART(UART_XBEE,"3");
-        retour =evitement (x_obj,y_obj,1);
+        PutsUART(UART_XBEE,"3");
+        retour =evitement (x_obj,y_obj,1); // on essaye de trouver un chemin. On renvoi 0 si on a pu trouver un chemin, -1 sinon
 
-        if(retour == 0)
+        if(retour == 0) // si on a trouver un chemin
         {
 
 
 
-            distance_courante = distance();
+            distance_courante = distance();// on calcul la distance entre notre de cellule traversée
 
-
+            //on stocke notre itineraire comme itineraire le plus court qu'on ait pour le moment (en même temps on en a pas d'autre)
             for(i=0; i<=nb_point_max; i++)
             {
                 itineraire_court[i][0] = itineraire[i][0];
@@ -2295,41 +2459,48 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
                 itineraire_court[i][2] = itineraire[i][2];
             }
 
+            // On stocke les différentes valeurs qui caractérise cet itineraire, comme le nombre de point et le nombre d'obstacle
             curseur_finale=curseur;
             curseur_obstacle_finale = curseur_obstacle;
-            chemin_court=1;
+            chemin_court=1;//on indique ici qu'on a au moins 1 chemin
+
+            //tant qu'on a pas re essaye a partir de tous nos obstacles et que le garde fou n'a pas ete declenche, on va chercher un chemin plus court
             while (curseur_obstacle> 0 && compteur_evitement < ATTENTE_EVITEMENT)
             {
 
                 //PutIntUART(curseur_obstacle);
-                curseur=point_obstacle[curseur_obstacle-1][0];
-                for(i=0; i<curseur; i++)
+                curseur=point_obstacle[curseur_obstacle-1][0];// on retourne au dernier obstacle qu'on a sauvegarde
+                for(i=0; i<curseur; i++) // et on charge l'itineraire que l'on avait
                 {
                     itineraire[i][0]=itineraire_basique[i][0];
                     itineraire[i][1]=itineraire_basique[i][1];
                     itineraire[i][2]=itineraire_basique[i][2];
                 }
+
+                //on se replace comme il faut
                 x_actuel = itineraire_basique[curseur][0];
                 y_actuel = itineraire_basique[curseur][1];
 
+                //et on se re inscrit sur l'itineraire
                 itineraire[curseur][0]=x_actuel;
                 itineraire[curseur][1]=y_actuel;
 
 
-                haut = point_obstacle[curseur_obstacle-1][2];
-                if(haut == 1)
+                haut = point_obstacle[curseur_obstacle-1][2];// on regarde si on est aller vers le haut ou vers le bas
+                if(haut == 1)// si on passait par le haut
                 {
-                    haut =0;
+                    haut =0; // alors on passera par le bas
                 }
-                else
+                else // si on passait pas le bas
                 {
-                    haut = 1;
+                    haut = 1;// alors on passera par le haut
                 }
 
-                retour=evitement(x_obj,y_obj,haut);
+                retour=evitement(x_obj,y_obj,haut);//on retente de trouver un evitement
 
-                nouvelle_distance = distance();
-                if(retour == 0 &&  (curseur < curseur_finale || nouvelle_distance < distance_courante))  // si on a un chemin plus court
+                if(retour ==0) // si on en a trouver un
+                    nouvelle_distance = distance(); //on recalcule le nombre de point
+                if(retour == 0 &&  (curseur < curseur_finale || nouvelle_distance < distance_courante))  // si on a un chemin valide et plus court
                 {
                     for(i=0; i<nb_point_max; i++) // on sauvegarde le nouvel itineraire
                     {
@@ -2339,7 +2510,7 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
                     }
                     curseur_finale = curseur;
                     distance_courante = nouvelle_distance;
-            curseur_obstacle_finale = curseur_obstacle;
+                    curseur_obstacle_finale = curseur_obstacle;
                     //PutsUART(UART_XBEE, "chemin plus court possible ! \n\r");
                 }
                 else   // si on a pas un chemin plus court
@@ -2354,19 +2525,17 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
                     }
 
 
-            curseur_obstacle = curseur_obstacle_finale;
+                    curseur_obstacle = curseur_obstacle_finale; // et on recherche le curseur d'obstacle
 
                 }
-                curseur_obstacle=curseur_obstacle-2;//1 car il rencontre l'obstacle juste devant lui et 1 car il veut aller à l'obstacle d'avant
+                curseur_obstacle=curseur_obstacle-2;//1 car il rencontre l'obstacle juste devant lui et 1 car on veut aller à l'obstacle d'avant
                 //PutIntUART(curseur_obstacle);
             }
 
-            curseur=curseur_finale;
-            if(compteur_evitement < ATTENTE_EVITEMENT)
+            if(compteur_evitement < ATTENTE_EVITEMENT || retour ==1)
             {
-
 /*
-PutsUART (UART_XBEE, "\n\r");
+                PutsUART (UART_XBEE, "\n\r");
 
                 for(i=0; i<=curseur; i++)
                 {
@@ -2392,25 +2561,27 @@ PutsUART (UART_XBEE, "\n\r");
                 PutIntUART (y_objectif);
                 PutcUART (UART_XBEE, '}');
 */
-                deplacement(sens_marche,pourcentage_deplacement,last);
-                if(id == id_evitement_initial)
+
+                curseur=curseur_finale; //on reprend notre curseur de l'itineraire le plus court
+                deplacement(sens_marche,pourcentage_deplacement,last);// et on lance les deplacements
+                if(id == id_evitement_initial) // TODO verifier l'utilite
                 {
                     id_evitement_initial = id_evitement;
 
-                    PutsUART(UART_XBEE, "ordre de fin");
+      //              PutsUART(UART_XBEE, "ordre de fin");
                     DETECTION = OFF;
-                    if(last == rej)
-                    {
-                        rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement);
-                    }
-                    else
-                    {
-                        if(last == DEBUT_TRAJECTOIRE)
-                        {
-                            last = MILIEU_TRAJECTOIRE;
-                        }
-                        passe_part(x_objectif,y_objectif,sens_marche,pourcentage_deplacement,last);
-                    }
+//                    if(last == rej)
+//                    {
+//                        rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement);
+//                    }
+//                    else
+//                    {
+//                        if(last == DEBUT_TRAJECTOIRE)
+//                        {
+//                            last = MILIEU_TRAJECTOIRE;
+//                        }
+//                        passe_part(x_objectif,y_objectif,sens_marche,pourcentage_deplacement,last);
+//                    }
 
                     /*if(last == FIN_TRAJECTOIRE){
                         orienter(angle,pourcentage_deplacement);
@@ -2418,91 +2589,123 @@ PutsUART (UART_XBEE, "\n\r");
                 }
             }
         }
-        else
+        else // si on a pas trouve de chemin plus court
         {
 
 
-        //PutsUART(UART_XBEE,"4");
+            //PutsUART(UART_XBEE,"4");
 
 
-        if(sens_marche == MARCHE_AVANT){
-            i=1;
-            EVITEMENT_ADV_AVANT = OFF;
-            EVITEMENT_ADV_ARRIERE = ON;
+            if(sens_marche == MARCHE_AVANT) // si on allait vers l'avant, alors on va reculer donc on multiplie le -100 d'avancer reculer par -1
+            {
+                i=1;
+                EVITEMENT_ADV_AVANT = OFF;
+                EVITEMENT_ADV_ARRIERE = ON;
 
-        }
-        else {
-            i=-1;
-            EVITEMENT_ADV_ARRIERE = OFF;
-            EVITEMENT_ADV_AVANT = ON;
+            }
+            else // sinon, on met à -1
+            {
+                i=-1;
+                EVITEMENT_ADV_ARRIERE = OFF;
+                EVITEMENT_ADV_AVANT = ON;
 
-        }
+            }
 
-        angle=get_orientation();
-        if(angle < 0)
+
+            angle=get_orientation(); // on recupere notre orientation
+            if(angle < 0)// si l'angle renvoye est negatif, on le repasse en positif
+            {
+        angle = (int)(angle + 360)%360;
+            }
+/*
+            PutsUART(UART_XBEE, "\n\r l'angle est de ");
+            PutIntUART(angle);
+            PutsUART(UART_XBEE, "\n\r i est de ");
+            PutIntUART(i);
+            PutsUART(UART_XBEE, "\n\r");
+*/
+
+//a partir de la, on va essayer de reculer si on peut ! les conditions qui suivent sont toutes les mêmes
+        //si on est dans un certain angle, on check les 2 cases derrieres ou devant lui selon le sens de la marche
+        //si elles sont libres, alors on peut reculer ou avancer
+        //si on rentre en evitement dans ce reculer ou avancer, on se stoppera et on continuera la fonction d'evitement
+
+
+        if(angle <= 22 || angle >= 339 ) //horizontale droite
         {
-            angle = (int)(angle + 360)%360;
+            if(obstacle[x_actuel - i][y_actuel/100] == 0 && obstacle[x_actuel - 2*i][y_actuel/100] == 0 ){
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+            }
         }
-        if((angle <= 22 || angle >= 339) && obstacle[x_actuel - i][y_actuel/100] == 0 && obstacle[x_actuel - 2*i][y_actuel/100] == 0 ) //horizontale CAPT_US_DROIT
+
+        else if (angle <= 68) //diagonale haut droite
+        {
+            if( obstacle[x_actuel - i][y_actuel +1*i] == 0 && obstacle[x_actuel - 2*i][y_actuel +2*i] == 0 ){
+                DETECTION = OFF;
+                avancer_reculer(-100*i, 50);
+            }
+        }
+        else if (angle <= 112) //verticale haut
+        {
+            if(obstacle[x_actuel][y_actuel +i] == 0 && obstacle[x_actuel][y_actuel +2*i] == 0 ){
+                DETECTION = OFF;
+                avancer_reculer(-100*i, 50);
+            }
+        }
+
+        else if (angle <= 158) //diagonale haut gauche
+        {
+            if(obstacle[x_actuel +i][y_actuel +i] == 0 && obstacle[x_actuel + 2*i][y_actuel +2*i] == 0){
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+            }
+        }
+
+        else if (angle <= 202) //horizontale gauche
+        {
+            if(obstacle[x_actuel +i][y_actuel] == 0 && obstacle[x_actuel + 2*i][y_actuel] == 0 ){
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+            }
+        }
+        else if (angle <= 248) //diagonale bas gauche
+        {
+            if(obstacle[x_actuel +i][y_actuel -i] == 0 && obstacle[x_actuel + 2*i][y_actuel -2*i] == 0 ){
+                DETECTION = OFF;
+                
+                avancer_reculer(-100*i, 50);
+            }
+        }
+
+        else if (angle <= 292) //verticale bas
+        {
+            if( obstacle[x_actuel][y_actuel -i] == 0 && obstacle[x_actuel][y_actuel -2*i] == 0 ){
+            DETECTION = OFF;
+            avancer_reculer(-100*i, 50);
+            }
+        }
+
+        else if (obstacle[x_actuel -i][y_actuel-i] == 0 && obstacle[x_actuel - 2*i][y_actuel-2*i] == 0 ) //diagonale bas droite
         {
             DETECTION = OFF;
             avancer_reculer(-100*i, 50);
         }
 
-        else if (angle <= 68 && obstacle[x_actuel - i][y_actuel +1*i] == 0 && obstacle[x_actuel - 2*i][y_actuel +2*i] == 0 ) //horizontale CAPT_US_DROIT
-        {
-            DETECTION = OFF;
-            avancer_reculer(-100*i, 50);
-        }
-        else if (angle <= 112 && obstacle[x_actuel][y_actuel +i] == 0 && obstacle[x_actuel][y_actuel +2*i] == 0 ) //horizontale CAPT_US_DROIT
-        {
-            DETECTION = OFF;
-            avancer_reculer(-100*i, 50);
-        }
 
-        else if (angle <= 158 && obstacle[x_actuel +i][y_actuel +i] == 0 && obstacle[x_actuel + 2*i][y_actuel +2*i] == 0 ) //horizontale CAPT_US_DROIT
-        {
-            DETECTION = OFF;
-            avancer_reculer(-100*i, 50);
-        }
+// on remet l'evitement comme il était
+            if(sens_marche == MARCHE_AVANT)
+            {
+                EVITEMENT_ADV_AVANT = ON;
+                EVITEMENT_ADV_ARRIERE = OFF;
 
-        else if (angle <= 202 && obstacle[x_actuel +i][y_actuel] == 0 && obstacle[x_actuel + 2*i][y_actuel] == 0 ) //horizontale CAPT_US_DROIT
-        {
-            DETECTION = OFF;
-            avancer_reculer(-100*i, 50);
-        }
-        else if (angle <= 248 && obstacle[x_actuel +i][y_actuel -i] == 0 && obstacle[x_actuel + 2*i][y_actuel -2*i] == 0 ) //horizontale CAPT_US_DROIT
-        {
-            DETECTION = OFF;
-            avancer_reculer(-100*i, 50);
-        }
+            }
+            else
+            {
+                EVITEMENT_ADV_ARRIERE = ON;
+                EVITEMENT_ADV_AVANT = OFF;
 
-        else if (angle <= 292 && obstacle[x_actuel][y_actuel -i] == 0 && obstacle[x_actuel][y_actuel -2*i] == 0 ) //horizontale CAPT_US_DROIT
-        {
-            DETECTION = OFF;
-            avancer_reculer(-100*i, 50);
-        }
-
-        else if (obstacle[x_actuel -i][y_actuel-i] == 0 && obstacle[x_actuel - 2*i][y_actuel-2*i] == 0 ) //horizontale CAPT_US_DROIT
-        {
-            DETECTION = OFF;
-            avancer_reculer(-100*i, 50);
-        }
-
-
-
-        if(sens_marche == MARCHE_AVANT){
-            i=1;
-            EVITEMENT_ADV_AVANT = ON;
-            EVITEMENT_ADV_ARRIERE = OFF;
-
-        }
-        else {
-            i=-1;
-            EVITEMENT_ADV_ARRIERE = ON;
-            EVITEMENT_ADV_AVANT = OFF;
-
-        }
+            }
 /*
             PutsUART(UART_XBEE,"cul de sac");
             PutIntUART(x_objectif);
@@ -2512,35 +2715,36 @@ PutsUART (UART_XBEE, "\n\r");
             PutcUART (UART_XBEE, '|');
 */
 
-            if (id == id_evitement_initial)
-            {
-                id_evitement_initial = id_evitement;
-                //PutsUART(UART_XBEE, "ordre de fin");
-                DETECTION = OFF;
-                if(last == rej)
-                {
-                    rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement);
-                }
-                else
-                {
-                    passe_part(x_objectif,y_objectif,sens_marche,pourcentage_deplacement,DEBUT_TRAJECTOIRE);
-                }
-            }
+//            if (id == id_evitement_initial)
+//            {
+//                id_evitement_initial = id_evitement;
+//                //PutsUART(UART_XBEE, "ordre de fin");
+//                DETECTION = OFF;
+//                if(last == rej)
+//                {
+//                    rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement);
+//                }
+//                else
+//                {
+//                    passe_part(x_objectif,y_objectif,sens_marche,pourcentage_deplacement,DEBUT_TRAJECTOIRE);
+//                }
+//            }
         }
     }
     //}
 
-                id_evitement_initial = id_evitement;
-                //PutsUART(UART_XBEE, "ordre de fin");
-                DETECTION = OFF;
-                if(last == rej)
-                {
-                    rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement);
-                }
-                else
-                {
-                    passe_part(x_objectif,y_objectif,sens_marche,pourcentage_deplacement,DEBUT_TRAJECTOIRE);
-                }
+    id_evitement_initial = id_evitement;
+    DETECTION = OFF;
+
+    //on redonne la consigne de base
+    if(last == rej || last == FIN_TRAJECTOIRE)
+    {
+        rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement);
+    }
+    else
+    {
+        passe_part(x_objectif,y_objectif,sens_marche,pourcentage_deplacement,DEBUT_TRAJECTOIRE);
+    }
 
 
     //PutsUART(UART_XBEE,"5");

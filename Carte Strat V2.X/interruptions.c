@@ -64,6 +64,13 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
     envoit_pwm(MOTEUR_GAUCHE, 0);
     envoit_pwm(MOTEUR_X, 0);
 
+#ifdef PETIT_ROBOT
+    pinces(PINCE_HAUT, RANGEMENT);
+    pinces(PINCE_MILIEU, RANGEMENT);
+    pinces(PINCE_BAS, RANGEMENT);
+    pinces(PINCE_ASCENSEUR, RACLETTE);
+#endif
+
     while(1);
     FLAG_TIMER_90s = 0;        //On clear le flag d'interruption du timer
 }
@@ -89,7 +96,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
         CAPTEUR3 = led;
 #endif
 #ifdef GROS_ROBOT
-        //CAPTEUR5 = led;
+        CAPTEUR5 = led;
 #endif
         compteur = 0;
     }

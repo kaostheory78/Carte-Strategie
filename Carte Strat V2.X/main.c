@@ -127,10 +127,10 @@ int main(int argc, char** argv)
 
     while(1)
     {
-        chenilles(DESCENDRE);
-        delay_ms(5000);
-        chenilles(MONTER);
-        delay_ms(5000);
+    chenilles(MONTER);
+    delay_ms(5000);
+    chenilles(DESCENDRE);
+    delay_ms(5000);
     }
 
     /*while(1)
@@ -152,8 +152,8 @@ int main(int argc, char** argv)
     /**************************************************************************/
     
     while(SYS_JACK);
-    //strategie();
-    homologation();
+    strategie();
+    //homologation();
 
     /**************************************************************************/
     /************************* POSITION D'ARRIVEE *****************************/

@@ -75,7 +75,7 @@ void rotation_us(void)
         {
             synchro_AX12(AX_US, angle, 1023, SANS_ATTENTE);
             angle -= 2;
-            if (angle < -28)
+            if (angle < -32)
                 sens = 1;
         }
         else
@@ -98,10 +98,10 @@ void chenilles(uint8_t action)
 {
     if(action==DESCENDRE)
     {
-        angle_AX12(CHENILLE_AV_G,1023,52,AVEC_ATTENTE);
-        angle_AX12(CHENILLE_AV_D, 0,52,AVEC_ATTENTE);
-        angle_AX12(CHENILLE_AR_G,1023,52,AVEC_ATTENTE);
-        angle_AX12(CHENILLE_AR_D, 0,52,AVEC_ATTENTE);
+        angle_AX12(CHENILLE_AV_G,885,52,AVEC_ATTENTE); //1023
+        angle_AX12(CHENILLE_AV_D, 138,52,AVEC_ATTENTE); //0
+        angle_AX12(CHENILLE_AR_G,885,52,AVEC_ATTENTE);
+        angle_AX12(CHENILLE_AR_D, 138,52,AVEC_ATTENTE);
         lancer_autom_AX12();
     }
     else
@@ -278,6 +278,14 @@ void autom_10ms (void)
         //Fonction permettant de lancer la fonction d'évitement
         if(EVITEMENT_ADV_AVANT == ON)
         {
+
+            if(evitement_en_cours == ON){
+                compteur_evitement++;
+            }
+            else {
+                compteur_evitement =0;
+            }
+
             if (  CAPT_US_BALISE == 1  && DETECTION == OFF)
             {
                 compteur = 0;
@@ -319,6 +327,13 @@ void autom_10ms (void)
         //Evitement arrière
         else if (EVITEMENT_ADV_ARRIERE == ON)
         {
+            if(evitement_en_cours == ON){
+                compteur_evitement++;
+            }
+            else {
+                compteur_evitement =0;
+            }
+
             if ( (CAPT_IR_AR_CENTRE == 0 || CAPT_US_AR_DROIT == 0 || CAPT_US_AR_GAUCHE == 0)  && DETECTION == OFF)
             {
                 compteur = 0;

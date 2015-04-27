@@ -103,6 +103,7 @@ void reinit_asserv(void)
 
     FLAG_ASSERV.brake = OFF;
     FLAG_ASSERV.erreur = DEPLACEMENT_NORMAL;
+    FLAG_ASSERV.vitesse_fin_nulle = ON;
     FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
     FLAG_ASSERV.phase_deceleration_distance = PHASE_NORMAL;
 
@@ -150,10 +151,12 @@ void reinit_asserv(void)
     VITESSE_ORIENTATION[ROUE_GAUCHE].actuelle = 0;
     VITESSE_ORIENTATION[ROUE_GAUCHE].consigne = 0;
     VITESSE_ORIENTATION[ROUE_GAUCHE].theorique = 0;
-
-    PORTCbits.RC5 = 1;
-
     
+    VITESSE_ORIENTATION[SYS_ROBOT].actuelle = 0;
+    VITESSE_ORIENTATION[SYS_ROBOT].consigne = 0;
+    VITESSE_ORIENTATION[SYS_ROBOT].theorique = 0;
+
+    PORTCbits.RC5 = 1;   
 }
 
 /******************************************************************************/
