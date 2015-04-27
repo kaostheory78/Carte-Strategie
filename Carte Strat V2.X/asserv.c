@@ -151,12 +151,12 @@ void reinit_asserv(void)
     VITESSE_ORIENTATION[ROUE_GAUCHE].actuelle = 0;
     VITESSE_ORIENTATION[ROUE_GAUCHE].consigne = 0;
     VITESSE_ORIENTATION[ROUE_GAUCHE].theorique = 0;
-    
+
     VITESSE_ORIENTATION[SYS_ROBOT].actuelle = 0;
     VITESSE_ORIENTATION[SYS_ROBOT].consigne = 0;
     VITESSE_ORIENTATION[SYS_ROBOT].theorique = 0;
 
-    PORTCbits.RC5 = 1;   
+    PORTCbits.RC5 = 1;
 }
 
 /******************************************************************************/
