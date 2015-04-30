@@ -34,33 +34,35 @@ extern "C" {
 
 #ifdef GROS_ROBOT
     
-    #define CARTE_V1
+    #define CARTE_V2
 
     /**************************************************************************/
     /****************************** ODOMETRIE *********************************/
     /**************************************************************************/
-    #define _ENTRAXE_MM                  308.58 //308.2     //Pas assez tourné -> augmenter entraxe
+    #define _ENTRAXE_MM                  308.25 //308.2     //Pas assez tourné -> augmenter entraxe
     #define _DIAMETRE_ROUE_CODEUSE       0
     #define _PERIMETRE_ROUE_MM           194.46 //194.4      // Si distance parcourue trop grande -> Augmenter la taille des roues
 
         //+COEF_D -> + a droite
-    #define  _COEF_D                    (double) 1.00531 //1.0055
-    #define  _COEF_G                    (double) 1.
+    #define  _COEF_G                    (double) 1.0053 //1.00531
+    #define  _COEF_D                    (double) 1.
 
 
     /**************************************************************************/
     /******************************** ASSERV **********************************/
     /**************************************************************************/
         //Association distance - Vitesse - Accélérations max
-    #define _VITESSE_CONSIGNE_MAX_MM     3.
-    #define _VITESSE_DISTANCE_MIN        1.
-    #define _VITESSE_MAX_MM_TENSION      4.
+    #define _VITESSE_CONSIGNE_MAX_MM     2.5
+    #define _VITESSE_DISTANCE_MIN        0.75
+    #define _VITESSE_MAX_MM_TENSION      6.
     #define _DISTANCE_CONSIGNE_MM        500. 
 
-    #define _ACC_POSITION_CONSIGNE       2.
-    #define _DCC_POSITION_CONSIGNE       3.5 //4
-    #define _ACC_POSITION_MIN             1.5
-    #define _DCC_POSITION_MIN             1.5
+    #define _ACC_POSITION_CONSIGNE       3.
+    #define _DCC_POSITION_CONSIGNE       4. //8
+    #define _ACC_POSITION_MIN            1.5
+    #define _DCC_POSITION_MIN            1.5
+
+    #define _COEF_FREINAGE              1.25
 
         //Association Angle - Vitesse - Accélérations max
     #define _VITESSE_ANGLE_MAX           0.02 //0.02
@@ -74,7 +76,7 @@ extern "C" {
 
         //Autres réglages asserv
     #define _SEUIL_IMMOBILITE            100 //200
-    #define _MAX_ERREUR_INTEGRALLE_V     2000
+    #define _MAX_ERREUR_INTEGRALLE_V     4500
     #define _MAX_E_INTEGRALLE_BRAKE      500.
 
     /**************************************************************************/
@@ -82,9 +84,9 @@ extern "C" {
     /**************************************************************************/
    
     //PID
-    #define _VITESSE_DIS_KP              0.4  //0.2
-    #define _VITESSE_DIS_KI              0.02 //0.01
-    #define _VITESSE_DIS_KD              0.2
+    #define _VITESSE_DIS_KP              0.45  //0.4
+    #define _VITESSE_DIS_KI              0.02 //0.02
+    #define _VITESSE_DIS_KD              0.25 //0.2
 
     #define _POSITION_KP                 1.
     #define _POSITION_KI                 0.
@@ -139,8 +141,8 @@ extern "C" {
     #define _SENS_ROT_D                  -1L
     #define _SENS_ROT_G                  1L
 
-    #define _AVANCER_MOTEUR_D            0
-    #define _RECULER_MOTEUR_D            1
+    #define _AVANCER_MOTEUR_D            1
+    #define _RECULER_MOTEUR_D            0
 
     #define _AVANCER_MOTEUR_G            1
     #define _RECULER_MOTEUR_G            0
@@ -213,6 +215,8 @@ extern "C" {
     #define _DCC_POSITION_CONSIGNE       2.8 //2.8
     #define _ACC_POSITION_MIN             1.5 //1.
     #define _DCC_POSITION_MIN             1.
+
+    #define _COEF_FREINAGE                1.
 
         //Association Angle - Vitesse - Accélérations max
     #define _VITESSE_ANGLE_MAX           0.015 

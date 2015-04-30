@@ -289,6 +289,7 @@ extern "C" {
     void strategie();
 
     void homologation();
+    void reglage_odometrie();
     
 
 

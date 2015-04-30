@@ -36,6 +36,24 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
    if (FLAG_ASSERV.totale == ON)
         asserv();
 
+   static int led = 1, compteur = 0;
+    compteur++;
+
+    if (compteur == 100)
+    {
+       if (led == 1)
+            led = 0;
+        else
+            led = 1;
+#ifdef PETIT_ROBOT
+        CAPTEUR3 = led;
+#endif
+#ifdef GROS_ROBOT
+        CAPTEUR5 = led;
+#endif
+        compteur = 0;
+    }
+
    Nop();
    
 }
@@ -82,24 +100,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
 {
     TIMER_10ms = DESACTIVE;
     autom_10ms();
-
-    static int led = 1, compteur = 0;
-    compteur++;
-
-    if (compteur == 100)
-    {
-       if (led == 1)
-            led = 0;
-        else
-            led = 1;
-#ifdef PETIT_ROBOT
-        CAPTEUR3 = led;
-#endif
-#ifdef GROS_ROBOT
-        CAPTEUR5 = led;
-#endif
-        compteur = 0;
-    }
 
     TMR4 = 0;
     FLAG_TIMER_10ms = 0;        //On clear le flag d'interruption du timer

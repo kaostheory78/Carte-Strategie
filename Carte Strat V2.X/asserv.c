@@ -300,8 +300,8 @@ void calcul_vitesse_position (double pourcentage_vitesse)
 
     if (VITESSE_MAX_POSITION > VITESSE_MAX_TENSION)
         VITESSE_MAX_POSITION = VITESSE_MAX_TENSION;
-    else if (VITESSE_MAX_POSITION < VITESSE_DISTANCE_MIN)
-        VITESSE_MAX_POSITION = VITESSE_DISTANCE_MIN;
+    else if (VITESSE_MAX_POSITION < VITESSE_DISTANCE_MIN_PAS)
+        VITESSE_MAX_POSITION = VITESSE_DISTANCE_MIN_PAS;
 }
 
 void calcul_acceleration_position (void)
@@ -366,8 +366,8 @@ void calcul_vitesse_orientation (double pourcentage_vitesse)
 
     if (VITESSE_MAX_ORIENTATION > VITESSE_MAX_TENSION)
         VITESSE_MAX_ORIENTATION = VITESSE_MAX_TENSION;
-    else if (VITESSE_MAX_ORIENTATION < VITESSE_ANGLE_MIN)
-        VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_MIN;
+    else if (VITESSE_MAX_ORIENTATION < VITESSE_ANGLE_MIN_PAS)
+        VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_MIN_PAS;
 }
 
 void calcul_acceleration_orientation (void)
@@ -662,18 +662,20 @@ void asserv_distance(void)
         if (distance_restante > 0)
         {
             VITESSE[SYS_ROBOT].consigne =  VITESSE_MAX_POSITION; //vmax
-            temps_freinage = VITESSE[SYS_ROBOT].theorique / (acc.deceleration.position);
+            //temps_freinage = VITESSE[SYS_ROBOT].theorique / (2 * acc.deceleration.position);
         }
         else if (distance_restante < 0)
         {
             VITESSE[SYS_ROBOT].consigne = - VITESSE_MAX_POSITION; //Vmin //-120
-            temps_freinage = VITESSE[SYS_ROBOT].theorique / (acc.acceleration.position);
+            //temps_freinage = VITESSE[SYS_ROBOT].theorique / (acc.acceleration.position);
         }
 
         //Génération de la courbe de freinage
        if (FLAG_ASSERV.vitesse_fin_nulle == ON)
        {
             temps_restant = distance_restante / VITESSE[SYS_ROBOT].theorique;
+            temps_freinage = VITESSE[SYS_ROBOT].theorique / (acc.deceleration.position);
+            temps_freinage /= COEF_FREINAGE;
 
             if (temps_freinage < 0.)
                 temps_freinage *= -1.;

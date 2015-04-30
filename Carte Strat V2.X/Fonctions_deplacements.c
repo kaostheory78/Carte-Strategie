@@ -49,8 +49,8 @@ void trapeze (int8_t sens_marche)
 //    passe_part (1000, 0  , sens_marche, 50, MILIEU_TRAJECTOIRE);
 //    passe_part (0   , 500, sens_marche, 50, MILIEU_TRAJECTOIRE);
 //    passe_part (0   , 0  , sens_marche, 50, FIN_TRAJECTOIRE);
-    rejoindre (1000, 500, sens_marche, 100);
-    rejoindre (1000, 0  , sens_marche, 100);
+    rejoindre (1500, 500, sens_marche, 100);
+    rejoindre (1500, 0  , sens_marche, 100);
     rejoindre (0   , 500, sens_marche, 100);
     rejoindre (0   , 0  , sens_marche, 100);
     orienter(0, 100);
