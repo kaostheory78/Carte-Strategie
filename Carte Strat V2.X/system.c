@@ -328,7 +328,7 @@ void ConfigPorts (void)
         _TRISA2         = 1;                                            // IN  : (DIGIT) : Capteur 1
 	_TRISA3		= 1;	_CN29IE	= 0;	_CN29PUE	= 0;	// IN  : (DIGIT) : capteur 2
 	_TRISA4		= 1;	_CN0IE	= 0;	_CN0PUE		= 0;	// IN  : (DIGIT) : capteur 3
-        _TRISA7		= 0;						// OUT : PWM Y
+        _TRISA7		= 0;						// OUT : (DIGIT) : Alim moteur Y
 	_TRISA8		= 1;						// IN  : (DIGIT) : capteur 4
 	_TRISA9		= 1;						// IN  : (DIGIT) : couleur
 	_TRISA10	= 0;						// OUT : (DIGIT) : Commande Alim AX12

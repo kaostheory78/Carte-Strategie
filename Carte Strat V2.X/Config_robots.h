@@ -25,8 +25,8 @@ extern "C" {
 /***************************** Defines ****************************************/
 /******************************************************************************/
 
-#define GROS_ROBOT
-//#define PETIT_ROBOT
+//#define GROS_ROBOT
+#define PETIT_ROBOT
 //#define ROBOT_TEST
 
 #define _Pi                             3.14159265359
@@ -149,6 +149,9 @@ extern "C" {
 
     #define _AVANCER_MOTEUR_X            0
     #define _RECULER_MOTEUR_X            1
+
+    #define _AVANCER_MOTEUR_Y            0
+    #define _RECULER_MOTEUR_Y            1
 #endif
 
     /**************************************************************************/
@@ -293,6 +296,9 @@ extern "C" {
 
     #define _AVANCER_MOTEUR_X            0
     #define _RECULER_MOTEUR_X            1
+
+    #define _AVANCER_MOTEUR_Y            0
+    #define _RECULER_MOTEUR_Y            1
 
     /**************************************************************************/
     /***************************** PORTS CARTE ********************************/

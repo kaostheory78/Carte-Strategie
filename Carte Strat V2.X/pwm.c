@@ -134,6 +134,23 @@ void envoit_pwm (char moteur, double valeur)
 #endif
 }
 
+#ifdef CARTE_V2
+void alimenter_moteur_Y (uint8_t alim, int8_t sens_marche)
+{
+    if (alim == ON)
+    {
+        if (sens_marche == MARCHE_AVANT)
+            SENS_MOTEUR_Y = AVANCER_MOTEUR_Y;
+        else
+            SENS_MOTEUR_Y = RECULER_MOTEUR_Y;
+        ALIM_MOTEUR_Y = ACTIVE;
+    }
+    else
+        ALIM_MOTEUR_Y = DESACTIVE;
+}
+
+#endif
+
 
 /******************************************************************************/
 /******************************************************************************/

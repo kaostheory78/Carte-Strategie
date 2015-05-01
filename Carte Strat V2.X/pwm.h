@@ -49,6 +49,9 @@ extern "C" {
 #define AVANCER_MOTEUR_X        _AVANCER_MOTEUR_X
 #define RECULER_MOTEUR_X        _RECULER_MOTEUR_X
 
+#define AVANCER_MOTEUR_Y        _AVANCER_MOTEUR_Y
+#define RECULER_MOTEUR_Y        _RECULER_MOTEUR_Y
+
 /******************************************************************************/
 /***************************** MAPPING ****************************************/
 /******************************************************************************/
@@ -68,6 +71,10 @@ extern "C" {
 
     void ConfigPWM (void);
     void envoit_pwm (char moteur, double valeur);
+
+#ifdef CARTE_V2
+    void alimenter_moteur_Y (uint8_t alim, int8_t sens_marche);
+#endif
 
 
 #ifdef	__cplusplus

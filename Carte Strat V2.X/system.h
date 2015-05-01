@@ -102,6 +102,7 @@ extern "C" {
     #define SENS_MOTEUR_GAUCHE  PORTBbits.RB10
     #define SENS_MOTEUR_X       PORTBbits.RB14
     #define SENS_MOTEUR_Y       PORTAbits.RA10
+    #define ALIM_MOTEUR_Y       PORTAbits.RA7
 
     #define XBEE_RESET          PORTBbits.RB7
     #define INHIBIT_AX12        PORTAbits.RA0

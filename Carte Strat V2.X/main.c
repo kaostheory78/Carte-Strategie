@@ -145,8 +145,8 @@ int main(int argc, char** argv)
     /**************************************************************************/
     
     while(SYS_JACK);
-    reglage_odometrie();
-    //strategie();
+    //reglage_odometrie();
+    strategie();
     //homologation();
 
     /**************************************************************************/
