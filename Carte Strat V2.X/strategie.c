@@ -25,7 +25,43 @@ void strategie()
     COULEUR = couleur_depart();
     
     #ifdef GROS_ROBOT
+        COULEUR = JAUNE;
+
+        init_jack();
         delay_ms(2000);
+        
+        init_position_robot(180, 988, 0);
+        FLAG_ACTION = INIT_ASCENSEUR;
+
+        // Direction Gobelet face zone départ
+        passe_part(620, 988, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+        passe_part(683, 991, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        passe_part(675, 998, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        passe_part(742, 1112,MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+
+        passe_part(663, 334, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+        passe_part(445, 324, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        passe_part(438, 309, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        passe_part(410, 342, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+
+//        chenilles(DESCENDRE);
+//        //chenilles(MONTER);
+//        FLAG_ASSERV.fin_deplacement = FIN_DEPLACEMENT;
+//        FLAG_ASSERV.position = OFF;
+//        FLAG_ASSERV.brake = OFF;
+//        FLAG_ASSERV.orientation = OFF;
+//        delay_ms(2000);
+//
+//        alimenter_moteur_Y(ON, MARCHE_AVANT);
+//
+//        delay_ms(4000);
+//
+//                angle_AX12(CHENILLE_AV_G,512+150,52,AVEC_ATTENTE); //1023
+//        angle_AX12(CHENILLE_AV_D, 512-150,52,AVEC_ATTENTE); //0
+//        angle_AX12(CHENILLE_AR_G,512+300,52,AVEC_ATTENTE);
+//        angle_AX12(CHENILLE_AR_D, 512 - 300,52,AVEC_ATTENTE);
+//        lancer_autom_AX12();
+
         
     #endif
 

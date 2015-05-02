@@ -25,8 +25,8 @@ extern "C" {
 /***************************** Defines ****************************************/
 /******************************************************************************/
 
-//#define GROS_ROBOT
-#define PETIT_ROBOT
+#define GROS_ROBOT
+//#define PETIT_ROBOT
 //#define ROBOT_TEST
 
 #define _Pi                             3.14159265359
@@ -162,10 +162,11 @@ extern "C" {
     //La définition des ports relatif à chaque carte se trouve
     //Dans le fichier system.h
     
-    #define CAPT_US_BALISE              CAPTEUR3
-    #define CAPT_GOBELET                CAPTEUR1
-    #define CAPT_IR_AR_CENTRE           CAPTEUR2
-    #define CAPT_US_AR_GAUCHE           CAPTEUR4
+    #define CAPT_US_BALISE              CAPTEUR8
+    #define CAPT_GOBELET_D              CAPTEUR3
+    #define CAPT_GOBELET_G              CAPTEUR4
+    #define CAPT_IR_AR_CENTRE           CAPTEUR8
+    #define CAPT_US_AR_GAUCHE           CAPTEUR8
     #define CAPT_US_AR_DROIT            CAPTEUR8
 
     #define _CAPTEUR1_ANALOGIQUE        DIGITAL

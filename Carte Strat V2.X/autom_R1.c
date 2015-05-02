@@ -22,48 +22,11 @@
 
 #ifdef GROS_ROBOT
 
-void jack()
-{
-    while(!SYS_JACK);
-    while(SYS_JACK);
-}
-
 void son_evitement (uint8_t melodie)
 {
     Nop();
     //commande_AX12(100, _4PARAM, WRITE_DATA, 0x29, 10, NC, NC, NC);
     //commande_AX12(100, _4PARAM, WRITE_DATA, 0x28, melodie, NC, NC, NC);
-}
-
-void eclairage_robot (void)
-{
-    static float pourcetage_eclairage = 5;
-    static char sens = 0;
-    if (sens == 0)
-    {
-        if (pourcetage_eclairage < 75)
-        {
-            pourcetage_eclairage += 0.5;
-        }
-        else
-            sens = 1;
-    }
-    else
-    {
-        if (pourcetage_eclairage > 2)
-        {
-            pourcetage_eclairage -= 0.5;
-        }
-        else
-            sens = 0;
-    }
-
-    if (pourcetage_eclairage > 100)
-        pourcetage_eclairage = 100;
-    else if (pourcetage_eclairage < 2)
-        pourcetage_eclairage = 2;
-
-    envoit_pwm(MOTEUR_X, (double) pourcetage_eclairage);
 }
 
 void rotation_us(void)
@@ -115,126 +78,164 @@ void chenilles(uint8_t action)
     }
 }
 
-void pince(uint8_t action)
+void pince(uint8_t cote,uint8_t action)
 {
-    switch (action)
+    if(cote==DROITE)
     {
+       switch (action)
+      {
         case FERMER:
-            angle_AX12(PINCE,480,200,SANS_ATTENTE);
-            break;
+           angle_AX12(PINCE_D,855,500,SANS_ATTENTE);
+           break;
         case RANGEMENT:
-            angle_AX12(PINCE,230,1023,SANS_ATTENTE);
-            break;
+           angle_AX12(PINCE_D,735,500,SANS_ATTENTE);
+           break;
         case OUVERTE:
-            angle_AX12(PINCE,350,800,SANS_ATTENTE);
-            break;
+           angle_AX12(PINCE_D,980,500,SANS_ATTENTE);
+           break;
+       }
     }
-}
-
-void depose_tapis(uint8_t action, uint8_t cote)
-{
-    if(cote==DROITE){
+   else
+   {
         switch (action)
         {
-            case EN_HAUT:
-                angle_AX12(DEPOSE_TAPIS_D,820,150,SANS_ATTENTE);
-                break;
-            case INTERMEDIAIRE:
-                angle_AX12(DEPOSE_TAPIS_D,650,350,SANS_ATTENTE);
-                break;
-            case DEPOSE:
-                angle_AX12(DEPOSE_TAPIS_D,620,130,SANS_ATTENTE);
-                break;
-        }
-    }else{        switch (action)
-        {
-            case EN_HAUT:
-                angle_AX12(DEPOSE_TAPIS_G,500,150,SANS_ATTENTE);
-                break;
-            case INTERMEDIAIRE:
-                angle_AX12(DEPOSE_TAPIS_G,670,350,SANS_ATTENTE);
-                break;
-            case DEPOSE:
-                angle_AX12(DEPOSE_TAPIS_G,700,130,SANS_ATTENTE);
-                break;
+        case RANGEMENT:
+           angle_AX12(PINCE_G ,580,500,SANS_ATTENTE);
+           break;
+        case FERMER:
+           angle_AX12(PINCE_G ,480,500,SANS_ATTENTE);
+           break;
+        case OUVERTE:
+           angle_AX12(PINCE_G ,350,500,SANS_ATTENTE);
+           break;
         }
     }
 }
 
-
-void pince_tapis(uint8_t action, uint8_t cote)
+void tapis(uint8_t cote, uint8_t action)
 {
-    if(cote==DROITE){
-        switch (action)
-        {
-            case EN_HAUT:
-                angle_AX12(PINCE_TAPIS_D,200,800,SANS_ATTENTE);
-                break;
-            case DEPOSE:
-                angle_AX12(PINCE_TAPIS_D,720,800,SANS_ATTENTE);
-                break;
-        }
-    }else{        switch (action)
-        {
-            case EN_HAUT:
-                angle_AX12(PINCE_TAPIS_G,500,800,SANS_ATTENTE);
-                break;
-            case DEPOSE:
-                angle_AX12(PINCE_TAPIS_G,120,800,SANS_ATTENTE);
-                break;
-        }
-    }
-}
-
-void deploie_bras(uint8_t action, uint8_t cote){
-    if(cote==DROITE){
-        switch (action)
-        {
-            case RANGEMENT:
-                angle_AX12(BRAS_DROIT,980,800,SANS_ATTENTE);
-                break;
-            case OUVERTE:
-                angle_AX12(BRAS_DROIT,780,800,SANS_ATTENTE);
-                break;
-        }
-    }else{        switch (action)
-        {
-            case RANGEMENT:
-                angle_AX12(BRAS_GAUCHE,220,800,SANS_ATTENTE);
-                break;
-            case OUVERTE:
-                angle_AX12(BRAS_GAUCHE,420,800,SANS_ATTENTE);
-                break;
-        }
-    }
-
-}
-
-
-void attrape_gobelet (void)
-{
-    if (CAPT_GOBELET == 0)
+    if(cote==DROITE)
     {
-        pince(FERMER);
-        FLAG_ACTION  = NE_RIEN_FAIRE;
+        switch (action)
+        {
+            case RANGEMENT:
+                angle_AX12(PINCE_TAPIS_D,788,1023,SANS_ATTENTE);
+                break;
+            case OUVERT:
+                angle_AX12(PINCE_TAPIS_D,585,1023,SANS_ATTENTE);
+                break;
+            case DEPOSE:
+                angle_AX12(PINCE_TAPIS_D,533,1023,SANS_ATTENTE);
+                break;
+        }
+    }
+    else
+    {
+        switch (action)
+        {
+            case RANGEMENT:
+                angle_AX12(PINCE_TAPIS_G ,10,1023,SANS_ATTENTE);
+                break;
+            case OUVERT:
+                angle_AX12(PINCE_TAPIS_G ,10,1023,SANS_ATTENTE);
+                break;
+            case DEPOSE:
+                angle_AX12(PINCE_TAPIS_G ,10,1023,SANS_ATTENTE);
+                break;
+        }
     }
 }
+
+void bras(uint8_t cote, uint8_t action)
+{
+    if(cote==DROITE)
+    {
+        switch (action)
+        {
+            case FERMER:
+                angle_AX12(BRAS_DROIT,566,1023,SANS_ATTENTE);
+                break;
+            case OUVERTE:
+                angle_AX12(BRAS_DROIT,800,1023,SANS_ATTENTE);
+                break;
+        }
+    }
+    else
+    {
+        switch (action)
+        {
+            case FERMER:
+                angle_AX12(BRAS_GAUCHE,466,1023,SANS_ATTENTE);
+                break;
+            case OUVERTE:
+                angle_AX12(BRAS_GAUCHE,209,1023,SANS_ATTENTE);
+                break;
+        }
+    }
+}
+
+void ascenseur(uint8_t action)
+{
+        switch (action)
+        {   
+            case AVANT:
+                angle_AX12(ASCENSEUR,190,1023,SANS_ATTENTE);
+                break;
+            case ARRIERE:
+                angle_AX12(ASCENSEUR,1009,1023,SANS_ATTENTE);
+                break;
+        }
+}
+
+
+/******************************************************************************/
+/**************************** FONCTIONS D'INITS *******************************/
+/******************************************************************************/
+
 
 void init_jack()
 {
-    pince(RANGEMENT);
-    depose_tapis(EN_HAUT,DROITE);
-    pince_tapis(EN_HAUT,DROITE);
-    depose_tapis(EN_HAUT,GAUCHE);
-    pince_tapis(EN_HAUT,GAUCHE);
-    deploie_bras(RANGEMENT,GAUCHE);
-    deploie_bras(RANGEMENT,DROITE);
+    pince(DROITE, RANGEMENT);
+    pince(GAUCHE, RANGEMENT);
+    chenilles(MONTER);
+
+    bras(DROITE, FERMER);
+    bras(GAUCHE, FERMER);
+
+    delay_ms(1000);
+    ascenseur(ARRIERE);
 }
 
 void init_depart()
 {
-    pince(OUVERTE);
+    if (read_data(ASCENSEUR, LIRE_MOUV_FLAG) == 0)
+    {
+        pince(DROITE, OUVERTE);
+        pince(GAUCHE, OUVERTE);
+        FLAG_ACTION = ATTRAPE_GOBELET;
+    }
 }
+
+/******************************************************************************/
+/******************************** FONCTIONS AUTOM *****************************/
+/******************************************************************************/
+
+void attrape_gobelet ()
+{
+    static uint8_t statut_pince_D = LIBRE, status_pince_G = LIBRE;
+    
+    if (CAPT_GOBELET_D == 0 && statut_pince_D == LIBRE)
+    {
+        pince(DROITE, FERMER);
+        statut_pince_D = FERMER;
+    }
+    if (CAPT_GOBELET_G == 0 && status_pince_G == LIBRE)
+    {
+        pince(GAUCHE, FERMER);
+        status_pince_G = FERMER;
+    }
+}
+
 
 /******************************************************************************/
 /******************************** FONCTION BOUCLE *****************************/
@@ -247,8 +248,6 @@ void autom_10ms (void)
     static uint16_t compteur = 0;
     static uint8_t  evitement_en_cours = OFF;
 
-    eclairage_robot();
-
         /**********************************************************************/
         /******************************* Autom ********************************/
         /**********************************************************************/
@@ -258,14 +257,15 @@ void autom_10ms (void)
         {
             case NE_RIEN_FAIRE:
                 break;
+            case INIT_ASCENSEUR :
+                ascenseur(AVANT);
+                FLAG_ACTION = INIT_DEPART;
+                break;
             case INIT_DEPART :
                 init_depart();
                 break;
             case ATTRAPE_GOBELET :
                 attrape_gobelet();
-                break;
-            case INIT_JACK :
-                init_jack();
                 break;
             default :
                 break;

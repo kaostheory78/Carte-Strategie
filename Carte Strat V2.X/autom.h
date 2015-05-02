@@ -71,18 +71,20 @@ extern "C" {
 #endif
 
 #ifdef  GROS_ROBOT
-    #define PINCE                   10
-
+     #define PINCE_D                 24
+    #define PINCE_G                 19
     // TAPIS
-    #define DEPOSE_TAPIS_D          25
-    #define DEPOSE_TAPIS_G          12
-    #define PINCE_TAPIS_D           26
-    #define PINCE_TAPIS_G           1
-    #define AX_US                   17
+
+    #define PINCE_TAPIS_D           12
+    #define PINCE_TAPIS_G           3
+    #define AX_US                   0
 
     // BRAS
-    #define BRAS_DROIT              22
-    #define BRAS_GAUCHE             3
+    #define BRAS_DROIT              25
+    #define BRAS_GAUCHE             1
+
+    // ASCENCEUR
+    #define ASCENSEUR               26
 
     //Chenilles
     #define CHENILLE_AV_G           18
@@ -123,6 +125,7 @@ extern "C" {
     /**************************************************************************/
 
 #define FERMER              1
+#define OUVERT              2
 #define OUVERTE             2
 #define RELACHE             3
 #define RACLETTE            4
@@ -143,7 +146,11 @@ extern "C" {
 #define LIBRE               19
 
 #define DROITE              30
+#define DROIT               30
 #define GAUCHE              31
+
+#define AVANT               32
+#define ARRIERE             33
 
     /**************************************************************************/
     /************************* DEFINE FLAG_ACTION *****************************/
@@ -167,9 +174,10 @@ extern "C" {
 #endif
 
 #ifdef GROS_ROBOT
-    #define ATTRAPE_GOBELET             1
+    #define INIT_ASCENSEUR              1
     #define INIT_DEPART                 2
     #define INIT_JACK                   3
+    #define ATTRAPE_GOBELET             4
 
 
 #endif
@@ -217,23 +225,55 @@ extern "C" {
 #ifdef  GROS_ROBOT
 
     void rotation_us(void);
-    void pince(uint8_t action);
-    void eclairage_robot (void);
-    void attrape_gobelet (void);
+
+    // Fonctions d'init
     void init_jack();
     void init_depart();
 
 
-     void rotation_us(void);
-    void pince(uint8_t action);
-    void eclairage_robot (void);
-    void attrape_gobelet (void);
-    void init_jack();
-    void init_depart();
-    void deploie_bras(uint8_t action, uint8_t cote);
-    void pince_tapis(uint8_t action, uint8_t cote);
-    void depose_tapis(uint8_t action, uint8_t cote);
+    //Fonction AX12
+
+    /**
+     * Fonction qui déploie les chenilles
+     * @param action : MONTER pour ranger les chenilles, DESCENDRE pour les descendre
+     */
     void chenilles(uint8_t action);
+
+    /**
+     * Fonction pour ouvrir les bras du robot
+     * @param cote : DROIT / GAUCHE
+     * @param action : OUVERT / FERMER
+     */
+    void bras(uint8_t cote, uint8_t action);
+
+    /**
+     * Fonction qui ouvre les bras des tapis
+     * @param cote : DROIT / GAUCHE
+     * @param action : RANGEMENT / OUVERT / DEPOSE
+     */
+    void tapis(uint8_t cote, uint8_t action);
+
+    /**
+     * Fonction qui ouvre les pinces avant
+     * @param cote DROIT / GAUCHE
+     * @param action : OUVERTE / FERMER / RANGEMENT
+     */
+    void pince(uint8_t cote,uint8_t action);
+
+    /**
+     * Foncion qui range les pinces à l'interieur du robot
+     * @param action : AVANT / ARRIERE
+     */
+    void ascenseur(uint8_t action);
+
+
+
+    /**************************************************************************/
+    /**************************************************************************/
+    /**************************************************************************/
+
+
+    void attrape_gobelet ();
 
 #endif
 
