@@ -36,6 +36,9 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
    if (FLAG_ASSERV.totale == ON)
         asserv();
 
+   if (FLAG_ACTION == ARRIVEE_MARCHE)
+       COMPTEUR_MARCHE = COMPTEUR_MARCHE + 1;
+
    static int led = 1, compteur = 0;
     compteur++;
 
@@ -49,7 +52,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
         CAPTEUR3 = led;
 #endif
 #ifdef GROS_ROBOT
-        CAPTEUR5 = led;
+        //CAPTEUR5 = led;
 #endif
         compteur = 0;
     }

@@ -91,6 +91,7 @@ extern "C" {
 //types de données à lire :
 #define LIRE_TEMPS_REPONSE  0x05
 #define LIRE_POSITION_ACTU  0x24
+#define LIRE_POSITION_CONSIGNE 0x30
 #define LIRE_VITESSE_ACTU   0x26
 #define LIRE_TENSION        0x2A
 #define LIRE_TEMPERATURE    0x2B

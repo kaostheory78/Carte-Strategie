@@ -1877,15 +1877,15 @@ void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
 #endif
 
 #ifdef GROS_ROBOT
-    if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_AR_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+    if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_US_BALISE && EVITEMENT_ADV_ARRIERE == ON))
     {
         centre = 1;
     }
-    if(1 == CAPT_US_AR_GAUCHE && EVITEMENT_ADV_ARRIERE == ON)
+    if(1 == CAPT_US_AV_GAUCHE && EVITEMENT_ADV_AVANT == ON)
     {
         droite = 1;
     }
-    if(1 == CAPT_US_AR_DROIT && EVITEMENT_ADV_ARRIERE == ON)
+    if(1 == CAPT_US_AV_DROIT && EVITEMENT_ADV_AVANT == ON)
     {
         gauche = 1;
     }

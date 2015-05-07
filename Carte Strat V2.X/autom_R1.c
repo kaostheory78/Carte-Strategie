@@ -24,9 +24,9 @@
 
 void son_evitement (uint8_t melodie)
 {
-    Nop();
-    //commande_AX12(100, _4PARAM, WRITE_DATA, 0x29, 10, NC, NC, NC);
-    //commande_AX12(100, _4PARAM, WRITE_DATA, 0x28, melodie, NC, NC, NC);
+    //Nop();
+    commande_AX12(100, _4PARAM, WRITE_DATA, 0x29, 10, NC, NC, NC);
+    commande_AX12(100, _4PARAM, WRITE_DATA, 0x28, melodie, NC, NC, NC);
 }
 
 void rotation_us(void)
@@ -38,15 +38,15 @@ void rotation_us(void)
         if (sens == 0)
         {
             synchro_AX12(AX_US, angle, 1023, SANS_ATTENTE);
-            angle -= 2;
-            if (angle < -32)
+            angle -= 3;
+            if (angle < -60)
                 sens = 1;
         }
         else
         {
             synchro_AX12(AX_US, angle, 1023, SANS_ATTENTE);
-            angle += 2;
-            if (angle > 24)
+            angle += 3;
+            if (angle > 60)
             sens = 0;
         }
    // }
@@ -62,19 +62,27 @@ void chenilles(uint8_t action)
 {
     if(action==DESCENDRE)
     {
-        angle_AX12(CHENILLE_AV_G,885,52,AVEC_ATTENTE); //1023
-        angle_AX12(CHENILLE_AV_D, 138,52,AVEC_ATTENTE); //0
-        angle_AX12(CHENILLE_AR_G,885,52,AVEC_ATTENTE);
-        angle_AX12(CHENILLE_AR_D, 138,52,AVEC_ATTENTE);
+        angle_AX12(CHENILLE_AV_G,885,200,AVEC_ATTENTE); //1023
+        angle_AX12(CHENILLE_AV_D, 138,200,AVEC_ATTENTE); //0
+        angle_AX12(CHENILLE_AR_G,885,200,AVEC_ATTENTE);
+        angle_AX12(CHENILLE_AR_D, 138,200,AVEC_ATTENTE);
+        lancer_autom_AX12();
+    }
+    else if (action == MONTER)
+    {
+        angle_AX12(CHENILLE_AV_G,512,200,AVEC_ATTENTE);
+        angle_AX12(CHENILLE_AV_D,512,200,AVEC_ATTENTE);
+        angle_AX12(CHENILLE_AR_G,512,200,AVEC_ATTENTE);
+        angle_AX12(CHENILLE_AR_D,512,200,AVEC_ATTENTE);
         lancer_autom_AX12();
     }
     else
     {
-        angle_AX12(CHENILLE_AV_G,512,52,AVEC_ATTENTE);
-        angle_AX12(CHENILLE_AV_D,512,52,AVEC_ATTENTE);
-        angle_AX12(CHENILLE_AR_G,512,52,AVEC_ATTENTE);
-        angle_AX12(CHENILLE_AR_D,512,52,AVEC_ATTENTE);
-        lancer_autom_AX12();
+        angle_AX12(CHENILLE_AV_G,662,200,SANS_ATTENTE); //1023
+        angle_AX12(CHENILLE_AV_D, 362,200,SANS_ATTENTE); //0
+        angle_AX12(CHENILLE_AR_G,812,200,SANS_ATTENTE);
+        angle_AX12(CHENILLE_AR_D, 212,200,SANS_ATTENTE);
+        //lancer_autom_AX12();
     }
 }
 
@@ -156,7 +164,7 @@ void bras(uint8_t cote, uint8_t action)
                 angle_AX12(BRAS_DROIT,566,1023,SANS_ATTENTE);
                 break;
             case OUVERTE:
-                angle_AX12(BRAS_DROIT,800,1023,SANS_ATTENTE);
+                angle_AX12(BRAS_DROIT,700,1023,SANS_ATTENTE);
                 break;
         }
     }
@@ -168,7 +176,7 @@ void bras(uint8_t cote, uint8_t action)
                 angle_AX12(BRAS_GAUCHE,466,1023,SANS_ATTENTE);
                 break;
             case OUVERTE:
-                angle_AX12(BRAS_GAUCHE,209,1023,SANS_ATTENTE);
+                angle_AX12(BRAS_GAUCHE,309,1023,SANS_ATTENTE);
                 break;
         }
     }
@@ -187,6 +195,20 @@ void ascenseur(uint8_t action)
         }
 }
 
+void monter_balise ()
+{
+    angle_AX12(BALISE_GAUCHE, 512, 250, AVEC_ATTENTE);
+    angle_AX12(BALISE_DROITE, 512, 250, AVEC_ATTENTE);
+    lancer_autom_AX12();
+}
+
+void descendre_balise (void)
+{
+    angle_AX12(BALISE_GAUCHE, 840, 80, AVEC_ATTENTE);
+    angle_AX12(BALISE_DROITE, 166, 80, AVEC_ATTENTE);
+    lancer_autom_AX12();
+}
+
 
 /******************************************************************************/
 /**************************** FONCTIONS D'INITS *******************************/
@@ -201,6 +223,8 @@ void init_jack()
 
     bras(DROITE, FERMER);
     bras(GAUCHE, FERMER);
+
+    monter_balise();
 
     delay_ms(1000);
     ascenseur(ARRIERE);
@@ -220,9 +244,15 @@ void init_depart()
 /******************************** FONCTIONS AUTOM *****************************/
 /******************************************************************************/
 
-void attrape_gobelet ()
+void attrape_gobelet (uint8_t reinit)
 {
     static uint8_t statut_pince_D = LIBRE, status_pince_G = LIBRE;
+
+    if (reinit == ON)
+    {
+        status_pince_G = LIBRE;
+        statut_pince_D = LIBRE;
+    }
     
     if (CAPT_GOBELET_D == 0 && statut_pince_D == LIBRE)
     {
@@ -233,6 +263,60 @@ void attrape_gobelet ()
     {
         pince(GAUCHE, FERMER);
         status_pince_G = FERMER;
+    }
+}
+
+void montee_des_marches ()
+{
+    static uint8_t etat = 0;
+    uint16_t attente = 0;
+    static uint8_t detection = 0;
+
+    if (etat == 0)
+    {
+        chenilles(DESCENDRE);
+        etat = 1;
+    }
+    else if (etat == 1 && read_data(CHENILLE_AR_D, LIRE_MOUV_FLAG) == 0 && read_data(CHENILLE_AR_G, LIRE_MOUV_FLAG) == 0 )
+    {
+        descendre_balise();
+        alimenter_moteur_Y(ON, MARCHE_AVANT);
+        etat = 2;
+    }
+    else if (etat == 2)
+    {
+        //attente++;
+        //if (attente >= 10)
+        //{
+            if (INCLINOMETRE == 1)
+               //detection++;
+            //else
+            //    detection = 0;
+
+            //if (detection > 2)
+                    etat = 3;
+           // attente = 10;
+        //}
+        
+    }
+    else if (etat == 3)
+    {
+        chenilles(INTERMEDIAIRE);
+        //if (read_data(CHENILLE_AV_G, LIRE_POSITION_CONSIGNE) == 662 && read_data(CHENILLE_AR_G, LIRE_POSITION_CONSIGNE) == 812)
+        //{
+         //   lancer_autom_AX12();
+            COMPTEUR_MARCHE = 0;
+            FLAG_ACTION = ARRIVEE_MARCHE;
+        //}
+    }
+}
+
+void arrive_marche ()
+{
+    if (COMPTEUR_MARCHE >= 2500)
+    {
+        alimenter_moteur_Y(OFF, MARCHE_AVANT);
+        FLAG_ACTION = NE_RIEN_FAIRE;
     }
 }
 
@@ -265,7 +349,17 @@ void autom_10ms (void)
                 init_depart();
                 break;
             case ATTRAPE_GOBELET :
-                attrape_gobelet();
+                attrape_gobelet(ON);
+                FLAG_ACTION = ATTRAPE_GOBELET2;
+                break;
+            case ATTRAPE_GOBELET2 :
+                attrape_gobelet(OFF);
+                break;
+            case MONTEE_MARCHE :
+                montee_des_marches();
+                break;
+            case ARRIVEE_MARCHE :
+                arrive_marche();
                 break;
             default :
                 break;
@@ -287,7 +381,7 @@ void autom_10ms (void)
                 compteur_evitement =0;
             }
 
-            if (  CAPT_US_BALISE == 1  && DETECTION == OFF)
+            if (  (CAPT_US_BALISE == 1 || CAPT_US_AV_DROIT == 1 || CAPT_US_AV_GAUCHE == 1)  && DETECTION == OFF )
             {
                 compteur = 0;
                 DETECTION = ON;
@@ -301,7 +395,7 @@ void autom_10ms (void)
                 if (compteur > 20)
                 {
                     compteur = 20;
-                    if (CAPT_US_BALISE == 0)
+                    if (CAPT_US_BALISE == 0 ||CAPT_US_AV_DROIT == 0 || CAPT_US_AV_GAUCHE == 0)
                     {
                         DETECTION = OFF;
                         unbrake();
@@ -335,7 +429,7 @@ void autom_10ms (void)
                 compteur_evitement =0;
             }
 
-            if ( (CAPT_IR_AR_CENTRE == 0 || CAPT_US_AR_DROIT == 0 || CAPT_US_AR_GAUCHE == 0)  && DETECTION == OFF)
+            if ( (CAPT_US_ARRIERE == 1)  && DETECTION == OFF)
             {
                 compteur = 0;
                 DETECTION = ON;
@@ -349,7 +443,7 @@ void autom_10ms (void)
                 if (compteur > 20)
                 {
                     compteur = 20;
-                    if (CAPT_IR_AR_CENTRE == 1 && CAPT_US_AR_DROIT == 1 && CAPT_US_AR_GAUCHE == 1)
+                    if (CAPT_US_ARRIERE == 0)
                     {
                         DETECTION = OFF;
                         unbrake();

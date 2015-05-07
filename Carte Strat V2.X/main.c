@@ -74,6 +74,7 @@
     uint8_t STRATEGIE_EVITEMENT;
     uint16_t FLAG_ACTION;
     uint8_t ETAT_AUTOM;
+    uint16_t COMPTEUR_MARCHE;
 
 
     int obstacle[30][20];
@@ -125,18 +126,24 @@ int main(int argc, char** argv)
     init_position_AX12();
     EVITEMENT_ADV_AVANT = ON;
 
-    /*while(1)
-    {
-        static uint16_t compteur = 0;
-
-        compteur ++;
-        if (compteur > 65530)
-        {
-            compteur = 0;
-            PutIntUART( ADC1BUF0);
-            PutsUART(UART_XBEE, "\n\r");
-        }
-    }*/
+//    while(1)
+//    {
+////        static uint16_t compteur = 0;
+////
+////        compteur ++;
+////        if (compteur > 65530)
+////        {
+////            compteur = 0;
+////            PutIntUART( ADC1BUF0);
+////            PutsUART(UART_XBEE, "\n\r");
+////        }
+//
+//
+//        monter_balise();
+//        delay_ms(4000);
+//        descendre_balise();
+//        delay_ms(4000);
+//    }
 
     
 

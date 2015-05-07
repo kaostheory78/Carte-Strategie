@@ -227,6 +227,7 @@ extern "C" {
     extern uint8_t COULEUR;
     extern uint16_t FLAG_ACTION;
     extern uint8_t ETAT_AUTOM;
+    extern uint16_t COMPTEUR_MARCHE;
 
     extern _ax12 ax12;
 

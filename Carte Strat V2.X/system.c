@@ -51,6 +51,7 @@ void init_system (void)
     FLAG_ACTION = NE_RIEN_FAIRE;
     ETAT_AUTOM = NE_RIEN_FAIRE;
     COULEUR = JAUNE;
+    COMPTEUR_MARCHE = 0;
 
     TIMER_5ms = ACTIVE;
     TIMER_10ms = ACTIVE;
@@ -59,7 +60,7 @@ void init_system (void)
     TRISCbits.TRISC2 = 0;
 #endif
 #ifdef GROS_ROBOT
-    TRISAbits.TRISA3 = 0;
+    //TRISAbits.TRISA3 = 0;
 #endif
     
     init_flag();

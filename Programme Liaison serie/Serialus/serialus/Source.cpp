@@ -4,6 +4,9 @@ using namespace System;
 using namespace System::IO::Ports;
 using namespace System::Threading;
 
+
+void affichage(int x, int y);
+
 public ref class PortChat
 {
 private:
@@ -22,10 +25,10 @@ public:
 		_serialPort = gcnew SerialPort();
 
 		// Allow the user to set the appropriate properties.
-		_serialPort->PortName = SetPortName(_serialPort->PortName);
-		_serialPort->BaudRate = SetPortBaudRate(_serialPort->BaudRate);
+		_serialPort->PortName = "COM6";
+		_serialPort->BaudRate = 115200;
 		_serialPort->Parity = SetPortParity(_serialPort->Parity);
-		_serialPort->DataBits = SetPortDataBits(_serialPort->DataBits);
+		_serialPort->DataBits = 8;
 		_serialPort->StopBits = SetPortStopBits(_serialPort->StopBits);
 		_serialPort->Handshake = SetPortHandshake(_serialPort->Handshake);
 
@@ -36,10 +39,6 @@ public:
 		_serialPort->Open();
 		_continue = true;
 		readThread->Start();
-
-		Console::Write("Name: ");
-		name = Console::ReadLine();
-
 
 		Console::WriteLine("Type QUIT to exit");
 
@@ -54,7 +53,7 @@ public:
 			else
 			{
 				_serialPort->WriteLine(
-					String::Format("<{0}>: {1}", name, message));
+					String::Format("<{0}>: {1}", "COM6", message));
 			}
 		}
 
@@ -68,8 +67,16 @@ public:
 		{
 			try
 			{
-				String^ message = _serialPort->ReadLine();
-				Console::WriteLine(message);
+				int x, y, i, j; 
+				String^ coordonnee_x;
+				String^ coordonnee_y;
+
+				coordonnee_x = _serialPort->ReadLine();
+				coordonnee_y = _serialPort->ReadLine();
+				x = int::Parse(coordonnee_x);
+				y = int::Parse(coordonnee_y);
+
+				affichage(x, y);
 			}
 			catch (TimeoutException ^) {}
 		}
@@ -79,19 +86,19 @@ public:
 	{
 		String^ portName;
 
-		Console::WriteLine("Available Ports:");
-		for each (String^ s in SerialPort::GetPortNames())
-		{
-			Console::WriteLine("   {0}", s);
-		}
+		//Console::WriteLine("Available Ports:");
+		//for each (String^ s in SerialPort::GetPortNames())
+		//{
+		//	Console::WriteLine("   {0}", s);
+		//}
 
-		Console::Write("COM port({0}): ", defaultPortName);
-		portName = Console::ReadLine();
+		//Console::Write("COM port({0}): ", defaultPortName);
+		//portName = Console::ReadLine();
 
-		if (portName == "")
-		{
+		//if (portName == "")
+		//{
 			portName = defaultPortName;
-		}
+		//}
 		return portName;
 	}
 
@@ -113,78 +120,21 @@ public:
 	static Parity SetPortParity(Parity defaultPortParity)
 	{
 		String^ parity;
-
-		Console::WriteLine("Available Parity options:");
-		for each (String^ s in Enum::GetNames(Parity::typeid))
-		{
-			Console::WriteLine("   {0}", s);
-		}
-
-		Console::Write("Parity({0}):", defaultPortParity.ToString());
-		parity = Console::ReadLine();
-
-		if (parity == "")
-		{
-			parity = defaultPortParity.ToString();
-		}
-
+		parity = defaultPortParity.ToString();
 		return (Parity)Enum::Parse(Parity::typeid, parity);
-	}
-
-	static Int32 SetPortDataBits(Int32 defaultPortDataBits)
-	{
-		String^ dataBits;
-
-		Console::Write("Data Bits({0}): ", defaultPortDataBits);
-		dataBits = Console::ReadLine();
-
-		if (dataBits == "")
-		{
-			dataBits = defaultPortDataBits.ToString();
-		}
-
-		return Int32::Parse(dataBits);
 	}
 
 	static StopBits SetPortStopBits(StopBits defaultPortStopBits)
 	{
 		String^ stopBits;
-
-		Console::WriteLine("Available Stop Bits options:");
-		for each (String^ s in Enum::GetNames(StopBits::typeid))
-		{
-			Console::WriteLine("   {0}", s);
-		}
-
-		Console::Write("Stop Bits({0}):", defaultPortStopBits.ToString());
-		stopBits = Console::ReadLine();
-
-		if (stopBits == "")
-		{
-			stopBits = defaultPortStopBits.ToString();
-		}
-
+		stopBits = defaultPortStopBits.ToString();
 		return (StopBits)Enum::Parse(StopBits::typeid, stopBits);
 	}
 
 	static Handshake SetPortHandshake(Handshake defaultPortHandshake)
 	{
 		String^ handshake;
-
-		Console::WriteLine("Available Handshake options:");
-		for each (String^ s in Enum::GetNames(Handshake::typeid))
-		{
-			Console::WriteLine("   {0}", s);
-		}
-
-		Console::Write("Handshake({0}):", defaultPortHandshake.ToString());
-		handshake = Console::ReadLine();
-
-		if (handshake == "")
-		{
-			handshake = defaultPortHandshake.ToString();
-		}
-
+		handshake = defaultPortHandshake.ToString();
 		return (Handshake)Enum::Parse(Handshake::typeid, handshake);
 	}
 };
@@ -192,4 +142,39 @@ public:
 int main()
 {
 	PortChat::Main();
+}
+
+void affichage(int x, int y)
+{
+	int i, j;
+
+	int _x = (int)(x / 100.);
+	int _y = (int)(y / 100.);
+
+	Console::Write(" _x : %d, _y : %d \n", _x, _y);
+	Console::Write("X ");
+	for (i = 0; i < 60; i++)
+		Console::Write("~");
+	Console::Write("\n");
+
+	for (i = 0; i < 20; i++)
+	{
+		Console::Write(" |");
+		for (j = 0; j < 30; j++)
+		{
+			if (_x == i  && _y == j)
+				Console::Write("O ");
+			else
+				Console::Write("- ");
+		}
+		Console::Write("|");
+		if (i == 10)
+			Console::Write("X");
+		Console::Write("\n\r");
+	}
+
+	Console::Write("X ");
+	for (i = 0; i < 60; i++)
+		Console::Write("~");
+	Console::Write("\n");
 }

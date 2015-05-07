@@ -574,20 +574,25 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
     }while (ax12.erreur != PAS_D_ERREUR && ax12.tentatives < MAX_TENTATIVES );
 
 
-//    if(ax12.erreur != PAS_D_ERREUR)
+//    if (ax12.erreur != PAS_D_ERREUR)
 //    {
-//        nb1++;
+//        son_evitement(10);
 //    }
-//    else
-//    {
-//        nb2++;
-//    }
-//    PutIntUART(nb1);
-//    PutsUART(UART_XBEE, " ");
-//    PutIntUART(nb2);
-//    //PutsUART(UART_XBEE, " ");
-//    //PutIntUART(nb3 - (nb1 + nb2));
-//    PutsUART(UART_XBEE, "\r");
+
+    if(ax12.erreur != PAS_D_ERREUR)
+    {
+        nb1++;
+    }
+    else
+    {
+        nb2++;
+    }
+    PutIntUART(nb1);
+    PutsUART(UART_XBEE, " ");
+    PutIntUART(nb2);
+    //PutsUART(UART_XBEE, " ");
+    //PutIntUART(nb3 - (nb1 + nb2));
+    PutsUART(UART_XBEE, "\r");
 }
 
 
@@ -643,6 +648,7 @@ uint16_t read_data (uint8_t ID, uint8_t type_donnee)
         //Donnée 16 bits
         case LIRE_POSITION_ACTU :
         case LIRE_VITESSE_ACTU :
+        case LIRE_POSITION_CONSIGNE :
             nombre_octets_a_recevoir = 2;
             break;
 

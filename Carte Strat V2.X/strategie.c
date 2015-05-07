@@ -29,7 +29,10 @@ void strategie()
 
         init_jack();
         delay_ms(2000);
-        
+
+        TIMER_90s = ACTIVE;
+        EVITEMENT_ADV_AVANT = ON;
+        STRATEGIE_EVITEMENT = STOP;
         init_position_robot(180, 988, 0);
         FLAG_ACTION = INIT_ASCENSEUR;
 
@@ -39,28 +42,129 @@ void strategie()
         passe_part(675, 998, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
         passe_part(742, 1112,MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
 
+        // Direction Gobelet pour libérer les deux pieds pour R2
         passe_part(663, 334, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
         passe_part(445, 324, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-        passe_part(438, 309, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-        passe_part(410, 342, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+        passe_part(400, 310, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        passe_part(325, 310, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
 
-//        chenilles(DESCENDRE);
-//        //chenilles(MONTER);
-//        FLAG_ASSERV.fin_deplacement = FIN_DEPLACEMENT;
-//        FLAG_ASSERV.position = OFF;
-//        FLAG_ASSERV.brake = OFF;
-//        FLAG_ASSERV.orientation = OFF;
-//        delay_ms(2000);
+
+        // Retour au bercail pour dépose N°1
+        //EVITEMENT_ADV_AVANT = OFF;
+        //EVITEMENT_ADV_ARRIERE = ON;
+        passe_part(570,455,MARCHE_ARRIERE,100,DEBUT_TRAJECTOIRE);
+        FLAG_ACTION = NE_RIEN_FAIRE;
+        //EVITEMENT_ADV_ARRIERE = OFF;
+        //EVITEMENT_ADV_AVANT = ON;
+        passe_part(550,550,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+        passe_part(650,800,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+        //EVITEMENT_ADV_AVANT = OFF;
+        passe_part(558,990,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+        passe_part(270,990,MARCHE_AVANT,100,FIN_TRAJECTOIRE);
+
+        // On vérifie confirme que le gobelet a bien été attrapé
+        uint8_t status_pince_G = LIBRE, status_pince_D = LIBRE;
+        if (CAPT_GOBELET_D == 0)
+            status_pince_D = FERMER;
+        if (CAPT_GOBELET_G == 0)
+            status_pince_G = FERMER;
+
+
+        if (status_pince_G == FERMER)
+        {
+            pince(GAUCHE, OUVERTE);
+            status_pince_G = LIBRE;
+        }
+        else if (status_pince_D == FERMER)
+        {
+            pince(DROITE, OUVERTE);
+            status_pince_D = LIBRE;
+        }
+        else
+        {
+            pince(DROITE, RANGEMENT);
+            pince(GAUCHE, RANGEMENT);
+            ascenseur(ARRIERE);
+        }
+
+        // On a encore un gobelet à déposer
+        if (status_pince_D == FERMER)
+        {
+            delay_ms(500);
+            avancer_reculer(-100, 50);
+            passe_part(750, 1000, MARCHE_ARRIERE, 50, DEBUT_TRAJECTOIRE);
+            passe_part(1100, 900, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
+            passe_part(1900, 900, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+            passe_part(2300, 575, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
+            passe_part(2760, 575, MARCHE_AVANT, 50, FIN_TRAJECTOIRE);
+            // Dépose du gobelet
+            pince(DROITE, OUVERTE);
+
+            // On essaye d'avoir celui de l'adversaire
+            avancer_reculer(-80, 50);
+            FLAG_ACTION = ATTRAPE_GOBELET;
+
+            // On va chercher celui de l'adversaire si dispo
+            rejoindre (2670, get_Y(), MARCHE_ARRIERE, 50);
+            rejoindre (2670, 425, MARCHE_AVANT, 50);
+
+            // On se dirige vers le clap
+            rejoindre(2670, 240, MARCHE_AVANT, 50);
+            rejoindre(2550, 210, MARCHE_AVANT, 50);
+            bras(GAUCHE, OUVERT);
+            rejoindre (2220, 210, MARCHE_AVANT, 50);
+
+            if (CAPT_GOBELET_G == 0)
+            {
+                //depose du gobelet dans la zone de droite
+                //+ Alignement marches
+                bras(GAUCHE, FERMER);
+                rejoindre (2100, 800, MARCHE_AVANT, 50);
+                rejoindre (2200, 1210, MARCHE_AVANT, 50);
+                rejoindre (2300, 1300, MARCHE_AVANT, 50);
+                rejoindre (2400, 1450, MARCHE_AVANT, 50);
+                rejoindre (2700, 1450, MARCHE_AVANT, 50);
+
+            }
+            else
+            {
+                //se diriger vers les marches
+            }
+
+
+            //rejoindre(2600, 400, MARCHE_AVANT, 100);
+        }
+        else
+        {
+            // direction clap direct
+        }
+
+        //Montée des marches
 //
-//        alimenter_moteur_Y(ON, MARCHE_AVANT);
+//        EVITEMENT_ADV_ARRIERE = OFF;
+//        EVITEMENT_ADV_AVANT = OFF;
 //
-//        delay_ms(4000);
+//        FLAG_ASSERV.totale = OFF;
 //
-//                angle_AX12(CHENILLE_AV_G,512+150,52,AVEC_ATTENTE); //1023
-//        angle_AX12(CHENILLE_AV_D, 512-150,52,AVEC_ATTENTE); //0
-//        angle_AX12(CHENILLE_AR_G,512+300,52,AVEC_ATTENTE);
-//        angle_AX12(CHENILLE_AR_D, 512 - 300,52,AVEC_ATTENTE);
-//        lancer_autom_AX12();
+//        //init_jack();
+////        delay_ms(2000);
+////        //FLAG_ACTION = INIT_ASCENSEUR;
+////        //delay_ms(5000);
+////
+////        FLAG_ACTION = MONTEE_MARCHE;
+//        allumer_LED_AX12(TOUS_LES_AX12);
+//
+//        while(1)
+//        {
+//            chenilles(MONTER);
+//            delay_ms(2000);
+//            chenilles(DESCENDRE);
+//            delay_ms(2000);
+//            chenilles(INTERMEDIAIRE);
+//            delay_ms(2000);
+//            chenilles(MONTER);
+//            delay_ms(4000);
+//        }
 
         
     #endif

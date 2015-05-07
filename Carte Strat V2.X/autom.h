@@ -71,13 +71,13 @@ extern "C" {
 #endif
 
 #ifdef  GROS_ROBOT
-     #define PINCE_D                 24
+     #define PINCE_D                24
     #define PINCE_G                 19
     // TAPIS
 
     #define PINCE_TAPIS_D           12
     #define PINCE_TAPIS_G           3
-    #define AX_US                   0
+    #define AX_US                   17
 
     // BRAS
     #define BRAS_DROIT              25
@@ -91,6 +91,10 @@ extern "C" {
     #define CHENILLE_AV_D           21
     #define CHENILLE_AR_G           6
     #define CHENILLE_AR_D           14
+
+    //Balise
+    #define BALISE_GAUCHE           2
+    #define BALISE_DROITE           10
 #endif
 
     /**************************************************************************/
@@ -178,6 +182,9 @@ extern "C" {
     #define INIT_DEPART                 2
     #define INIT_JACK                   3
     #define ATTRAPE_GOBELET             4
+    #define ATTRAPE_GOBELET2            5
+    #define MONTEE_MARCHE               6
+    #define ARRIVEE_MARCHE              7
 
 
 #endif
@@ -266,6 +273,10 @@ extern "C" {
      */
     void ascenseur(uint8_t action);
 
+    void monter_balise ();
+
+    void descendre_balise();
+
 
 
     /**************************************************************************/
@@ -273,8 +284,10 @@ extern "C" {
     /**************************************************************************/
 
 
-    void attrape_gobelet ();
-
+    void attrape_gobelet (uint8_t reinit);
+    void arrive_marche ();
+    void montee_des_marches ();
+    
 #endif
 
 
