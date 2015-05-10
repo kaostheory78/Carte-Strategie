@@ -541,20 +541,21 @@ void reglage_odometrie()
 
 
 
-//            init_position_robot (-100, 0, 0);
-//            rejoindre(0, 0, MARCHE_AVANT, 100);
-//            trapeze(MARCHE_AVANT);
-//            trapeze(MARCHE_AVANT);
-//            trapeze(MARCHE_AVANT);
-//            trapeze(MARCHE_AVANT);
-//            trapeze(MARCHE_AVANT);
-////
+            init_position_robot (-100, 0, 0);
+            rejoindre(0, 0, MARCHE_AVANT, 100);
+            trapeze(MARCHE_AVANT);
+            trapeze(MARCHE_AVANT);
+            trapeze(MARCHE_AVANT);
+            trapeze(MARCHE_AVANT);
+            trapeze(MARCHE_AVANT);
+
 //           faire_des_tours(-32);
-//            while(1);
+            while(1);
 ////
 ////            TIMER_DEBUG = ACTIVE;
 //            init_position_robot(0, 0, 0);
-       rejoindre(2000, 0, MARCHE_AVANT, 50);
+            ////Horraire
+//       rejoindre(2000, 0, MARCHE_AVANT, 50);
 //       orienter(90, 50);
 //        rejoindre(300, 0, MARCHE_AVANT, 50);
 //        orienter(-90, 50);
@@ -578,6 +579,36 @@ void reglage_odometrie()
 //        orienter(90, 50);
 //        rejoindre(300, 0, MARCHE_AVANT, 50);
 //        orienter(-90, 50);
+
+
+            //// Anti horaire
+        rejoindre(2000, 0, MARCHE_AVANT, 50);
+        orienter(-90, 50);
+        rejoindre(300, 0, MARCHE_AVANT, 50);
+        orienter(90, 50);
+        rejoindre(2000, 0, MARCHE_AVANT, 50);
+        orienter(-90, 50);
+        rejoindre(300, 0, MARCHE_AVANT, 50);
+        orienter (90, 50);
+        rejoindre(2000, 0, MARCHE_AVANT, 50);
+        orienter(-90, 50);
+        rejoindre(300, 0, MARCHE_AVANT, 50);
+        orienter (90, 50);
+        rejoindre(2000, 0, MARCHE_AVANT, 50);
+        orienter(-90, 50);
+        rejoindre(300, 0, MARCHE_AVANT, 50);
+        orienter (90, 50);
+        rejoindre(2000, 0, MARCHE_AVANT, 50);
+        orienter(-90, 50);
+        rejoindre(300, 0, MARCHE_AVANT, 50);
+        orienter (90, 50);
+        rejoindre(2000, 0, MARCHE_AVANT, 50);
+        orienter(-90, 50);
+        rejoindre(300, 0, MARCHE_AVANT, 50);
+        orienter(90, 50);
+        rejoindre(500, 0, MARCHE_AVANT, 100);
+
+
 //        rejoindre(2000, 0, MARCHE_AVANT, 100);
 //        rejoindre(300, 0, MARCHE_AVANT, 100);
 //        rejoindre(2000, 0, MARCHE_AVANT, 100);
