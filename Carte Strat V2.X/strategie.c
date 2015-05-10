@@ -31,9 +31,9 @@ void strategie()
         delay_ms(2000);
 
         TIMER_90s = ACTIVE;
-        EVITEMENT_ADV_AVANT = ON;
+        EVITEMENT_ADV_AVANT = OFF;
         STRATEGIE_EVITEMENT = STOP;
-        init_position_robot(180, 988, 0);
+        init_position_robot(180., 988., 0.);
         FLAG_ACTION = INIT_ASCENSEUR;
 
         // Direction Gobelet face zone départ
@@ -64,6 +64,7 @@ void strategie()
 
         // On vérifie confirme que le gobelet a bien été attrapé
         uint8_t status_pince_G = LIBRE, status_pince_D = LIBRE;
+        
         if (CAPT_GOBELET_D == 0)
             status_pince_D = FERMER;
         if (CAPT_GOBELET_G == 0)
@@ -95,8 +96,8 @@ void strategie()
             passe_part(750, 1000, MARCHE_ARRIERE, 50, DEBUT_TRAJECTOIRE);
             passe_part(1100, 900, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
             passe_part(1900, 900, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-            passe_part(2300, 575, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
-            passe_part(2760, 575, MARCHE_AVANT, 50, FIN_TRAJECTOIRE);
+            passe_part(2300, 545, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
+            passe_part(2760, 545, MARCHE_AVANT, 50, FIN_TRAJECTOIRE);
             // Dépose du gobelet
             pince(DROITE, OUVERTE);
 
@@ -106,7 +107,12 @@ void strategie()
 
             // On va chercher celui de l'adversaire si dispo
             rejoindre (2670, get_Y(), MARCHE_ARRIERE, 50);
-            rejoindre (2670, 425, MARCHE_AVANT, 50);
+            orienter(-90, 100);
+            //ne pas mettre d'évitement adv
+            avancer_reculer(-200, 50);
+            init_Y(667);
+            init_orientation(-90);
+            //rejoindre (2670, 425, MARCHE_AVANT, 50);
 
             // On se dirige vers le clap
             rejoindre(2670, 240, MARCHE_AVANT, 50);
@@ -119,16 +125,47 @@ void strategie()
                 //depose du gobelet dans la zone de droite
                 //+ Alignement marches
                 bras(GAUCHE, FERMER);
-                rejoindre (2100, 800, MARCHE_AVANT, 50);
-                rejoindre (2200, 1210, MARCHE_AVANT, 50);
-                rejoindre (2300, 1300, MARCHE_AVANT, 50);
-                rejoindre (2400, 1450, MARCHE_AVANT, 50);
-                rejoindre (2700, 1450, MARCHE_AVANT, 50);
+                passe_part (2100, 800, MARCHE_AVANT, 80, DEBUT_TRAJECTOIRE);
+                passe_part (2200, 1210, MARCHE_AVANT, 80, MILIEU_TRAJECTOIRE);
+                passe_part (2300, 1300, MARCHE_AVANT, 80, MILIEU_TRAJECTOIRE);
+                passe_part (2400, 1450, MARCHE_AVANT, 80, MILIEU_TRAJECTOIRE);
+                passe_part (2700, 1450, MARCHE_AVANT, 80, FIN_TRAJECTOIRE);
+                pince(GAUCHE, OUVERTE);
+
+                delay_ms(500);
+
+                rejoindre (2200, 1450, MARCHE_ARRIERE, 100);
+                pince(DROITE, RANGEMENT);
+                pince(GAUCHE, RANGEMENT);
+                delay_ms(500);
+                ascenseur(ARRIERE);
+
+                //desactiver evitement
+                avancer_reculer(-200, 100);
+                init_X(2143);
+                init_orientation(0);
+
+                rejoindre (2300, 1450, MARCHE_AVANT, 100);
+
+                passe_part(2220, 1220, MARCHE_AVANT, 50, DEBUT_TRAJECTOIRE);
+                passe_part(1930, 830, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
+                passe_part(1240, 830, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
+                passe_part(1240, 1260, MARCHE_AVANT, 50, FIN_TRAJECTOIRE);
+                //passe_part(1180, 1160, MARCHE_AVANT, 50, FIN_TRAJECTOIRE);
+                //rejoindre (1180, 1160, MARCHE_AVANT, 50);
+                orienter(90, 100);
 
             }
             else
             {
+                pince(DROITE, RANGEMENT);
+                pince(GAUCHE, RANGEMENT);
+                delay_ms(500);
+                ascenseur(ARRIERE);
                 //se diriger vers les marches
+                rejoindre(1240, 830, MARCHE_AVANT, 50);
+                rejoindre(1240, 1260, MARCHE_AVANT, 50);
+                orienter(90, 100);
             }
 
 
@@ -140,31 +177,12 @@ void strategie()
         }
 
         //Montée des marches
-//
-//        EVITEMENT_ADV_ARRIERE = OFF;
-//        EVITEMENT_ADV_AVANT = OFF;
-//
-//        FLAG_ASSERV.totale = OFF;
-//
-//        //init_jack();
-////        delay_ms(2000);
-////        //FLAG_ACTION = INIT_ASCENSEUR;
-////        //delay_ms(5000);
-////
-////        FLAG_ACTION = MONTEE_MARCHE;
-//        allumer_LED_AX12(TOUS_LES_AX12);
-//
-//        while(1)
-//        {
-//            chenilles(MONTER);
-//            delay_ms(2000);
-//            chenilles(DESCENDRE);
-//            delay_ms(2000);
-//            chenilles(INTERMEDIAIRE);
-//            delay_ms(2000);
-//            chenilles(MONTER);
-//            delay_ms(4000);
-//        }
+        EVITEMENT_ADV_ARRIERE = OFF;
+        EVITEMENT_ADV_AVANT = OFF;
+
+        FLAG_ASSERV.totale = OFF;
+        FLAG_ACTION = MONTEE_MARCHE;
+        delay_ms(10000);
 
         
     #endif
@@ -172,7 +190,6 @@ void strategie()
         
     #ifdef PETIT_ROBOT
         init_position_robot (153, 1030, 0);
-
         //Init départ
         init_pinces_jack();
         rejoindre (490, 1030, MARCHE_AVANT, 50);
@@ -182,10 +199,7 @@ void strategie()
         TIMER_90s = ACTIVE;
 
         EVITEMENT_ADV_AVANT = ON;
-        FLAG_ACTION = INIT_PINCES_DEMARRAGE;
-
-
-        
+        FLAG_ACTION = INIT_PINCES_DEMARRAGE;       
 
         //Pieds 1
         rejoindre(1210, 645, MARCHE_AVANT, 100);
@@ -249,11 +263,11 @@ void strategie()
         EVITEMENT_ADV_ARRIERE = OFF;
         passe_part(200, 170, MARCHE_AVANT, 50, DEBUT_TRAJECTOIRE);
         //claps
-        passe_part(500, 160, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
-        passe_part(890, 160, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        passe_part(500, 170, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
+        passe_part(890, 170, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
 
         //dernier clap
-        passe_part(1100, 240, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        passe_part(1000, 250, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
         fermer_bras(BRAS_GAUCHE);
 
         //direction depose centre
@@ -265,9 +279,7 @@ void strategie()
 
         //Dépose des pieds
         eteindre_pompe();
-        FLAG_ACTION = PIEDS_4;
-
- 
+        FLAG_ACTION = PIEDS_4; 
 
         //Sortie zone de départ
         passe_part(700, 1300, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
@@ -285,13 +297,16 @@ void strategie()
         EVITEMENT_ADV_ARRIERE = ON;
         rejoindre(785, 1745,  MARCHE_ARRIERE, 50);
         EVITEMENT_ADV_ARRIERE = OFF;
-        // orienter(-90, 15);
-        //rejoindre(785, 1830, MARCHE_ARRIERE, 25);
-        //orienter(-70, 50);
+        
+        /***** Pied un peu chiant **************
+        orienter(-90, 15);
+        rejoindre(785, 1830, MARCHE_ARRIERE, 25);
+        orienter(-70, 50);
+        *******************************/
 
         // Placement zone de départ
         EVITEMENT_ADV_AVANT = ON;
-        rejoindre ( 700, 1125, MARCHE_AVANT, 100);
+        rejoindre(700, 1125, MARCHE_AVANT, 100);
 
         //rentrée dans la zone de départ
         EVITEMENT_ADV_AVANT = OFF;
@@ -302,7 +317,7 @@ void strategie()
         angle_AX12(PINCE_HAUT, 555, 1023, SANS_ATTENTE);
         angle_AX12(PINCE_MILIEU, 555, 1023, SANS_ATTENTE);
         angle_AX12(PINCE_BAS, 555, 1023, SANS_ATTENTE);
-        delay_ms(2000);
+        delay_ms(1500);
 
         //on ressert le tout pour que la tour soit bien droite
         pinces(PINCE_HAUT, FERMER);
@@ -310,14 +325,14 @@ void strategie()
         pinces(PINCE_BAS, FERMER);
 
         //Ejection de la balle
-        delay_ms(1000);
-        angle_AX12(PINCE_HAUT, 550, 1023, SANS_ATTENTE);
+        delay_ms(500);
+        //angle_AX12(PINCE_HAUT, 550, 1023, SANS_ATTENTE);
         ejecter_balle();
-        delay_ms(6000);
+        delay_ms(500);
 
         //empilement si nécéssaire
         FLAG_ACTION = ZONE_DEPART;
-        delay_ms (4000);
+        delay_ms(3000);
         FLAG_ACTION = NE_RIEN_FAIRE;
 
         //Pieds 5
@@ -329,18 +344,16 @@ void strategie()
         // Pieds 6
         rejoindre(450, 975, MARCHE_AVANT, 100);
         FLAG_ACTION = ZONE_DEPART;
-        delay_ms(3000);
+        delay_ms(1000);
 
         rejoindre(320, 1000, MARCHE_AVANT, 50);
         FLAG_ACTION = DEPOSE_PIEDS;
-        delay_ms(3000);
-        rejoindre(500, 1000, MARCHE_ARRIERE, 50);
+        delay_ms(2200);
+        rejoindre(600, 975, MARCHE_ARRIERE, 50);
 
-        //orienter (0, 20);
+        orienter (0, 20);
         eteindre_pompe();
         
-
-
         /******** Récup gobelet en passe part*/
         /*
         passe_part (1340, 400, MARCHE_ARRIERE, 100, DEBUT_TRAJECTOIRE);
@@ -513,49 +526,74 @@ void reglage_odometrie()
 {
 
     delay_ms(2000);
-    while(!SYS_JACK);
+    //while(!SYS_JACK);
     COULEUR = couleur_depart();
+    init_jack();
+    EVITEMENT_ADV_ARRIERE = OFF;
+    EVITEMENT_ADV_AVANT = OFF;
 
 
 
-//          init_position_robot (0, 0, 0);
+
+      init_position_robot (0, 0, 0);
           //orienter(5, 100);
 
 
 
 
-            init_position_robot (-300, 0, 0);
-            rejoindre(0, 0, MARCHE_AVANT, 100);
-            trapeze(MARCHE_AVANT);
-            trapeze(MARCHE_AVANT);
-            trapeze(MARCHE_AVANT);
-            trapeze(MARCHE_AVANT);
-            trapeze(MARCHE_AVANT);
-
-          //  faire_des_tours(-32);
-
-//            TIMER_DEBUG = ACTIVE;
+//            init_position_robot (-100, 0, 0);
+//            rejoindre(0, 0, MARCHE_AVANT, 100);
+//            trapeze(MARCHE_AVANT);
+//            trapeze(MARCHE_AVANT);
+//            trapeze(MARCHE_AVANT);
+//            trapeze(MARCHE_AVANT);
+//            trapeze(MARCHE_AVANT);
+////
+//           faire_des_tours(-32);
+//            while(1);
+////
+////            TIMER_DEBUG = ACTIVE;
 //            init_position_robot(0, 0, 0);
-//        rejoindre(2200, 0, MARCHE_AVANT, 100);
+       rejoindre(2000, 0, MARCHE_AVANT, 50);
+//       orienter(90, 50);
+//        rejoindre(300, 0, MARCHE_AVANT, 50);
+//        orienter(-90, 50);
+//        rejoindre(2000, 0, MARCHE_AVANT, 50);
+//        orienter(90, 50);
+//        rejoindre(300, 0, MARCHE_AVANT, 50);
+//        orienter (-90, 50);
+//        rejoindre(2000, 0, MARCHE_AVANT, 50);
+//        orienter(90, 50);
+//        rejoindre(300, 0, MARCHE_AVANT, 50);
+//        orienter (-90, 50);
+//        rejoindre(2000, 0, MARCHE_AVANT, 50);
+//        orienter(90, 50);
+//        rejoindre(300, 0, MARCHE_AVANT, 50);
+//        orienter (-90, 50);
+//        rejoindre(2000, 0, MARCHE_AVANT, 50);
+//        orienter(90, 50);
+//        rejoindre(300, 0, MARCHE_AVANT, 50);
+//        orienter (-90, 50);
+//        rejoindre(2000, 0, MARCHE_AVANT, 50);
+//        orienter(90, 50);
+//        rejoindre(300, 0, MARCHE_AVANT, 50);
+//        orienter(-90, 50);
+//        rejoindre(2000, 0, MARCHE_AVANT, 100);
 //        rejoindre(300, 0, MARCHE_AVANT, 100);
-//        rejoindre(2200, 0, MARCHE_AVANT, 100);
+//        rejoindre(2000, 0, MARCHE_AVANT, 100);
 //        rejoindre(300, 0, MARCHE_AVANT, 100);
-//        rejoindre(2200, 0, MARCHE_AVANT, 100);
+//        rejoindre(2000, 0, MARCHE_AVANT, 100);
 //        rejoindre(300, 0, MARCHE_AVANT, 100);
-//        rejoindre(2200, 0, MARCHE_AVANT, 100);
+//        rejoindre(2000, 0, MARCHE_AVANT, 100);
 //        rejoindre(300, 0, MARCHE_AVANT, 100);
-//        rejoindre(2200, 0, MARCHE_AVANT, 100);
+//        rejoindre(2000, 0, MARCHE_AVANT, 100);
 //        rejoindre(300, 0, MARCHE_AVANT, 100);
-//        rejoindre(2200, 0, MARCHE_AVANT, 100);
+//        rejoindre(2000, 0, MARCHE_AVANT, 100);
 //        rejoindre(300, 0, MARCHE_AVANT, 100);
-//        rejoindre(2200, 0, MARCHE_AVANT, 100);
-//        rejoindre(300, 0, MARCHE_AVANT, 100);
-//        rejoindre(2200, 0, MARCHE_AVANT, 100);
-//        rejoindre(300, 0, MARCHE_AVANT, 100);
-//        rejoindre(2200, 0, MARCHE_AVANT, 100);
-//        rejoindre(300, 0, MARCHE_AVANT, 100);
-//        rejoindre(2200, 0, MARCHE_AVANT, 100);
+//        rejoindre(2000, 0, MARCHE_AVANT, 100);
 //        rejoindre(300, 0, MARCHE_AVANT, 100);
 //        rejoindre(500, 0, MARCHE_AVANT, 100);
 //        TIMER_DEBUG = DESACTIVE;
+
+        delay_ms(10000);
 }

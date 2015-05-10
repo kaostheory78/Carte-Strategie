@@ -35,10 +35,10 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
    calcul_position_robot();
    if (FLAG_ASSERV.totale == ON)
         asserv();
-
+#ifdef GROS_ROBOT
    if (FLAG_ACTION == ARRIVEE_MARCHE)
        COMPTEUR_MARCHE = COMPTEUR_MARCHE + 1;
-
+#endif
    static int led = 1, compteur = 0;
     compteur++;
 
@@ -48,6 +48,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
             led = 0;
         else
             led = 1;
+
 #ifdef PETIT_ROBOT
         CAPTEUR3 = led;
 #endif

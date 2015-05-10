@@ -144,7 +144,7 @@ void init_pinces_demarage()
 
 void ejecter_balle()
 {
-    angle_AX12(SYS_BALLE, EJECTER_BALLE, 15, SANS_ATTENTE);
+    angle_AX12(SYS_BALLE, EJECTER_BALLE, 1000, SANS_ATTENTE);
 }
 
 void depose_pieds ()
@@ -372,7 +372,7 @@ void attrape_balle ()
 void faire_les_claps()
 {
     static int etat_bras = ON;
-    if (get_X() > 400.0 && get_X() < 640.0 && etat_bras == ON )
+    if (get_X() > 380.0 && get_X() < 640.0 && etat_bras == ON )
     {
         //fermer_bras(GAUCHE);
         if (COULEUR == JAUNE)
@@ -382,7 +382,7 @@ void faire_les_claps()
         
         etat_bras = OFF;
     }
-    else if (get_X() > 680 && etat_bras == OFF)     //640 pour strat normal !!! =)
+    else if (get_X() > 640.0 && etat_bras == OFF)     //640 pour strat normal !!! =)
     {
         //ouvrir_bras(GAUCHE);
         if (COULEUR == JAUNE)

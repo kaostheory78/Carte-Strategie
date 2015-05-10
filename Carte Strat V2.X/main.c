@@ -160,6 +160,8 @@ int main(int argc, char** argv)
     /************************* POSITION D'ARRIVEE *****************************/
     /**************************************************************************/
 
+    delay_ms(2000);
+
     PutsUART(UART_XBEE, "\n\n\n\r X : ");
     PutLongUART((int32_t) get_X());
     PutcUART(UART_XBEE, '.');

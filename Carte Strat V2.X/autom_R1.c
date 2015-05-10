@@ -25,8 +25,8 @@
 void son_evitement (uint8_t melodie)
 {
     //Nop();
-    commande_AX12(100, _4PARAM, WRITE_DATA, 0x29, 10, NC, NC, NC);
-    commande_AX12(100, _4PARAM, WRITE_DATA, 0x28, melodie, NC, NC, NC);
+    //commande_AX12(100, _4PARAM, WRITE_DATA, 0x29, 10, NC, NC, NC);
+    //commande_AX12(100, _4PARAM, WRITE_DATA, 0x28, melodie, NC, NC, NC);
 }
 
 void rotation_us(void)
@@ -190,7 +190,7 @@ void ascenseur(uint8_t action)
                 angle_AX12(ASCENSEUR,190,1023,SANS_ATTENTE);
                 break;
             case ARRIERE:
-                angle_AX12(ASCENSEUR,1009,1023,SANS_ATTENTE);
+                angle_AX12(ASCENSEUR,950,1023,SANS_ATTENTE);
                 break;
         }
 }
@@ -217,6 +217,7 @@ void descendre_balise (void)
 
 void init_jack()
 {
+    allumer_LED_AX12(TOUS_LES_AX12);
     pince(DROITE, RANGEMENT);
     pince(GAUCHE, RANGEMENT);
     chenilles(MONTER);
@@ -415,8 +416,8 @@ void autom_10ms (void)
                     }
                 }
             }
-            else
-                rotation_us();
+            //else
+               //rotation_us();
         }
 
         //Evitement arrière

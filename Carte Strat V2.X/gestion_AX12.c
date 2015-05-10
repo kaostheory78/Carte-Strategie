@@ -579,20 +579,20 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
 //        son_evitement(10);
 //    }
 
-    if(ax12.erreur != PAS_D_ERREUR)
-    {
-        nb1++;
-    }
-    else
-    {
-        nb2++;
-    }
-    PutIntUART(nb1);
-    PutsUART(UART_XBEE, " ");
-    PutIntUART(nb2);
-    //PutsUART(UART_XBEE, " ");
-    //PutIntUART(nb3 - (nb1 + nb2));
-    PutsUART(UART_XBEE, "\r");
+//    if(ax12.erreur != PAS_D_ERREUR)
+//    {
+//        nb1++;
+//    }
+//    else
+//    {
+//        nb2++;
+//    }
+//    PutIntUART(nb1);
+//    PutsUART(UART_XBEE, " ");
+//    PutIntUART(nb2);
+//    //PutsUART(UART_XBEE, " ");
+//    //PutIntUART(nb3 - (nb1 + nb2));
+//    PutsUART(UART_XBEE, "\r");
 }
 
 
