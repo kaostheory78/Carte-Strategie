@@ -1881,13 +1881,13 @@ void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche)
     {
         centre = 1;
     }
-    if(1 == CAPT_US_AV_GAUCHE && EVITEMENT_ADV_AVANT == ON)
-    {
-        droite = 1;
-    }
-    if(1 == CAPT_US_AV_DROIT && EVITEMENT_ADV_AVANT == ON)
+    if(0 == CAPT_US_AV_GAUCHE && EVITEMENT_ADV_AVANT == ON)
     {
         gauche = 1;
+    }
+    if(0 == CAPT_US_AV_DROIT && EVITEMENT_ADV_AVANT == ON)
+    {
+        droite = 1;
     }
 #endif
 

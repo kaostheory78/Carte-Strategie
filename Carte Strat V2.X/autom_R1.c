@@ -52,6 +52,29 @@ void rotation_us(void)
    // }
 }
 
+uint8_t inversion_autom (uint8_t cote)
+{
+    if (COULEUR == JAUNE)
+        return cote;
+    else
+    {
+        if (cote == DROIT)
+            return GAUCHE;
+        else
+            return DROIT;
+    }
+}
+
+uint8_t check_capteur (uint8_t cote)
+{
+    cote = inversion_autom(cote);
+
+    if (cote == DROIT)
+        return CAPT_GOBELET_D;
+    else
+        return CAPT_GOBELET_G;
+}
+
 
 /******************************************************************************/
 /********************************  FONCTION AX12  *****************************/
@@ -88,6 +111,8 @@ void chenilles(uint8_t action)
 
 void pince(uint8_t cote,uint8_t action)
 {
+
+    cote = inversion_autom(cote);
     if(cote==DROITE)
     {
        switch (action)
@@ -122,18 +147,20 @@ void pince(uint8_t cote,uint8_t action)
 
 void tapis(uint8_t cote, uint8_t action)
 {
+    cote = inversion_autom(cote);
+
     if(cote==DROITE)
     {
         switch (action)
         {
             case RANGEMENT:
-                angle_AX12(PINCE_TAPIS_D,788,1023,SANS_ATTENTE);
+                angle_AX12(PINCE_TAPIS_D, 745, 1023, SANS_ATTENTE);
                 break;
             case OUVERT:
-                angle_AX12(PINCE_TAPIS_D,585,1023,SANS_ATTENTE);
+                angle_AX12(PINCE_TAPIS_D, 580, 1023, SANS_ATTENTE);
                 break;
             case DEPOSE:
-                angle_AX12(PINCE_TAPIS_D,533,1023,SANS_ATTENTE);
+                angle_AX12(PINCE_TAPIS_D, 532, 1023, SANS_ATTENTE);
                 break;
         }
     }
@@ -142,13 +169,13 @@ void tapis(uint8_t cote, uint8_t action)
         switch (action)
         {
             case RANGEMENT:
-                angle_AX12(PINCE_TAPIS_G ,10,1023,SANS_ATTENTE);
+                angle_AX12(PINCE_TAPIS_G, 290, 1023, SANS_ATTENTE);
                 break;
             case OUVERT:
-                angle_AX12(PINCE_TAPIS_G ,10,1023,SANS_ATTENTE);
+                angle_AX12(PINCE_TAPIS_G, 455, 1023, SANS_ATTENTE);
                 break;
             case DEPOSE:
-                angle_AX12(PINCE_TAPIS_G ,10,1023,SANS_ATTENTE);
+                angle_AX12(PINCE_TAPIS_G, 485, 1023, SANS_ATTENTE);
                 break;
         }
     }
@@ -156,7 +183,9 @@ void tapis(uint8_t cote, uint8_t action)
 
 void bras(uint8_t cote, uint8_t action)
 {
-    if(cote==DROITE)
+    cote = inversion_autom(cote);
+
+    if(cote == DROITE)
     {
         switch (action)
         {
@@ -225,6 +254,9 @@ void init_jack()
     bras(DROITE, FERMER);
     bras(GAUCHE, FERMER);
 
+    tapis(DROIT, RANGEMENT);
+    tapis (GAUCHE, RANGEMENT);
+
     monter_balise();
 
     delay_ms(1000);
@@ -255,12 +287,12 @@ void attrape_gobelet (uint8_t reinit)
         statut_pince_D = LIBRE;
     }
     
-    if (CAPT_GOBELET_D == 0 && statut_pince_D == LIBRE)
+    if (check_capteur(DROIT) == 0 && statut_pince_D == LIBRE)
     {
         pince(DROITE, FERMER);
         statut_pince_D = FERMER;
     }
-    if (CAPT_GOBELET_G == 0 && status_pince_G == LIBRE)
+    if (check_capteur(GAUCHE) == 0 && status_pince_G == LIBRE)
     {
         pince(GAUCHE, FERMER);
         status_pince_G = FERMER;
@@ -270,12 +302,12 @@ void attrape_gobelet (uint8_t reinit)
 void montee_des_marches ()
 {
     static uint8_t etat = 0;
-    uint16_t attente = 0;
-    static uint8_t detection = 0;
-
+    
     if (etat == 0)
     {
         chenilles(DESCENDRE);
+        tapis(DROIT, OUVERT);
+        tapis (GAUCHE, OUVERT);
         etat = 1;
     }
     else if (etat == 1 && read_data(CHENILLE_AR_D, LIRE_MOUV_FLAG) == 0 && read_data(CHENILLE_AR_G, LIRE_MOUV_FLAG) == 0 )
@@ -286,23 +318,13 @@ void montee_des_marches ()
     }
     else if (etat == 2)
     {
-        //attente++;
-        //if (attente >= 10)
-        //{
-            if (INCLINOMETRE == 1)
-               //detection++;
-            //else
-            //    detection = 0;
-
-            //if (detection > 2)
-                    etat = 3;
-           // attente = 10;
-        //}
-        
+        if (INCLINOMETRE == 1)
+                etat = 3;
     }
     else if (etat == 3)
     {
         chenilles(INTERMEDIAIRE);
+        ascenseur(AVANT);
         //if (read_data(CHENILLE_AV_G, LIRE_POSITION_CONSIGNE) == 662 && read_data(CHENILLE_AR_G, LIRE_POSITION_CONSIGNE) == 812)
         //{
          //   lancer_autom_AX12();
@@ -314,9 +336,20 @@ void montee_des_marches ()
 
 void arrive_marche ()
 {
-    if (COMPTEUR_MARCHE >= 2500)
+    static uint8_t etat = 0;
+    if (COMPTEUR_MARCHE >= 1600 && etat == 0)
+    {
+        tapis(DROIT, DEPOSE);
+        tapis(GAUCHE, DEPOSE);
+        etat = 1;
+    }
+    else if (etat == 1 && COMPTEUR_MARCHE >= 2800)
     {
         alimenter_moteur_Y(OFF, MARCHE_AVANT);
+        ascenseur(ARRIERE);
+        chenilles(MONTER);
+        tapis(DROIT, RANGEMENT);
+        tapis(GAUCHE, RANGEMENT);
         FLAG_ACTION = NE_RIEN_FAIRE;
     }
 }
@@ -382,7 +415,7 @@ void autom_10ms (void)
                 compteur_evitement =0;
             }
 
-            if (  (CAPT_US_BALISE == 1 || CAPT_US_AV_DROIT == 1 || CAPT_US_AV_GAUCHE == 1)  && DETECTION == OFF )
+            if (  (CAPT_US_BALISE == 1 || CAPT_US_AV_DROIT == 0 || CAPT_US_AV_GAUCHE == 0)  && DETECTION == OFF )
             {
                 compteur = 0;
                 DETECTION = ON;
@@ -396,7 +429,7 @@ void autom_10ms (void)
                 if (compteur > 20)
                 {
                     compteur = 20;
-                    if (CAPT_US_BALISE == 0 ||CAPT_US_AV_DROIT == 0 || CAPT_US_AV_GAUCHE == 0)
+                    if (CAPT_US_BALISE == 0 ||CAPT_US_AV_DROIT == 1 || CAPT_US_AV_GAUCHE == 1)
                     {
                         DETECTION = OFF;
                         unbrake();
@@ -423,11 +456,13 @@ void autom_10ms (void)
         //Evitement arrière
         else if (EVITEMENT_ADV_ARRIERE == ON)
         {
-            if(evitement_en_cours == ON){
+            if(evitement_en_cours == ON)
+            {
                 compteur_evitement++;
             }
-            else {
-                compteur_evitement =0;
+            else
+            {
+                compteur_evitement = 0;
             }
 
             if ( (CAPT_US_ARRIERE == 1)  && DETECTION == OFF)

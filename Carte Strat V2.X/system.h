@@ -116,9 +116,9 @@ extern "C" {
     #define CAPTEUR2            PORTCbits.RC1
     #define CAPTEUR3            PORTCbits.RC2
     #define CAPTEUR4            PORTAbits.RA2
-    #define CAPTEUR5            PORTAbits.RA3 //bug gros robot
-    #define CAPTEUR6            PORTAbits.RA8   //bug gros robot
-    #define CAPTEUR7            PORTBbits.RB4   //bug gros robot
+    #define CAPTEUR5            PORTAbits.RA3 
+    #define CAPTEUR6            PORTAbits.RA8   
+    #define CAPTEUR7            PORTBbits.RB4   
     #define CAPTEUR8            PORTAbits.RA4
 
     #define CAPTEUR1_ANALOGIQUE _CAPTEUR1_ANALOGIQUE
@@ -228,6 +228,7 @@ extern "C" {
     extern uint16_t FLAG_ACTION;
     extern uint8_t ETAT_AUTOM;
     extern uint16_t COMPTEUR_MARCHE;
+    extern uint8_t COMPTEUR_TEMPS_MATCH;
 
     extern _ax12 ax12;
 

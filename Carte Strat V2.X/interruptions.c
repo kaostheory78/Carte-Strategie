@@ -67,33 +67,39 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
  */
 void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
 {
-    PORTCbits.RC5 = 0;
 
-    //On désactive toutes les interruptions :
-    IEC0bits.T2IE = 0;
-    IEC0bits.T1IE = 0;
-    IEC1bits.T4IE = 0;
-    IEC1bits.T5IE = 0;
-    IEC3bits.QEI1IE = 0;
-    IEC4bits.QEI2IE = 0;
+    COMPTEUR_TEMPS_MATCH ++;
 
-    TIMER_10ms = DESACTIVE;
-    TIMER_5ms = DESACTIVE;
-    TIMER_90s = DESACTIVE;
-    TIMER_DEBUG = DESACTIVE;
+    if (COMPTEUR_TEMPS_MATCH >= 90)
+    {
+        PORTCbits.RC5 = 0;
 
-    envoit_pwm(MOTEUR_DROIT, 0);
-    envoit_pwm(MOTEUR_GAUCHE, 0);
-    envoit_pwm(MOTEUR_X, 0);
+        //On désactive toutes les interruptions :
+        IEC0bits.T2IE = 0;
+        IEC0bits.T1IE = 0;
+        IEC1bits.T4IE = 0;
+        IEC1bits.T5IE = 0;
+        IEC3bits.QEI1IE = 0;
+        IEC4bits.QEI2IE = 0;
 
-#ifdef PETIT_ROBOT
-    pinces(PINCE_HAUT, RANGEMENT);
-    pinces(PINCE_MILIEU, RANGEMENT);
-    pinces(PINCE_BAS, RANGEMENT);
-    pinces(PINCE_ASCENSEUR, RACLETTE);
-#endif
+        TIMER_10ms = DESACTIVE;
+        TIMER_5ms = DESACTIVE;
+        TIMER_90s = DESACTIVE;
+        TIMER_DEBUG = DESACTIVE;
 
-    while(1);
+        envoit_pwm(MOTEUR_DROIT, 0);
+        envoit_pwm(MOTEUR_GAUCHE, 0);
+        envoit_pwm(MOTEUR_X, 0);
+
+    #ifdef PETIT_ROBOT
+        pinces(PINCE_HAUT, RANGEMENT);
+        pinces(PINCE_MILIEU, RANGEMENT);
+        pinces(PINCE_BAS, RANGEMENT);
+        pinces(PINCE_ASCENSEUR, RACLETTE);
+    #endif
+
+        while(1);
+    }
     FLAG_TIMER_90s = 0;        //On clear le flag d'interruption du timer
 }
 

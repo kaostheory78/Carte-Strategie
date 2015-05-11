@@ -75,6 +75,7 @@
     uint16_t FLAG_ACTION;
     uint8_t ETAT_AUTOM;
     uint16_t COMPTEUR_MARCHE;
+    uint8_t COMPTEUR_TEMPS_MATCH;
 
 
     int obstacle[30][20];
@@ -114,13 +115,11 @@ int main(int argc, char** argv)
     /**************************************************************************/
     /**************************************************************************/
 
-      /* uint8_t tab[5];
-        tab[0] = DEPOSE_TAPIS_D;
-        tab[1] = DEPOSE_TAPIS_G;
-        tab[2] = PINCE_TAPIS_D;
-        tab[3] = PINCE_TAPIS_G;
-
-       lecture_position_AX12 (tab, 4);*/
+//       uint8_t tab[5];
+//        tab[0] = PINCE_TAPIS_D;
+//        tab[1] = PINCE_TAPIS_G;
+//
+//       lecture_position_AX12 (tab, 2);
 
     init_decalage_AX12 ();
     init_position_AX12();
@@ -151,7 +150,7 @@ int main(int argc, char** argv)
     /**************************************************************************/
     /**************************************************************************/
     
-    //while(SYS_JACK);
+    while(SYS_JACK);
     //reglage_odometrie();
     strategie();
     //homologation();

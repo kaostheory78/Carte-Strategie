@@ -25,14 +25,19 @@ void strategie()
     COULEUR = couleur_depart();
     
     #ifdef GROS_ROBOT
-        COULEUR = JAUNE;
 
+
+        // Inits avant démarage du robot :
         init_jack();
         delay_ms(2000);
 
+        while(!SYS_JACK);
+
+        // Démarage du match
         TIMER_90s = ACTIVE;
-        EVITEMENT_ADV_AVANT = OFF;
+        EVITEMENT_ADV_AVANT = ON;
         STRATEGIE_EVITEMENT = STOP;
+
         init_position_robot(180., 988., 0.);
         FLAG_ACTION = INIT_ASCENSEUR;
 
@@ -50,24 +55,27 @@ void strategie()
 
 
         // Retour au bercail pour dépose N°1
-        //EVITEMENT_ADV_AVANT = OFF;
-        //EVITEMENT_ADV_ARRIERE = ON;
+        EVITEMENT_ADV_AVANT = OFF;
+        EVITEMENT_ADV_ARRIERE = ON;
         passe_part(570,455,MARCHE_ARRIERE,100,DEBUT_TRAJECTOIRE);
+
         FLAG_ACTION = NE_RIEN_FAIRE;
-        //EVITEMENT_ADV_ARRIERE = OFF;
-        //EVITEMENT_ADV_AVANT = ON;
+        EVITEMENT_ADV_ARRIERE = OFF;
+        EVITEMENT_ADV_AVANT = ON;
         passe_part(550,550,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
         passe_part(650,800,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
-        //EVITEMENT_ADV_AVANT = OFF;
+
+        // On désactive dans la zone de départ
+        EVITEMENT_ADV_AVANT = OFF;
         passe_part(558,990,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
         passe_part(270,990,MARCHE_AVANT,100,FIN_TRAJECTOIRE);
 
         // On vérifie confirme que le gobelet a bien été attrapé
         uint8_t status_pince_G = LIBRE, status_pince_D = LIBRE;
         
-        if (CAPT_GOBELET_D == 0)
+        if (check_capteur(DROIT) == 0)
             status_pince_D = FERMER;
-        if (CAPT_GOBELET_G == 0)
+        if (check_capteur(GAUCHE) == 0)
             status_pince_G = FERMER;
 
 
@@ -89,11 +97,17 @@ void strategie()
         }
 
         // On a encore un gobelet à déposer
-        if (status_pince_D == FERMER)
+        if (status_pince_D == FERMER) //strat normale (2 gobelets du départ)
         {
             delay_ms(500);
             avancer_reculer(-100, 50);
+
+            EVITEMENT_ADV_ARRIERE = ON;
             passe_part(750, 1000, MARCHE_ARRIERE, 50, DEBUT_TRAJECTOIRE);
+
+            EVITEMENT_ADV_ARRIERE = OFF;
+            EVITEMENT_ADV_AVANT = ON;
+
             passe_part(1100, 900, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
             passe_part(1900, 900, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
             passe_part(2300, 545, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
@@ -105,24 +119,35 @@ void strategie()
             avancer_reculer(-80, 50);
             FLAG_ACTION = ATTRAPE_GOBELET;
 
-            // On va chercher celui de l'adversaire si dispo
+            // On s'éloigne du gobelet
+            EVITEMENT_ADV_AVANT = OFF;
+            EVITEMENT_ADV_ARRIERE = ON;
             rejoindre (2670, get_Y(), MARCHE_ARRIERE, 50);
-            orienter(-90, 100);
-            //ne pas mettre d'évitement adv
-            avancer_reculer(-200, 50);
-            init_Y(667);
-            init_orientation(-90);
-            //rejoindre (2670, 425, MARCHE_AVANT, 50);
+            
+//            // Recalage contre la bordure
+//            orienter(-90, 100);
+//            //ne pas mettre d'évitement adv : risque de voir un robot dans la zone adverse
+//            EVITEMENT_ADV_ARRIERE = OFF;
+//            avancer_reculer(-200, 50);
+//            init_Y(667);
+//            init_orientation(-90);
 
-            // On se dirige vers le clap
-            rejoindre(2670, 240, MARCHE_AVANT, 50);
-            rejoindre(2550, 210, MARCHE_AVANT, 50);
+
+            // On se dirige vers le clap en essayant d'attraper le gobelet adverse au passage
+            EVITEMENT_ADV_ARRIERE = OFF;
+            EVITEMENT_ADV_ARRIERE = ON;
+            rejoindre(2670, 220, MARCHE_AVANT, 50);
+            rejoindre(2550, 190, MARCHE_AVANT, 50);
+
+            FLAG_ACTION = NE_RIEN_FAIRE;
+
+            // On fait le clap
             bras(GAUCHE, OUVERT);
             rejoindre (2220, 210, MARCHE_AVANT, 50);
 
-            if (CAPT_GOBELET_G == 0)
+            if (check_capteur(GAUCHE) == 0) // 2 gobelets du départ + gobelet adverse
             {
-                //depose du gobelet dans la zone de droite
+                //depose du gobelet dans la zone de gauche
                 //+ Alignement marches
                 bras(GAUCHE, FERMER);
                 passe_part (2100, 800, MARCHE_AVANT, 80, DEBUT_TRAJECTOIRE);
@@ -134,6 +159,8 @@ void strategie()
 
                 delay_ms(500);
 
+                EVITEMENT_ADV_AVANT = OFF;
+                EVITEMENT_ADV_ARRIERE = ON;
                 rejoindre (2200, 1450, MARCHE_ARRIERE, 100);
                 pince(DROITE, RANGEMENT);
                 pince(GAUCHE, RANGEMENT);
@@ -141,10 +168,12 @@ void strategie()
                 ascenseur(ARRIERE);
 
                 //desactiver evitement
+                EVITEMENT_ADV_ARRIERE = OFF;
                 avancer_reculer(-200, 100);
                 init_X(2143);
                 init_orientation(0);
 
+                EVITEMENT_ADV_AVANT = ON;
                 rejoindre (2300, 1450, MARCHE_AVANT, 100);
 
                 passe_part(2220, 1220, MARCHE_AVANT, 50, DEBUT_TRAJECTOIRE);
@@ -156,12 +185,15 @@ void strategie()
                 orienter(90, 100);
 
             }
-            else
+            // Strate normale 2 gobelet départ mais pas gobelet adverse
+            else // Pas de gobelet => direction les marches
             {
+                bras(GAUCHE, FERMER);
                 pince(DROITE, RANGEMENT);
                 pince(GAUCHE, RANGEMENT);
                 delay_ms(500);
                 ascenseur(ARRIERE);
+
                 //se diriger vers les marches
                 rejoindre(1240, 830, MARCHE_AVANT, 50);
                 rejoindre(1240, 1260, MARCHE_AVANT, 50);
@@ -171,9 +203,107 @@ void strategie()
 
             //rejoindre(2600, 400, MARCHE_AVANT, 100);
         }
-        else
+        else // 1 ou 0 gobelets au départ
         {
-            // direction clap direct
+            // Pas de gobelets dans les pinces
+            pince(GAUCHE, RANGEMENT);
+            pince(DROITE, RANGEMENT);
+            delay_ms(500);
+            ascenseur(ARRIERE);
+
+            // On sors de la zone de départ
+            avancer_reculer(-100, 50);
+
+            EVITEMENT_ADV_ARRIERE = ON;
+            passe_part(750, 1000, MARCHE_ARRIERE, 50, DEBUT_TRAJECTOIRE);
+
+            EVITEMENT_ADV_ARRIERE = OFF;
+            EVITEMENT_ADV_AVANT = ON;
+
+            // On se dirige dans la zone de droite
+            passe_part(1100, 900, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
+            passe_part(1900, 900, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+            passe_part(2300, 545, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
+            ascenseur(AVANT);
+            passe_part(2670, 545, MARCHE_AVANT, 50, FIN_TRAJECTOIRE);
+
+            // on va faire le clap en tentant le gobelet adverse au passage
+            pince(GAUCHE, OUVERTE);
+            delay_ms(500);
+            FLAG_ACTION = ATTRAPE_GOBELET;
+            rejoindre(2670, 220, MARCHE_AVANT, 50);
+            rejoindre(2550, 190, MARCHE_AVANT, 50);
+
+            FLAG_ACTION = NE_RIEN_FAIRE;
+
+            // On fait le clap
+            bras(GAUCHE, OUVERT);
+            rejoindre (2220, 190, MARCHE_AVANT, 50);
+
+
+
+            if (check_capteur(GAUCHE) == 0) // 1 ou 0 gobelet au départ + gobelet adverse
+            {
+                // Si on a eu le gobelet adverse
+                bras(GAUCHE, FERMER);
+                EVITEMENT_ADV_AVANT = OFF;
+                EVITEMENT_ADV_ARRIERE = ON;
+                passe_part(2500, 400, MARCHE_ARRIERE, 100, DEBUT_TRAJECTOIRE);
+                passe_part(2650, 550, MARCHE_ARRIERE, 100, MILIEU_TRAJECTOIRE);
+                passe_part(2680, 550, MARCHE_ARRIERE, 100, MILIEU_TRAJECTOIRE);
+                EVITEMENT_ADV_ARRIERE = OFF;
+                passe_part(2720, 550, MARCHE_ARRIERE, 100, FIN_TRAJECTOIRE);
+
+                // calage
+                orienter(180, 100);
+                avancer_reculer(-300, 100);
+                init_X(2890);
+                init_orientation(180);
+
+                // on se prépare
+                EVITEMENT_ADV_AVANT = ON;
+                avancer_reculer(200, 100);
+                
+                // (on coupe l'évitement pour la rotation)
+                EVITEMENT_ADV_AVANT = OFF;
+                orienter(0, 50);
+
+                // on relache le gobelet
+                pince(GAUCHE, OUVERTE);
+                EVITEMENT_ADV_ARRIERE = ON;
+                avancer_reculer(-100, 100);
+
+                //rangement des pinces
+                bras(GAUCHE, FERMER);
+                pince(DROITE, RANGEMENT);
+                pince(GAUCHE, RANGEMENT);
+                delay_ms(500);
+                ascenseur(ARRIERE);
+
+                EVITEMENT_ADV_ARRIERE = OFF;
+                EVITEMENT_ADV_AVANT = ON;
+
+                //direction les marches
+                rejoindre(1240, 830, MARCHE_AVANT, 50);
+                rejoindre(1240, 1260, MARCHE_AVANT, 50);
+                orienter(90, 100);
+
+            }
+            else // Aucun gobelet = match de merde
+            {
+                //direction les marches direct
+                //direction les marches :
+                bras(GAUCHE, FERMER);
+                pince(DROITE, RANGEMENT);
+                pince(GAUCHE, RANGEMENT);
+                delay_ms(500);
+                ascenseur(ARRIERE);
+
+                //se diriger vers les marches
+                rejoindre(1200, 830, MARCHE_AVANT, 50);
+                rejoindre(1200, 1260, MARCHE_AVANT, 50);
+                orienter(90, 100);
+            }
         }
 
         //Montée des marches
@@ -209,7 +339,7 @@ void strategie()
         delay_ms(500);
         //Pieds 3
         rejoindre (935, 570, MARCHE_AVANT, 100);
-        delay_ms(1000);
+        delay_ms(1200);
 
 
 
@@ -344,14 +474,16 @@ void strategie()
         // Pieds 6
         rejoindre(450, 975, MARCHE_AVANT, 100);
         FLAG_ACTION = ZONE_DEPART;
-        delay_ms(1000);
+        delay_ms(2000);
 
         rejoindre(320, 1000, MARCHE_AVANT, 50);
         FLAG_ACTION = DEPOSE_PIEDS;
-        delay_ms(2200);
-        rejoindre(600, 975, MARCHE_ARRIERE, 50);
+        delay_ms(3000);
+        //rejoindre(600, 975, MARCHE_ARRIERE, 50);
 
-        orienter (0, 20);
+        avancer_reculer(-300, 100);
+
+        //orienter (0, 20);
         eteindre_pompe();
         
         /******** Récup gobelet en passe part*/
@@ -528,7 +660,9 @@ void reglage_odometrie()
     delay_ms(2000);
     //while(!SYS_JACK);
     COULEUR = couleur_depart();
+#ifdef GROS_ROBOT
     init_jack();
+#endif
     EVITEMENT_ADV_ARRIERE = OFF;
     EVITEMENT_ADV_AVANT = OFF;
 

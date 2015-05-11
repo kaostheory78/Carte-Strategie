@@ -73,8 +73,8 @@ extern "C" {
 #ifdef  GROS_ROBOT
      #define PINCE_D                24
     #define PINCE_G                 19
-    // TAPIS
 
+    // TAPIS
     #define PINCE_TAPIS_D           12
     #define PINCE_TAPIS_G           3
     #define AX_US                   17
@@ -83,7 +83,7 @@ extern "C" {
     #define BRAS_DROIT              25
     #define BRAS_GAUCHE             1
 
-    // ASCENCEUR
+    // ASCENSEUR
     #define ASCENSEUR               26
 
     //Chenilles
@@ -239,6 +239,15 @@ extern "C" {
 
 
     //Fonction AX12
+
+    uint8_t check_capteur (uint8_t cote);
+
+    /**
+     * Fonction qui permet d'inverser le côté en fonction de la couleur
+     * @param cote : le cote (DROITE ou GAUCHE)
+     * @return le côté opposé GAUCHE ou DROITE
+     */
+    uint8_t inversion_autom (uint8_t cote);
 
     /**
      * Fonction qui déploie les chenilles

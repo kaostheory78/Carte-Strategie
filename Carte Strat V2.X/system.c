@@ -44,14 +44,19 @@ void init_system (void)
     InitUART(UART_XBEE, 115200);
     InitUART(UART_AX12, 500000);
 
+    // Evitement
     DETECTION = OFF;
     EVITEMENT_ADV_AVANT = OFF;
     EVITEMENT_ADV_ARRIERE = OFF;
     STRATEGIE_EVITEMENT = STOP;
+
+    // AUTOMS
     FLAG_ACTION = NE_RIEN_FAIRE;
     ETAT_AUTOM = NE_RIEN_FAIRE;
     COULEUR = JAUNE;
     COMPTEUR_MARCHE = 0;
+
+    COMPTEUR_TEMPS_MATCH = 0;
 
     TIMER_5ms = ACTIVE;
     TIMER_10ms = ACTIVE;
@@ -148,10 +153,13 @@ void config_timer_90s()
     TMR3 = 0x00;                //On remet le TIMER3 à 0
     TMR2 = 0x00;                //On remet le Timer2 à 0
 
-    //On décompte 14 065 514 pour faire 90 secondes
-    PR3 = 0x00D6;               //adresse haute
-    PR2 = 0x9F6A;               //adresse basse
+//    //On décompte 14 065 514 pour faire 90 secondes
+//    PR3 = 0x00D6;               //adresse haute
+//    PR2 = 0x9F6A;               //adresse basse
 
+    // On décompte de 156 284 pour faire 0, 999 999 750 secondes
+    PR3 = 2;                        // adresse haute
+    PR2 = 25212;                    // adresse basse
     //IPC2bits.T3IP = 0x01;       //Interruption sur ptiotité 1  -> définit dans la table des interrupt
     FLAG_TIMER_90s = 0;         //On clear le flag du timer
     IEC0bits.T3IE = 1;          //On enable l'interrup
