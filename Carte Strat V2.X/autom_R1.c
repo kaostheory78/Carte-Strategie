@@ -71,7 +71,7 @@ uint8_t check_capteur (uint8_t cote)
 
     if (cote == DROIT)
         return CAPT_GOBELET_D;
-    else
+    else if (cote == GAUCHE)
         return CAPT_GOBELET_G;
 }
 
@@ -487,12 +487,15 @@ void autom_10ms (void)
                     }
                 }
             }
+            else
+                rotation_us();
         }
         else if (DETECTION == ON)
         {
             DETECTION = OFF;
             unbrake();
         }
+       
 
 
 }

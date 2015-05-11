@@ -39,10 +39,11 @@ void eteindre_pompe ()
 }
 
 void son_evitement (uint8_t melodie)
-{
+{/*
     commande_AX12(100, _4PARAM, WRITE_DATA, 0x29, 10, NC, NC, NC);
     commande_AX12(100, _4PARAM, WRITE_DATA, 0x28, melodie, NC, NC, NC);
-}
+
+  */}
 
 /******************************************************************************/
 /********************************  FONCTION AX12  *****************************/
@@ -138,6 +139,7 @@ void init_pinces_demarage()
     else if (read_data(PINCE_ASCENSEUR, LIRE_MOUV_FLAG) == 0)
     {
         ascenseur(DESCENDRE);
+        EVITEMENT_ADV_AVANT = ON;
         FLAG_ACTION = ATTRAPE_PIEDS;
     }
 }
@@ -172,7 +174,7 @@ void depose_pieds ()
             pinces(PINCE_MILIEU, RANGEMENT);
             pinces(PINCE_BAS, RANGEMENT);
             pinces (PINCE_ASCENSEUR, RACLETTE);
-            FLAG_ACTION = NE_RIEN_FAIRE;
+            FLAG_ACTION = FIN_DE_MATCH;
         }
     }
     else if (occupation_pince == 0)
@@ -208,7 +210,7 @@ void depose_pieds ()
             pinces(PINCE_MILIEU, RANGEMENT);
             pinces(PINCE_BAS, RANGEMENT);
 
-            FLAG_ACTION = NE_RIEN_FAIRE;
+            FLAG_ACTION = FIN_DE_MATCH;
         }
     }
 }
@@ -535,14 +537,6 @@ void autom_10ms (void)
         //Fonction permettant de lancer la fonction d'évitement
         if(EVITEMENT_ADV_AVANT == ON)
         {
-
-            if(evitement_en_cours == ON){
-                compteur_evitement++;
-            }
-            else {
-                compteur_evitement =0;
-            }
-
             if ( (CAPT_US_GAUCHE == 1 || CAPT_US_BALISE == 1 || CAPT_US_DROIT == 1) )
             {
                 if ( DETECTION == OFF)
@@ -557,7 +551,7 @@ void autom_10ms (void)
                 else
                     son_evitement(2);
             }
-            else if (DETECTION == ON && STRATEGIE_EVITEMENT == STOP)
+            if (DETECTION == ON && STRATEGIE_EVITEMENT == STOP)
             {
                 compteur ++;
                 if (compteur > 20)
@@ -601,7 +595,7 @@ void autom_10ms (void)
                 FLAG_ASSERV.erreur = EVITEMENT;
                 brake();
             }
-            else if (DETECTION == ON && STRATEGIE_EVITEMENT == STOP)
+            if (DETECTION == ON && STRATEGIE_EVITEMENT == STOP)
             {
                 compteur ++;
                 if (compteur > 20)

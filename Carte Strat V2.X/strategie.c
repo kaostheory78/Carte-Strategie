@@ -36,7 +36,7 @@ void strategie()
         // Démarage du match
         TIMER_90s = ACTIVE;
         EVITEMENT_ADV_AVANT = ON;
-        STRATEGIE_EVITEMENT = STOP;
+        STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;
 
         init_position_robot(180., 988., 0.);
         FLAG_ACTION = INIT_ASCENSEUR;
@@ -71,11 +71,14 @@ void strategie()
         passe_part(270,990,MARCHE_AVANT,100,FIN_TRAJECTOIRE);
 
         // On vérifie confirme que le gobelet a bien été attrapé
-        uint8_t status_pince_G = LIBRE, status_pince_D = LIBRE;
+        uint8_t status_pince_G = LIBRE, status_pince_D = LIBRE, temp1 = 1, temp2 = 1;
+
+        temp1 = check_capteur(DROITE);
+        temp2 = check_capteur(GAUCHE);
         
-        if (check_capteur(DROIT) == 0)
+        if (temp1 == 0)
             status_pince_D = FERMER;
-        if (check_capteur(GAUCHE) == 0)
+        if (temp2 == 0)
             status_pince_G = FERMER;
 
 
@@ -136,7 +139,7 @@ void strategie()
             // On se dirige vers le clap en essayant d'attraper le gobelet adverse au passage
             EVITEMENT_ADV_ARRIERE = OFF;
             EVITEMENT_ADV_ARRIERE = ON;
-            rejoindre(2670, 220, MARCHE_AVANT, 50);
+            rejoindre(2670, 225, MARCHE_AVANT, 50);
             rejoindre(2550, 190, MARCHE_AVANT, 50);
 
             FLAG_ACTION = NE_RIEN_FAIRE;
@@ -159,6 +162,7 @@ void strategie()
 
                 delay_ms(500);
 
+                // recalage contre les amrches
                 EVITEMENT_ADV_AVANT = OFF;
                 EVITEMENT_ADV_ARRIERE = ON;
                 rejoindre (2200, 1450, MARCHE_ARRIERE, 100);
@@ -176,6 +180,7 @@ void strategie()
                 EVITEMENT_ADV_AVANT = ON;
                 rejoindre (2300, 1450, MARCHE_AVANT, 100);
 
+                //alignement marche
                 passe_part(2220, 1220, MARCHE_AVANT, 50, DEBUT_TRAJECTOIRE);
                 passe_part(1930, 830, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
                 passe_part(1240, 830, MARCHE_AVANT, 50, MILIEU_TRAJECTOIRE);
@@ -320,6 +325,8 @@ void strategie()
         
     #ifdef PETIT_ROBOT
         init_position_robot (153, 1030, 0);
+        EVITEMENT_ADV_AVANT = OFF;
+
         //Init départ
         init_pinces_jack();
         rejoindre (490, 1030, MARCHE_AVANT, 50);
@@ -328,7 +335,7 @@ void strategie()
         while(!SYS_JACK);
         TIMER_90s = ACTIVE;
 
-        EVITEMENT_ADV_AVANT = ON;
+        STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;
         FLAG_ACTION = INIT_PINCES_DEMARRAGE;       
 
         //Pieds 1
@@ -339,7 +346,7 @@ void strategie()
         delay_ms(500);
         //Pieds 3
         rejoindre (935, 570, MARCHE_AVANT, 100);
-        delay_ms(1200);
+        delay_ms(1600);
 
 
 
@@ -422,11 +429,11 @@ void strategie()
         passe_part(170, 1770, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
 
         //Aspiration 2 pieds
-        allumer_pompes();
-        EVITEMENT_ADV_AVANT = OFF;
-        EVITEMENT_ADV_ARRIERE = ON;
-        rejoindre(785, 1745,  MARCHE_ARRIERE, 50);
-        EVITEMENT_ADV_ARRIERE = OFF;
+//        allumer_pompes();
+//        EVITEMENT_ADV_AVANT = OFF;
+//        EVITEMENT_ADV_ARRIERE = ON;
+//        rejoindre(785, 1745,  MARCHE_ARRIERE, 50);
+//        EVITEMENT_ADV_ARRIERE = OFF;
         
         /***** Pied un peu chiant **************
         orienter(-90, 15);

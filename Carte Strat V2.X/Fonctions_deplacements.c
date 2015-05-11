@@ -1717,7 +1717,7 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
 #endif
 #ifdef GROS_ROBOT
     int taille = 2;// il y a deja 3 de largeur, devant nous, a cette gauche et a cette droite, la taille est ce qu'on met en plus de ces 3 la
-    int taille_diago = 1;
+    int taille_diago = 2;
     int vision = 2;
     int vision_diago = 1;
 #endif
@@ -2316,6 +2316,7 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
     chemin_court=0;
     calcul_en_cours = ON;
     compteur_evitement = 0;
+
 
     if(pourcentage_deplacement > 50) // si la vitesse est supérieur à 50% de la vitesse maximale
     {

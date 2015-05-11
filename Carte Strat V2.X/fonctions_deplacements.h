@@ -33,7 +33,7 @@ extern "C" {
     #define nb_point_max 100
     #define MOYEN 80
     #define rej 9
-    #define ATTENTE_EVITEMENT 100
+    #define ATTENTE_EVITEMENT 150
     #define EFFACER 0
     #define AJOUTER 2
 

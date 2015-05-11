@@ -109,6 +109,7 @@ int main(int argc, char** argv)
     /**************************************************************************/
 
     init_system();
+    init_evitement();
     //TIMER_DEBUG = ACTIVE;
     delay_ms(500);
 
@@ -126,7 +127,10 @@ int main(int argc, char** argv)
 
     init_decalage_AX12 ();
     init_position_AX12();
-    EVITEMENT_ADV_AVANT = ON;
+
+#ifdef GROS_ROBOT
+    synchro_AX12(AX_US, 0, 1023, SANS_ATTENTE);
+#endif
 
 //    while(1)
 //    {

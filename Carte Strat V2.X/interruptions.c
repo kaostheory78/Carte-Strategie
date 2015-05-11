@@ -63,6 +63,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
     if(calcul_en_cours == ON)
     {
         compteur_evitement++;
+        if(compteur_evitement > ATTENTE_EVITEMENT*2)
+            compteur_evitement = ATTENTE_EVITEMENT *2;
     }
     else
     {
@@ -78,10 +80,19 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
  */
 void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
 {
-
+    static uint8_t etat_autom = NE_RIEN_FAIRE;
     COMPTEUR_TEMPS_MATCH ++;
 
-    if (COMPTEUR_TEMPS_MATCH >= 90)
+
+    if (COMPTEUR_TEMPS_MATCH >= 85 && etat_autom == NE_RIEN_FAIRE )
+    {
+        #ifdef PETIT_ROBOT
+            if (FLAG_ACTION != FIN_DE_MATCH)
+                FLAG_ACTION = DEPOSE_PIEDS;
+            etat_autom = FIN_DE_MATCH;
+        #endif
+    }
+    else if (COMPTEUR_TEMPS_MATCH >= 90)
     {
         PORTCbits.RC5 = 0;
 
@@ -101,6 +112,10 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
         envoit_pwm(MOTEUR_DROIT, 0);
         envoit_pwm(MOTEUR_GAUCHE, 0);
         envoit_pwm(MOTEUR_X, 0);
+        alimenter_moteur_Y(OFF, MARCHE_AVANT);
+
+        IPC7bits.U2TXIP	= 7;
+        IPC7bits.U2RXIP = 7;
 
     #ifdef PETIT_ROBOT
         pinces(PINCE_HAUT, RANGEMENT);
@@ -108,6 +123,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
         pinces(PINCE_BAS, RANGEMENT);
         pinces(PINCE_ASCENSEUR, RACLETTE);
     #endif
+
+        
 
         while(1);
     }

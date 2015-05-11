@@ -175,6 +175,7 @@ extern "C" {
     #define FERMETURE_PINCE             10
     #define PIEDS_4                     11
     #define EMPILEMENT                  12
+    #define FIN_DE_MATCH                13
 #endif
 
 #ifdef GROS_ROBOT
