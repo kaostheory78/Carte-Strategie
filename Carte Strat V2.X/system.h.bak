@@ -221,8 +221,7 @@ extern "C" {
     extern int id_evitement;
     extern int id_evitement_initial;
     extern int chemin_court;
-    extern uint16_t compteur_evitement;
-    extern int precedent_obstacle[7];
+    extern int compteur_evitement;
 
 
     // FLAG Automs

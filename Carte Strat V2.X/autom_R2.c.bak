@@ -593,6 +593,14 @@ void autom_10ms (void)
 
         else if (EVITEMENT_ADV_ARRIERE == ON)
         {
+
+            if(evitement_en_cours == ON){
+                compteur_evitement++;
+            }
+            else {
+                compteur_evitement =0;
+            }
+
             if ( (CAPT_IR_ARRIERE_CENTRE == 0 || CAPT_IR_ARRIERE_DROIT == 0 || CAPT_IR_ARRIERE_GAUCHE == 0)  && DETECTION == OFF)
             {
                 compteur = 0;

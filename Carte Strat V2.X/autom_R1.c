@@ -407,14 +407,6 @@ void autom_10ms (void)
         //Fonction permettant de lancer la fonction d'évitement
         if(EVITEMENT_ADV_AVANT == ON)
         {
-
-            if(evitement_en_cours == ON){
-                compteur_evitement++;
-            }
-            else {
-                compteur_evitement =0;
-            }
-
             if (  (CAPT_US_BALISE == 1 || CAPT_US_AV_DROIT == 0 || CAPT_US_AV_GAUCHE == 0)  && DETECTION == OFF )
             {
                 compteur = 0;
@@ -456,15 +448,6 @@ void autom_10ms (void)
         //Evitement arrière
         else if (EVITEMENT_ADV_ARRIERE == ON)
         {
-            if(evitement_en_cours == ON)
-            {
-                compteur_evitement++;
-            }
-            else
-            {
-                compteur_evitement = 0;
-            }
-
             if ( (CAPT_US_ARRIERE == 1)  && DETECTION == OFF)
             {
                 compteur = 0;

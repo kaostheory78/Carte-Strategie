@@ -27,21 +27,20 @@
  */
 void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
 {
+
+
+
     FLAG_TIMER_5ms = 0;
 
-    // odométrie
    calcul_position_robot();
-
    if (FLAG_ASSERV.totale == ON)
         asserv();
-
 #ifdef GROS_ROBOT
    if (FLAG_ACTION == ARRIVEE_MARCHE)
        COMPTEUR_MARCHE = COMPTEUR_MARCHE + 1;
 #endif
-
    static int led = 1, compteur = 0;
-   compteur++;
+    compteur++;
 
     if (compteur == 100)
     {
@@ -57,16 +56,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
         //CAPTEUR5 = led;
 #endif
         compteur = 0;
-    }
-
-    // Compteur pour évitement Hugo
-    if(calcul_en_cours == ON)
-    {
-        compteur_evitement++;
-    }
-    else
-    {
-        compteur_evitement =0;
     }
 
    Nop();
