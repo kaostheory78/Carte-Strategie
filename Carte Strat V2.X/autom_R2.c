@@ -469,6 +469,15 @@ void empilement(int taille_max)
 
 }
 
+void desactivation_evitement_reculer ()
+{
+    if (get_X() > 640)
+    {
+        EVITEMENT_ADV_ARRIERE = OFF;
+        FLAG_ACTION = NE_RIEN_FAIRE;
+    }
+}
+
 /******************************************************************************/
 /******************************** FONCTION BOUCLE *****************************/
 /******************************************************************************/
@@ -524,7 +533,9 @@ void autom_10ms (void)
                 pinces(PINCE_ASCENSEUR, RACLETTE);
                 FLAG_ACTION = ATTRAPE_PIEDS;
                 break;
-
+            case DESACTIVATION_EVITEMENT :
+                desactivation_evitement_reculer ();
+                break;
             default :
                 break;
         }

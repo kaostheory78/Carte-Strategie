@@ -94,7 +94,60 @@ void carre (int8_t sens_marche)
 
 void action_evitement (void)
 {
+#ifdef GROS_ROBOT
     //Stratégie alternatives possibles en focntion des évitements
+    EVITEMENT_ADV_AVANT = ON;
+    FLAG_EVITEMENT_STRATEGIQUE = MONTEE_EVITEMENT_EN_COURS;
+    //tapis(DROIT, DEPOSE);
+
+    uint8_t presence = 0;
+
+    if (check_capteur(DROIT))
+    {
+        pince(DROIT, OUVERT);
+        presence = 1;
+    }
+    if (check_capteur(DROIT))
+    {
+        pince(GAUCHE, OUVERT);
+        presence = 1;
+    }
+
+    if (presence == 1)
+    {
+        delay_ms(500);
+        avancer_reculer(-100, 100);
+        delay_ms (500);
+        pince(DROITE, RANGEMENT);
+        pince(GAUCHE, RANGEMENT);
+        ascenseur(ARRIERE);
+
+    }
+
+
+     //alignement aux marches
+//    if (get_X() > 2000)
+//    {
+//        plus_court(2000, 900, MARCHE_AVANT, 70, rej, 0);
+//    }
+//    if (get_X() > 1200)
+//    {
+//         plus_court(1200, 830, MARCHE_AVANT, 70, rej, 0);
+//    }
+
+    if (COULEUR == JAUNE)
+        plus_court(1200, 1240, MARCHE_AVANT, 70, rej, 0);
+    else
+        plus_court(1240, 1240, MARCHE_AVANT, 70, rej, 0);
+
+
+    // on s'aligne puis on monte
+    orienter(90, 100);
+
+    marche();
+
+    while(1);
+#endif 
 }
 
 void cibler (double x, double y, double pourcentage_vitesse)
@@ -141,72 +194,98 @@ void orienter (double angle, double pourcentage_vitesse)
 
 void rejoindre (double x, double y, int8_t sens_marche, double pourcentage_vitesse)
 {
-    uint8_t erreur = _rejoindre (x, y, sens_marche, pourcentage_vitesse);
-    if ( erreur == EVITEMENT)
-    {
-        if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)
+#ifdef GROS_ROBOT
+     if (FLAG_EVITEMENT_STRATEGIQUE != PREPARATION_MARCHE )
+     {
+#endif
+        uint8_t erreur = _rejoindre (x, y, sens_marche, pourcentage_vitesse);
+        if ( erreur == EVITEMENT)
         {
-            action_evitement();
+            if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)
+            {
+                action_evitement();
+            }
+            else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
+            {
+                plus_court(x,y,sens_marche,pourcentage_vitesse,rej,1);
+            }
         }
-        else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
+        else if (erreur == BLOCAGE)
         {
-            plus_court(x,y,sens_marche,pourcentage_vitesse,rej,1);
+            //Actions a faire en cas de blocage
         }
-    }
-    else if (erreur == BLOCAGE)
-    {
-        //Actions a faire en cas de blocage
-    }
-    else if(erreur != 0){
-
-    }
+#ifdef GROS_ROBOT
+     }
+     else
+     {
+         action_evitement();
+     }
+#endif
+    
 }
 
 void avancer_reculer (double distance, double pourcentage_vitesse)
 {
-    uint8_t erreur = _avancer_reculer (distance, pourcentage_vitesse);
-    if ( erreur == EVITEMENT)
-    {
-        if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)
+#ifdef GROS_ROBOT
+     if (FLAG_EVITEMENT_STRATEGIQUE != PREPARATION_MARCHE)
+     {
+#endif
+        uint8_t erreur = _avancer_reculer (distance, pourcentage_vitesse);
+        if ( erreur == EVITEMENT)
         {
-            action_evitement();
+            if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)
+            {
+                action_evitement();
+            }
+            else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
+            {
+                //action en cas d'évitements
+            }
         }
-        else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
+        else if (erreur == BLOCAGE)
         {
-            //action en cas d'évitements
-        }
-    }
-    else if (erreur == BLOCAGE)
-    {
 
-        //Actions a faire en cas de blocage
-    }
-    else if(erreur != 0){
-    }
+            //Actions a faire en cas de blocage
+        }
+#ifdef GROS_ROBOT
+     }
+     else
+     {
+         action_evitement();
+     }
+#endif
 }
 
 void passe_part (double x, double y, int8_t sens_marche, double pourcentage_vitesse, char last)
 {
-    uint8_t erreur = _passe_part (x, y, sens_marche, pourcentage_vitesse, last);
-    if ( erreur == EVITEMENT)
-    {
-        if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)
+#ifdef GROS_ROBOT
+     if (FLAG_EVITEMENT_STRATEGIQUE != PREPARATION_MARCHE)
+     {
+#endif
+        uint8_t erreur = _passe_part (x, y, sens_marche, pourcentage_vitesse, last);
+        if ( erreur == EVITEMENT)
         {
-            action_evitement();
+            if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)
+            {
+                action_evitement();
+            }
+            else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
+            {
+
+                plus_court(x,y,sens_marche,pourcentage_vitesse,last,1);
+            }
         }
-        else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
+        else if (erreur == BLOCAGE)
         {
-
-            plus_court(x,y,sens_marche,pourcentage_vitesse,last,1);
+            //Actions a faire en cas de blocage
         }
-    }
-    else if (erreur == BLOCAGE)
-    {
-        //Actions a faire en cas de blocage
-    }
-    else if(erreur != 0){
-
-    }
+#ifdef GROS_ROBOT
+     }
+     else
+     {
+         action_evitement();
+     }
+#endif
 }
 
 
@@ -323,9 +402,15 @@ void _fdt (double angle, char last)
 
     ORIENTATION.consigne = (angle * Pi)/ 180 * (ENTRAXE_TICKS/2);
 
+#ifdef PETIT_ROBOT
     VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
     acc.acceleration.orientation = ACC_ORIENTATION_CONSIGNE;
     acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
+#endif
+#ifdef GROS_ROBOT
+    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
+    calcul_acceleration_orientation();
+#endif
 
     FLAG_ASSERV.position = OFF;
     FLAG_ASSERV.orientation = ON;
@@ -366,13 +451,14 @@ uint8_t _rejoindre (double x, double y, int8_t sens_marche, double pourcentage_v
     calcul_vitesse_position(pourcentage_vitesse);
     calcul_acceleration_position();
 
-    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
+    
 #ifdef PETIT_ROBOT
+    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
     acc.acceleration.orientation = DCC_ORIENTATION_CONSIGNE;
     acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
 #else
-    acc.acceleration.orientation = ACC_ORIENTATION_CONSIGNE;
-    acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
+    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS / 2;
+    calcul_acceleration_orientation();
 #endif
 
 
@@ -537,6 +623,9 @@ void deplacement(int8_t sens_marche,double pourcentage_deplacement,char last) //
     EVITEMENT_ADV_AVANT = OFF;
     DETECTION = OFF;
 
+     //PutsUART(UART_XBEE,"\n\ron va cibler\n\r");
+
+
     if(itineraire_court[i][0] != -1);
     cibler((double)(itineraire_court[i][0]*100)+50,(double)((itineraire_court[i][1])*100)+50,pourcentage_deplacement);
 
@@ -547,6 +636,7 @@ void deplacement(int8_t sens_marche,double pourcentage_deplacement,char last) //
 
     while(i<curseur && id == id_evitement && itineraire_court[i][0] != -1 )//affiche l'itineraire
     {
+        //PutsUART(UART_XBEE,"COUCOU ON BOUGE LA");
         if(last == rej && id == id_evitement)
         {
             rejoindre((double)(itineraire_court[i][0]*100)+50,(double)((itineraire_court[i][1])*100)+50,sens_marche,pourcentage_deplacement);
@@ -569,6 +659,10 @@ void deplacement(int8_t sens_marche,double pourcentage_deplacement,char last) //
         }
         i++;
     }
+
+    //if(i == curseur || i== curseur -1 || i == curseur +1){
+         //PutsUART(UART_XBEE,"\n\ron a fait tout le chemin\n\r");
+    //}
 
 #endif
 }
@@ -1709,15 +1803,17 @@ int evitement(int x_objectif,int y_objectif,int haut) //determine l'itineraire p
 void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int action)
 {
     int i,j;
+    int ajout=1;
+    int ajout_diago = 2;
 #ifdef PETIT_ROBOT
     int taille = 1;// il y a deja 3 de largeur (devant nous, a cette gauche et a cette droite) la taille est ce qu'on met en plus de ces 3 la
-    int taille_diago = 2;
+    int taille_diago = 1;
     int vision = 2;
     int vision_diago = 1;
 #endif
 #ifdef GROS_ROBOT
-    int taille = 2;// il y a deja 3 de largeur, devant nous, a cette gauche et a cette droite, la taille est ce qu'on met en plus de ces 3 la
-    int taille_diago = 2;
+    int taille = 1;// il y a deja 3 de largeur, devant nous, a cette gauche et a cette droite, la taille est ce qu'on met en plus de ces 3 la
+    int taille_diago = 1;
     int vision = 2;
     int vision_diago = 1;
 #endif
@@ -1730,6 +1826,11 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
     int droite = 0;
     int gauche = 0;
     int centre = 0;
+
+    #ifdef GROS_ROBOT
+    ajout = 2;
+    ajout_diago = 2;
+    #endif // GROS_ROBOT
 
     precedent_obstacle[0] = x_present;
     precedent_obstacle[1]= y_present;
@@ -1761,7 +1862,7 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
 #endif
 
 #ifdef GROS_ROBOT
-    if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_US_BALISE && EVITEMENT_ADV_ARRIERE == ON))
+    if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (CAPT_US_ARRIERE == 1 && EVITEMENT_ADV_ARRIERE == ON))
     {
         centre = 1;
     }
@@ -1805,20 +1906,22 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
 
             if(droite == 1)
             {
-                offset += 0 ;
+                offset += -taille;
                 largeur += taille;
             }
 
             if(gauche == 1)
             {
-                offset += -taille;
+                offset += 0 ;
                 largeur += taille;
             }
         }
 
+
+
         for(i=0; i<vision; i++)
         {
-            for(j=-1; j<=largeur+1; j++)
+            for(j=-1 - ajout ; j<=largeur+1 + ajout; j++)
             {
                 if(x_present+i+1 < x_max && y_present +offset +j >= 0 && y_present +offset +j < y_max && obstacle [x_present+i+1][y_present +offset + j] == 0)
                     obstacle [x_present+i+1][y_present +offset + j]=action;
@@ -1831,7 +1934,7 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
     {
         if(centre == 1)
         {
-            largeur += 2*taille_diago;
+            largeur += 2*(taille_diago);
             offset += -taille_diago;
         }
 
@@ -1840,32 +1943,32 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
             if(droite == 1)
             {
                 largeur +=taille_diago;
-                offset +=0;
+                offset += -taille_diago;
             }
 
 
             if(gauche == 1)
             {
                 largeur +=taille_diago;
-                offset += -taille_diago;
+                offset +=0;
             }
         }
 
         for(i=0; i<vision_diago; i++)
         {
-            for(j=0; j<=largeur; j++)
+            for(j=-ajout_diago; j<=largeur+ajout_diago; j++)
             {
                 x_obs = x_present+1+offset+j+i;
                 y_obs = y_present-1+offset+j-i;
                 if(x_obs>=0 && x_obs < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs][y_obs] != 1)
                     obstacle[x_obs][y_obs] = action;
-                if(!(j == largeur && (droite || centre))  && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
+                if(!(j == largeur+ajout_diago)  && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
                     obstacle[x_obs+1][y_obs] = action;
-                if(!(j == largeur && (droite || centre))&& x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
+                if(!(j == largeur+ajout_diago)&& x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
                     obstacle[x_obs][y_obs+1] = action;
-                if(!(j == 0 && (gauche || centre))  && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
+                if(!(j == -ajout_diago )  && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
                     obstacle[x_obs-1][y_obs] = action;
-                if(!(j == 0 && (gauche || centre))  && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
+                if(!(j == -ajout_diago)  && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
                     obstacle[x_obs][y_obs-1] = action;
             }
         }
@@ -1883,13 +1986,13 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
         {
             if(droite)
             {
-                offset += 0 ;
+                offset += -taille;
                 largeur += taille;
             }
 
             if(gauche)
             {
-                offset += -taille;
+                offset += 0 ;
                 largeur += taille;
             }
 
@@ -1897,7 +2000,7 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
 
         for(i=0; i<vision; i++)
         {
-            for(j=-1; j<=largeur+1; j++)
+            for(j=-1-ajout; j<=largeur+1+ajout; j++)
             {
                 if(y_present-i-1 >= 0 && x_present +offset + j>= 0 && x_present + offset + j < x_max && obstacle [x_present + offset + j][y_present-i-1] ==0)
                     obstacle [x_present + offset + j][y_present-i-1]=action;
@@ -1920,32 +2023,32 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
             if(gauche)
             {
                 largeur +=taille_diago;
-                offset +=0;
+                offset += taille_diago;
             }
 
 
             if(droite)
             {
                 largeur +=taille_diago;
-                offset += taille_diago;
+                offset +=0;
             }
         }
 
         for(i=0; i<vision_diago; i++)
         {
-            for(j=0; j<=largeur; j++)
+            for(j=-ajout_diago; j<=largeur+ajout_diago; j++)
             {
                 x_obs = x_present-1+offset-j-i;
                 y_obs = y_present-1-offset+j-i;
                 if(x_obs>=0 && x_obs < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs][y_obs] != 1)
                     obstacle[x_obs][y_obs] = action;
-                if(!(j == 0 && (droite || centre)) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
+                if(!(j == -ajout_diago) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
                     obstacle[x_obs+1][y_obs] = action;
-                if(!(j == largeur && (gauche || centre)) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
+                if(!(j == largeur+ajout_diago) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
                     obstacle[x_obs][y_obs+1] = action;
-                if(!(j == largeur && (gauche || centre)) && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
+                if(!(j == largeur+ajout_diago) && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
                     obstacle[x_obs-1][y_obs] = action;
-                if(!(j == 0 && (droite || centre)) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
+                if(!(j == -ajout_diago) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
                     obstacle[x_obs][y_obs-1] = action;
             }
         }
@@ -1964,21 +2067,21 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
         {
             if(gauche)
             {
-                offset += 0 ;
+                offset += -taille;
                 largeur += taille;
             }
 
 
             if(droite)
             {
-                offset += -taille;
+                offset += 0 ;
                 largeur += taille;
             }
 
         }
         for(i=0; i<vision; i++)
         {
-            for(j=-1; j<=largeur+1; j++)
+            for(j=-1-ajout; j<=largeur+1+ajout; j++)
             {
                 if(x_present-i-1 >=0 && y_present +offset + j >= 0 && y_present +offset + j < y_max && obstacle [x_present-i-1][y_present + offset + j]==0)
                     obstacle [x_present-i-1][y_present +offset + j]=action;
@@ -1998,31 +2101,31 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
             if(gauche)
             {
                 largeur +=taille_diago;
-                offset +=0;
+                offset += taille_diago;
             }
 
 
             if(droite)
             {
                 largeur +=taille_diago;
-                offset += taille_diago;
+                offset +=0;
             }
         }
         for(i=0; i<vision_diago; i++)
         {
-            for(j=0; j<=largeur; j++)
+            for(j=-ajout_diago; j<=largeur+ajout_diago; j++)
             {
                 x_obs = x_present-1-offset+j-i;
                 y_obs = y_present+1-offset+j+i;
                 if(x_obs>=0 && x_obs < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs][y_obs] != 1)
-                    obstacle[x_obs][y_obs] = action;
-                if(!(j == largeur && (gauche || centre)) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
+                obstacle[x_obs][y_obs] = action;
+                if(!(j == largeur+ajout_diago ) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
                     obstacle[x_obs+1][y_obs] = action;
-                if(!(j == largeur && (gauche || centre)) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
+                if(!(j == largeur+ajout_diago ) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
                     obstacle[x_obs][y_obs+1] = action;
-                if(!(j == 0 && (droite || centre)) && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
+                if(!(j == -ajout_diago ) && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
                     obstacle[x_obs-1][y_obs] = action;
-                if(!(j == 0 && (droite || centre)) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
+                if(!(j == -ajout_diago ) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
                     obstacle[x_obs][y_obs-1] = action;
             }
         }
@@ -2041,19 +2144,19 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
         {
             if(gauche)
             {
-                offset += 0 ;
+                offset += -taille;
                 largeur += taille;
             }
 
             if(droite)
             {
-                offset += -taille;
+                offset += 0 ;
                 largeur += taille;
             }
         }
         for(i=0; i<vision; i++)
         {
-            for(j=-1; j<=largeur+1; j++)
+            for(j=-1-ajout; j<=largeur+1+ajout; j++)
             {
                 if(y_present+i+1 < y_max && x_present+ offset + j>= 0 && x_present + offset + j < x_max && obstacle [x_present + offset + j][y_present+i+1]==0)
                     obstacle [x_present + offset + j][y_present+i+1]=action;
@@ -2073,37 +2176,36 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
             if(droite)
             {
                 largeur +=taille_diago;
-                offset +=0;
+                offset += taille_diago;
             }
 
 
             if(gauche)
             {
                 largeur +=taille_diago;
-                offset += taille_diago;
+                offset +=0;
             }
         }
         for(i=0; i<vision_diago; i++)
         {
-            for(j=0; j<=largeur; j++)
+            for(j=-ajout_diago; j<=largeur+ajout_diago; j++)
             {
                 x_obs = x_present+1+offset-j+i;
                 y_obs = y_present+1-offset+j+i;
                 if(x_obs>=0 && x_obs < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs][y_obs] != 1)
                     obstacle[x_obs][y_obs] = action;
-                if(!(j == 0 && (gauche || centre)) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
+                if(!(j == -ajout_diago ) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
                     obstacle[x_obs+1][y_obs] = action;
-                if(!(j == largeur && (droite || centre)) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
+                if(!(j == largeur+ajout_diago ) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
                     obstacle[x_obs][y_obs+1] = action;
-                if(!(j == largeur && (droite || centre))  && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
+                if(!(j == largeur+ajout_diago )  && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
                     obstacle[x_obs-1][y_obs] = action;
-                if(!(j == 0 && (gauche|| centre)) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
+                if(!(j == -ajout_diago) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
                     obstacle[x_obs][y_obs-1] = action;
             }
         }
     }
 }
-
 void deplacement_arriere(int8_t sens_marche)
 {
     int i;
@@ -2128,7 +2230,7 @@ void deplacement_arriere(int8_t sens_marche)
 
     }
 
-    angle=get_orientation();
+    angle= - get_orientation();
     if(angle < 0) // get_orientation renvoi des valeurs négatives donc on les repasse en positif
     {
         angle = (int)(angle + 360)%360;
@@ -2317,6 +2419,29 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
     calcul_en_cours = ON;
     compteur_evitement = 0;
 
+//     PutsUART(UART_XBEE, "\n\n\n\r X : ");
+//    PutLongUART((int32_t) get_X());
+//    PutcUART(UART_XBEE, '.');
+//    PutcUART(UART_XBEE, ((uint8_t)((int32_t) ((double) get_X() * 10)) - (((int32_t) get_X()) * 10 )) +48);
+//    PutsUART(UART_XBEE, " Y : ");
+//    PutLongUART((int32_t) get_Y());
+//    PutcUART(UART_XBEE, '.');
+//    PutcUART(UART_XBEE, ((uint8_t)( (int32_t) ((double) (get_Y() * 10))) - (((int32_t) get_Y()) * 10 )) +48);
+//    PutsUART(UART_XBEE, " Teta : ");
+//    PutLongUART((int32_t) get_orientation());
+//    PutcUART(UART_XBEE, '.');
+//    PutcUART(UART_XBEE, ((uint8_t)( (int32_t) ((double) (get_orientation() * 10))) - (((int32_t) get_orientation()) * 10 )) +48);
+//
+//     PutsUART(UART_XBEE, "\n\r X Consigne : ");
+//    PutLongUART((int32_t) x_objectif);
+//    PutcUART(UART_XBEE, '.');
+//    PutcUART(UART_XBEE, ((uint8_t)((int32_t) ((double) x_objectif * 10)) - (((int32_t) x_objectif) * 10 )) +48);
+//    PutsUART(UART_XBEE, " Y Consigne : ");
+//    PutLongUART((int32_t) y_objectif);
+//    PutcUART(UART_XBEE, '.');
+//    PutcUART(UART_XBEE, ((uint8_t)( (int32_t) ((double) (y_objectif * 10))) - (((int32_t) y_objectif) * 10 )) +48);
+//    PutsUART(UART_XBEE, " Teta Consigne : ");
+
 
     if(pourcentage_deplacement > 50) // si la vitesse est supérieur à 50% de la vitesse maximale
     {
@@ -2359,8 +2484,27 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
                 obstacle[i][j] = 0;
 
     if(ajout == 1)
-        MAJ_obstacle(x_actuel,y_actuel,get_orientation(),sens_marche,AJOUTER); // on place notre nouvel obstacle
+        MAJ_obstacle(x_actuel,y_actuel,- get_orientation(),sens_marche,AJOUTER); // on place notre nouvel obstacle
 
+#ifdef DEBUG_HUGO
+    PutsUART(UART_XBEE, "\n\r");
+    PutIntUART(x_actuel);
+    PutsUART(UART_XBEE, " ");
+    PutIntUART(y_actuel);
+    PutsUART(UART_XBEE, "||");
+    PutIntUART(x_obj);
+    PutsUART(UART_XBEE, " ");
+    PutIntUART(y_obj);
+    PutsUART(UART_XBEE, "\n\r");
+    for(j=0; j<y_max; j++)
+    {
+        for(i=0; i+4<x_max; i=i+5)
+        {
+            PutIntUART(obstacle[i][j]*10000+obstacle[i+1][j]*1000+obstacle[i+2][j]*100+obstacle[i+3][j]*10+obstacle[i+4][j]);
+        }
+        PutsUART(UART_XBEE, "\n\r");
+    }
+#endif
 
 #ifdef ORDI
     for(int j=y_max-1; j>=0; j--)
@@ -2559,8 +2703,11 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
             }
         }
 
+
         if(chemin_court == 1) // si on a trouve un chemin
         {
+
+        //PutsUART(UART_XBEE,"\n\ron a un chemin\n\r");
             curseur=curseur_finale; //on reprend notre curseur de l'itineraire le plus court
             deplacement(sens_marche,pourcentage_deplacement,last);// et on lance les deplacements
         }
@@ -2575,7 +2722,7 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
 
     DETECTION = OFF;
 
-    if(id_evitement_initial == id)
+    if(id_evitement-1 == id)
     {
         id_evitement_initial = id_evitement;
 
@@ -2596,16 +2743,20 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
 
         if(last == rej) // si nous utilisions un rejoindre
         {
+             //PutsUART(UART_XBEE,"\n\ron renvoi l'ordre de rejoindre\n\r");
             rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement);
         }
         else if (last == FIN_TRAJECTOIRE)// si on utilise un passe-part
         {
+
+
             if(chemin_court == 1 && curseur >1)// si on a eu un chemin avec des points intermédiaires
             {
                 passe_part(x_objectif,y_objectif,sens_marche,pourcentage_deplacement,last);// on renvoi l'ordre initial
             }
             else
             {
+                //PutsUART(UART_XBEE,"\n\ron renvoi l'ordre via fin trajectoire\n\r");
                 rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement); // sinon on envoi un rejoindre pour éviter les conflits de passe-part
             }
         }

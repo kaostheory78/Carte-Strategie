@@ -95,6 +95,10 @@ extern "C" {
     //Balise
     #define BALISE_GAUCHE           2
     #define BALISE_DROITE           10
+
+    #define AX_US_DROIT             23
+    #define AX_US_GAUCHE            4
+
 #endif
 
     /**************************************************************************/
@@ -161,31 +165,35 @@ extern "C" {
     /**************************************************************************/
 
 #define NE_RIEN_FAIRE                   0
+#define FIN_DE_MATCH                    1
 
 #ifdef  PETIT_ROBOT
-    #define ATTRAPE_PIEDS               1
-    #define INIT_PINCES_DEMARRAGE       2
-    #define DEPOSE_PIEDS                3
-    #define PREPARATION_DEPOSE_PIEDS    4
-    #define ATTRAPE_GOBELET             5
-    #define DEPOSE_GOBELET              6
-    #define ATTRAPE_BALLE               7
-    #define CLAP                        8
-    #define ZONE_DEPART                 9
-    #define FERMETURE_PINCE             10
-    #define PIEDS_4                     11
-    #define EMPILEMENT                  12
-    #define FIN_DE_MATCH                13
+    #define ATTRAPE_PIEDS               2
+    #define INIT_PINCES_DEMARRAGE       3
+    #define DEPOSE_PIEDS                4
+    #define PREPARATION_DEPOSE_PIEDS    5
+    #define ATTRAPE_GOBELET             6
+    #define DEPOSE_GOBELET              7
+    #define ATTRAPE_BALLE               8
+    #define CLAP                        9
+    #define ZONE_DEPART                 10
+    #define FERMETURE_PINCE             11
+    #define PIEDS_4                     12
+    #define EMPILEMENT                  13
+    #define DESACTIVATION_EVITEMENT     14
 #endif
 
 #ifdef GROS_ROBOT
-    #define INIT_ASCENSEUR              1
-    #define INIT_DEPART                 2
-    #define INIT_JACK                   3
-    #define ATTRAPE_GOBELET             4
-    #define ATTRAPE_GOBELET2            5
-    #define MONTEE_MARCHE               6
-    #define ARRIVEE_MARCHE              7
+    #define INIT_ASCENSEUR              2
+    #define INIT_DEPART                 3
+    #define INIT_JACK                   4
+    #define ATTRAPE_GOBELET             5
+    #define ATTRAPE_GOBELET2            6
+    #define MONTEE_MARCHE               7
+    #define PREPARATION_MARCHE          8
+    #define EN_ROUTE_MONTEE_MARCHE      9   
+    #define ARRIVEE_MARCHE              10
+    #define MONTEE_EVITEMENT_EN_COURS   11
 
 
 #endif
@@ -222,6 +230,8 @@ extern "C" {
     void faire_les_claps();
     void empilement(int taille_max);
 
+    void desactivation_evitement_reculer ();
+
     void ejecter_balle();
     void init_balle();
 
@@ -238,7 +248,9 @@ extern "C" {
     void init_jack();
     void init_depart();
 
-
+    void marche();
+    void rotation_us_avant();;
+    
     //Fonction AX12
 
     uint8_t check_capteur (uint8_t cote);

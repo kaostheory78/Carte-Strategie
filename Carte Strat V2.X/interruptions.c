@@ -53,9 +53,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
 #ifdef PETIT_ROBOT
         CAPTEUR3 = led;
 #endif
-#ifdef GROS_ROBOT
-        //CAPTEUR5 = led;
-#endif
         compteur = 0;
     }
 
@@ -80,17 +77,26 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
  */
 void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
 {
-    static uint8_t etat_autom = NE_RIEN_FAIRE;
+    static uint8_t etat_autom = 0;
     COMPTEUR_TEMPS_MATCH ++;
 
 
-    if (COMPTEUR_TEMPS_MATCH >= 85 && etat_autom == NE_RIEN_FAIRE )
+    if (COMPTEUR_TEMPS_MATCH >= 55 && etat_autom == 0)
+    {
+        #ifdef GROS_ROBOT
+        if (FLAG_EVITEMENT_STRATEGIQUE != EN_ROUTE_MONTEE_MARCHE)
+            FLAG_EVITEMENT_STRATEGIQUE = PREPARATION_MARCHE;
+        #endif
+        etat_autom = 1;
+    }
+    else if (COMPTEUR_TEMPS_MATCH >= 85 && etat_autom == 1 )
     {
         #ifdef PETIT_ROBOT
             if (FLAG_ACTION != FIN_DE_MATCH)
                 FLAG_ACTION = DEPOSE_PIEDS;
-            etat_autom = FIN_DE_MATCH;
         #endif
+
+        etat_autom = 2;
     }
     else if (COMPTEUR_TEMPS_MATCH >= 90)
     {
@@ -104,6 +110,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
         IEC3bits.QEI1IE = 0;
         IEC4bits.QEI2IE = 0;
 
+        ALIM_MOTEUR_Y = DESACTIVE;
+
         TIMER_10ms = DESACTIVE;
         TIMER_5ms = DESACTIVE;
         TIMER_90s = DESACTIVE;
@@ -112,7 +120,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
         envoit_pwm(MOTEUR_DROIT, 0);
         envoit_pwm(MOTEUR_GAUCHE, 0);
         envoit_pwm(MOTEUR_X, 0);
-        alimenter_moteur_Y(OFF, MARCHE_AVANT);
 
         IPC7bits.U2TXIP	= 7;
         IPC7bits.U2RXIP = 7;

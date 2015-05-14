@@ -228,6 +228,7 @@ extern "C" {
     // FLAG Automs
     extern uint8_t COULEUR;
     extern uint16_t FLAG_ACTION;
+    extern uint8_t FLAG_EVITEMENT_STRATEGIQUE;
     extern uint8_t ETAT_AUTOM;
     extern uint16_t COMPTEUR_MARCHE;
     extern uint8_t COMPTEUR_TEMPS_MATCH;

@@ -73,6 +73,7 @@
     uint8_t EVITEMENT_ADV_ARRIERE;
     uint8_t STRATEGIE_EVITEMENT;
     uint16_t FLAG_ACTION;
+    uint8_t FLAG_EVITEMENT_STRATEGIQUE;
     uint8_t ETAT_AUTOM;
     uint16_t COMPTEUR_MARCHE;
     uint8_t COMPTEUR_TEMPS_MATCH;
@@ -120,11 +121,11 @@ int main(int argc, char** argv)
     /**************************************************************************/
 
 //       uint8_t tab[5];
-//        tab[0] = PINCE_TAPIS_D;
-//        tab[1] = PINCE_TAPIS_G;
+//        tab[0] = AX_US_DROIT;
+//        tab[1] = AX_US_GAUCHE;
 //
 //       lecture_position_AX12 (tab, 2);
-
+//
     init_decalage_AX12 ();
     init_position_AX12();
 
@@ -157,9 +158,12 @@ int main(int argc, char** argv)
     /**************************************************************************/
     /**************************************************************************/
     
+
     while(SYS_JACK);
+    
     //reglage_odometrie();
     strategie();
+
     //homologation();
 
     /**************************************************************************/

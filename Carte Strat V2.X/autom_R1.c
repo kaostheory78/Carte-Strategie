@@ -38,18 +38,53 @@ void rotation_us(void)
         if (sens == 0)
         {
             synchro_AX12(AX_US, angle, 1023, SANS_ATTENTE);
-            angle -= 3;
+            angle -= 6;
             if (angle < -60)
                 sens = 1;
         }
         else
         {
             synchro_AX12(AX_US, angle, 1023, SANS_ATTENTE);
-            angle += 3;
+            angle += 6;
             if (angle > 60)
             sens = 0;
         }
    // }
+}
+
+void rotation_us_avant ()
+{
+    static char sens_D = 0, sens_G = 0;
+    static uint16_t position_D = 0, position_G = 0;
+
+    if (sens_D == 0)
+    {
+        position_D += 10;
+        if (position_D > 876)
+            sens_D = 1;
+    }
+    else
+    {
+        position_D -= 10;
+        if (position_D < 703)
+            sens_D = 0;
+    }
+
+    if (sens_G == 0)
+    {
+        position_G += 10;
+        if (position_G > 666)
+            sens_G = 1;
+    }
+    else
+    {
+        position_G -= 10;
+        if (position_G < 512)
+            sens_G = 0;
+    }
+
+    angle_AX12(AX_US_DROIT, position_D, 1023, SANS_ATTENTE);
+    angle_AX12(AX_US_GAUCHE, position_G, 1023, SANS_ATTENTE);
 }
 
 uint8_t inversion_autom (uint8_t cote)
@@ -60,8 +95,10 @@ uint8_t inversion_autom (uint8_t cote)
     {
         if (cote == DROIT)
             return GAUCHE;
-        else
+        else if (cote == GAUCHE)
             return DROIT;
+        else
+            return cote;
     }
 }
 
@@ -73,6 +110,8 @@ uint8_t check_capteur (uint8_t cote)
         return CAPT_GOBELET_D;
     else if (cote == GAUCHE)
         return CAPT_GOBELET_G;
+    else
+        return 1;
 }
 
 
@@ -113,7 +152,7 @@ void pince(uint8_t cote,uint8_t action)
 {
 
     cote = inversion_autom(cote);
-    if(cote==DROITE)
+    if(cote == DROITE)
     {
        switch (action)
       {
@@ -124,11 +163,11 @@ void pince(uint8_t cote,uint8_t action)
            angle_AX12(PINCE_D,735,500,SANS_ATTENTE);
            break;
         case OUVERTE:
-           angle_AX12(PINCE_D,980,500,SANS_ATTENTE);
+           angle_AX12(PINCE_D,950,100,SANS_ATTENTE);
            break;
        }
     }
-   else
+    else if (cote == GAUCHE)
    {
         switch (action)
         {
@@ -139,7 +178,7 @@ void pince(uint8_t cote,uint8_t action)
            angle_AX12(PINCE_G ,480,500,SANS_ATTENTE);
            break;
         case OUVERTE:
-           angle_AX12(PINCE_G ,350,500,SANS_ATTENTE);
+           angle_AX12(PINCE_G ,380,100,SANS_ATTENTE);
            break;
         }
     }
@@ -233,6 +272,8 @@ void monter_balise ()
 
 void descendre_balise (void)
 {
+    angle_AX12(AX_US_DROIT, 876, 1023, SANS_ATTENTE);
+    angle_AX12(AX_US_GAUCHE, 666, 1023, SANS_ATTENTE);
     angle_AX12(BALISE_GAUCHE, 840, 80, AVEC_ATTENTE);
     angle_AX12(BALISE_DROITE, 166, 80, AVEC_ATTENTE);
     lancer_autom_AX12();
@@ -332,6 +373,17 @@ void montee_des_marches ()
             FLAG_ACTION = ARRIVEE_MARCHE;
         //}
     }
+}
+
+void marche (void)
+{
+     //Montée des marches
+    EVITEMENT_ADV_ARRIERE = OFF;
+    EVITEMENT_ADV_AVANT = OFF;
+
+    FLAG_ASSERV.totale = OFF;
+    FLAG_ACTION = MONTEE_MARCHE;
+    delay_ms(10000);
 }
 
 void arrive_marche ()
@@ -441,8 +493,7 @@ void autom_10ms (void)
                     }
                 }
             }
-            //else
-               //rotation_us();
+            rotation_us_avant();
         }
 
         //Evitement arrière
@@ -495,9 +546,6 @@ void autom_10ms (void)
             DETECTION = OFF;
             unbrake();
         }
-       
-
-
 }
 
 
