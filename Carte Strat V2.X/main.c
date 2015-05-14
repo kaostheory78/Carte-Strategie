@@ -160,11 +160,16 @@ int main(int argc, char** argv)
     
 
     while(SYS_JACK);
-    
-    //reglage_odometrie();
     strategie();
 
     //homologation();
+    //reglage_odometrie();
+
+
+//    init_jack();
+//    delay_ms(3000);
+//        marche();
+    
 
     /**************************************************************************/
     /************************* POSITION D'ARRIVEE *****************************/

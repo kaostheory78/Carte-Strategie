@@ -126,14 +126,14 @@ void action_evitement (void)
 
 
      //alignement aux marches
-//    if (get_X() > 2000)
-//    {
-//        plus_court(2000, 900, MARCHE_AVANT, 70, rej, 0);
-//    }
-//    if (get_X() > 1200)
-//    {
-//         plus_court(1200, 830, MARCHE_AVANT, 70, rej, 0);
-//    }
+    if (get_X() > 2000)
+    {
+        plus_court(2000, 900, MARCHE_AVANT, 70, rej, 0);
+    }
+    if (get_X() > 1200)
+    {
+         plus_court(1200, 830, MARCHE_AVANT, 70, rej, 0);
+    }
 
     if (COULEUR == JAUNE)
         plus_court(1200, 1240, MARCHE_AVANT, 70, rej, 0);

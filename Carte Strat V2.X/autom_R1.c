@@ -201,6 +201,9 @@ void tapis(uint8_t cote, uint8_t action)
             case DEPOSE:
                 angle_AX12(PINCE_TAPIS_D, 532, 1023, SANS_ATTENTE);
                 break;
+            case INTERMEDIAIRE :
+                angle_AX12(PINCE_TAPIS_D, 638, 1023, SANS_ATTENTE);
+                break;
         }
     }
     else
@@ -214,7 +217,10 @@ void tapis(uint8_t cote, uint8_t action)
                 angle_AX12(PINCE_TAPIS_G, 455, 1023, SANS_ATTENTE);
                 break;
             case DEPOSE:
-                angle_AX12(PINCE_TAPIS_G, 485, 1023, SANS_ATTENTE);
+                angle_AX12(PINCE_TAPIS_G, 505, 1023, SANS_ATTENTE);
+                break;
+            case INTERMEDIAIRE :
+                angle_AX12(PINCE_TAPIS_G, 372, 1023, SANS_ATTENTE);
                 break;
         }
     }
@@ -388,12 +394,54 @@ void marche (void)
 
 void arrive_marche ()
 {
-    static uint8_t etat = 0;
+    static uint8_t etat = 0, etat_tapis = 0, etat_pince = 0;
+    static uint16_t compteur_temporaire = 0, test = 0;;
+
+    if (etat == 0  && COMPTEUR_MARCHE < 1600)
+    {
+        if (compteur_temporaire < (COMPTEUR_MARCHE - 50))
+        {
+            if (etat_pince == 0)
+            {
+                tapis(DROIT, OUVERT);
+                tapis(GAUCHE, OUVERT);
+                etat_pince = 1;
+            }
+            else if (etat_pince == 1)
+            {
+                tapis(DROIT, INTERMEDIAIRE);
+                tapis(GAUCHE, INTERMEDIAIRE);
+                etat_pince = 0;
+            }
+            compteur_temporaire = COMPTEUR_MARCHE;
+        }
+    }
+
     if (COMPTEUR_MARCHE >= 1600 && etat == 0)
     {
         tapis(DROIT, DEPOSE);
         tapis(GAUCHE, DEPOSE);
         etat = 1;
+    }
+    else if (COMPTEUR_MARCHE < 2800 && COMPTEUR_MARCHE >= 1600)
+    {
+        test = COMPTEUR_MARCHE - 100;
+        if (compteur_temporaire  < test)
+        {
+            compteur_temporaire = COMPTEUR_MARCHE;
+            if (etat_tapis == 0)
+            {
+                tapis(DROIT, OUVERT);
+                tapis(GAUCHE, OUVERT);
+                etat_tapis = 1;
+            }
+            else if (etat_tapis == 1)
+            {
+                tapis(DROIT, DEPOSE);
+                tapis(GAUCHE, DEPOSE);
+                etat_tapis = 0;
+            }
+        }
     }
     else if (etat == 1 && COMPTEUR_MARCHE >= 2800)
     {
