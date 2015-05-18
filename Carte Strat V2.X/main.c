@@ -162,7 +162,6 @@ int main(int argc, char** argv)
     while(SYS_JACK);
     strategie();
 
-    //homologation();
     //reglage_odometrie();
 
 
