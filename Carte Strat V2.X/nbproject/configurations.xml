@@ -4,16 +4,16 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>system.h</itemPath>
-      <itemPath>Uart.h</itemPath>
-      <itemPath>interruptions.h</itemPath>
-      <itemPath>codeurs.h</itemPath>
-      <itemPath>pwm.h</itemPath>
-      <itemPath>asserv.h</itemPath>
       <itemPath>Config_robots.h</itemPath>
+      <itemPath>Uart.h</itemPath>
+      <itemPath>asserv.h</itemPath>
+      <itemPath>autom.h</itemPath>
+      <itemPath>codeurs.h</itemPath>
       <itemPath>fonctions_deplacements.h</itemPath>
       <itemPath>gestion_AX12.h</itemPath>
-      <itemPath>autom.h</itemPath>
+      <itemPath>interruptions.h</itemPath>
+      <itemPath>pwm.h</itemPath>
+      <itemPath>system.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -22,19 +22,19 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>main.c</itemPath>
-      <itemPath>system.c</itemPath>
-      <itemPath>asserv.c</itemPath>
+      <itemPath>Fonctions_deplacements.c</itemPath>
       <itemPath>Uart.c</itemPath>
-      <itemPath>interruptions.c</itemPath>
+      <itemPath>asserv.c</itemPath>
+      <itemPath>autom_R1.c</itemPath>
+      <itemPath>autom_R2.c</itemPath>
       <itemPath>codeurs.c</itemPath>
       <itemPath>debug.c</itemPath>
-      <itemPath>pwm.c</itemPath>
-      <itemPath>Fonctions_deplacements.c</itemPath>
       <itemPath>gestion_AX12.c</itemPath>
+      <itemPath>interruptions.c</itemPath>
+      <itemPath>main.c</itemPath>
+      <itemPath>pwm.c</itemPath>
       <itemPath>strategie.c</itemPath>
-      <itemPath>autom_R2.c</itemPath>
-      <itemPath>autom_R1.c</itemPath>
+      <itemPath>system.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -42,6 +42,9 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="default" type="2">
@@ -52,7 +55,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>PICkit3PlatformTool</platformTool>
         <languageToolchain>XC16</languageToolchain>
-        <languageToolchainVersion>1.21</languageToolchainVersion>
+        <languageToolchainVersion>1.26</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <compileType>
@@ -86,7 +89,7 @@
         <property key="enable-ansi-std" value="false"/>
         <property key="enable-ansi-warnings" value="false"/>
         <property key="enable-fatal-warnings" value="false"/>
-        <property key="enable-large-arrays" value="true"/>
+        <property key="enable-large-arrays" value="false"/>
         <property key="enable-omit-frame-pointer" value="false"/>
         <property key="enable-procedural-abstraction" value="false"/>
         <property key="enable-short-double" value="true"/>
@@ -96,7 +99,7 @@
         <property key="isolate-each-function" value="false"/>
         <property key="keep-inline" value="false"/>
         <property key="oXC16gcc-align-arr" value="false"/>
-        <property key="oXC16gcc-cnsts-mauxflash" value="true"/>
+        <property key="oXC16gcc-cnsts-mauxflash" value="false"/>
         <property key="oXC16gcc-data-sects" value="false"/>
         <property key="oXC16gcc-errata" value=""/>
         <property key="oXC16gcc-fillupper" value=""/>
@@ -104,7 +107,7 @@
         <property key="oXC16gcc-mauxflash" value="false"/>
         <property key="oXC16gcc-mpa-lvl" value=""/>
         <property key="oXC16gcc-name-text-sec" value=""/>
-        <property key="oXC16gcc-near-chars" value="true"/>
+        <property key="oXC16gcc-near-chars" value="false"/>
         <property key="oXC16gcc-no-isr-warn" value="false"/>
         <property key="oXC16gcc-sfr-warn" value="false"/>
         <property key="oXC16gcc-smar-io-lvl" value="1"/>
@@ -165,7 +168,7 @@
         <property key="input-libraries" value=""/>
         <property key="linker-stack" value="true"/>
         <property key="linker-symbols" value=""/>
-        <property key="map-file" value=""/>
+        <property key="map-file" value="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"/>
         <property key="oXC16ld-extra-opts" value=""/>
         <property key="oXC16ld-fill-upper" value="0"/>
         <property key="oXC16ld-force-link" value="false"/>
@@ -189,7 +192,7 @@
         <property key="dual-boot-partition" value="0"/>
         <property key="fast-math" value="false"/>
         <property key="generic-16-bit" value="false"/>
-        <property key="legacy-libc" value="false"/>
+        <property key="legacy-libc" value="true"/>
         <property key="oXC16glb-macros" value=""/>
         <property key="output-file-format" value="elf"/>
         <property key="relaxed-math" value="false"/>
@@ -231,13 +234,13 @@
         <property key="UART 2" value="true"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
-        <property key="memories.bootflash" value="false"/>
-        <property key="memories.configurationmemory" value="false"/>
+        <property key="memories.bootflash" value="true"/>
+        <property key="memories.configurationmemory" value="true"/>
         <property key="memories.configurationmemory2" value="true"/>
         <property key="memories.dataflash" value="true"/>
-        <property key="memories.eeprom" value="false"/>
+        <property key="memories.eeprom" value="true"/>
         <property key="memories.flashdata" value="true"/>
-        <property key="memories.id" value="false"/>
+        <property key="memories.id" value="true"/>
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.end" value="0x157ff"/>
         <property key="memories.programmemory.partition2" value="true"/>
@@ -246,7 +249,7 @@
         <property key="memories.programmemory.partition2.start"
                   value="${memories.programmemory.partition2.start.value}"/>
         <property key="memories.programmemory.start" value="0x0"/>
-        <property key="poweroptions.powerenable" value="true"/>
+        <property key="poweroptions.powerenable" value="false"/>
         <property key="programmertogo.imagename" value=""/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
@@ -259,7 +262,7 @@
         <property key="programoptions.preserveuserid" value="false"/>
         <property key="programoptions.programcalmem" value="false"/>
         <property key="programoptions.programuserotp" value="false"/>
-        <property key="programoptions.testmodeentrymethod" value="VPPFirst"/>
+        <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
         <property key="programoptions.usehighvoltageonmclr" value="false"/>
         <property key="programoptions.uselvpprogramming" value="false"/>
         <property key="voltagevalue" value="3.25"/>
