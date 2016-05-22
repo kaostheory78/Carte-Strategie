@@ -169,6 +169,9 @@
         double KP;
         double KI;
         double KD;
+        
+        double max_I;
+	    uint64_t seuil_immobilite;
     }_coef_PID;
 
     typedef struct

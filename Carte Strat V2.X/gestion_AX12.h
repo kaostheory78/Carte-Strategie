@@ -249,9 +249,9 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
  *                      tension de l'AX12   : LIRE_TENSION (valeur / 10)\n
  *                      Température interne : LIRE_TEMPERATURE\n
  *                      Est en mouvement ?  : LIRE_MOUV_FLAG\n
- * @return Renvoit la donnée 
+ * @return Renvoit la donnée | -1 en cas d'erreur
  */
-uint16_t read_data (uint8_t ID, uint8_t type_donnee);
+int16_t read_data (uint8_t ID, uint8_t type_donnee);
 
 
 /**

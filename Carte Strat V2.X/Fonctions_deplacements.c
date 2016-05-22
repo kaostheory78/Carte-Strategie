@@ -288,11 +288,111 @@ void passe_part (double x, double y, int8_t sens_marche, double pourcentage_vite
 #endif
 }
 
+/******************************************************************************/
+/******************* FONCTIONS ASSERV BAS NIVEAU (calage) *********************/
+/******************************************************************************/
 
+void calage (double distance, double pourcentage_vitesse)
+{
+    uint8_t erreur = _calage (distance, pourcentage_vitesse);
+    if ( erreur == EVITEMENT)
+    {
+        // Evitement sur un calage ?
+    }
+    else if (erreur == BLOCAGE)
+    {
+        // Mode de sortie normal pour un calage
+    }
+}
+
+void calage_X (double x, double teta, int8_t sens_marche, double pourcentage_vitesse)
+{
+    // calage sur 1m pour limiter la vitesse
+    uint8_t erreur = _calage (sens_marche * 1000, pourcentage_vitesse);
+    if ( erreur == EVITEMENT)
+    {
+        // Eviitement sur un calage ?
+    }
+    else if (erreur == BLOCAGE)
+    {
+        init_X(x);
+        init_orientation(teta);
+    }
+    else //si pas encore calé on recommence
+        calage_X (x, teta, sens_marche, pourcentage_vitesse);
+}
+
+void calage_Y (double y, double teta, int8_t sens_marche, double pourcentage_vitesse)
+{
+    // calage sur 1m pour limiter la vitesse
+    uint8_t erreur = _calage (sens_marche * 1000, pourcentage_vitesse);
+    if ( erreur == EVITEMENT)
+    {
+        // Evitement sur un calage ?
+    }
+    else if (erreur == BLOCAGE)
+    {
+        init_Y(y);
+        init_orientation(teta);
+    }
+    else //si pas encore calé on recommence
+        calage_Y (y, teta, sens_marche, pourcentage_vitesse);
+}
+
+void calage_teta (double teta, int8_t sens_marche, double pourcentage_vitesse)
+{
+    // calage sur 1m pour limiter la vitesse
+    uint8_t erreur = _calage (sens_marche * 1000, pourcentage_vitesse);
+    if ( erreur == EVITEMENT)
+    {
+        // Evitement sur un calage ?
+    }
+    else if (erreur == BLOCAGE)
+    {
+        init_orientation(teta);
+    }
+    else //si pas encore calé on recommence
+        calage_teta (teta, sens_marche, pourcentage_vitesse);
+}
 
 /******************************************************************************/
 /***************** FONCTIONS ASSERV BAS NIVEAU (config asserv) ****************/
 /******************************************************************************/
+
+
+uint8_t _calage (double distance, double pourcentage_vitesse)
+{
+    FLAG_ASSERV.brake = OFF;
+    reinit_asserv();
+	
+    TYPE_CONSIGNE = MM;
+	
+    DISTANCE.consigne = distance * (TICKS_PAR_MM);
+
+    if (distance < 0.)
+        FLAG_ASSERV.sens_deplacement = MARCHE_ARRIERE;
+    else
+        FLAG_ASSERV.sens_deplacement = MARCHE_AVANT;
+	
+    calcul_vitesse_position(pourcentage_vitesse);
+    calcul_acceleration_position();
+	
+    FLAG_ASSERV.position = ON;
+    FLAG_ASSERV.orientation = OFF;
+    FLAG_ASSERV.vitesse = ON;
+    FLAG_ASSERV.vitesse_fin_nulle = ON;
+
+    FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
+    FLAG_ASSERV.etat_distance = EN_COURS;
+    FLAG_ASSERV.immobilite = 0;
+    PID.VITESSE_DIS.max_I = MAX_ERREUR_INTEGRALLE_V / 10;
+    PID.VITESSE_DIS.seuil_immobilite = SEUIL_IMMOBILITE /10;
+
+    FLAG_ASSERV.fin_deplacement = DEBUT_DEPLACEMENT;
+    while (FLAG_ASSERV.fin_deplacement != FIN_DEPLACEMENT);
+    return FLAG_ASSERV.erreur;
+}
+
 
 uint8_t _cibler (double x, double y, double pourcentage_vitesse)
 {

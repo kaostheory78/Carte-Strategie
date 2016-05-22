@@ -43,20 +43,12 @@ extern "C" {
 
 #define CODEUR_D_NB_IMP_LOG             (RESOLUTION_LOGICIELLE * 4 * CODEUR_D_NB_IMP * RAPPORT_REDUCTION)
 
-#define MAX_CODEUR_D                    4 * CODEUR_D_NB_IMP - 1 * RAPPORT_REDUCTION
-#define MAX_CODEUR_G                    4 * CODEUR_G_NB_IMP - 1 * RAPPORT_REDUCTION
+#define MAX_CODEUR_D                    (4 * CODEUR_D_NB_IMP * RAPPORT_REDUCTION - 1)
+#define MAX_CODEUR_G                    (4 * CODEUR_G_NB_IMP * RAPPORT_REDUCTION - 1)
 #define MAX_CODEUR_D_LOGICIEL           (RESOLUTION_LOGICIELLE * CODEUR_D_NB_IMP * 4 * RAPPORT_REDUCTION - 1)
 #define MAX_CODEUR_G_LOGICIEL           (RESOLUTION_LOGICIELLE * CODEUR_G_NB_IMP * 4 * RAPPORT_REDUCTION - 1)
 
 #define PAS_D_OVERFLOW_CODEUR           0
-
-#define STANDART                        0
-#define INTER_CODEUR_D_OVERFLOW         1
-#define INTER_CODEUR_D_UNDERFLOW        2
-#define INTER_CODEUR_G_OVERFLOW         3
-#define INTER_CODEUR_G_UNDERFLOW        4
-
-
 
     typedef struct _codeur
     {

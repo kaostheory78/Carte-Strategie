@@ -48,6 +48,9 @@ uint8_t TYPE_CONSIGNE;
 /***************************** Fonctions Inits ********************************/
 /******************************************************************************/
 
+/**
+ * Fonction qui initialise les flag de l'asserv pour démarer l'asserv
+ */
 void init_flag()
 {
     FLAG_ASSERV.position = OFF;
@@ -156,6 +159,9 @@ void reinit_asserv(void)
     VITESSE_ORIENTATION[SYS_ROBOT].consigne = 0;
     VITESSE_ORIENTATION[SYS_ROBOT].theorique = 0;
 
+    PID.VITESSE_DIS.seuil_immobilite = SEUIL_IMMOBILITE;
+    PID.VITESSE_DIS.max_I = MAX_ERREUR_INTEGRALLE_V;
+
     PORTCbits.RC5 = 1;
 }
 
@@ -239,22 +245,22 @@ void saturation_vitesse_max (unsigned char type)
 
 void saturation_erreur_integralle_vitesse (void)
 {
-     if (ERREUR_VITESSE[ROUE_DROITE].integralle > MAX_ERREUR_INTEGRALLE_V)
-            ERREUR_VITESSE[ROUE_DROITE].integralle = MAX_ERREUR_INTEGRALLE_V;
-     else if (ERREUR_VITESSE[ROUE_DROITE].integralle < - MAX_ERREUR_INTEGRALLE_V)
-            ERREUR_VITESSE[ROUE_DROITE].integralle = - MAX_ERREUR_INTEGRALLE_V;
+    if (ERREUR_VITESSE[ROUE_DROITE].integralle > PID.VITESSE_DIS.max_I)
+        ERREUR_VITESSE[ROUE_DROITE].integralle = PID.VITESSE_DIS.max_I;
+    else if (ERREUR_VITESSE[ROUE_DROITE].integralle < - PID.VITESSE_DIS.max_I)
+        ERREUR_VITESSE[ROUE_DROITE].integralle = - PID.VITESSE_DIS.max_I;
 
-    if (ERREUR_VITESSE[ROUE_GAUCHE].integralle > MAX_ERREUR_INTEGRALLE_V)
-        ERREUR_VITESSE[ROUE_GAUCHE].integralle = MAX_ERREUR_INTEGRALLE_V;
-    else if (ERREUR_VITESSE[ROUE_GAUCHE].integralle < - MAX_ERREUR_INTEGRALLE_V)
-        ERREUR_VITESSE[ROUE_GAUCHE].integralle = - MAX_ERREUR_INTEGRALLE_V;
+    if (ERREUR_VITESSE[ROUE_GAUCHE].integralle > PID.VITESSE_DIS.max_I)
+        ERREUR_VITESSE[ROUE_GAUCHE].integralle = PID.VITESSE_DIS.max_I;
+    else if (ERREUR_VITESSE[ROUE_GAUCHE].integralle < - PID.VITESSE_DIS.max_I)
+        ERREUR_VITESSE[ROUE_GAUCHE].integralle = - PID.VITESSE_DIS.max_I;
 }
 
 void detection_blocage (void)
 {
     if (VITESSE[ROUE_DROITE].actuelle < 0.2 * (VITESSE[ROUE_DROITE].consigne * FLAG_ASSERV.sens_deplacement))
     {
-        if (ERREUR_VITESSE[ROUE_DROITE].integralle == MAX_ERREUR_INTEGRALLE_V || ERREUR_VITESSE[ROUE_DROITE].integralle == - MAX_ERREUR_INTEGRALLE_V)
+       if (ERREUR_VITESSE[ROUE_DROITE].integralle == PID.VITESSE_DIS.max_I || ERREUR_VITESSE[ROUE_DROITE].integralle == - PID.VITESSE_DIS.max_I )
         {
             FLAG_ASSERV.immobilite++;
             FLAG_ASSERV.erreur = BLOCAGE;
@@ -262,7 +268,7 @@ void detection_blocage (void)
     }
     else if (VITESSE[ROUE_GAUCHE].actuelle < 0.2 * (VITESSE[ROUE_GAUCHE].consigne * FLAG_ASSERV.sens_deplacement))
     {
-        if (ERREUR_VITESSE[ROUE_GAUCHE].integralle == MAX_ERREUR_INTEGRALLE_V || ERREUR_VITESSE[ROUE_GAUCHE].integralle == - MAX_ERREUR_INTEGRALLE_V)
+        if (ERREUR_VITESSE[ROUE_GAUCHE].integralle == PID.VITESSE_DIS.max_I || ERREUR_VITESSE[ROUE_GAUCHE].integralle == - PID.VITESSE_DIS.max_I)
         {
             FLAG_ASSERV.immobilite++;
             FLAG_ASSERV.erreur = BLOCAGE;
@@ -529,7 +535,7 @@ void asserv()
     }
     else
     {
-        if (FLAG_ASSERV.immobilite > 150)
+        if (FLAG_ASSERV.immobilite >= PID.VITESSE_DIS.seuil_immobilite )
         {
             FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
             FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
@@ -601,7 +607,7 @@ void asserv_brake(void)
         ERREUR_BRAKE[ROUE_GAUCHE].integralle = MAX_E_INTEGRALLE_BRAKE;
 
     if (ERREUR_BRAKE[ROUE_DROITE].integralle < -MAX_E_INTEGRALLE_BRAKE)
-        ERREUR_BRAKE[ROUE_DROITE].integralle = -MAX_ERREUR_INTEGRALLE_V;
+        ERREUR_BRAKE[ROUE_DROITE].integralle = -MAX_E_INTEGRALLE_BRAKE;
     if (ERREUR_BRAKE[ROUE_GAUCHE].integralle < -MAX_E_INTEGRALLE_BRAKE)
         ERREUR_BRAKE[ROUE_GAUCHE].integralle = -MAX_E_INTEGRALLE_BRAKE;
 

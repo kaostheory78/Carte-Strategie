@@ -142,7 +142,9 @@ void config_timer_debug() //int periode_ms
 
 void config_timer_90s()
 {
-    //Timer de 90,000 004 secondes
+    // TIMER de 0.999 999 750 secondes
+    // /!\ CE TIMER N'EST PAS LE PLUS PRIORITAIRE /!\ //
+    // /!\ DONC PAS LE PLUS PRECIS NON PLUS  /!\ //
 
     T3CONbits.TON = 0;          //On arrête le timer 3
     T2CONbits.TON = 0;          //On arrête le Timer 2
@@ -154,6 +156,7 @@ void config_timer_90s()
     TMR3 = 0x00;                //On remet le TIMER3 à 0
     TMR2 = 0x00;                //On remet le Timer2 à 0
 
+    //    //Timer de 90,000 004 secondes
 //    //On décompte 14 065 514 pour faire 90 secondes
 //    PR3 = 0x00D6;               //adresse haute
 //    PR2 = 0x9F6A;               //adresse basse
@@ -287,13 +290,13 @@ void ConfigPorts (void)
 	// Config PORTA
 	_TRISA0		= 1;	_CN2IE	= 0;	_CN2PUE		= 0;	// IN  : (ANALOG) Courant_G (AN0)
 	_TRISA1		= 1;	_CN3IE	= 0;	_CN3PUE		= 0;	// IN  : (ANALOG) Courant_D (AN1)
-        _TRISA2         = 1;                                            // IN  : (DIGIT) capteur 1
+    _TRISA2     = 1;                                        // IN  : (DIGIT) capteur 1
 	_TRISA3		= 1;	_CN29IE	= 0;	_CN29PUE	= 0;	// IN  : (DIGIT) capteur 2
 	_TRISA4		= 1;	_CN0IE	= 0;	_CN0PUE		= 0;	// IN  : (DIGIT) capteur 3
-        _TRISA7		= 0;						// OUT : (DIGIT) XBEE RSET
-	_TRISA8		= 1;						// IN  : (DIGIT) capteur 4
-	_TRISA9		= 1;						// IN  : (DIGIT) capteur 5
-	_TRISA10	= 0;						// OUT : (DIGIT) Commande Alim AX12
+    _TRISA7		= 0;                						// OUT : (DIGIT) XBEE RSET
+	_TRISA8		= 1;                                		// IN  : (DIGIT) capteur 4
+	_TRISA9		= 1;                						// IN  : (DIGIT) capteur 5
+	_TRISA10	= 0;                                		// OUT : (DIGIT) Commande Alim AX12
 
 	// Config PORTB
 	_TRISB0		= 0;	_CN4IE	= 0;	_CN4PUE		= 0;	// RES : PGED1 pour programmation
@@ -335,13 +338,13 @@ void ConfigPorts (void)
 	// Config PORTA
 	_TRISA0		= 0;	_CN2IE	= 0;	_CN2PUE		= 0;	// OUT : (DIGIT) : Inhibit AX12
 	_TRISA1		= 0;	_CN3IE	= 0;	_CN3PUE		= 0;	// OUT : (DIGIT) : DIR_UART_AX12
-        _TRISA2         = 1;                                            // IN  : (DIGIT) : Capteur 1
+    _TRISA2     = 1;                                        // IN  : (DIGIT) : Capteur 1
 	_TRISA3		= 1;	_CN29IE	= 0;	_CN29PUE	= 0;	// IN  : (DIGIT) : capteur 2
 	_TRISA4		= 1;	_CN0IE	= 0;	_CN0PUE		= 0;	// IN  : (DIGIT) : capteur 3
-        _TRISA7		= 0;						// OUT : (DIGIT) : Alim moteur Y
-	_TRISA8		= 1;						// IN  : (DIGIT) : capteur 4
-	_TRISA9		= 1;						// IN  : (DIGIT) : couleur
-	_TRISA10	= 0;						// OUT : (DIGIT) : Commande Alim AX12
+    _TRISA7		= 0;                                        // OUT : (DIGIT) : Alim moteur Y
+	_TRISA8		= 1;                                        // IN  : (DIGIT) : capteur 4
+	_TRISA9		= 1;                                        // IN  : (DIGIT) : couleur
+	_TRISA10	= 0;                                        // OUT : (DIGIT) : Commande Alim AX12
 
 	// Config PORTB
 	_TRISB0		= 0;	_CN4IE	= 0;	_CN4PUE		= 0;	// RES : PGED1 pour programmation
@@ -504,64 +507,64 @@ void ConfigInterrupt (void)
 	//****************
 	// IPC0
 	IPC0bits.T1IP		= PRIO_INTER_TIMER1;		//
-	IPC0bits.OC1IP		= 0x00;				//
-	IPC0bits.IC1IP		= 0x00;				//
-	IPC0bits.INT0IP		= 0x00;                         //Pas de INT0
+	IPC0bits.OC1IP		= 0x00;                     //
+	IPC0bits.IC1IP		= 0x00;                     //
+	IPC0bits.INT0IP		= 0x00;                     //Pas de INT0
 
 	// IPC1
 	IPC1bits.T2IP		= PRIO_INTER_TIMER2;		// Timer2
-	IPC1bits.OC2IP		= 0x00;				//
-	IPC1bits.IC2IP		= 0x00;				//
-	IPC1bits.DMA0IP		= 0x00;				//
+	IPC1bits.OC2IP		= 0x00;                     //
+	IPC1bits.IC2IP		= 0x00;                     //
+	IPC1bits.DMA0IP		= 0x00;                     //
 
 	// IPC2
 	IPC2bits.U1RXIP		= PRIO_INTER_UART1_RX;		// UART1 RX
-	IPC2bits.SPI1IP		= 0x00;				//
-	IPC2bits.SPI1EIP	= 0x00;				//
+	IPC2bits.SPI1IP		= 0x00;                     //
+	IPC2bits.SPI1EIP	= 0x00;                     //
 	IPC2bits.T3IP		= PRIO_INTER_TIMER3;		// Timer 3
 
 	// IPC3
-	IPC3bits.DMA1IP		= 0x00;				//
-	IPC3bits.AD1IP		= 0x00;				//
-	IPC3bits.U1TXIP		= 0x00;				//
+	IPC3bits.DMA1IP		= 0x00;                     //
+	IPC3bits.AD1IP		= 0x00;                     //
+	IPC3bits.U1TXIP		= 0x00;                     //
 
 	// IPC4
-	IPC4bits.CNIP		= 0x00;				//
+	IPC4bits.CNIP		= 0x00;                     //
 	IPC4bits.MI2C1IP	= PRIO_INTER_I2C_MAITRE;	// Maitre I2C1
 	IPC4bits.SI2C1IP	= PRIO_INTER_I2C_ESCLAVE; 	// Esclave I2C1
 
 	// IPC5
-	IPC5bits.IC8IP		= 0x00;				//
-	IPC5bits.IC7IP		= 0x00;				//
-	IPC5bits.INT1IP		= 0x00;				//
+	IPC5bits.IC8IP		= 0x00;                     //
+	IPC5bits.IC7IP		= 0x00;                     //
+	IPC5bits.INT1IP		= 0x00;                     //
 
 	// IPC6
 	IPC6bits.T4IP		= PRIO_INTER_TIMER4;		// Timer 4
-	IPC6bits.OC4IP		= 0x00;				//
-	IPC6bits.OC3IP		= 0x00;				//
-	IPC6bits.DMA2IP		= 0x00;				//
+	IPC6bits.OC4IP		= 0x00;                     //
+	IPC6bits.OC3IP		= 0x00;                     //
+	IPC6bits.DMA2IP		= 0x00;                     //
 
 	// IPC7
 	IPC7bits.U2TXIP		= PRIO_INTER_UART2_TX;
 	IPC7bits.U2RXIP		= PRIO_INTER_UART2_RX;		// UART2 RX
-	IPC7bits.INT2IP		= 0x00;				//
+	IPC7bits.INT2IP		= 0x00;                     //
 	IPC7bits.T5IP		= PRIO_INTER_TIMER5;		//
 
 	// IPC8
-	IPC8bits.C1IP		= 0x00;				//
-	IPC8bits.C1RXIP		= 0x00;				//
-	IPC8bits.SPI2IP		= 0x00;				//
-	IPC8bits.SPI2EIP	= 0x00;				//
+	IPC8bits.C1IP		= 0x00;                     //
+	IPC8bits.C1RXIP		= 0x00;                     //
+	IPC8bits.SPI2IP		= 0x00;                     //
+	IPC8bits.SPI2EIP	= 0x00;                     //
 
 	// IPC9
-	IPC9bits.DMA3IP		= 0x00;			
+	IPC9bits.DMA3IP		= 0x00;                     //
 
 	// IPC10
 	// PAS de IPC10
 
 	// IPC11
-	IPC11bits.DMA4IP	= 0x00;
-	IPC11bits.PMPIP		= 0x00;
+	IPC11bits.DMA4IP	= 0x00;                     //
+	IPC11bits.PMPIP		= 0x00;                     //
 
 	// IPC12
 	// PAS de IPC12
@@ -602,66 +605,66 @@ void ConfigInterrupt (void)
 	// Activation
 	//****************
 	// IEC0
-	IEC0bits.DMA1IE		= 0;                            // NC
+	IEC0bits.DMA1IE		= 0;                        // NC
 	IEC0bits.AD1IE		= 0;                    	// NC
-	IEC0bits.U1TXIE		= 0;                            // NC
-	IEC0bits.U1RXIE		= ACTIV_INTER_UART1_RX;         // Interruption RX sur UART1
-	IEC0bits.SPI1IE		= 0;                            // NC
-	IEC0bits.SPI1EIE	= 0;            		// NC
+	IEC0bits.U1TXIE		= 0;                        // NC
+	IEC0bits.U1RXIE		= ACTIV_INTER_UART1_RX;     // Interruption RX sur UART1
+	IEC0bits.SPI1IE		= 0;                        // NC
+	IEC0bits.SPI1EIE	= 0;                        // NC
 	IEC0bits.T3IE		= ACTIV_INTER_TIMER3;		// Interruption sur Timer3
 	IEC0bits.T2IE		= ACTIV_INTER_TIMER2;		// Interruption sur Timer2
-	IEC0bits.OC2IE		= 0;				// NC
-	IEC0bits.IC2IE		= 0;				// NC
-	IEC0bits.DMA0IE		= 0;				// NC
+	IEC0bits.OC2IE		= 0;                        // NC
+	IEC0bits.IC2IE		= 0;                        // NC
+	IEC0bits.DMA0IE		= 0;                        // NC
 	IEC0bits.T1IE		= ACTIV_INTER_TIMER1;		// Interruption Timer1
-	IEC0bits.OC1IE		= 0;				// NC
-	IEC0bits.IC1IE		= 0;				// NC
-	IEC0bits.INT0IE		= 0;                            // NC
+	IEC0bits.OC1IE		= 0;                        // NC
+	IEC0bits.IC1IE		= 0;                        // NC
+	IEC0bits.INT0IE		= 0;                        // NC
 
 	// IEC1
-	IEC1bits.U2TXIE		= ACTIV_INTER_UART2_TX;         // Interruption TX sur UART2
+	IEC1bits.U2TXIE		= ACTIV_INTER_UART2_TX;     // Interruption TX sur UART2
 	IEC1bits.U2RXIE		= ACTIV_INTER_UART2_RX;		// Interruption RX sur UART2
 	IEC1bits.INT2IE		= 0;                    	// NC
 	IEC1bits.T5IE		= ACTIV_INTER_TIMER5;    	// Interruption sur Timer5
 	IEC1bits.T4IE		= ACTIV_INTER_TIMER4;		// Interruption sur Timer4
-	IEC1bits.OC4IE		= 0;                            // NC
-	IEC1bits.OC3IE		= 0;            		// NC
-	IEC1bits.DMA2IE		= 0;				// NC
-	IEC1bits.IC8IE		= 0;				// NC
-	IEC1bits.IC7IE		= 0;				// NC
-	IEC1bits.INT1IE		= 0;				// NC
-	IEC1bits.CNIE		= 0;				// NC
+	IEC1bits.OC4IE		= 0;                        // NC
+	IEC1bits.OC3IE		= 0;                        // NC
+	IEC1bits.DMA2IE		= 0;                        // NC
+	IEC1bits.IC8IE		= 0;                        // NC
+	IEC1bits.IC7IE		= 0;                        // NC
+	IEC1bits.INT1IE		= 0;                        // NC
+	IEC1bits.CNIE		= 0;                        // NC
 	IEC1bits.MI2C1IE	= ACTIV_INTER_I2C_MAITRE;	// Interruption I2C MAITRE
 	IEC1bits.SI2C1IE	= ACTIV_INTER_I2C_ESCLAVE;	// Interruption I2C ESCLAVE
 
 	// IEC2
-	IEC2bits.DMA4IE		= 0;				// NC
-	IEC2bits.PMPIE		= 0;				// NC
-	IEC2bits.DMA3IE		= 0;				// NC
-	IEC2bits.C1IE		= 0;				// NC
-	IEC2bits.C1RXIE		= 0;				// NC
-	IEC2bits.SPI2IE		= 0;				// NC
-	IEC2bits.SPI2EIE	= 0;				// NC
+	IEC2bits.DMA4IE		= 0;                        // NC
+	IEC2bits.PMPIE		= 0;                        // NC
+	IEC2bits.DMA3IE		= 0;                        // NC
+	IEC2bits.C1IE		= 0;                        // NC
+	IEC2bits.C1RXIE		= 0;                        // NC
+	IEC2bits.SPI2IE		= 0;                        // NC
+	IEC2bits.SPI2EIE	= 0;                        // NC
 
 	// IEC3
-	IEC3bits.FLTA1IE	= 0;				// NC
-	IEC3bits.RTCIE		= 0;				// NC
-	IEC3bits.DMA5IE		= 0;				// NC
-	IEC3bits.QEI1IE		= ACTIV_INTER_QEI1;             // Interrupt Codeur Droit
-	IEC3bits.PWM1IE		= 0;            		// NC
+	IEC3bits.FLTA1IE	= 0;                        // NC
+	IEC3bits.RTCIE		= 0;                        // NC
+	IEC3bits.DMA5IE		= 0;                        // NC
+	IEC3bits.QEI1IE		= ACTIV_INTER_QEI1;         // Interrupt Codeur Droit
+	IEC3bits.PWM1IE		= 0;                        // NC
 
 	// IEC4
-	IEC4bits.DAC1LIE	= 0;				// NC
-	IEC4bits.DAC1RIE	= 0;				// NC
-	IEC4bits.QEI2IE		= ACTIV_INTER_QEI2;             // Interrupt Codeur Gauche
-	IEC4bits.FLTA2IE	= 0;				// NC
-	IEC4bits.PWM2IE		= 0;				// NC
-	IEC4bits.C1TXIE		= 0;				// NC
-	IEC4bits.DMA7IE		= 0;				// NC
-	IEC4bits.DMA6IE		= 0;				// NC
-	IEC4bits.CRCIE		= 0;				// NC
-	IEC4bits.U2EIE		= 0;				// NC
-	IEC4bits.U1EIE		= 0;				// NC
+	IEC4bits.DAC1LIE	= 0;                        // NC
+	IEC4bits.DAC1RIE	= 0;                        // NC
+	IEC4bits.QEI2IE		= ACTIV_INTER_QEI2;         // Interrupt Codeur Gauche
+	IEC4bits.FLTA2IE	= 0;                        // NC
+	IEC4bits.PWM2IE		= 0;                        // NC
+	IEC4bits.C1TXIE		= 0;                        // NC
+	IEC4bits.DMA7IE		= 0;            			// NC
+	IEC4bits.DMA6IE		= 0;                    	// NC
+	IEC4bits.CRCIE		= 0;        				// NC
+	IEC4bits.U2EIE		= 0;                		// NC
+	IEC4bits.U1EIE		= 0;                        // NC
 }
 
 /******************************************************************************/
@@ -708,7 +711,7 @@ void ConfigADC (void)
         AD1CON2bits.SMPI = 0;                                   // Incréement du DMA à chaque échantillon
         AD1CON2bits.BUFM = 0;                                   // On commence à 0x0
         AD1CON2bits.ALTS = 0;                                   //
-        AD1CON2bits.CSCNA = 1;                                   //
+        AD1CON2bits.CSCNA = 1;                                  //
 
         AD1CON3bits.ADRC = 0;
         AD1CON3bits.ADCS = 254;                                 // TAD = 25 * TCY

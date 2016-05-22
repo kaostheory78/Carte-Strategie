@@ -45,8 +45,8 @@ extern "C" {
 /**************************** FONCTIONS COULEURS ******************************/
 /******************************************************************************/
 
-    void _fdt (double angle, char last);
-    void faire_des_tours (int nb_tour);
+    
+    
 /**
  * Fonction qui retourne la valeur du bouton de couleur pour savoir de quel côté du terrain on démare
  * @return JAUNE ou VERT
@@ -66,6 +66,8 @@ double inversion_couleur (double param_inversable);
 /******************************************************************************/
 /********************* FONCTIONS USUELLES (TEST ASSERV) ***********************/
 /******************************************************************************/
+
+void faire_des_tours (int nb_tour);
 
 void trapeze (int8_t sens_marche);
 
@@ -133,10 +135,68 @@ void avancer_reculer (double distance, double pourcentage_vitesse);
 void passe_part (double x, double y, int8_t sens_marche, double pourcentage_vitesse, char last);
 
 
+/******************************************************************************/
+/**************** FONCTIONS ASSERV HAUT NIVEAU CALAGES BORDURES ***************/
+/******************************************************************************/
+
+/**
+ * Fonction pour faire un calage quelconque
+ * \n
+ * Au moindre obstacle le déplacement s'arrêtera/
+ * Aucun paramètre de position n'est réinitialisé pendant l'opération
+ * \n
+ * A UTILISER EN CAS DE CALAGE INCERTAIN !!
+ * @param distance : distance en mm à parcourir (prévoir plus grand)
+ * @param pourcentage_vitesse : Vitesse de 0 à 100 %
+ */
+void calage (double distance, double pourcentage_vitesse);
+
+
+/**
+ * Recalage de l'axe X et de l'angle Teta contre une bordure
+ * /!\ Réinitialisation automatique des paramètres dès la détection de blocage /!\
+ * \n
+ * /!\ Pas de vérification de la cohérence de la position /!\
+ * @param x : Nouvelle position en X en mm
+ * @param teta : Nouvel angle Teta en degré
+ * @param sens_marche : sens dans lequel le robot doit se caler
+ * @param pourcentage_vitesse : Vitesse de 0 à 100 %
+ */
+void calage_X (double x, double teta, int8_t sens_marche, double pourcentage_vitesse);
+
+
+/**
+ *  * Recalage de l'axe Y et de l'angle Teta contre une bordure
+ * /!\ Réinitialisation automatique des paramètres dès la détection de blocage /!\
+ * \n
+ * /!\ Pas de vérification de la cohérence de la position /!\
+ * @param y : Nouvelle position en Y en mm
+ * @param teta : Nouvel angle Teta en degré
+ * @param sens_marche : sens dans lequel le robot doit se caler
+ * @param pourcentage_vitesse : Vitesse de 0 à 100%
+ */
+void calage_Y (double y, double teta, int8_t sens_marche, double pourcentage_vitesse);
+
+
+/**
+ *  * Recalage de l'angle Teta contre une bordure
+ * /!\ Réinitialisation automatique des paramètres dès la détection de blocage /!\
+ * \n
+ * /!\ Pas de vérification de la cohérence de la position /!\
+ * @param teta : Nouvel angle Teta en degré
+ * @param sens_marche : sens dans lequel le robot doit se caler
+ * @param pourcentage_vitesse : Vitesse de 0 à 100%
+ */
+void calage_teta (double teta, int8_t sens_marche, double pourcentage_vitesse);
+
 
 /******************************************************************************/
 /***************** FONCTIONS ASSERV BAS NIVEAU (config asserv) ****************/
 /******************************************************************************/
+
+
+
+uint8_t _calage (double distance, double pourcentage_vitesse);
 
 uint8_t _cibler (double x, double y, double pourcentage_vitesse);
 
@@ -148,6 +208,17 @@ uint8_t _avancer_reculer (double distance, double pourcentage_vitesse);
 
 uint8_t _passe_part (double x, double y, int8_t sens_marche, double pourcentage_vitesse, char last);
 
+/**
+ * Fonction qui ajuste en temps réel la consigne d'angle pour que le robot
+ * fasse plusieurs tous dans s'arrêter
+ * \n
+ * /!\ Cette fonction n'est pas prévu pour une utilisation manuelle /!\
+ * /!\ Elle a pour but d'être appellée par une fonction plus haut niveau : faire_des_tours() /!\
+ * @param angle : angle consigne
+ * @param last : DEBUT_TRAJECTOIRE | FIN_TRAJECTOIRE
+ */
+void _fdt (double angle, char last);
+
 /******************************************************************************/
 /******************************************************************************/
 /******************************************************************************/
@@ -155,7 +226,7 @@ uint8_t _passe_part (double x, double y, int8_t sens_marche, double pourcentage_
     void mettre_obstacle(int x_actuel, int y_actuel,int8_t sens_marche);
     int conversion_direction(int direction);//transforme la direction du blocage en une direction de longement
     int longement ( int x_objectif,int y_objectif,int direction_longement);//longe un obstacle selon une direction de longement donnée
-     int tracer_ligne_x(int x_objectif); //cree une ligne droite suivant l'axe des x. Fais avancer ou reculer sur l'axe des x
+    int tracer_ligne_x(int x_objectif); //cree une ligne droite suivant l'axe des x. Fais avancer ou reculer sur l'axe des x
     int tracer_ligne_y(int y_objectif); //cree une ligne droite suivant l'axe des y. Fais avancer ou reculer sur l'axe des y
     void post_traitement(); //simplifie le trajet en elevant le maximum de deplacements inutiles
     void deplacement(int8_t sens_marche,double pourcentage_deplacement,char last); //transforme l'itineraire en commande
@@ -163,7 +234,7 @@ uint8_t _passe_part (double x, double y, int8_t sens_marche, double pourcentage_
     void init_evitement();
     int distance();
     int aiguillage_evitement(int x_objectif, int y_objectif, int direction,int haut);
-   void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcentage_deplacement,char last,int ajout);
+    void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcentage_deplacement,char last,int ajout);
 
 #ifdef	__cplusplus
 }

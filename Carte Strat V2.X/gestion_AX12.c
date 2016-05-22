@@ -629,7 +629,7 @@ uint8_t calcul_checksum (uint8_t ID, uint8_t longueur, uint8_t instruction, uint
 }
 
 
-uint16_t read_data (uint8_t ID, uint8_t type_donnee)
+int16_t read_data (uint8_t ID, uint8_t type_donnee)
 {
     uint8_t nombre_octets_a_recevoir = 0;
     uint16_t buffer;
