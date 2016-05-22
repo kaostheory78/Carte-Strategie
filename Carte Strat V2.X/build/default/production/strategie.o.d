@@ -1,5 +1,5 @@
-build/default/production/debug.o:  \
-debug.c  \
+build/default/production/strategie.o:  \
+strategie.c  \
 system.h  \
 codeurs.h  \
  Config_robots.h  \

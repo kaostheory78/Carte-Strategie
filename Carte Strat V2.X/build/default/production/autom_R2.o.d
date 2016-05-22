@@ -1,5 +1,5 @@
-build/default/production/debug.o:  \
-debug.c  \
+build/default/production/autom_R2.o:  \
+autom_R2.c  \
 system.h  \
 codeurs.h  \
  Config_robots.h  \
