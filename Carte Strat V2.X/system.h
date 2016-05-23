@@ -20,6 +20,7 @@ extern "C" {
     #include <stdint.h>
     #include <stdlib.h>
     #include <stdio.h>
+    #include <stdarg.h>
     #include "codeurs.h"
     #include <math.h>
     #include "Uart.h"

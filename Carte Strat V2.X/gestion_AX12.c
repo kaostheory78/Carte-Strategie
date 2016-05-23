@@ -498,20 +498,128 @@ void reinit_buffer (void)
     ax12.nb_octet_attente = 0;
 }
 
-void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t param1, uint8_t param2, uint8_t param3, uint8_t param4, uint8_t param5)
-{
-    uint8_t check_sum = calcul_checksum(ID, longueur, instruction, param1, param2, param3, param4, param5);
-    uint8_t octets_a_recevoir;
+//void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t param1, uint8_t param2, uint8_t param3, uint8_t param4, uint8_t param5)
+//{
+//    uint8_t check_sum = calcul_checksum(ID, longueur, instruction, param1, param2, param3, param4, param5);
+//    uint8_t octets_a_recevoir;
+//
+//    static uint64_t __attribute__((unused)) nb1 = 0,__attribute__((unused)) nb2 = 0, nb3 = 0;
+//
+//    //Détermnation du nombre d'octects à recevoir
+//    if (ID == TOUS_LES_AX12)                    //Pas de paquets renvoyés quand on s'adresse à tous les AX12
+//        octets_a_recevoir = 0;
+//    else if (instruction == READ_DATA)          //Renvoit un status normal (6 bits) + les donnés demandés
+//        octets_a_recevoir = 6 + param2;
+//    else
+//        octets_a_recevoir = 6;              //status standart = 6 octets
+//
+//    ax12.tentatives = 0;
+//
+//    do
+//    {
+//        reinit_buffer();
+//        ax12.tentatives ++;
+//        nb3++;
+//
+//        DIR_UART_AX12 = EMISSION;
+//        vider_buffer_reception_uart(UART_AX12);
+//
+//        //Envoit de tous les octets
+//        PutcUART(UART_AX12, START_BYTE);
+//        PutcUART(UART_AX12, START_BYTE);
+//        PutcUART(UART_AX12, ID);
+//        PutcUART(UART_AX12, longueur);
+//        PutcUART(UART_AX12, instruction);
+//
+//        if (longueur > 2)
+//        {
+//            PutcUART(UART_AX12, param1);
+//
+//            if (longueur > 3)
+//            {
+//                PutcUART(UART_AX12, param2);
+//
+//                if (longueur > 4)
+//                {
+//                    PutcUART(UART_AX12, param3);
+//
+//                    if (longueur > 5)
+//                    {
+//                        PutcUART(UART_AX12, param4);
+//
+//                        if (longueur > 6)
+//                        {
+//                            PutcUART(UART_AX12, param5);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        PutcUART(UART_AX12, check_sum);
+//
+//        ax12.nb_octet_attente = octets_a_recevoir;
+//        while(ax12.etat_uart != ENVOIT_FINI);
+//
+//        if (octets_a_recevoir > 0)
+//        {
+//            U2STAbits.OERR = 0;
+//            vider_buffer_reception_uart(UART_AX12);
+//            DIR_UART_AX12 = RECEPTION;
+//            traitement_reception_ax12();
+//        }
+//
+//        //delay_us(10);
+//
+//    }while (ax12.erreur != PAS_D_ERREUR && ax12.tentatives < MAX_TENTATIVES );
+//
+////    if (ax12.erreur != PAS_D_ERREUR)
+////    {
+////        son_evitement(10);
+////    }
+//
+////    if(ax12.erreur != PAS_D_ERREUR)
+////    {
+////        nb1++;
+////    }
+////    else
+////    {
+////        nb2++;
+////    }
+////    printf("Succes : %d, Echec : %d, Tentatives failed : %d\r", nb1, nb2, nb3);
+//}
 
+void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, ...)
+{
     static uint64_t __attribute__((unused)) nb1 = 0,__attribute__((unused)) nb2 = 0, nb3 = 0;
+    
+    va_list liste_param; // liste des arguments potentiels (param1, 2, 3, 4, 5)
+    va_start(liste_param, instruction);
+    uint8_t check_sum = calcul_checksum_variadic (ID, longueur, instruction, liste_param);
+    va_end(liste_param);
+    
+    uint8_t octets_a_recevoir;
+    uint8_t i, useless;
+    
+
+    // Initialisation de la liste d'argument non fixe
+    va_start(liste_param, instruction); 
 
     //Détermnation du nombre d'octects à recevoir
     if (ID == TOUS_LES_AX12)                    //Pas de paquets renvoyés quand on s'adresse à tous les AX12
         octets_a_recevoir = 0;
     else if (instruction == READ_DATA)          //Renvoit un status normal (6 bits) + les donnés demandés
-        octets_a_recevoir = 6 + param2;
+    {
+        // on ignore le premier param, le deuxième contient le nb d'octet  à recevoir
+        useless = va_arg(liste_param, uint8_t); 
+        octets_a_recevoir = 6 + va_arg(liste_param, uint8_t); 
+        
+        // on ferme reinit la liste au début
+        va_end(liste_param);
+        va_start(liste_param, instruction);
+    } 
     else
-        octets_a_recevoir = 6;              //status standart = 6 octets
+        octets_a_recevoir = 6;              //status standard = 6 octets
 
     ax12.tentatives = 0;
 
@@ -530,33 +638,15 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
         PutcUART(UART_AX12, ID);
         PutcUART(UART_AX12, longueur);
         PutcUART(UART_AX12, instruction);
-
-        if (longueur > 2)
+        
+        for (i = 2 ; i < longueur ; i++)
         {
-            PutcUART(UART_AX12, param1);
-
-            if (longueur > 3)
-            {
-                PutcUART(UART_AX12, param2);
-
-                if (longueur > 4)
-                {
-                    PutcUART(UART_AX12, param3);
-
-                    if (longueur > 5)
-                    {
-                        PutcUART(UART_AX12, param4);
-
-                        if (longueur > 6)
-                        {
-                            PutcUART(UART_AX12, param5);
-                        }
-                    }
-                }
-            }
+            PutcUART(UART_AX12, va_arg(liste_param, uint8_t));
         }
 
         PutcUART(UART_AX12, check_sum);
+        
+        va_end(liste_param);
 
         ax12.nb_octet_attente = octets_a_recevoir;
         while(ax12.etat_uart != ENVOIT_FINI);
@@ -572,7 +662,6 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
         //delay_us(10);
 
     }while (ax12.erreur != PAS_D_ERREUR && ax12.tentatives < MAX_TENTATIVES );
-
 
 //    if (ax12.erreur != PAS_D_ERREUR)
 //    {
@@ -590,29 +679,67 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
 //    printf("Succes : %d, Echec : %d, Tentatives failed : %d\r", nb1, nb2, nb3);
 }
 
+//uint8_t calcul_checksum (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t param1, uint8_t param2, uint8_t param3, uint8_t param4, uint8_t param5)
+//{
+//    uint16_t buffer = ID + longueur + instruction;
+//    if (longueur > 2)
+//    {
+//        buffer += param1;
+//        if (longueur > 3)
+//        {
+//            buffer+= param2;
+//            if (longueur > 4)
+//            {
+//                buffer += param3;
+//                if (longueur > 5)
+//                {
+//                    buffer += param4;
+//
+//                    if (longueur > 6)
+//                        buffer += param5;
+//                }
+//            }
+//        }
+//    }
+//
+//    if (buffer > 255)
+//        buffer %= 256;
+//
+//    buffer = ~buffer;
+//
+//    return (uint8_t) buffer;
+//}
 
-
-uint8_t calcul_checksum (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t param1, uint8_t param2, uint8_t param3, uint8_t param4, uint8_t param5)
+uint8_t calcul_checksum (uint8_t ID, uint8_t longueur, uint8_t instruction, ...)
 {
+    uint8_t i;
     uint16_t buffer = ID + longueur + instruction;
-    if (longueur > 2)
+    
+    va_list liste_param;
+    va_start(liste_param, instruction);
+    
+    for (i = 0 ; i < longueur - 2 ; i++)
     {
-        buffer += param1;
-        if (longueur > 3)
-        {
-            buffer+= param2;
-            if (longueur > 4)
-            {
-                buffer += param3;
-                if (longueur > 5)
-                {
-                    buffer += param4;
+        buffer += va_arg(liste_param, uint8_t);
+    }
+    
+    va_end(liste_param);
+    
+    if (buffer > 255)
+        buffer %= 256;
 
-                    if (longueur > 6)
-                        buffer += param5;
-                }
-            }
-        }
+    buffer = ~buffer;
+
+    return (uint8_t) buffer;
+}
+
+uint8_t calcul_checksum_variadic (uint8_t ID, uint8_t longueur, uint8_t instruction, va_list liste_param)
+{
+    uint8_t i;
+    uint16_t buffer = ID + longueur + instruction;
+    for (i = 2 ; i < longueur ; i++)
+    {
+        buffer += va_arg(liste_param, uint8_t);
     }
 
     if (buffer > 255)
@@ -622,7 +749,6 @@ uint8_t calcul_checksum (uint8_t ID, uint8_t longueur, uint8_t instruction, uint
 
     return (uint8_t) buffer;
 }
-
 
 int16_t read_data (uint8_t ID, uint8_t type_donnee)
 {

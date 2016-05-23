@@ -238,7 +238,8 @@ void reinit_buffer (void);
  * @param param4      : si pas de paramètre : NC
  * @param param5      : si pas de paramètre : NC
  */
-void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t param1, uint8_t param2, uint8_t param3, uint8_t param4, uint8_t param5);
+void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, ...);
+//void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t param1, uint8_t param2, uint8_t param3, uint8_t param4, uint8_t param5);
 
 /**
  *  Fonction qui demande une donnée à un AX-12
@@ -268,7 +269,20 @@ int16_t read_data (uint8_t ID, uint8_t type_donnee);
  * @param param5      : si pas de paramètre : NC
  * @return            : renvoit la valeur de checksum sur un octet
  */
-uint8_t calcul_checksum (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t param1, uint8_t param2, uint8_t param3, uint8_t param4, uint8_t param5);
+uint8_t calcul_checksum (uint8_t ID, uint8_t longueur, uint8_t instruction, ...);
+//uint8_t calcul_checksum (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t param1, uint8_t param2, uint8_t param3, uint8_t param4, uint8_t param5);
+
+
+/**
+ * Fonction qui permet de calculer le checksum de vérification de trames à partir d'une va_list
+ * \n
+ * @param ID            : ID de l'AX12
+ * @param longueur      : nombre de paramètre envoyé en argument + 2 : _2PARAM, _3PARAM ... _6PARAM, _ALL_PARAM
+ * @param instruction   : PING, READ_DATA, WRITE_DATA, REG_WRITE, ACTION, RESET_AX
+ * @param liste_param   : liste de taille non défini d'arguments
+ * @return              : renvoit la valeur de checksum sur un octet
+ */
+uint8_t calcul_checksum_variadic (uint8_t ID, uint8_t longueur, uint8_t instruction, va_list liste_param);
 
 /******************************************************************************/
 /******************************************************************************/
