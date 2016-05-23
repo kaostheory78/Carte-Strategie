@@ -23,6 +23,7 @@
 void InitUART (int8_t channel, uint32_t baud)
 {
 	// UART1 : DEUBG
+    // La fonction printf est directement mappé sur l'UART 1
 	if (channel == UART_XBEE)
 	{
             // U1BRG
@@ -200,143 +201,19 @@ void vider_buffer_reception_uart (uint8_t uart)
 void PutcUART (int8_t channel, uint8_t octet)
 {
 	// UART1 : XBEE
+    // Préférer la fonction  printf pour l'uart XBEE
 	if (channel == UART_XBEE )
 	{
-                while (U1STAbits.UTXBF); U1TXREG = octet;
+        while (U1STAbits.UTXBF); U1TXREG = octet;
 	}
 
 	// UART2 : AX12
 	else if (channel == UART_AX12)
 	{
-                ax12.etat_uart = EN_COURS_ENVOIT;
+        ax12.etat_uart = EN_COURS_ENVOIT;
 		while (U2STAbits.UTXBF); U2TXREG = octet;
 	}
 }
-
-void PutsUART (int8_t channel, const char *chaine)
-{
-	do
-	{
-		PutcUART (channel, *chaine);
-	}
-	while (*chaine++);
-}
-
-void Puts2UART (int8_t channel, uint8_t *chaine, uint16_t taille_chaine)
-{
-	int i;
-
-	for (i=0; i<taille_chaine; i++)
-	{
-		if (channel == UART_XBEE)
-		{
-			//while (U1STAbits.UTXBF); U1TXREG = chaine[i];
-
-			PutcUART (UART_XBEE, chaine[i]);
-		}
-
-		// UART2 : AX12
-		else if (channel == UART_AX12)
-		{
-			//while (U2STAbits.UTXBF); U2TXREG = chaine[i];
-
-			PutcUART (UART_AX12, chaine[i]);
-		}
-	}
-}
-
-
-char *IntToC (int16_t nb)
-{
-	// Delarations locales
-	int16_t i[5];
-	int j = 0;
-	static char out[8];
-
-	// Nombre negatif
-	if (nb < 0)
-	{
-		nb *= (-1);
-		out[j++] = '-';
-	}
-
-	// Conversion
-	//12345 = 1*10000 + 2*1000 + 3*100 + 4*10 + 5
-	i[0] = (nb / 10000);
-	i[1] = (nb - i[0] * 10000) / 1000;
-	i[2] = (nb - i[0] * 10000 - i[1] * 1000) / 100;
-	i[3] = (nb - i[0] * 10000 - i[1] * 1000 - i[2] * 100) / 10;
-	i[4] = (nb - i[0] * 10000 - i[1] * 1000 - i[2] * 100 - i[3] * 10);
-
-	out[j++] = (unsigned char)(i[0] + 48);
-	out[j++] = (unsigned char)(i[1] + 48);
-	out[j++] = (unsigned char)(i[2] + 48);
-	out[j++] = (unsigned char)(i[3] + 48);
-	out[j++] = (unsigned char)(i[4] + 48);
-	out[j++] = '\0';
-
-	return out;
-}
-
-
-char *LongToC (int32_t nb)
-{
-	//4294967296
-	//4.294.967.296
-
-	// Declarations locales
-	int32_t i[10];
-	int j = 0;
-	static char out[15];
-
-
-	// Nombre negatif
-	if (nb < 0)
-	{
-		nb *= (-1);
-		out[j++] = '-';
-	}
-
-	// Conversion
-	//4.294.967.296 = 4*1000000000 + 2*100000000 + 9*10000000 + 4*1000000 + 9*100000 + 6*10000 + 7*1000 + 2*100 + 9*10 + 6
-
-	i[0] = (nb / 1000000000);
-	i[1] = (nb - i[0] * 1000000000) / 100000000;
-	i[2] = (nb - i[0] * 1000000000 - i[1] * 100000000) / 10000000;
-	i[3] = (nb - i[0] * 1000000000 - i[1] * 100000000 - i[2] * 10000000) / 1000000;
-	i[4] = (nb - i[0] * 1000000000 - i[1] * 100000000 - i[2] * 10000000 - i[3] * 1000000) / 100000;
-	i[5] = (nb - i[0] * 1000000000 - i[1] * 100000000 - i[2] * 10000000 - i[3] * 1000000 - i[4] * 100000) / 10000;
-	i[6] = (nb - i[0] * 1000000000 - i[1] * 100000000 - i[2] * 10000000 - i[3] * 1000000 - i[4] * 100000 - i[5] * 10000) / 1000;
-	i[7] = (nb - i[0] * 1000000000 - i[1] * 100000000 - i[2] * 10000000 - i[3] * 1000000 - i[4] * 100000 - i[5] * 10000 - i [6] * 1000) / 100;
-	i[8] = (nb - i[0] * 1000000000 - i[1] * 100000000 - i[2] * 10000000 - i[3] * 1000000 - i[4] * 100000 - i[5] * 10000 - i [6] * 1000 - i[7] * 100) / 10;
-	i[9] = (nb - i[0] * 1000000000 - i[1] * 100000000 - i[2] * 10000000 - i[3] * 1000000 - i[4] * 100000 - i[5] * 10000 - i [6] * 1000 - i[7] * 100 - i[8] * 10);
-
-
-	out[j++] = (unsigned char)(i[0] + 48);
-	out[j++] = (unsigned char)(i[1] + 48);
-	out[j++] = (unsigned char)(i[2] + 48);
-	out[j++] = (unsigned char)(i[3] + 48);
-	out[j++] = (unsigned char)(i[4] + 48);
-	out[j++] = (unsigned char)(i[5] + 48);
-	out[j++] = (unsigned char)(i[6] + 48);
-	out[j++] = (unsigned char)(i[7] + 48);
-	out[j++] = (unsigned char)(i[8] + 48);
-	out[j++] = (unsigned char)(i[9] + 48);
-	out[j++] = '\0';
-
-	return out;
-}
-
-void PutIntUART (int16_t nb)
-{
-	PutsUART (UART_XBEE, IntToC (nb));
-}
-
-void PutLongUART (int32_t nb)
-{
-	PutsUART (UART_XBEE, LongToC (nb));
-}
-
 
 /******************************************************************************/
 /******************************************************************************/

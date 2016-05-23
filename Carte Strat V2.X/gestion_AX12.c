@@ -478,7 +478,7 @@ void traitement_reception_ax12 ()
         if (checksum != ax12.buffer[CHSUM])
         {
             ax12.erreur = ERREUR_CS;
-            //PutsUART(UART_XBEE, "ERREUR Checksum \r\n");
+            //printf("ERREUR Checksum \r\n");
         }
     }
 
@@ -503,7 +503,7 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
     uint8_t check_sum = calcul_checksum(ID, longueur, instruction, param1, param2, param3, param4, param5);
     uint8_t octets_a_recevoir;
 
-    static uint64_t nb1 = 0, nb2 = 0, nb3 = 0;
+    static uint64_t __attribute__((unused)) nb1 = 0,__attribute__((unused)) nb2 = 0, nb3 = 0;
 
     //Détermnation du nombre d'octects à recevoir
     if (ID == TOUS_LES_AX12)                    //Pas de paquets renvoyés quand on s'adresse à tous les AX12
@@ -558,7 +558,7 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
 
         PutcUART(UART_AX12, check_sum);
 
-         ax12.nb_octet_attente = octets_a_recevoir;
+        ax12.nb_octet_attente = octets_a_recevoir;
         while(ax12.etat_uart != ENVOIT_FINI);
 
         if (octets_a_recevoir > 0)
@@ -567,7 +567,7 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
             vider_buffer_reception_uart(UART_AX12);
             DIR_UART_AX12 = RECEPTION;
             traitement_reception_ax12();
-        };
+        }
 
         //delay_us(10);
 
@@ -587,12 +587,7 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
 //    {
 //        nb2++;
 //    }
-//    PutIntUART(nb1);
-//    PutsUART(UART_XBEE, " ");
-//    PutIntUART(nb2);
-//    //PutsUART(UART_XBEE, " ");
-//    //PutIntUART(nb3 - (nb1 + nb2));
-//    PutsUART(UART_XBEE, "\r");
+//    printf("Succes : %d, Echec : %d, Tentatives failed : %d\r", nb1, nb2, nb3);
 }
 
 
@@ -680,12 +675,9 @@ void lecture_position_AX12 (uint8_t *ax12, int taille)
     {
         for (i = 0 ; i < (uint8_t) taille ; i++)
         {
-            PutsUART(UART_XBEE, "  ID ");
-            PutIntUART( (int) ax12[i]);
-            PutsUART(UART_XBEE, " : ");
-            PutIntUART( read_data(ax12[i], LIRE_POSITION_ACTU) );
+            printf("ID : %d = %d ", ax12[i], read_data(ax12[i], LIRE_POSITION_ACTU) );
         }
-        PutsUART(UART_XBEE, "\r");
+        printf("\r");
     }
 
 }

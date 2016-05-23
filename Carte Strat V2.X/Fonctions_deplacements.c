@@ -723,7 +723,7 @@ void deplacement(int8_t sens_marche,double pourcentage_deplacement,char last) //
     EVITEMENT_ADV_AVANT = OFF;
     DETECTION = OFF;
 
-     //PutsUART(UART_XBEE,"\n\ron va cibler\n\r");
+     //printf"\n\ron va cibler\n\r");
 
 
     if(itineraire_court[i][0] != -1);
@@ -736,7 +736,7 @@ void deplacement(int8_t sens_marche,double pourcentage_deplacement,char last) //
 
     while(i<curseur && id == id_evitement && itineraire_court[i][0] != -1 )//affiche l'itineraire
     {
-        //PutsUART(UART_XBEE,"COUCOU ON BOUGE LA");
+        //printf("COUCOU ON BOUGE LA");
         if(last == rej && id == id_evitement)
         {
             rejoindre((double)(itineraire_court[i][0]*100)+50,(double)((itineraire_court[i][1])*100)+50,sens_marche,pourcentage_deplacement);
@@ -761,7 +761,7 @@ void deplacement(int8_t sens_marche,double pourcentage_deplacement,char last) //
     }
 
     //if(i == curseur || i== curseur -1 || i == curseur +1){
-         //PutsUART(UART_XBEE,"\n\ron a fait tout le chemin\n\r");
+         //printf("\n\ron a fait tout le chemin\n\r");
     //}
 
 #endif
@@ -2519,29 +2519,8 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
     calcul_en_cours = ON;
     compteur_evitement = 0;
 
-//     PutsUART(UART_XBEE, "\n\n\n\r X : ");
-//    PutLongUART((int32_t) get_X());
-//    PutcUART(UART_XBEE, '.');
-//    PutcUART(UART_XBEE, ((uint8_t)((int32_t) ((double) get_X() * 10)) - (((int32_t) get_X()) * 10 )) +48);
-//    PutsUART(UART_XBEE, " Y : ");
-//    PutLongUART((int32_t) get_Y());
-//    PutcUART(UART_XBEE, '.');
-//    PutcUART(UART_XBEE, ((uint8_t)( (int32_t) ((double) (get_Y() * 10))) - (((int32_t) get_Y()) * 10 )) +48);
-//    PutsUART(UART_XBEE, " Teta : ");
-//    PutLongUART((int32_t) get_orientation());
-//    PutcUART(UART_XBEE, '.');
-//    PutcUART(UART_XBEE, ((uint8_t)( (int32_t) ((double) (get_orientation() * 10))) - (((int32_t) get_orientation()) * 10 )) +48);
-//
-//     PutsUART(UART_XBEE, "\n\r X Consigne : ");
-//    PutLongUART((int32_t) x_objectif);
-//    PutcUART(UART_XBEE, '.');
-//    PutcUART(UART_XBEE, ((uint8_t)((int32_t) ((double) x_objectif * 10)) - (((int32_t) x_objectif) * 10 )) +48);
-//    PutsUART(UART_XBEE, " Y Consigne : ");
-//    PutLongUART((int32_t) y_objectif);
-//    PutcUART(UART_XBEE, '.');
-//    PutcUART(UART_XBEE, ((uint8_t)( (int32_t) ((double) (y_objectif * 10))) - (((int32_t) y_objectif) * 10 )) +48);
-//    PutsUART(UART_XBEE, " Teta Consigne : ");
-
+//    printf("\n\n\n\rX: %lf, Y : %lf, Teta : %lf\n", get_X(), get_Y(), get_orientation());
+//    printf("\n\r X Consigne : %lf Y Consigne : %lf", x_objectif, y_objectif);
 
     if(pourcentage_deplacement > 50) // si la vitesse est supérieur à 50% de la vitesse maximale
     {
@@ -2587,22 +2566,14 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
         MAJ_obstacle(x_actuel,y_actuel,- get_orientation(),sens_marche,AJOUTER); // on place notre nouvel obstacle
 
 #ifdef DEBUG_HUGO
-    PutsUART(UART_XBEE, "\n\r");
-    PutIntUART(x_actuel);
-    PutsUART(UART_XBEE, " ");
-    PutIntUART(y_actuel);
-    PutsUART(UART_XBEE, "||");
-    PutIntUART(x_obj);
-    PutsUART(UART_XBEE, " ");
-    PutIntUART(y_obj);
-    PutsUART(UART_XBEE, "\n\r");
+    printf("\n\r%d %d||%d %d\n\r", x_actuel, y_actuel, x_obj, y_obj);
     for(j=0; j<y_max; j++)
     {
         for(i=0; i+4<x_max; i=i+5)
         {
-            PutIntUART(obstacle[i][j]*10000+obstacle[i+1][j]*1000+obstacle[i+2][j]*100+obstacle[i+3][j]*10+obstacle[i+4][j]);
+            printf("%d", obstacle[i][j]*10000+obstacle[i+1][j]*1000+obstacle[i+2][j]*100+obstacle[i+3][j]*10+obstacle[i+4][j]);
         }
-        PutsUART(UART_XBEE, "\n\r");
+        printf("\n\r");
     }
 #endif
 
@@ -2807,7 +2778,7 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
         if(chemin_court == 1) // si on a trouve un chemin
         {
 
-        //PutsUART(UART_XBEE,"\n\ron a un chemin\n\r");
+        //printf("\n\ron a un chemin\n\r");
             curseur=curseur_finale; //on reprend notre curseur de l'itineraire le plus court
             deplacement(sens_marche,pourcentage_deplacement,last);// et on lance les deplacements
         }
@@ -2843,7 +2814,7 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
 
         if(last == rej) // si nous utilisions un rejoindre
         {
-             //PutsUART(UART_XBEE,"\n\ron renvoi l'ordre de rejoindre\n\r");
+             //printf("\n\ron renvoi l'ordre de rejoindre\n\r");
             rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement);
         }
         else if (last == FIN_TRAJECTOIRE)// si on utilise un passe-part
@@ -2856,7 +2827,7 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
             }
             else
             {
-                //PutsUART(UART_XBEE,"\n\ron renvoi l'ordre via fin trajectoire\n\r");
+                //printf"\n\ron renvoi l'ordre via fin trajectoire\n\r");
                 rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement); // sinon on envoi un rejoindre pour éviter les conflits de passe-part
             }
         }

@@ -114,7 +114,7 @@ int main(int argc, char** argv)
     //TIMER_DEBUG = ACTIVE;
     delay_ms(500);
 
-    PutsUART(UART_XBEE, "\n\n\n\n\r INIT ROBOT : \n\n\n\n\n\n\r");
+    printf("\n\n\n\n\r INIT ROBOT : \n\n\n\n\n\n\r");
 
     /**************************************************************************/
     /**************************************************************************/
@@ -141,8 +141,7 @@ int main(int argc, char** argv)
 ////        if (compteur > 65530)
 ////        {
 ////            compteur = 0;
-////            PutIntUART( ADC1BUF0);
-////            PutsUART(UART_XBEE, "\n\r");
+////            printf("%d\n\r", ADC1BUF0);
 ////        }
 //
 //
@@ -176,21 +175,8 @@ int main(int argc, char** argv)
 
     delay_ms(2000);
 
-    PutsUART(UART_XBEE, "\n\n\n\r X : ");
-    PutLongUART((int32_t) get_X());
-    PutcUART(UART_XBEE, '.');
-    PutcUART(UART_XBEE, ((uint8_t)((int32_t) ((double) get_X() * 10)) - (((int32_t) get_X()) * 10 )) +48);
-    PutsUART(UART_XBEE, " Y : ");
-    PutLongUART((int32_t) get_Y());
-    PutcUART(UART_XBEE, '.');
-    PutcUART(UART_XBEE, ((uint8_t)( (int32_t) ((double) (get_Y() * 10))) - (((int32_t) get_Y()) * 10 )) +48);
-    PutsUART(UART_XBEE, " Teta : ");
-    PutLongUART((int32_t) get_orientation());
-    PutcUART(UART_XBEE, '.');
-    PutcUART(UART_XBEE, ((uint8_t)( (int32_t) ((double) (get_orientation() * 10))) - (((int32_t) get_orientation()) * 10 )) +48);
-
+    printf("\n\n\n\rX: %lf, Y : %lf, Teta : %lf\n", get_X(), get_Y(), get_orientation());
    
-
     /**************************************************************************/
     /**************************************************************************/
     /**************************************************************************/

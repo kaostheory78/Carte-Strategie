@@ -303,7 +303,7 @@ void strategie()
 //
 //            }
 //            // Strate normale 2 gobelet départ mais pas gobelet adverse
-//            // /!\ CAS LE PLUS PROBABLE /!\
+//            // /!\ CAS LE PLUS PROBABLE /!\ //
 //
 //            else // Pas de gobelet => direction les marches
 //            {
@@ -695,7 +695,7 @@ void homologation()
         passe_part(270,990,MARCHE_AVANT,40,FIN_TRAJECTOIRE);
 
         // On vérifie confirme que le gobelet a bien été attrapé
-        uint8_t etat_pince_G = LIBRE, etat_pince_D = LIBRE, temp1 = 1, temp2 = 1;
+        uint8_t etat_pince_G = LIBRE, etat_pince_D = LIBRE;
 
         // on enregistrer l'état des pinces (remplies ou non)
         if (check_capteur(DROITE) == 0)

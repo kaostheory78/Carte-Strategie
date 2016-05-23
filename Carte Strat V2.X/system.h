@@ -19,6 +19,7 @@ extern "C" {
     #include <p33FJ128MC804.h>
     #include <stdint.h>
     #include <stdlib.h>
+    #include <stdio.h>
     #include "codeurs.h"
     #include <math.h>
     #include "Uart.h"
