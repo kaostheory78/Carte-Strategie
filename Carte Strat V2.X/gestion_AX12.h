@@ -37,7 +37,7 @@ extern "C" {
 
 
 #define START_BYTE              0xFF
-#define TIME_LIMIT              1350//3200//740000L//100000L
+#define TIME_LIMIT              1350
 
 #define PAS_D_ERREUR            0
 #define TIME_OUT                1
@@ -45,8 +45,8 @@ extern "C" {
 #define PAS_DE_REPONSE          3
 
 
-    #define EMISSION                1
-    #define RECEPTION               0
+#define EMISSION                1
+#define RECEPTION               0
 
 #define MAX_TENTATIVES          10
 
@@ -202,7 +202,8 @@ extern "C" {
 /****************************** Prototypes ************************************/
 /******************************************************************************/
 
-    void lecture_position_AX12 (uint8_t *ax12, int taille);
+
+void lecture_position_AX12 (uint8_t *ax12, int taille);
 
 
 /**

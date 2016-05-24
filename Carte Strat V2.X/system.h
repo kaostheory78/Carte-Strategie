@@ -175,38 +175,38 @@ extern "C" {
 /******************************************************************************/
 
     //Codeurs
-    extern int OVERFLOW_CODEUR[3] ;
-    extern _position position[3];
+    extern volatile __attribute__((near)) int OVERFLOW_CODEUR[3] ;
+    extern volatile __attribute__((near)) _position position[3];
 
     //Asserv
-    extern _robot ROBOT;
-    extern _acc acc;
-    extern _PID PID;
-    extern _flag_asserv FLAG_ASSERV;
+    extern volatile __attribute__((near)) _robot ROBOT;
+    extern volatile __attribute__((near)) _acc acc;
+    extern volatile __attribute__((near)) _PID PID;
+    extern volatile __attribute__((near)) _flag_asserv FLAG_ASSERV;
 
-    extern _systeme_asserv X;
-    extern _systeme_asserv Y;
-    extern _systeme_asserv DISTANCE;
-    extern _systeme_asserv ORIENTATION;
-    extern _systeme_asserv VITESSE_ORIENTATION[3];
-    extern _systeme_asserv VITESSE[3];
+    extern volatile __attribute__((near)) _systeme_asserv X;
+    extern volatile __attribute__((near)) _systeme_asserv Y;
+    extern volatile __attribute__((near)) _systeme_asserv DISTANCE;
+    extern volatile __attribute__((near)) _systeme_asserv ORIENTATION;
+    extern volatile __attribute__((near)) _systeme_asserv VITESSE_ORIENTATION[3];
+    extern volatile __attribute__((near)) _systeme_asserv VITESSE[3];
 
-    extern double VITESSE_MAX_ORIENTATION;
-    extern double VITESSE_MAX_POSITION;
+    extern volatile __attribute__((near)) double VITESSE_MAX_ORIENTATION;
+    extern volatile __attribute__((near)) double VITESSE_MAX_POSITION;
 
-    extern _erreur ERREUR_DISTANCE;
-    extern _erreur ERREUR_ORIENTATION;
-    extern _erreur ERREUR_VITESSE[2];
+    extern volatile __attribute__((near)) _erreur ERREUR_DISTANCE;
+    extern volatile __attribute__((near)) _erreur ERREUR_ORIENTATION;
+    extern volatile __attribute__((near)) _erreur ERREUR_VITESSE[2];
 
-    extern _commande_moteur COMMANDE;
+    extern volatile __attribute__((near)) _commande_moteur COMMANDE;
 
-    extern uint8_t TYPE_CONSIGNE;
+    extern volatile __attribute__((near)) uint8_t TYPE_CONSIGNE;
 
     //Evitement adversaire
-    extern uint8_t DETECTION;
-    extern uint8_t EVITEMENT_ADV_AVANT;
-    extern uint8_t EVITEMENT_ADV_ARRIERE;
-    extern uint8_t STRATEGIE_EVITEMENT;
+    extern volatile uint8_t DETECTION;
+    extern volatile uint8_t EVITEMENT_ADV_AVANT;
+    extern volatile uint8_t EVITEMENT_ADV_ARRIERE;
+    extern volatile uint8_t STRATEGIE_EVITEMENT;
 
     extern int obstacle[x_max][y_max];
     extern int curseur;
@@ -228,14 +228,14 @@ extern "C" {
 
 
     // FLAG Automs
-    extern uint8_t COULEUR;
-    extern uint16_t FLAG_ACTION;
-    extern uint8_t FLAG_EVITEMENT_STRATEGIQUE;
-    extern uint8_t ETAT_AUTOM;
-    extern uint16_t COMPTEUR_MARCHE;
-    extern uint8_t COMPTEUR_TEMPS_MATCH;
+    extern volatile uint8_t COULEUR;
+    extern volatile uint16_t FLAG_ACTION;
+    extern volatile uint8_t FLAG_EVITEMENT_STRATEGIQUE;
+    extern volatile uint8_t ETAT_AUTOM;
+    extern volatile uint16_t COMPTEUR_MARCHE;
+    extern volatile uint8_t COMPTEUR_TEMPS_MATCH;
 
-    extern _ax12 ax12;
+    extern volatile _ax12 ax12;
 
 /******************************************************************************/
 /****************************** Prototypes ************************************/

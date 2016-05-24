@@ -43,9 +43,9 @@
 /************************* Variables gloables *********************************/
 /******************************************************************************/
 
-_ax12 ax12;
-decal decalage[ID_MAX_AX12];
-pos position_AX12[ID_MAX_AX12];
+volatile _ax12 ax12;
+volatile decal decalage[ID_MAX_AX12];
+volatile pos position_AX12[ID_MAX_AX12];
 
 void init_decalage_AX12 (void)      //Declaration de l'enchainement de montage des AX12
 {

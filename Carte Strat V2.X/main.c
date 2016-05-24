@@ -66,17 +66,17 @@
 /********************* DECLARATION DES VARIABLES GLOBALES *********************/
 /******************************************************************************/
 
-    uint8_t COULEUR;
+    volatile uint8_t COULEUR;
 
-    uint8_t DETECTION;
-    uint8_t EVITEMENT_ADV_AVANT;
-    uint8_t EVITEMENT_ADV_ARRIERE;
-    uint8_t STRATEGIE_EVITEMENT;
-    uint16_t FLAG_ACTION;
-    uint8_t FLAG_EVITEMENT_STRATEGIQUE;
-    uint8_t ETAT_AUTOM;
-    uint16_t COMPTEUR_MARCHE;
-    uint8_t COMPTEUR_TEMPS_MATCH;
+    volatile uint8_t DETECTION;
+    volatile uint8_t EVITEMENT_ADV_AVANT;
+    volatile uint8_t EVITEMENT_ADV_ARRIERE;
+    volatile uint8_t STRATEGIE_EVITEMENT;
+    volatile uint16_t FLAG_ACTION;
+    volatile uint8_t FLAG_EVITEMENT_STRATEGIQUE;
+    volatile uint8_t ETAT_AUTOM;
+    volatile uint16_t COMPTEUR_MARCHE;
+    volatile uint8_t COMPTEUR_TEMPS_MATCH;
 
 
     int obstacle[30][20];

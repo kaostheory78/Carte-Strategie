@@ -17,32 +17,32 @@
 /*************************** Variables Globales *******************************/
 /******************************************************************************/
 
-_robot ROBOT;
+volatile __attribute__((near)) _robot ROBOT;
 
-_PID PID;
-double KP_hybride;
-double VITESSE_MAX_ORIENTATION;
-double VITESSE_MAX_POSITION;
+volatile __attribute__((near)) _PID PID;
+volatile __attribute__((near)) double KP_hybride;
+volatile __attribute__((near)) double VITESSE_MAX_ORIENTATION;
+volatile __attribute__((near)) double VITESSE_MAX_POSITION;
 
-_systeme_asserv X, Y;
-_systeme_asserv BRAKE[2];
-_systeme_asserv DISTANCE;
-_systeme_asserv ORIENTATION;
-_systeme_asserv VITESSE_ORIENTATION[3];
-_systeme_asserv VITESSE[3];
+volatile __attribute__((near)) _systeme_asserv X, Y;
+volatile __attribute__((near)) _systeme_asserv BRAKE[2];
+volatile __attribute__((near)) _systeme_asserv DISTANCE;
+volatile __attribute__((near)) _systeme_asserv ORIENTATION;
+volatile __attribute__((near)) _systeme_asserv VITESSE_ORIENTATION[3];
+volatile __attribute__((near)) _systeme_asserv VITESSE[3];
 
-_acc acc;
+volatile __attribute__((near)) _acc acc;
 
-_erreur ERREUR_DISTANCE;
-_erreur ERREUR_VITESSE[2];
-_erreur ERREUR_ORIENTATION;
-_erreur ERREUR_BRAKE[2];
+volatile __attribute__((near)) _erreur ERREUR_DISTANCE;
+volatile __attribute__((near)) _erreur ERREUR_VITESSE[2];
+volatile __attribute__((near)) _erreur ERREUR_ORIENTATION;
+volatile __attribute__((near)) _erreur ERREUR_BRAKE[2];
 
-_commande_moteur COMMANDE;
+volatile __attribute__((near)) _commande_moteur COMMANDE;
 
-_flag_asserv FLAG_ASSERV;
+volatile __attribute__((near)) _flag_asserv FLAG_ASSERV;
 
-uint8_t TYPE_CONSIGNE;
+volatile __attribute__((near)) uint8_t TYPE_CONSIGNE;
 
 /******************************************************************************/
 /***************************** Fonctions Inits ********************************/
@@ -425,7 +425,7 @@ void calcul_distance_consigne_XY (void)
 {
     if (TYPE_CONSIGNE == XY)
     {
-        static double delta_x, delta_y;
+        __attribute__((near)) static double delta_x, delta_y;
         delta_x = (double) (X.consigne - X.actuelle);
         delta_y = (double) (Y.consigne - Y.actuelle);
 
@@ -621,8 +621,8 @@ void asserv_brake(void)
 // Fonction qui gère l'asserv de Distance, donne les consignes pour générer les rampes
 void asserv_distance(void)
 {
-    static double distance_restante = 0;
-    static double temps_freinage, temps_restant;
+    __attribute__((near)) static double distance_restante = 0;
+    __attribute__((near)) static double temps_freinage, temps_restant;
     
     calcul_distance_consigne_XY();
     distance_restante = fonction_PID(ASSERV_POSITION);
@@ -744,8 +744,8 @@ void asserv_vitesse_distance (void)
 //Fonction qui permet de créer les consignes pour générer les rampes de Vitesse
 void asserv_orientation (void)
 {
-    static double angle_restant = 0;
-    static double temps_freinage, temps_restant;
+    __attribute__((near)) static double angle_restant = 0;
+    __attribute__((near)) static double temps_freinage, temps_restant;
     //static int32_t compteur  = 0;
 
     angle_restant = fonction_PID(ASSERV_ORIENTATION); 
@@ -861,7 +861,7 @@ double fonction_PID (unsigned char type)
     }
     else if (type == ASSERV_POSITION)
     {
-        static double duty;
+        __attribute__((near)) static double duty;
 
         ERREUR_DISTANCE.actuelle = DISTANCE.consigne - DISTANCE.actuelle;
         ERREUR_DISTANCE.integralle += ERREUR_DISTANCE.actuelle;
@@ -874,7 +874,7 @@ double fonction_PID (unsigned char type)
     }
     else if ( type == ASSERV_ORIENTATION)
     {
-        static double duty;
+        __attribute__((near)) static double duty;
 
         /*if ((ORIENTATION.consigne - ORIENTATION.actuelle) > Pi * ENTRAXE_TICKS/2)
             ORIENTATION.consigne -= Pi * ENTRAXE_TICKS;
@@ -943,8 +943,8 @@ double fonction_PID (unsigned char type)
 
 void calcul_position_robot (void)
 {
-    static int32_t delta_o, delta_d;
-    static double d_X = 0, d_Y = 0;
+    __attribute__((near)) static int32_t delta_o, delta_d;
+    __attribute__((near)) static double d_X = 0, d_Y = 0;
 
     get_valeur_codeur (CODEUR_D);
     get_valeur_codeur (CODEUR_G);

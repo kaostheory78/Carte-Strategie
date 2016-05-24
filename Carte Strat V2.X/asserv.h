@@ -198,7 +198,6 @@
     {
         double actuelle;
         double integralle;
-        double integralle_precedente;
         double precedente;
         double maximum;
     }_erreur;
@@ -244,7 +243,7 @@
 void asserv_brake(void);
 
 /**
- * FOnction qui arrête immédiatement le robot
+ * Fonction qui arrête immédiatement le robot
  */
 void brake();
 

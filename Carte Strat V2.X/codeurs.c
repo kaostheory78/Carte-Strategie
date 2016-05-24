@@ -17,8 +17,8 @@
 #include "system.h"
 
 
-    int OVERFLOW_CODEUR[3] ;//= { PAS_D_OVERFLOW_CODEUR, PAS_D_OVERFLOW_CODEUR };
-    _position position[3] ;// = {{0, 0}, {0, 0}};
+    volatile __attribute__((near)) int OVERFLOW_CODEUR[3] ;//= { PAS_D_OVERFLOW_CODEUR, PAS_D_OVERFLOW_CODEUR };
+    volatile __attribute__((near)) _position position[3] ;// = {{0, 0}, {0, 0}};
 
 
 /******************************************************************************/

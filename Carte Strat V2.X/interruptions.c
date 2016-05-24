@@ -40,7 +40,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
        COMPTEUR_MARCHE = COMPTEUR_MARCHE + 1;
 #endif
 
-   static int led = 1, compteur = 0;
+   __attribute__((near)) static int led = 1, compteur = 0;
    compteur++;
 
     if (compteur == 100)
