@@ -544,7 +544,7 @@ uint8_t _rejoindre (double x, double y, int8_t sens_marche, double pourcentage_v
     X.consigne = x * TICKS_PAR_MM;
     Y.consigne = y * TICKS_PAR_MM;
 
-    TYPE_CONSIGNE = XY;
+//    TYPE_CONSIGNE = XY;
 
     FLAG_ASSERV.sens_deplacement = sens_marche;
 

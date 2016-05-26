@@ -5,6 +5,10 @@
  * Created on 30 octobre 2014, 23:11
  */
 
+/**
+ * @file asserv.h : Prototypes des fonctions d'asserv, enum et structures des variables d'asserv
+ */
+
 #ifndef ASSERV_H
 #define	ASSERV_H
 
@@ -19,41 +23,38 @@
 /****************************** DEFINES GLOBALES ******************************/
 /******************************************************************************/
 
-#define ON                          1
-#define OFF                         2
+//#define ON                          true
+//#define OFF                         false
 
 #define Pi                          3.14159265359
 
-#define ROUE_DROITE                 0
-#define ROUE_GAUCHE                 1
-#define SYS_ROBOT                   2
+//#define ROUE_DROITE                 0
+//#define ROUE_GAUCHE                 1
+//#define SYS_ROBOT                   2
 
-#define ASSERV_VITESSE_DISTANCE     0
-#define ASSERV_POSITION             1
-#define ASSERV_ORIENTATION          2
-#define KP_HYBRIDE                  3
+//#define ASSERV_VITESSE_DISTANCE     0
+//#define ASSERV_POSITION             1
+//#define ASSERV_ORIENTATION          2
+//#define KP_HYBRIDE                  3
 
-#define MARCHE_AVANT                1
-#define MARCHE_ARRIERE              -1
+//#define ORIENTER                    0
+//#define AVANCER                     1
+//#define PASSE_PART                  2
+//#define FAIRE_DES_TOURS             3
 
-#define ORIENTER                    0
-#define AVANCER                     1
-#define PASSE_PART                  2
-#define FAIRE_DES_TOURS             3
+//#define DEBUT_DEPLACEMENT           0
+//#define FIN_DEPLACEMENT             1
+//#define ANGLE_ATTEINT               2
+//#define DISTANCE_ATTEINTE           4
+//#define EN_COURS                    6
+//#define PHASE_NORMAL                7
 
-#define DEBUT_DEPLACEMENT           0
-#define FIN_DEPLACEMENT             1
-#define ANGLE_ATTEINT               2
-#define DISTANCE_ATTEINTE           4
-#define EN_COURS                    6
-#define PHASE_NORMAL                7
+//#define DEBUT_TRAJECTOIRE           0
+//#define MILIEU_TRAJECTOIRE          2
+//#define FIN_TRAJECTOIRE             1
 
-#define DEBUT_TRAJECTOIRE           0
-#define MILIEU_TRAJECTOIRE          2
-#define FIN_TRAJECTOIRE             1
-
-#define MM                          1
-#define XY                          2
+//#define MM                          1
+//#define XY                          2
 
 
 /******************************************************************************/
@@ -140,30 +141,163 @@
 
 
 /******************************************************************************/
-/************************ DEFINES DES ERREURS *********************************/
+/************************** DEFINES DES ENUMS *********************************/
 /******************************************************************************/
 
-#define DEPLACEMENT_NORMAL          0
-#define BLOCAGE                     1
-#define EVITEMENT                   2
+/**
+ *  IL FAUT FAIRE TRES ATTENTION AVEC LES ENUMS 
+ *  CERTAINES STRUCTURES QUI UTILISENT SES ENUMS SONT DEFINIES PAR DES CHAMPS DE BITS
+ *  SI VOUS AUGMENTEZ LE NOMBRE DE CAS ET QUE VOUS DEPASSER LA LIMITE ALORS 
+ *  VOUS REVIENDREZ A ZERO
+ * 
+ *  EN CAS DE MODIFICATION NECESSAIRE PENSEZ A ADAPTER LE BIT FIELD DES 
+ *  STRUCTURES DEPENDANTES COMME FLAG_ASSERV
+ * 
+ *  EGALEMENT : MERCI DE TENIR COMPTE QU'UNE STRUCTURE EST DEFINIE PAR PAQUET DE
+ *  DEUX OCTETS 
+ *  IL EST JUDICIEUX D'EVITER DE PRENDRE DEUX OCTETS EN MEMOIRE JUSTE POUR 1 BIT  
+ *
+ */
+
+/**
+ * Enum booléene pour activer ou non les asserv
+ * 
+ * /!\ VARIABLE CODEE SUR 1 BIT /!\
+ * /!\      ID MAXIMUM = 1      /!\
+ */
+typedef enum
+{
+    // /!\ VALEUR MAX = 1 /!\ //
+    OFF = false,    // 0
+    ON  = true      // 1
+}_enum_on_off;
+
+/**
+ * Enum utilisée pour les tableaux contenant les valeurs de la roue droite / gauche
+ * ou du robot en général
+ */
+typedef enum
+{
+    ROUE_DROITE,
+    ROUE_GAUCHE,
+    SYS_ROBOT
+}_enum_roue;
+
+
+/**
+ * Enum utilisée dans la fonction_PID() pour savoir quel PID elle doit calculer
+ */
+typedef enum
+{
+    ASSERV_VITESSE_DISTANCE,
+    ASSERV_POSITION,
+    ASSERV_ORIENTATION,
+    KP_HYBRIDE
+}_enum_type_PID;
+
+/**
+ * Enum pour le sens du déplacement du robot (avancer / reculer)
+ */
+typedef enum
+{
+    MARCHE_AVANT = 1,
+    MARCHE_ARRIERE = -1
+}_enum_sens_deplacement;
+
+
+/**
+ * Enum pour savoir dans quel type de déplacement on est.
+ * 
+ * /!\ VARIABLE CODEE SUR 3 BIT !!! /!\
+ * /!\     ID MAXIMUM = 7           /!\ 
+ */
+typedef enum 
+{
+    // /!\ NE SURTOUT PAS DEPASSER 7 !! /!\ //
+    ORIENTER,           // 0
+    AVANCER,            // 1
+    PASSE_PART,         // 2
+    FAIRE_DES_TOURS     // 3
+}_enum_type_deplacement;
+
+/**
+ *  Enum utilisée pour représenter tous les types de déplacements
+ *  Egalement pour définir l'état de certains asserv
+ *  Aussi pour les passe_part 
+ * 
+ * /!\ VARIABLE CODEE SUR 3 BIT !!! /!\
+ * /!\        ID MAXIMUM = 7        /!\          
+ */
+typedef enum 
+{
+    // /!\ NE SURTOUT PAS DEPASSER 7 !! /!\ //
+    DEBUT_TRAJECTOIRE,                      // 0
+    DEBUT_DEPLACEMENT = DEBUT_TRAJECTOIRE,  // 0
+    MILIEU_TRAJECTOIRE,                     // 1
+    FIN_TRAJECTOIRE,                        // 2
+    FIN_DEPLACEMENT = FIN_TRAJECTOIRE,      // 2
+    EN_COURS,                               // 3
+    PHASE_NORMAL,                           // 4
+    ANGLE_ATTEINT,                          // 5
+    DISTANCE_ATTEINTE                       // 6
+}_enum_etat_deplacement;
+
+
+/**
+ *  Enum utilisée pour représenter le mode de consigne pour le déplacement
+ *  Soit la consigne est donnée en MM soit par une position en XY
+ *  Le calcul d'asserv n'est alors pas le même
+ * 
+ * /!\ VARIABLE CODEE SUR 2 BIT !!! /!\
+ * /!\         ID MAXIMUM :  3      /!\
+ */
+typedef enum 
+{
+    // /!\ NE SURTOUT PAS DEPASSER 3 /!\ //
+    MM,     // 0
+    XY      // 1
+}_enum_type_consigne;
+
+/**
+ * Enum qui reprend les cas d'erreur pour sortir d'une fonction de deplacement
+ * 
+ * /!\ VARIABLE CODEE SUR 3 BIT !!! /!\
+ * /!\         ID MAXIMUM : 7       /!\
+ */
+typedef enum 
+{
+    // /!\ NE SURTOUT PAS DEPASSER 7 /!\ //
+    DEPLACEMENT_NORMAL,     // 0
+    BLOCAGE,                // 1
+    EVITEMENT               // 2
+}_enum_erreur_asserv;
 
 /******************************************************************************/
-/******************************************************************************/
+/********************** DEFINITION DES STRUCTURES *****************************/
 /******************************************************************************/
 
+    /**
+     *  Structure qui reprend les deux variables asservies en vitesse
+     */
     typedef struct
     {
         double orientation;
         double position;
     }_vitesse;
 
+    /**
+     *  Structure pour stocker les données relatives aux accélération et 
+     *  Déccélérations pour les deux variables asservies en vitesse
+     */
     typedef struct
     {
         _vitesse acceleration;
         _vitesse deceleration;
     }_acc;
 
-    
+    /**
+     * Définition d'un PID numérique
+     */
     typedef struct
     {
         double KP;
@@ -174,6 +308,11 @@
 	    uint64_t seuil_immobilite;
     }_coef_PID;
 
+    /**
+     * Stockage des 3 PID EXISYANT (même si le PID Distance est useless .. )
+     * Les deux vraies données asservies sont la vitesse rectiligne et la 
+     * vitesse en orientation
+     */
     typedef struct
     {
         _coef_PID VITESSE_DIS;
@@ -181,6 +320,12 @@
         _coef_PID DISTANCE;
     }_PID;
 
+    /**
+     * Principale donnée d'une variable asservie : 
+     * - Sa consigne 
+     * - ?? a redéfinir ;) même moi j'oublie mon asserv
+     * - sa valeure réelle 
+     */
     typedef struct
     {
         double consigne;
@@ -188,12 +333,24 @@
         double actuelle;
     }_systeme_asserv;
 
+    /**
+     * Commande en % de tension envoyée aux moteurs
+     */
     typedef struct
     {
         double droit;
         double gauche;
     }_commande_moteur;
 
+    
+    /**
+     * Variable pour stocker les principales données des variables asservies 
+     * pour le calcul du PID
+     * à savoir, l'erreur actuelle, l'erreur n-1, la somme des erreurs
+     * l'erreur dérivée est elle calculée directement à chaque coup et non sauvegardée
+     * 
+     * le maximum est non utilisé pour le momment : à changer
+     */
     typedef struct
     {
         double actuelle;
@@ -202,22 +359,31 @@
         double maximum;
     }_erreur;
 
+    
+    /**
+     *  Grosse structure pour définir gérer tout l'asserv et les modes en marche ou non
+     * 
+     *  /!\ Cette structure est définie avec des Bit field /!\
+     *  /!\ Faire attention à ne pas dépasser leur valeur max si modif des enums /!\ 
+     */
     typedef struct
     {
-        char totale;
-        char position;
-        char vitesse;
-        char orientation;
-        char brake;
-        int8_t sens_deplacement;
-        char etat_angle;
-        char etat_distance;
-        char type_deplacement;
-        char fin_deplacement;
-        char vitesse_fin_nulle;
-        char phase_decelaration_orientation;
-        char phase_deceleration_distance;
-        uint8_t erreur;
+        _enum_on_off totale                                     : 1; // 1
+        _enum_on_off position                                   : 1; // 2
+        _enum_on_off vitesse                                    : 1; // 3
+        _enum_on_off orientation                                : 1; // 4
+        _enum_on_off brake                                      : 1; // 5
+        _enum_on_off vitesse_fin_nulle                          : 1; // 6
+        _enum_type_consigne type_consigne                       : 2; // 8
+        
+        _enum_sens_deplacement sens_deplacement                 : 3; // 11 
+        _enum_etat_deplacement etat_angle                       : 3; // 14
+        _enum_etat_deplacement etat_distance                    : 3; // 17
+        _enum_etat_deplacement fin_deplacement                  : 3; // 20
+        _enum_etat_deplacement phase_decelaration_orientation   : 3; // 23
+        _enum_etat_deplacement phase_deceleration_distance      : 3; // 26 
+        _enum_type_deplacement type_deplacement                 : 3; // 29
+        _enum_erreur_asserv erreur                              : 3; // 32           
         uint64_t immobilite;
     }_flag_asserv;
 
@@ -225,6 +391,9 @@
 /**************************** ODOMETRIE ***************************************/
 /******************************************************************************/
 
+    /*
+     * Structure qui contient les positions calculées pour le robot
+     */
     typedef struct
     {
         double orientation_degre;
@@ -293,14 +462,18 @@ void unbrake (void);
 
 
  /**
-  *
-  * @param pourcentage_vitesse
+  * Calcul la vitesse à atteindre dans la phase constante du déplacement
+  * @param pourcentage_vitesse : % de la vitesse maximum théorique calculer à appliquer
   */
  void calcul_vitesse_orientation (double pourcentage_vitesse);
 
 
  /**
-  *
+  * Fonction qui calcul l'accélération er décélération du robot à chaque déplacement
+  * Elle est calculée avec un seuil mini pour pas rester à l'arrêt comme un con
+  * et maxi pour ne pas drifter sur le terrain.
+  * Entre ces deux valeurs, un produit en croix en fonction de la distance à 
+  * parcourir donne l'accélération requise
   */
  void calcul_acceleration_orientation (void);
 

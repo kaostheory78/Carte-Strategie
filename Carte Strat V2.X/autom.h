@@ -34,26 +34,43 @@ extern "C" {
     /*************************** DEFINE Général *******************************/
     /**************************************************************************/
 
-    //Couleurs de départs
-#define VERT                0
-#define JAUNE               1
+    /**
+     * Couleurs des zondes de départ
+     */
+    typedef enum
+    {
+        VERT,
+        JAUNE
+    }_enum_couleurs;
 
     //Conditions
 
-#define NON                 2
-#define OUI                 3
+    
+//#define NON                 2
+//#define OUI                 3
     //EN_COURS = 6
 
     //Evitement
-#define ACTIF               0
-#define INACTIF             1
-
-#define ACTION_EVITEMENT    2
-#define EVITEMENT_NORMAL    3
-#define STOP                5
-
-#define DISTANCE_STOP       5
-#define ANGLE_STOP          5
+    typedef enum
+    {
+        ACTIF,
+        INACTIF,
+        ACTION_EVITEMENT,
+        EVITEMENT_NORMAL,
+        STOP,
+        DISTANCE_STOP = STOP,
+        ANGLE_STOP = STOP
+    }_enum_evitement;
+    
+//#define ACTIF               0
+//#define INACTIF             1
+//
+//#define ACTION_EVITEMENT    2
+//#define EVITEMENT_NORMAL    3
+//#define STOP                5
+//
+//#define DISTANCE_STOP       5
+//#define ANGLE_STOP          5
 
     /**************************************************************************/
     /*************************** DEFINE ID AX12 *******************************/
@@ -164,39 +181,45 @@ extern "C" {
     /************************* DEFINE FLAG_ACTION *****************************/
     /**************************************************************************/
 
-#define NE_RIEN_FAIRE                   0
-#define FIN_DE_MATCH                    1
+    typedef enum
+    {
+        NE_RIEN_FAIRE,                                       
 
 #ifdef  PETIT_ROBOT
-    #define ATTRAPE_PIEDS               2
-    #define INIT_PINCES_DEMARRAGE       3
-    #define DEPOSE_PIEDS                4
-    #define PREPARATION_DEPOSE_PIEDS    5
-    #define ATTRAPE_GOBELET             6
-    #define DEPOSE_GOBELET              7
-    #define ATTRAPE_BALLE               8
-    #define CLAP                        9
-    #define ZONE_DEPART                 10
-    #define FERMETURE_PINCE             11
-    #define PIEDS_4                     12
-    #define EMPILEMENT                  13
-    #define DESACTIVATION_EVITEMENT     14
+        ATTRAPE_PIEDS,               
+        INIT_PINCES_DEMARRAGE,       
+        DEPOSE_PIEDS,                
+        PREPARATION_DEPOSE_PIEDS,    
+        ATTRAPE_GOBELET,             
+        DEPOSE_GOBELET,              
+        ATTRAPE_BALLE,               
+        CLAP,                        
+        ZONE_DEPART,                 
+        FERMETURE_PINCE,             
+        PIEDS_4,                     
+        EMPILEMENT,                  
+        DESACTIVATION_EVITEMENT,     
 #endif
 
 #ifdef GROS_ROBOT
-    #define INIT_ASCENSEUR              2
-    #define INIT_DEPART                 3
-    #define INIT_JACK                   4
-    #define ATTRAPE_GOBELET             5
-    #define ATTRAPE_GOBELET2            6
-    #define MONTEE_MARCHE               7
-    #define PREPARATION_MARCHE          8
-    #define EN_ROUTE_MONTEE_MARCHE      9   
-    #define ARRIVEE_MARCHE              10
-    #define MONTEE_EVITEMENT_EN_COURS   11
+        INIT_ASCENSEUR,              
+        INIT_DEPART,                 
+        INIT_JACK,                   
+        ATTRAPE_GOBELET,             
+        ATTRAPE_GOBELET2,            
+        MONTEE_MARCHE,               
+        PREPARATION_MARCHE,          
+        EN_ROUTE_MONTEE_MARCHE,         
+        ARRIVEE_MARCHE,              
+        MONTEE_EVITEMENT_EN_COURS,
+#endif 
+     
+        FIN_DE_MATCH
+            
+    }_enum_flag_action;
 
 
-#endif
+
 
 /******************************************************************************/
 /******************************************************************************/

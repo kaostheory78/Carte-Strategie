@@ -43,6 +43,7 @@ extern "C" {
 #define TIME_OUT                1
 #define REPONSE_OK              2
 #define PAS_DE_REPONSE          3
+#define ERREUR_CS               4
 
 
 #define EMISSION                1
@@ -67,8 +68,6 @@ extern "C" {
 #define PARAM5                  9
 #define CHSUM                   10
 
-
-#define ERREUR_CS               4
 
         //instructions à envoyer
 #define NC                  0x00

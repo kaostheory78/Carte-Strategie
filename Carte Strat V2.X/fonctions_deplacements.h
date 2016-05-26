@@ -28,6 +28,7 @@ extern "C" {
 /****************************** DEFINES GLOBALES ******************************/
 /******************************************************************************/
 
+    // Define de HUGO ...(c'est pour ça qu'il y a des minuscules ...)
     #define y_max 20
     #define x_max 30
     #define nb_point_max 100

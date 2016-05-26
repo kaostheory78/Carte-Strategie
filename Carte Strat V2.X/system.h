@@ -21,6 +21,7 @@ extern "C" {
     #include <stdlib.h>
     #include <stdio.h>
     #include <stdarg.h>
+    #include <stdbool.h>
     #include "codeurs.h"
     #include <math.h>
     #include "Uart.h"
@@ -174,6 +175,18 @@ extern "C" {
 /*************************** Variables Globales *******************************/
 /******************************************************************************/
 
+    /**
+     * Toutes les variables appellées par la le timer d'asserv de 5 ms
+     * sont définies en near 
+     * Elles sont ainsi stockée dans la mémoire de 8 ko proche du cpu
+     * et on y accède plus rapidement
+     */
+    
+    /**
+     * Toutes les variables dont la valeurs est succeptibles d'être modifiée
+     * dans une interruption doivent être déclarée volatile !
+     */
+    
     //Codeurs
     extern volatile __attribute__((near)) int OVERFLOW_CODEUR[3] ;
     extern volatile __attribute__((near)) _position position[3];
