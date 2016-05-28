@@ -205,12 +205,12 @@ extern "C" {
     typedef struct decal
     {
         // /!\ suivant et symétrique limité de -32 à + 31 /!\ //
-        int16_t angle                       : 16;   // 16 : add 1
-        uint16_t position                   : 16;   // 16 : add 2 
-        _enum_dependance etat               : 1;    //  1 : add 3
-        int8_t suivant                      : 6;    //  7 : add 3
-        _enum_sens_rotation sens_rotation   : 2;    //  9 : add 3
-        int8_t symetrique                   : 6;    // 15 : add 3
+        int16_t angle                       : 16;   // 16 : Word 1
+        uint16_t position                   : 16;   // 16 : Word 2 
+        _enum_dependance etat               : 1;    //  1 : Word 3
+        int8_t suivant                      : 6;    //  7 : Word 3
+        _enum_sens_rotation sens_rotation   : 2;    //  9 : Word 3
+        int8_t symetrique                   : 6;    // 15 : Word 3
     }decal;
 
     typedef struct pos

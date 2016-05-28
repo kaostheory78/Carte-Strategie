@@ -21,8 +21,7 @@ volatile __attribute__((near)) _robot ROBOT;
 
 volatile __attribute__((near)) _PID PID;
 volatile __attribute__((near)) double KP_hybride;
-volatile __attribute__((near)) double VITESSE_MAX_ORIENTATION;
-volatile __attribute__((near)) double VITESSE_MAX_POSITION;
+volatile __attribute__((near)) _vitesse VITESSE_MAX;
 
 volatile __attribute__((near)) _systeme_asserv X, Y;
 volatile __attribute__((near)) _systeme_asserv BRAKE[2];
@@ -41,8 +40,6 @@ volatile __attribute__((near)) _erreur ERREUR_BRAKE[2];
 volatile __attribute__((near)) _commande_moteur COMMANDE;
 
 volatile __attribute__((near)) _flag_asserv FLAG_ASSERV;
-
-volatile __attribute__((near)) uint8_t TYPE_CONSIGNE;
 
 /******************************************************************************/
 /***************************** Fonctions Inits ********************************/
@@ -212,10 +209,10 @@ void saturation_vitesse_max (unsigned char type)
     {
         //Pour éviter d'osciller autour d'une valeur consigne en haut du trapèze
         //on écrète à la valeur max
-        if (VITESSE[SYS_ROBOT].theorique > VITESSE_MAX_POSITION)
-            VITESSE[SYS_ROBOT].theorique = VITESSE_MAX_POSITION;
-        else if (VITESSE[SYS_ROBOT].theorique < - VITESSE_MAX_POSITION)
-            VITESSE[SYS_ROBOT].theorique = - VITESSE_MAX_POSITION;
+        if (VITESSE[SYS_ROBOT].theorique > VITESSE_MAX.position)
+            VITESSE[SYS_ROBOT].theorique = VITESSE_MAX.position;
+        else if (VITESSE[SYS_ROBOT].theorique < - VITESSE_MAX.position)
+            VITESSE[SYS_ROBOT].theorique = - VITESSE_MAX.position;
 
         //Pour ne pas osciller autour d'une consigne à 0,
         //On check, lors de la génération de la courbe de freinage,
@@ -228,10 +225,10 @@ void saturation_vitesse_max (unsigned char type)
     {
         //Pour éviter d'osciller autour d'une valeur consigne en haut du trapèze
         //on écrète à la valeur max
-        if (VITESSE_ORIENTATION[SYS_ROBOT].theorique > VITESSE_MAX_ORIENTATION)
-            VITESSE_ORIENTATION[SYS_ROBOT].theorique = VITESSE_MAX_ORIENTATION;
-        else if (VITESSE_ORIENTATION[SYS_ROBOT].theorique < - VITESSE_MAX_ORIENTATION)
-            VITESSE_ORIENTATION[SYS_ROBOT].theorique = - VITESSE_MAX_ORIENTATION;
+        if (VITESSE_ORIENTATION[SYS_ROBOT].theorique > VITESSE_MAX.orientation)
+            VITESSE_ORIENTATION[SYS_ROBOT].theorique = VITESSE_MAX.orientation;
+        else if (VITESSE_ORIENTATION[SYS_ROBOT].theorique < - VITESSE_MAX.orientation)
+            VITESSE_ORIENTATION[SYS_ROBOT].theorique = - VITESSE_MAX.orientation;
 
         //Pour ne pas osciller autour d'une consigne à 0,
         //On check, lors de la génération de la courbe de freinage,
@@ -296,41 +293,41 @@ void calcul_vitesse_position (double pourcentage_vitesse)
         temp = DISTANCE.consigne;
 
 
-    VITESSE_MAX_POSITION = VITESSE_CONSIGNE_MAX_PAS * temp;
-    VITESSE_MAX_POSITION /= DISTANCE_CONSIGNE_PAS;
-    VITESSE_MAX_POSITION *= pourcentage_vitesse;
-    VITESSE_MAX_POSITION /= 100;
+    VITESSE_MAX.position = VITESSE_CONSIGNE_MAX_PAS * temp;
+    VITESSE_MAX.position /= DISTANCE_CONSIGNE_PAS;
+    VITESSE_MAX.position *= pourcentage_vitesse;
+    VITESSE_MAX.position /= 100;
 
-    if (VITESSE_MAX_POSITION < 0)
-        VITESSE_MAX_POSITION *= -1;
+    if (VITESSE_MAX.position < 0)
+        VITESSE_MAX.position *= -1;
 
-    if (VITESSE_MAX_POSITION > VITESSE_MAX_TENSION)
-        VITESSE_MAX_POSITION = VITESSE_MAX_TENSION;
-    else if (VITESSE_MAX_POSITION < VITESSE_DISTANCE_MIN_PAS)
-        VITESSE_MAX_POSITION = VITESSE_DISTANCE_MIN_PAS;
+    if (VITESSE_MAX.position > VITESSE_MAX_TENSION)
+        VITESSE_MAX.position = VITESSE_MAX_TENSION;
+    else if (VITESSE_MAX.position < VITESSE_DISTANCE_MIN_PAS)
+        VITESSE_MAX.position = VITESSE_DISTANCE_MIN_PAS;
 }
 
 void calcul_acceleration_position (void)
 {
-    if (VITESSE_MAX_POSITION < VITESSE_CONSIGNE_MAX_PAS) //Si on est inferieur au réglage consigne
+    if (VITESSE_MAX.position < VITESSE_CONSIGNE_MAX_PAS) //Si on est inferieur au réglage consigne
     {
         if (DISTANCE.consigne > 0)
         {
-            acc.acceleration.position = VITESSE_MAX_POSITION;
+            acc.acceleration.position = VITESSE_MAX.position;
             acc.acceleration.position *= ACC_POSITION_CONSIGNE;
             acc.acceleration.position /= VITESSE_CONSIGNE_MAX_PAS;
             
-            acc.deceleration.position = VITESSE_MAX_POSITION;
+            acc.deceleration.position = VITESSE_MAX.position;
             acc.deceleration.position *= DCC_POSITION_CONSIGNE;
             acc.deceleration.position /= VITESSE_CONSIGNE_MAX_PAS;
         }
         else //inversion acceleration et deceleration
         {
-            acc.acceleration.position = VITESSE_MAX_POSITION;
+            acc.acceleration.position = VITESSE_MAX.position;
             acc.acceleration.position *= DCC_POSITION_CONSIGNE;
             acc.acceleration.position /= VITESSE_CONSIGNE_MAX_PAS;
 
-            acc.deceleration.position = VITESSE_MAX_POSITION;
+            acc.deceleration.position = VITESSE_MAX.position;
             acc.deceleration.position *= ACC_POSITION_CONSIGNE;
             acc.deceleration.position /= VITESSE_CONSIGNE_MAX_PAS;
         }
@@ -361,42 +358,42 @@ void calcul_vitesse_orientation (double pourcentage_vitesse)
 
     fonction_PID(ASSERV_ORIENTATION);
 
-    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
-    VITESSE_MAX_ORIENTATION *= ERREUR_ORIENTATION.actuelle; // orientation restante à parcourir
-    VITESSE_MAX_ORIENTATION /= ORIENTATION_CONSIGNE_PAS;
-    VITESSE_MAX_ORIENTATION *= pourcentage_vitesse;
-    VITESSE_MAX_ORIENTATION /= 100;
+    VITESSE_MAX.orientation = VITESSE_ANGLE_PAS;
+    VITESSE_MAX.orientation *= ERREUR_ORIENTATION.actuelle; // orientation restante à parcourir
+    VITESSE_MAX.orientation /= ORIENTATION_CONSIGNE_PAS;
+    VITESSE_MAX.orientation *= pourcentage_vitesse;
+    VITESSE_MAX.orientation /= 100;
 
-    if (VITESSE_MAX_ORIENTATION < 0)
-        VITESSE_MAX_ORIENTATION *= - 1;
+    if (VITESSE_MAX.orientation < 0)
+        VITESSE_MAX.orientation *= - 1;
 
-    if (VITESSE_MAX_ORIENTATION > VITESSE_MAX_TENSION)
-        VITESSE_MAX_ORIENTATION = VITESSE_MAX_TENSION;
-    else if (VITESSE_MAX_ORIENTATION < VITESSE_ANGLE_MIN_PAS)
-        VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_MIN_PAS;
+    if (VITESSE_MAX.orientation > VITESSE_MAX_TENSION)
+        VITESSE_MAX.orientation = VITESSE_MAX_TENSION;
+    else if (VITESSE_MAX.orientation < VITESSE_ANGLE_MIN_PAS)
+        VITESSE_MAX.orientation = VITESSE_ANGLE_MIN_PAS;
 }
 
 void calcul_acceleration_orientation (void)
 {
-    if (VITESSE_MAX_ORIENTATION < VITESSE_ANGLE_PAS) //Si on est inferieur au réglage consigne
+    if (VITESSE_MAX.orientation < VITESSE_ANGLE_PAS) //Si on est inferieur au réglage consigne
     {
         if (ERREUR_ORIENTATION.actuelle > 0)
         {
-            acc.acceleration.orientation = VITESSE_MAX_ORIENTATION;
+            acc.acceleration.orientation = VITESSE_MAX.orientation;
             acc.acceleration.orientation *= ACC_ORIENTATION_CONSIGNE;
             acc.acceleration.orientation /= VITESSE_ANGLE_PAS;
 
-            acc.deceleration.orientation = VITESSE_MAX_ORIENTATION;
+            acc.deceleration.orientation = VITESSE_MAX.orientation;
             acc.deceleration.orientation *= DCC_ORIENTATION_CONSIGNE;
             acc.deceleration.orientation /= VITESSE_ANGLE_PAS;
         }
         else //inversion acceleration et deceleration
         {
-            acc.acceleration.orientation = VITESSE_MAX_ORIENTATION;
+            acc.acceleration.orientation = VITESSE_MAX.orientation;
             acc.acceleration.orientation *= DCC_ORIENTATION_CONSIGNE;
             acc.acceleration.orientation /= VITESSE_ANGLE_PAS;
 
-            acc.deceleration.orientation = VITESSE_MAX_ORIENTATION;
+            acc.deceleration.orientation = VITESSE_MAX.orientation;
             acc.deceleration.orientation *= ACC_ORIENTATION_CONSIGNE;
             acc.deceleration.orientation /= VITESSE_ANGLE_PAS;
         }
@@ -423,7 +420,7 @@ void calcul_acceleration_orientation (void)
 
 void calcul_distance_consigne_XY (void)
 {
-    if (TYPE_CONSIGNE == XY)
+    if (FLAG_ASSERV.type_consigne == XY)
     {
         __attribute__((near)) static double delta_x, delta_y;
         delta_x = (double) (X.consigne - X.actuelle);
@@ -627,7 +624,7 @@ void asserv_distance(void)
     calcul_distance_consigne_XY();
     distance_restante = fonction_PID(ASSERV_POSITION);
 
-    if (TYPE_CONSIGNE == MM)
+    if (FLAG_ASSERV.type_consigne == MM)
     {
         if (distance_restante < 0)
             FLAG_ASSERV.sens_deplacement = MARCHE_ARRIERE;
@@ -667,12 +664,12 @@ void asserv_distance(void)
         FLAG_ASSERV.etat_distance = EN_COURS;
         if (distance_restante > 0)
         {
-            VITESSE[SYS_ROBOT].consigne =  VITESSE_MAX_POSITION; //vmax
+            VITESSE[SYS_ROBOT].consigne =  VITESSE_MAX.position; //vmax
             //temps_freinage = VITESSE[SYS_ROBOT].theorique / (2 * acc.deceleration.position);
         }
         else if (distance_restante < 0)
         {
-            VITESSE[SYS_ROBOT].consigne = - VITESSE_MAX_POSITION; //Vmin //-120
+            VITESSE[SYS_ROBOT].consigne = - VITESSE_MAX.position; //Vmin //-120
             //temps_freinage = VITESSE[SYS_ROBOT].theorique / (acc.acceleration.position);
         }
 
@@ -756,12 +753,12 @@ void asserv_orientation (void)
 
         if (angle_restant > 0) 
         {
-            VITESSE_ORIENTATION[SYS_ROBOT].consigne =  VITESSE_MAX_ORIENTATION;
+            VITESSE_ORIENTATION[SYS_ROBOT].consigne =  VITESSE_MAX.orientation;
             temps_freinage = VITESSE_ORIENTATION[SYS_ROBOT].theorique / (acc.deceleration.orientation);
         }
         else if (angle_restant < 0)
         {
-            VITESSE_ORIENTATION[SYS_ROBOT].consigne = - VITESSE_MAX_ORIENTATION;
+            VITESSE_ORIENTATION[SYS_ROBOT].consigne = - VITESSE_MAX.orientation;
             temps_freinage = VITESSE_ORIENTATION[SYS_ROBOT].theorique / (acc.acceleration.orientation);
         }
 

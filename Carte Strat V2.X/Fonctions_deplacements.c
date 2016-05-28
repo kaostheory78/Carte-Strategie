@@ -37,7 +37,6 @@ double inversion_couleur (double param_inversable)
         return (- param_inversable);
 }
 
-
 /******************************************************************************/
 /********************* FONCTIONS USUELLES (TEST ASSERV) ***********************/
 /******************************************************************************/
@@ -365,7 +364,7 @@ uint8_t _calage (double distance, double pourcentage_vitesse)
     FLAG_ASSERV.brake = OFF;
     reinit_asserv();
 	
-    TYPE_CONSIGNE = MM;
+    FLAG_ASSERV.type_consigne = MM;
 	
     DISTANCE.consigne = distance * (TICKS_PAR_MM);
 
@@ -405,7 +404,7 @@ uint8_t _cibler (double x, double y, double pourcentage_vitesse)
     x *= TICKS_PAR_MM;
     y *= TICKS_PAR_MM;
 
-    TYPE_CONSIGNE = MM;
+    FLAG_ASSERV.type_consigne = MM;
 
     if ((y - Y.actuelle) != 0 || (x - X.actuelle) != 0 )//&& (Y.consigne - Y.actuelle) != 0)
     {
@@ -439,7 +438,7 @@ uint8_t _orienter (double angle, double pourcentage_vitesse)
 
     reinit_asserv();
 
-    TYPE_CONSIGNE = MM;
+    FLAG_ASSERV.type_consigne = MM;
 
     ORIENTATION.consigne = (angle * Pi)/ 180 * (ENTRAXE_TICKS/2);
 
@@ -495,7 +494,7 @@ void _fdt (double angle, char last)
         // delay_ms(10);
         reinit_asserv();
 
-        TYPE_CONSIGNE = MM;
+        FLAG_ASSERV.type_consigne = MM;
     }
 
     angle = inversion_couleur(angle);
@@ -503,12 +502,12 @@ void _fdt (double angle, char last)
     ORIENTATION.consigne = (angle * Pi)/ 180 * (ENTRAXE_TICKS/2);
 
 #ifdef PETIT_ROBOT
-    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
+    VITESSE_MAX.orientation = VITESSE_ANGLE_PAS;
     acc.acceleration.orientation = ACC_ORIENTATION_CONSIGNE;
     acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
 #endif
 #ifdef GROS_ROBOT
-    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
+    VITESSE_MAX.orientation = VITESSE_ANGLE_PAS;
     calcul_acceleration_orientation();
 #endif
 
@@ -544,7 +543,7 @@ uint8_t _rejoindre (double x, double y, int8_t sens_marche, double pourcentage_v
     X.consigne = x * TICKS_PAR_MM;
     Y.consigne = y * TICKS_PAR_MM;
 
-//    TYPE_CONSIGNE = XY;
+//    FLAG_ASSERV.type_consigne = XY;
 
     FLAG_ASSERV.sens_deplacement = sens_marche;
 
@@ -553,11 +552,11 @@ uint8_t _rejoindre (double x, double y, int8_t sens_marche, double pourcentage_v
 
     
 #ifdef PETIT_ROBOT
-    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
+    VITESSE_MAX.orientation = VITESSE_ANGLE_PAS;
     acc.acceleration.orientation = DCC_ORIENTATION_CONSIGNE;
     acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
 #else
-    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS / 2;
+    VITESSE_MAX.orientation = VITESSE_ANGLE_PAS / 2;
     calcul_acceleration_orientation();
 #endif
 
@@ -584,7 +583,7 @@ uint8_t _avancer_reculer (double distance, double pourcentage_vitesse)
     FLAG_ASSERV.brake = OFF;
     reinit_asserv();
 
-    TYPE_CONSIGNE = MM;
+    FLAG_ASSERV.type_consigne = MM;
 
     DISTANCE.consigne = distance * (TICKS_PAR_MM);
 
@@ -618,7 +617,7 @@ uint8_t _passe_part (double x, double y, int8_t sens_marche, double pourcentage_
         //  delay_ms(10);
         reinit_asserv();
 
-        TYPE_CONSIGNE = XY;
+        FLAG_ASSERV.type_consigne = XY;
     }
 
     y = inversion_couleur(y);
@@ -628,7 +627,7 @@ uint8_t _passe_part (double x, double y, int8_t sens_marche, double pourcentage_
     calcul_vitesse_position(pourcentage_vitesse);
     calcul_acceleration_position();
 
-    VITESSE_MAX_ORIENTATION = VITESSE_ANGLE_PAS;
+    VITESSE_MAX.orientation = VITESSE_ANGLE_PAS;
     acc.acceleration.orientation = ACC_ORIENTATION_CONSIGNE;
     acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
 

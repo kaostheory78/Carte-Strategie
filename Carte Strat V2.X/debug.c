@@ -28,7 +28,7 @@ void debug ()
     printf("\t%lf \t%lf ", ERREUR_VITESSE[ROUE_DROITE].actuelle, ERREUR_VITESSE[ROUE_DROITE].integralle);
     printf("\t%lf \t%lf ", COMMANDE.droit, COMMANDE.gauche);
     printf("\t%lf \t%lf ", ERREUR_ORIENTATION.actuelle, ERREUR_DISTANCE.actuelle);
-    printf("\t%lld \t%lf ", FLAG_ASSERV.immobilite, VITESSE_MAX_ORIENTATION);
+    printf("\t%lld \t%lf ", FLAG_ASSERV.immobilite, VITESSE_MAX.orientation);
     printf("\n\r");
 }
 

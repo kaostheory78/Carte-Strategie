@@ -173,6 +173,7 @@ typedef enum
 }_enum_on_off;
 
 /**
+ * man _enum_roue
  * Enum utilisée pour les tableaux contenant les valeurs de la roue droite / gauche
  * ou du robot en général
  */

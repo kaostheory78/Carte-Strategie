@@ -188,7 +188,7 @@ extern "C" {
      */
     
     //Codeurs
-    extern volatile __attribute__((near)) int OVERFLOW_CODEUR[3] ;
+    extern volatile __attribute__((near)) int8_t OVERFLOW_CODEUR[3] ;
     extern volatile __attribute__((near)) _position position[3];
 
     //Asserv
@@ -203,18 +203,15 @@ extern "C" {
     extern volatile __attribute__((near)) _systeme_asserv ORIENTATION;
     extern volatile __attribute__((near)) _systeme_asserv VITESSE_ORIENTATION[3];
     extern volatile __attribute__((near)) _systeme_asserv VITESSE[3];
-
-    extern volatile __attribute__((near)) double VITESSE_MAX_ORIENTATION;
-    extern volatile __attribute__((near)) double VITESSE_MAX_POSITION;
-
+    extern volatile __attribute__((near)) _vitesse VITESSE_MAX;
+    
+    
     extern volatile __attribute__((near)) _erreur ERREUR_DISTANCE;
     extern volatile __attribute__((near)) _erreur ERREUR_ORIENTATION;
     extern volatile __attribute__((near)) _erreur ERREUR_VITESSE[2];
 
     extern volatile __attribute__((near)) _commande_moteur COMMANDE;
-
-    extern volatile __attribute__((near)) uint8_t TYPE_CONSIGNE;
-
+    
     //Evitement adversaire
     extern volatile uint8_t DETECTION;
     extern volatile uint8_t EVITEMENT_ADV_AVANT;

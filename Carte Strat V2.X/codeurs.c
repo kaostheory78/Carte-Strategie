@@ -17,7 +17,7 @@
 #include "system.h"
 
 
-    volatile __attribute__((near)) int OVERFLOW_CODEUR[3] ;//= { PAS_D_OVERFLOW_CODEUR, PAS_D_OVERFLOW_CODEUR };
+    volatile __attribute__((near)) int8_t OVERFLOW_CODEUR[3] ;//= { PAS_D_OVERFLOW_CODEUR, PAS_D_OVERFLOW_CODEUR };
     volatile __attribute__((near)) _position position[3] ;// = {{0, 0}, {0, 0}};
 
 
@@ -36,7 +36,7 @@ void ConfigQEI (void)
 	// QEI1CON
 	QEI1CONbits.CNTERR	= 0;				// Reset flag erreur sur compteur
 	QEI1CONbits.QEISIDL	= 0;				// Mode continu en idle
-        QEI1CONbits.QEIM        = 0b111;                        // Mode QEI avec X4
+    QEI1CONbits.QEIM        = 0b111;                        // Mode QEI avec X4
 	QEI1CONbits.SWPAB	= 0;				// PA et PB non entrelacés
 	QEI1CONbits.PCDOUT	= 1;				// Position counter dir. status output active (IO controle par QEI)
 
@@ -59,7 +59,7 @@ void ConfigQEI (void)
 	// QEI2CON
 	QEI2CONbits.CNTERR	= 0;				// Reset flag erreur sur compteur
 	QEI2CONbits.QEISIDL	= 0;				// Mode continu en idle
-        QEI2CONbits.QEIM        = 0b111;                        // Mode QEI avec X4
+    QEI2CONbits.QEIM        = 0b111;                        // Mode QEI avec X4
 	QEI2CONbits.SWPAB	= 0;				// PA et PB non intervertis
 	QEI2CONbits.PCDOUT	= 1;				// Position counter dir. status output active (IO controle par QEI)
 
