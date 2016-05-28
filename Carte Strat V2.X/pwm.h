@@ -27,10 +27,12 @@ extern "C" {
 /***************************** Defines ****************************************/
 /******************************************************************************/
 
-
-#define MOTEUR_DROIT            0
-#define MOTEUR_GAUCHE           1
-#define MOTEUR_X                2
+    typedef enum 
+    {
+        MOTEUR_DROIT,
+        MOTEUR_GAUCHE,
+        MOTEUR_X
+    }_enum_moteur;  
 
 #define PWM_MAX_VALUE           2046
 

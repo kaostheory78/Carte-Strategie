@@ -27,6 +27,11 @@
 /*** -> decalage[0].angle = 0;                                              ***/
 /*** -> decalage[0].position = 512;                                         ***/
 /***                                                                        ***/
+/*** /!\ REMARQUE IMPORTANTE :  /!\                                         ***/
+/***  Si l'ax12  dépend d'un autre AX12 il faudra mettre dans angle l'ID    ***/
+/***  de cet ax12                                                           ***/
+/***  -> decalage[0].angle = AX12_QUI_EST_AVANT                             ***/
+/***                                                                        ***/
 /***  Etat : DEPENDANT ou INDEPANDANT (un autre AX12 le fait bouger ou non) ***/
 /***  Suivant : AUCUN_AX ou l'ID d'un AX -> si l'AX12 entraine un autre AX12***/
 /***  Sens_rotation : SENS_DIRECT / SENS_INDIRECT                           ***/
@@ -152,8 +157,9 @@ int calcul_position (uint8_t ID, float angle)
 
     if (decalage[ID].etat == DEPENDANT) //Si l'angle de l'AX12 dans le plan fictif dépend d'un autre AX12
     {
-        //decal_angle = convertion_position( decalage[ID].sens_rotation * position_AX12[decalage[ID].angle]);
-        decal_angle = position_AX12[decalage[ID].angle].angle; //On récupère l'angle dans lequel est l'AX12 dont il dépend
+        // On récupère l'angle dans lequel est l'AX12 dont il dépend
+        // Car quand un AX12 dépend d'un autre, on stocke l'ID de celui-ci à la place de l'angle
+        decal_angle = position_AX12[decalage[ID].angle].angle; 
     }
     else
         decal_angle = ( decalage[ID].angle);

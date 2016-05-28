@@ -37,27 +37,15 @@ extern "C" {
 
 
 #define START_BYTE              0xFF
+    
+// /!\ VARIABLE CODEE SUR 16 BIT !!! /!\ //
+// /!\      VALEUR MAX : 65535       /!\ //
 #define TIME_LIMIT              1350
-
-#define PAS_D_ERREUR            0
-#define TIME_OUT                1
-#define REPONSE_OK              2
-#define PAS_DE_REPONSE          3
-#define ERREUR_CS               4
-
-
-#define EMISSION                1
-#define RECEPTION               0
-
+    
+// /!\ VARIABLE CODEE SUR 4 BIT !!! /!\ //
+// /!\      VALEUR MAX : 15         /!\ //
 #define MAX_TENTATIVES          10
-
-#define ETEINT                  0
-#define ALLUME                  1
-
-#define EN_COURS_ENVOIT         0
-#define ENVOIT_FINI             1
-
-
+    
 #define _ID                     2
 #define LONGUEUR                3
 #define INSTRUCTION             4
@@ -67,7 +55,6 @@ extern "C" {
 #define PARAM4                  8
 #define PARAM5                  9
 #define CHSUM                   10
-
 
         //instructions à envoyer
 #define NC                  0x00
@@ -118,17 +105,28 @@ extern "C" {
     /********************* Reglage synchro AX - 12 ****************************/
     /**************************************************************************/
 
-    //paramètres réglage décalage AX12
-#define DEPENDANT               1
-#define INDEPENDANT             0
-
+    //paramètres réglage décalage
 #define PAS_DE_SYMETRIQUE       0
+    
+    typedef enum 
+    {
+        // /!\ ENUM CODEE SUR 2 BIT !!! /!\ //
+        // /!\      VALEUR MIN : -2     /!\ //
+        // /!\      VALEUR MAX :  1     /!\ //
+        SENS_INDIRECT   = -1,
+        ROT_EN_BAS      = -1,
+        SENS_DIRECT     =  1,
+        ROT_EN_HAUT     =  1
+    }_enum_sens_rotation;
+    
+    typedef enum
+    {
+        // /!\ ENUM CODEE SUR 1 BIT !!! /!\ //
+        // /!\      VALEUR MAX : 1      /!\ //
+        DEPENDANT,      // 0
+        INDEPENDANT     // 1
+    }_enum_dependance;
 
-#define SENS_INDIRECT           -1
-#define ROT_EN_BAS              -1
-#define SENS_DIRECT             1
-#define ROT_EN_HAUT             1
-#define AUCUN_AX                -30
 
 
     /**************************************************************************/
@@ -139,9 +137,12 @@ extern "C" {
 #define POINT_MINI_DEFAUT       0
 #define POINT_MAXI_DEFAUT       1023
 
-    //ID AX12
+    //ID AX12 
+    // /!\ SI ID_MAX_AX12  > 31 => IL FAUT ADAPTER LE CHAMP DE BIT 
+    // /!\ DANS LA STRUCTURE decal !!!!!! /!\ //
 #define TOUS_LES_AX12           0xFE
 #define ID_MAX_AX12             26
+#define AUCUN_AX                (-ID_MAX_AX12 - 1)
 
     //Paramètres spéciaux
 #define POSITION_MAX_AX         1024.
@@ -161,18 +162,55 @@ extern "C" {
 
 
 /******************************************************************************/
+/************************ Declaration des enums *******************************/
+/******************************************************************************/
+    
+    typedef enum 
+    {
+        // /!\ ENUM CODEE SUR 3 BIT !!! /!\ //
+        // /!\      VALEUR MAX : 7      /!\ //
+        PAS_D_ERREUR,       // 0
+        TIME_OUT,           // 1
+        REPONSE_OK,         // 2
+        PAS_DE_REPONSE,     // 3
+        ERREUR_CS           // 4
+    }_enum_erreur_ax12;
+    
+    typedef enum
+    {
+        RECEPTION   = 0,
+        EMISSION    = 1
+    }_enum_rx_tx;
+
+    typedef enum
+    {
+        ETEINT      = 0,
+        ALLUME      = 1
+    }_enum_alim_ax12;
+
+    
+    typedef enum
+    {
+        // /!\ ENUM CODEE SUR 1 BIT !!! /!\ //
+        // /!\      VALEUR MAX : 1      /!\ //
+        EN_COURS_ENVOIT,    // 0
+        ENVOIT_FINI         // 1    
+    }_enum_etat_envoit_uart;
+
+/******************************************************************************/
 /*********************** Declaration de structures ****************************/
 /******************************************************************************/
 
 
     typedef struct decal
     {
-        int16_t angle;
-        uint16_t position;
-        int8_t etat;
-        int8_t suivant;
-        int8_t sens_rotation;
-        int8_t symetrique;
+        // /!\ suivant et symétrique limité de -32 à + 31 /!\ //
+        int16_t angle                       : 16;   // 16 : add 1
+        uint16_t position                   : 16;   // 16 : add 2 
+        _enum_dependance etat               : 1;    //  1 : add 3
+        int8_t suivant                      : 6;    //  7 : add 3
+        _enum_sens_rotation sens_rotation   : 2;    //  9 : add 3
+        int8_t symetrique                   : 6;    // 15 : add 3
     }decal;
 
     typedef struct pos
@@ -186,14 +224,18 @@ extern "C" {
 
     typedef struct
     {
-        uint8_t offset;
+        // Valeur max offset : 10    ->  4 bit
+        // Erreur max        : 4     ->  3 bit
+        // Max tentatives    : 10    ->  4 bit
+        // timer max         : 1350  -> 16 bit
+        uint8_t offset                      : 4;    // 4
+        uint8_t nb_octet_attente            : 4;    // 8
+        uint8_t tentatives                  : 4;    // 12        
+        _enum_erreur_ax12 erreur            : 3;    // 15
+        _enum_etat_envoit_uart etat_uart    : 1;    // 16
+        
         uint8_t buffer[CHSUM];
-        uint8_t nb_octet_attente;
-        uint32_t timer;
-        uint8_t erreur;
-        uint8_t tentatives;
-        uint8_t etat_uart;
-
+        uint16_t timer;
     }_ax12;
 
 
