@@ -89,6 +89,8 @@
     int point_obstacle[nb_point_max][3];
     int x_actuel;
     int y_actuel;
+    int x_souhaite;
+    int y_souhaite;
     int x_obj;
     int y_obj;
     int id_evitement = 0;

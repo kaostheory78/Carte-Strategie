@@ -692,78 +692,74 @@ void deplacement(int8_t sens_marche,double pourcentage_deplacement,char last) //
     int evit_avant=EVITEMENT_ADV_AVANT;
     int evit_arriere=EVITEMENT_ADV_ARRIERE;
 
-#ifdef ORDI
-    if(itineraire_court[i][0] != -1);
-    cout << "cibler("<<(double)(itineraire_court[i][0]*100)+50<<","<<(double)((itineraire_court[i][1])*100)+50<<","<<pourcentage_deplacement<<")"<<endl;
+    #ifdef ORDI
+        if(itineraire_court[i][0] != -1);
+        cout << "cibler("<<(double)(itineraire_court[i][0]*100)+50<<","<<(double)((itineraire_court[i][1])*100)+50<<","<<pourcentage_deplacement<<")"<<endl;
 
-    while(i<curseur && id == id_evitement && itineraire_court[i][0] != -1 )//affiche l'itineraire
-    {
-        if(last == rej)
+        while(i<curseur && id == id_evitement && itineraire_court[i][0] != -1 )//affiche l'itineraire
         {
-            cout << "rejoindre("<<(double)(itineraire_court[i][0]*100)+50<<","<<(double)((itineraire_court[i][1])*100)+50<<","<<sens_marche<<","<<pourcentage_deplacement<<")"<<endl;
-        }
-        else
-        {
-            if(i == 0)
+            if(last == rej)
             {
-                last = DEBUT_TRAJECTOIRE;
+                cout << "rejoindre("<<(double)(itineraire_court[i][0]*100)+50<<","<<(double)((itineraire_court[i][1])*100)+50<<","<<sens_marche<<","<<pourcentage_deplacement<<")"<<endl;
             }
             else
             {
-                last = MILIEU_TRAJECTOIRE;
+                if(i == 0)
+                {
+                    last = DEBUT_TRAJECTOIRE;
+                }
+                else
+                {
+                    last = MILIEU_TRAJECTOIRE;
+                }
+                cout << "passe_part("<<(double)(itineraire_court[i+1][0]*100)+50<<","<<(double)((itineraire_court[i+1][1])*100)+50<<","<<sens_marche<<","<<pourcentage_deplacement<<","<<last<<")"<<endl;
             }
-            cout << "passe_part("<<(double)(itineraire_court[i+1][0]*100)+50<<","<<(double)((itineraire_court[i+1][1])*100)+50<<","<<sens_marche<<","<<pourcentage_deplacement<<","<<last<<")"<<endl;
+            i++;
         }
-        i++;
-    }
-#else
-    //permet le cibler sans probleme
-    EVITEMENT_ADV_ARRIERE = OFF;
-    EVITEMENT_ADV_AVANT = OFF;
-    DETECTION = OFF;
+        #else
+        //permet le cibler sans probleme
+        EVITEMENT_ADV_ARRIERE = OFF;
+        EVITEMENT_ADV_AVANT = OFF;
+        DETECTION = OFF;
 
-     //printf"\n\ron va cibler\n\r");
+        if(itineraire_court[i][0] != -1);
+        cibler((double)(itineraire_court[i][0]*100)+50,(double)((itineraire_court[i][1])*100)+50,pourcentage_deplacement);
+        
 
+        //on remet l'evitement
 
-    if(itineraire_court[i][0] != -1);
-    cibler((double)(itineraire_court[i][0]*100)+50,(double)((itineraire_court[i][1])*100)+50,pourcentage_deplacement);
+        DETECTION = OFF;
+        EVITEMENT_ADV_ARRIERE = evit_arriere;
+        EVITEMENT_ADV_AVANT = evit_avant;
 
-    //on remet l'evitement
-    EVITEMENT_ADV_ARRIERE = evit_arriere;
-    EVITEMENT_ADV_AVANT = evit_avant;
-    DETECTION = OFF;
-
-    while(i<curseur && id == id_evitement && itineraire_court[i][0] != -1 )//affiche l'itineraire
-    {
-        //printf("COUCOU ON BOUGE LA");
-        if(last == rej && id == id_evitement)
+        while(i<curseur && id == id_evitement && itineraire_court[i][0] != -1 )//affiche l'itineraire
         {
-            rejoindre((double)(itineraire_court[i][0]*100)+50,(double)((itineraire_court[i][1])*100)+50,sens_marche,pourcentage_deplacement);
-        }
-        else
-        {
-            if(i == 1)
+            if(last == rej && id == id_evitement)
             {
-                last = DEBUT_TRAJECTOIRE;
+
+                rejoindre((double)(itineraire_court[i][0]*100)+50,(double)((itineraire_court[i][1])*100)+50,MARCHE_AVANT,pourcentage_deplacement);
             }
             else
             {
-                last = MILIEU_TRAJECTOIRE;
-            }
-            if(id == id_evitement)
-            {
-                passe_part((double)(itineraire_court[i+1][0]*100)+50,(double)((itineraire_court[i+1][1])*100)+50,sens_marche,pourcentage_deplacement,last);
+                if(i == 1)
+                {
+                    last = DEBUT_TRAJECTOIRE;
+                }
+                else
+                {
+                    last = MILIEU_TRAJECTOIRE;
+                }
+                if(id == id_evitement)
+                {
+                    passe_part((double)(itineraire_court[i+1][0]*100)+50,(double)((itineraire_court[i+1][1])*100)+50,MARCHE_AVANT,pourcentage_deplacement,last);
 
+                }
             }
+            i++;
         }
-        i++;
-    }
 
-    //if(i == curseur || i== curseur -1 || i == curseur +1){
-         //printf("\n\ron a fait tout le chemin\n\r");
-    //}
 
-#endif
+    #endif
 }
 
 int distance()
@@ -775,11 +771,11 @@ int distance()
     {
         addition = itineraire[i][0] - itineraire[i+1][0];
         if(addition < 0)
-            addition = addition * -1;
+        addition = addition * -1;
         dist = dist + addition;
         addition = itineraire[i][1] - itineraire[i+1][1];
         if(addition < 0)
-            addition = addition * -1;
+        addition = addition * -1;
         dist = dist + addition;
         i++;
     }
@@ -804,17 +800,17 @@ void init_evitement()
     {
         for(i=0; i<x_max; i++)
         {
-#ifdef PETIT_ROBOT
-            if(i<1 || i > x_max-2 || j<1 || j>y_max-2)
+            #ifdef PETIT_ROBOT
+                if(i<1 || i > x_max-2 || j<1 || j>y_max-2)
                 obstacle[i][j]=1;
-#endif
+            #endif
 
-#ifdef GROS_ROBOT
-            if(i<2 || i > x_max-3 || j<2 || j>y_max-3)
+            #ifdef GROS_ROBOT
+                if(i<2 || i > x_max-3 || j<2 || j>y_max-3)
                 obstacle[i][j]=1;
-#endif
+            #endif
             else
-                obstacle[i][j]=0;
+            obstacle[i][j]=0;
         }
     }
 
@@ -835,102 +831,102 @@ void init_evitement()
     obstacle[23][18]=1;
 
 
-#ifdef PETIT_ROBOT
-    for(i=9; i<=20; i++) //escalier
-    {
-        for(j=12; j<=19; j++)
+    #ifdef PETIT_ROBOT
+        for(i=9; i<=20; i++) //escalier
         {
-            obstacle[i][j]=1;
+            for(j=12; j<=19; j++)
+            {
+                obstacle[i][j]=1;
+            }
         }
-    }
-#endif
+    #endif
 
-#ifdef GROS_ROBOT
+    #ifdef GROS_ROBOT
 
-    for(i=9; i<=20; i++) //escalier
-    {
-        for(j=11; j<=19; j++)
+        for(i=9; i<=20; i++) //escalier
         {
-            obstacle[i][j]=1;
+            for(j=11; j<=19; j++)
+            {
+                obstacle[i][j]=1;
+            }
         }
-    }
-#endif
+    #endif
 
     for(i=10; i<=19; i++) // marche rose
     {
-#ifdef PETIT_ROBOT
-        for(j=0; j<=1; j++)
-        {
-            obstacle[i][j] =1;
-        }
-#endif
-#ifdef GROS_ROBOT
-        for(j=0; j<=2; j++)
-        {
-            obstacle[i][j] =1;
-        }
-#endif
+        #ifdef PETIT_ROBOT
+            for(j=0; j<=1; j++)
+            {
+                obstacle[i][j] =1;
+            }
+        #endif
+        #ifdef GROS_ROBOT
+            for(j=0; j<=2; j++)
+            {
+                obstacle[i][j] =1;
+            }
+        #endif
     }
 
 
-#ifdef PETIT_ROBOT
-    for(i=0; i<=4; i++) //carre gauche haut
-    {
-        for(j=4; j<=7; j++)
+    #ifdef PETIT_ROBOT
+        for(i=0; i<=4; i++) //carre gauche haut
         {
-            obstacle[i][j]=1;
+            for(j=4; j<=7; j++)
+            {
+                obstacle[i][j]=1;
+            }
         }
-    }
-#endif
-#ifdef GROS_ROBOT
-    for(i=0; i<=5; i++) //carre gauche haut
-    {
-        for(j=4; j<=8; j++)
+    #endif
+    #ifdef GROS_ROBOT
+        for(i=0; i<=5; i++) //carre gauche haut
         {
-            obstacle[i][j]=1;
+            for(j=4; j<=8; j++)
+            {
+                obstacle[i][j]=1;
+            }
         }
-    }
-#endif
+    #endif
 
-#ifdef PETIT_ROBOT
-    for(i=0; i<=4; i++) //carre gauche bas
-    {
-        for(j=12; j<=15; j++)
+    #ifdef PETIT_ROBOT
+        for(i=0; i<=4; i++) //carre gauche bas
         {
-            obstacle[i][j]=1;
+            for(j=12; j<=15; j++)
+            {
+                obstacle[i][j]=1;
+            }
         }
-    }
-#endif
+    #endif
 
-#ifdef GROS_ROBOT
+    #ifdef GROS_ROBOT
 
-    for(i=0; i<=5; i++) //carre gauche bas
-    {
-        for(j=11; j<=15; j++)
+        for(i=0; i<=5; i++) //carre gauche bas
         {
-            obstacle[i][j]=1;
+            for(j=11; j<=15; j++)
+            {
+                obstacle[i][j]=1;
+            }
         }
-    }
-#endif
+    #endif
 
-#ifdef PETIT_ROBOT
-    for(i=23; i<=x_max; i++) //zone depart adverse
-    {
-        for(j=6; j<=13; j++)
+    #ifdef PETIT_ROBOT
+        for(i=23; i<=x_max; i++) //zone depart adverse
         {
-            obstacle[i][j]=1;
+            for(j=6; j<=13; j++)
+            {
+                obstacle[i][j]=1;
+            }
         }
-    }
-#endif
-#ifdef GROS_ROBOT
-    for(i=22; i<=x_max; i++) //zone depart adverse
-    {
-        for(j=5; j<=14; j++)
+    #endif
+    #ifdef GROS_ROBOT
+        for(i=22; i<=x_max; i++) //zone depart adverse
         {
-            obstacle[i][j]=1;
+            for(j=5; j<=14; j++)
+            {
+                obstacle[i][j]=1;
+            }
         }
-    }
-#endif
+    #endif
 
 
 }
@@ -939,16 +935,16 @@ int conversion_direction(int direction)//transforme la direction du blocage en u
 {
     switch (direction)
     {
-    case 1://5 ou 7
+        case 1://5 ou 7
         return 5;
         break;
-    case 3://2 ou 4
+        case 3://2 ou 4
         return 2;
         break;
-    case 5://6 ou 8
+        case 5://6 ou 8
         return 6;
         break;
-    case 7://1 ou 3
+        case 7://1 ou 3
         return 1;
         break;
     }
@@ -961,19 +957,19 @@ int longement ( int x_objectif,int y_objectif,int direction_longement) //longe u
 
     switch (direction_longement)
     {
-    case 1 :
+        case 1 :
         while (y_actuel+1 <= y_max-1 //tant que l'on est toujours dans la matrice, que l'on est pas en dehors
-                && obstacle [x_actuel][y_actuel+1] == 0 //tant que l'on peut descendre
-                && obstacle [x_actuel-1][y_actuel] != 0 //et que la gauche de notre emplacement est condamnee
-                && !(x_actuel == x_objectif && y_actuel == y_objectif)
-                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
+        && obstacle [x_actuel][y_actuel+1] == 0 //tant que l'on peut descendre
+        && obstacle [x_actuel-1][y_actuel] != 0 //et que la gauche de notre emplacement est condamnee
+        && !(x_actuel == x_objectif && y_actuel == y_objectif)
+        && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
         {
             y_actuel = y_actuel+1; // on descend d'une case
             nombre_point_parcouru=nombre_point_parcouru+1;
         }
 
         if (obstacle [x_actuel-1][y_actuel] == 0 //si on peut aller a gauche, si on a trouve un passage
-                || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
+        || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
         {
             if(nombre_point_parcouru!=0)
             {
@@ -1021,12 +1017,12 @@ int longement ( int x_objectif,int y_objectif,int direction_longement) //longe u
         break;
 
 
-    case 2 :
+        case 2 :
         while (y_actuel+1 <= y_max-1 //tant que l'on est toujours dans la matrice, que l'on est pas en dehors
-                && obstacle [x_actuel][y_actuel+1] == 0 //tant que l'on peut descendre
-                && obstacle [x_actuel+1][y_actuel] != 0 //et que la droite de notre emplacement est condamnee
-                && !(x_actuel == x_objectif && y_actuel == y_objectif)
-                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
+        && obstacle [x_actuel][y_actuel+1] == 0 //tant que l'on peut descendre
+        && obstacle [x_actuel+1][y_actuel] != 0 //et que la droite de notre emplacement est condamnee
+        && !(x_actuel == x_objectif && y_actuel == y_objectif)
+        && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
         {
             y_actuel = y_actuel+1; // on descend d'une case
             nombre_point_parcouru=nombre_point_parcouru+1;
@@ -1034,7 +1030,7 @@ int longement ( int x_objectif,int y_objectif,int direction_longement) //longe u
 
 
         if (obstacle [x_actuel+1][y_actuel] == 0 //si on peut aller a droite, si on a trouve un passage
-                || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
+        || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
         {
             if(nombre_point_parcouru!=0)
             {
@@ -1079,12 +1075,12 @@ int longement ( int x_objectif,int y_objectif,int direction_longement) //longe u
         break;
 
 
-    case 3 :
+        case 3 :
         while (y_actuel -1 >=0 //tant que l'on est toujours dans la matrice, que l'on est pas en dehors
-                && obstacle [x_actuel][y_actuel-1] == 0 //tant que l'on peut monter
-                && obstacle [x_actuel-1][y_actuel] != 0 //et que la gauche de notre emplacement est condamnee
-                && !(x_actuel == x_objectif && y_actuel == y_objectif)
-                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
+        && obstacle [x_actuel][y_actuel-1] == 0 //tant que l'on peut monter
+        && obstacle [x_actuel-1][y_actuel] != 0 //et que la gauche de notre emplacement est condamnee
+        && !(x_actuel == x_objectif && y_actuel == y_objectif)
+        && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
         {
             y_actuel = y_actuel-1; // on monte d'une case
             nombre_point_parcouru=nombre_point_parcouru+1;
@@ -1092,7 +1088,7 @@ int longement ( int x_objectif,int y_objectif,int direction_longement) //longe u
 
 
         if (obstacle [x_actuel-1][y_actuel] == 0 //si on peut aller a gauche, si on a trouve un passage
-                || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
+        || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
         {
             if(nombre_point_parcouru!=0)
             {
@@ -1137,19 +1133,19 @@ int longement ( int x_objectif,int y_objectif,int direction_longement) //longe u
         break;
 
 
-    case 4 :
+        case 4 :
         while (y_actuel -1 >=0 //tant que l'on est toujours dans la matrice, que l'on est pas en dehors
-                && obstacle [x_actuel][y_actuel-1] == 0 //tant que l'on peut monter
-                && obstacle [x_actuel+1][y_actuel] != 0 //et que la droite de notre emplacement est condamnee
-                && !(x_actuel == x_objectif && y_actuel == y_objectif)
-                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
+        && obstacle [x_actuel][y_actuel-1] == 0 //tant que l'on peut monter
+        && obstacle [x_actuel+1][y_actuel] != 0 //et que la droite de notre emplacement est condamnee
+        && !(x_actuel == x_objectif && y_actuel == y_objectif)
+        && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
         {
             y_actuel = y_actuel-1; // on monte d'une case
             nombre_point_parcouru=nombre_point_parcouru+1;
         }
 
         if (obstacle [x_actuel+1][y_actuel] == 0 //si on peut aller a droite, si on a trouve un passage
-                || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
+        || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
         {
             if(nombre_point_parcouru!=0)
             {
@@ -1194,12 +1190,12 @@ int longement ( int x_objectif,int y_objectif,int direction_longement) //longe u
         break;
 
 
-    case 5 :
+        case 5 :
         while (x_actuel +1 <=x_max-1 //tant que l'on est toujours dans la matrice, que l'on est pas en dehors
-                && obstacle [x_actuel+1][y_actuel] == 0 //tant que l'on peut aller sur la droite
-                && obstacle [x_actuel][y_actuel+1] != 0 //et que le bas de notre emplacement est condamnee
-                && !(x_actuel == x_objectif && y_actuel == y_objectif)
-                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
+        && obstacle [x_actuel+1][y_actuel] == 0 //tant que l'on peut aller sur la droite
+        && obstacle [x_actuel][y_actuel+1] != 0 //et que le bas de notre emplacement est condamnee
+        && !(x_actuel == x_objectif && y_actuel == y_objectif)
+        && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
         {
             x_actuel = x_actuel+1; // on va sur la droite de une case
             nombre_point_parcouru=nombre_point_parcouru+1;
@@ -1214,7 +1210,7 @@ int longement ( int x_objectif,int y_objectif,int direction_longement) //longe u
         else
         {
             if (obstacle [x_actuel][y_actuel+1] == 0 //si on peut aller en bas, si on a trouve un passage
-                    || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
+            || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
             {
                 if(nombre_point_parcouru!=0)
                 {
@@ -1259,12 +1255,12 @@ int longement ( int x_objectif,int y_objectif,int direction_longement) //longe u
         break;
 
 
-    case 6 :
+        case 6 :
         while (x_actuel +1 <=x_max-1 //tant que l'on est toujours dans la matrice, que l'on est pas en dehors
-                && obstacle [x_actuel+1][y_actuel] == 0 //tant que l'on peut aller sur la droite
-                && obstacle [x_actuel][y_actuel-1] != 0 //et que en haut de notre emplacement est condamnee
-                && !(x_actuel == x_objectif && y_actuel == y_objectif)
-                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
+        && obstacle [x_actuel+1][y_actuel] == 0 //tant que l'on peut aller sur la droite
+        && obstacle [x_actuel][y_actuel-1] != 0 //et que en haut de notre emplacement est condamnee
+        && !(x_actuel == x_objectif && y_actuel == y_objectif)
+        && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
         {
             x_actuel = x_actuel+1; // on va sur la droite de une case
             nombre_point_parcouru=nombre_point_parcouru+1;
@@ -1272,7 +1268,7 @@ int longement ( int x_objectif,int y_objectif,int direction_longement) //longe u
 
 
         if (obstacle [x_actuel][y_actuel-1] == 0 //si on peut aller en haut, si on a trouve un passage
-                || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
+        || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
         {
             if(nombre_point_parcouru!=0)
             {
@@ -1317,12 +1313,12 @@ int longement ( int x_objectif,int y_objectif,int direction_longement) //longe u
         break;
 
 
-    case 7 :
+        case 7 :
         while (x_actuel -1 >=0 //tant que l'on est toujours dans la matrice, que l'on est pas en dehors
-                && obstacle [x_actuel-1][y_actuel] == 0 //tant que l'on peut aller sur la gauche
-                && obstacle [x_actuel][y_actuel+1] != 0 //et que en bas de notre emplacement est condamnee
-                && !(x_actuel == x_objectif && y_actuel == y_objectif)
-                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
+        && obstacle [x_actuel-1][y_actuel] == 0 //tant que l'on peut aller sur la gauche
+        && obstacle [x_actuel][y_actuel+1] != 0 //et que en bas de notre emplacement est condamnee
+        && !(x_actuel == x_objectif && y_actuel == y_objectif)
+        && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
         {
             x_actuel = x_actuel-1; // on va sur la gauche de une case
             nombre_point_parcouru=nombre_point_parcouru+1;
@@ -1330,7 +1326,7 @@ int longement ( int x_objectif,int y_objectif,int direction_longement) //longe u
 
 
         if (obstacle [x_actuel][y_actuel+1] == 0 //si on peut aller en bas, si on a trouve un passage
-                || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
+        || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
         {
             if(nombre_point_parcouru!=0)
             {
@@ -1375,12 +1371,12 @@ int longement ( int x_objectif,int y_objectif,int direction_longement) //longe u
         break;
 
 
-    case 8 :
+        case 8 :
         while (x_actuel -1 >=0 //tant que l'on est toujours dans la matrice, que l'on est pas en dehors
-                && obstacle [x_actuel-1][y_actuel] == 0 //tant que l'on peut aller sur la gauche
-                && obstacle [x_actuel][y_actuel-1] != 0 //et que en haut de notre emplacement est condamnee
-                && !(x_actuel == x_objectif && y_actuel == y_objectif)
-                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
+        && obstacle [x_actuel-1][y_actuel] == 0 //tant que l'on peut aller sur la gauche
+        && obstacle [x_actuel][y_actuel-1] != 0 //et que en haut de notre emplacement est condamnee
+        && !(x_actuel == x_objectif && y_actuel == y_objectif)
+        && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive (pas sur de l'utilite)
         {
             x_actuel = x_actuel-1; // on va sur la gauche de une case
             nombre_point_parcouru=nombre_point_parcouru+1;
@@ -1388,7 +1384,7 @@ int longement ( int x_objectif,int y_objectif,int direction_longement) //longe u
 
 
         if (obstacle [x_actuel][y_actuel-1] == 0 //si on peut aller en haut, si on a trouve un passage
-                || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
+        || (x_actuel == x_objectif && y_actuel == y_objectif) )  // ou que l'on est arrive(pas sur de l'utilite)
         {
             if(nombre_point_parcouru!=0)
             {
@@ -1442,9 +1438,9 @@ int tracer_ligne_x(int x_objectif) //cree une ligne droite suivant l'axe des x. 
     if(x_objectif>x_actuel)
     {
         while(x_actuel+1 <= x_max-1 //tant que l'on est dans la matrice
-                && obstacle[x_actuel+1][y_actuel]==0 //tant que l'on peut aller a droite
-                && x_objectif!=x_actuel
-                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive au niveau des x
+        && obstacle[x_actuel+1][y_actuel]==0 //tant que l'on peut aller a droite
+        && x_objectif!=x_actuel
+        && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive au niveau des x
         {
             x_actuel = x_actuel+1; // on va de 1 vers la droite
             nombre_point_parcouru=nombre_point_parcouru+1;
@@ -1469,9 +1465,9 @@ int tracer_ligne_x(int x_objectif) //cree une ligne droite suivant l'axe des x. 
     else if (x_objectif<x_actuel)
     {
         while(x_actuel-1 >= 0 //tant que l'on est dans la matrice
-                && obstacle[x_actuel-1][y_actuel]==0 //tant que l'on peut aller a gauche
-                && x_objectif!=x_actuel
-                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive au niveau des x
+        && obstacle[x_actuel-1][y_actuel]==0 //tant que l'on peut aller a gauche
+        && x_objectif!=x_actuel
+        && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive au niveau des x
         {
             x_actuel = x_actuel-1; // on va de 1 vers la gauche
             nombre_point_parcouru=nombre_point_parcouru+1;
@@ -1504,9 +1500,9 @@ int tracer_ligne_y(int y_objectif) //cree une ligne droite suivant l'axe des y. 
     if(y_objectif>y_actuel)
     {
         while(y_actuel+1 <=y_max-1 //tant que l'on est dans la matrice
-                && obstacle[x_actuel][y_actuel+1]==0 //tant que l'on peut aller en haut
-                && y_objectif!=y_actuel
-                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive au niveau des y
+        && obstacle[x_actuel][y_actuel+1]==0 //tant que l'on peut aller en haut
+        && y_objectif!=y_actuel
+        && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive au niveau des y
         {
             y_actuel = y_actuel+1; // on va de 1 vers le haut
             nombre_point_parcouru=nombre_point_parcouru+1;
@@ -1532,9 +1528,9 @@ int tracer_ligne_y(int y_objectif) //cree une ligne droite suivant l'axe des y. 
     else if(y_objectif<y_actuel)
     {
         while(y_actuel-1 >= 0 //tant que l'on est dans la matrice
-                && obstacle[x_actuel][y_actuel-1]==0 //tant que l'on peut aller en bas
-                && y_objectif!=y_actuel
-                && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive au niveau des y
+        && obstacle[x_actuel][y_actuel-1]==0 //tant que l'on peut aller en bas
+        && y_objectif!=y_actuel
+        && compteur_evitement < ATTENTE_EVITEMENT)  // et que l'on est pas arrive au niveau des y
         {
             y_actuel = y_actuel-1; // on va de 1 vers le bas
             nombre_point_parcouru=nombre_point_parcouru+1;
@@ -1644,7 +1640,7 @@ void traitement_escalier()
             // on sauvegarde les deux directions empruntées
             direction_1 = itineraire[i][2];
             if(i+1 <= curseur)
-                direction_2 = itineraire[i+1][2];
+            direction_2 = itineraire[i+1][2];
 
             //si on a encore des points, que nous sommes dans les mêmes directions que précédemment et que le déplacement est de 1 case verticale ou horizontale
             while (j+1<curseur && (itineraire[j][2] == direction_1 || itineraire [j][2] == direction_2)  && (((itineraire[j][0]-itineraire[j+1][0] == 1 || itineraire[j][0]-itineraire[j+1][0] == -1) && itineraire[j][1]-itineraire[j+1][1] == 0) || ((itineraire[j][1]-itineraire[j+1][1] == 1 || itineraire[j][1]-itineraire[j+1][1] == -1) && itineraire[j][0]-itineraire[j+1][0] == 0)))
@@ -1654,9 +1650,9 @@ void traitement_escalier()
 
             //cas spécifique pour les directions 1 et 7
             if((itineraire[i][2] == 1 && itineraire[i+1][2] == 7) || (itineraire[i][2] == 7 && itineraire[i+1][2] == 1))
-                itineraire[i][2]=8;
+            itineraire[i][2]=8;
             else
-                itineraire[i][2] = direction_1 > direction_2 ? direction_1+1 : direction_2 +1; //en rajoutant 1 à la plus petite direction, on obtient la diagonale qui nous intéresse
+            itineraire[i][2] = direction_1 > direction_2 ? direction_1+1 : direction_2 +1; //en rajoutant 1 à la plus petite direction, on obtient la diagonale qui nous intéresse
 
             // on déplace les points qui n'ont pas été touchés
             for(k=0; j+k<=curseur; k++)
@@ -1745,7 +1741,7 @@ int aiguillage_evitement(int x_objectif, int y_objectif, int direction,int haut)
 
             direction_longement = conversion_direction(direction);//on reprend la valeur de longement de depart
             if(direction_longement != -1)
-                direction_longement=direction_longement+2; //on lui rajoute 1. Lors d'un blocage, on peut aller dans 2 directions. On tente ici la seconde direction
+            direction_longement=direction_longement+2; //on lui rajoute 1. Lors d'un blocage, on peut aller dans 2 directions. On tente ici la seconde direction
             cul_de_sac=0;
             while(direction_longement >0 && cul_de_sac == 0 && curseur < nb_point_max-1 && compteur_evitement < ATTENTE_EVITEMENT) //tant que l'on est bloque
             {
@@ -1769,7 +1765,7 @@ int aiguillage_evitement(int x_objectif, int y_objectif, int direction,int haut)
             }
         }
         if (direction_longement <=0)
-            break;
+        break;
 
     }
     if(test >=2 || direction_longement ==-1)
@@ -1798,7 +1794,7 @@ int evitement(int x_objectif,int y_objectif,int haut) //determine l'itineraire p
         for(i=0; i<curseur-1; i++)
         {
             if(itineraire[i][0] == itineraire[curseur-1][0] && itineraire[i][1] == itineraire[curseur-1][1] && itineraire[i][2] == itineraire[curseur-1][2]) // si on tourne en rond
-                return -1; // on arrête
+            return -1; // on arrête
         }
 
         if(flag == 2 && y_actuel==y_objectif) // si on doit bouger sur les y et que notre coordonnée en y correspond à celle de l'objectif
@@ -1818,7 +1814,7 @@ int evitement(int x_objectif,int y_objectif,int haut) //determine l'itineraire p
 
         switch (flag)
         {
-        case 1 :
+            case 1 :
             direction = tracer_ligne_x(x_objectif);//on trace une ligne droite et on voit si il y a bloquage
             if(direction != 0) //si l'on est bloque
             {
@@ -1836,14 +1832,14 @@ int evitement(int x_objectif,int y_objectif,int haut) //determine l'itineraire p
                 //on ira ensuite repasser un nouveau tour du while(flag!=-1) pour continuer d'avancer sur les x
             }
             else if(x_actuel == x_objectif && y_actuel==y_objectif)//si on est arrive
-                flag =0; // on a trouve un chemin et on sort
+            flag =0; // on a trouve un chemin et on sort
             else
             {
                 flag = 2; // on essaye de bouger sur les y
             }
             break;
 
-        case 2 :
+            case 2 :
             direction = tracer_ligne_y(y_objectif);//on trace une ligne droite et on voit si il y a bloquage
             if (direction != 0) //si blocage
             {
@@ -1865,7 +1861,7 @@ int evitement(int x_objectif,int y_objectif,int haut) //determine l'itineraire p
             //on ira ensuite repasser un nouveau tour du while(flag!=-1) pour continuer d'avancer sur les y
 
             else if(x_actuel == x_objectif && y_actuel==y_objectif)//si on est arrive
-                flag =0; // on a trouve un chemin et on sort
+            flag =0; // on a trouve un chemin et on sort
             else
             {
                 flag = 1; // on essaye de bouger sur les x
@@ -1874,7 +1870,7 @@ int evitement(int x_objectif,int y_objectif,int haut) //determine l'itineraire p
         }
 
         if(x_actuel == x_objectif && y_actuel==y_objectif)//si on est arrive
-            flag =0; // on a trouve un chemin et on sort
+        flag =0; // on a trouve un chemin et on sort
 
         else if (direction_longement == -1) //si on est a un cul de sac
         {
@@ -1904,18 +1900,18 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
     int i,j;
     int ajout=1;
     int ajout_diago = 2;
-#ifdef PETIT_ROBOT
-    int taille = 1;// il y a deja 3 de largeur (devant nous, a cette gauche et a cette droite) la taille est ce qu'on met en plus de ces 3 la
-    int taille_diago = 1;
-    int vision = 2;
-    int vision_diago = 1;
-#endif
-#ifdef GROS_ROBOT
-    int taille = 1;// il y a deja 3 de largeur, devant nous, a cette gauche et a cette droite, la taille est ce qu'on met en plus de ces 3 la
-    int taille_diago = 1;
-    int vision = 2;
-    int vision_diago = 1;
-#endif
+    #ifdef PETIT_ROBOT
+        int taille = 1;// il y a deja 3 de largeur (devant nous, a cette gauche et a cette droite) la taille est ce qu'on met en plus de ces 3 la
+        int taille_diago = 1;
+        int vision = 2;
+        int vision_diago = 1;
+    #endif
+    #ifdef GROS_ROBOT
+        int taille = 1;// il y a deja 3 de largeur, devant nous, a cette gauche et a cette droite, la taille est ce qu'on met en plus de ces 3 la
+        int taille_diago = 1;
+        int vision = 2;
+        int vision_diago = 1;
+    #endif
 
     int offset=0; // en fonction de si c'est le capteur gauche ou le droit ou la balise
     int largeur=0; // nombre de case recouverte PAR US (balise = 2us, le gauche et le droit) en plus des 3 cases en face de nous
@@ -1927,8 +1923,8 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
     int centre = 0;
 
     #ifdef GROS_ROBOT
-    ajout = 2;
-    ajout_diago = 2;
+        ajout = 2;
+        ajout_diago = 2;
     #endif // GROS_ROBOT
 
     precedent_obstacle[0] = x_present;
@@ -1941,39 +1937,39 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
         angle += 180;
     }
     if(angle < 0)
-        angle = (int)(angle + 360) % 360;
+    angle = (int)(angle + 360) % 360;
     if(action == AJOUTER)
     {
 
-#ifdef PETIT_ROBOT
-    if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
-    {
-        centre = 1;
-    }
-    if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
-    {
-        droite = 1;
-    }
-    if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
-    {
-        gauche = 1;
-    }
-#endif
+        #ifdef PETIT_ROBOT
+            if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                centre = 1;
+            }
+            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                droite = 1;
+            }
+            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                gauche = 1;
+            }
+        #endif
 
-#ifdef GROS_ROBOT
-    if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (CAPT_US_ARRIERE == 1 && EVITEMENT_ADV_ARRIERE == ON))
-    {
-        centre = 1;
-    }
-    if(0 == CAPT_US_AV_GAUCHE && EVITEMENT_ADV_AVANT == ON)
-    {
-        gauche = 1;
-    }
-    if(0 == CAPT_US_AV_DROIT && EVITEMENT_ADV_AVANT == ON)
-    {
-        droite = 1;
-    }
-#endif
+        #ifdef GROS_ROBOT
+            if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (CAPT_US_ARRIERE == 1 && EVITEMENT_ADV_ARRIERE == ON))
+            {
+                centre = 1;
+            }
+            if(0 == CAPT_US_AV_GAUCHE && EVITEMENT_ADV_AVANT == ON)
+            {
+                gauche = 1;
+            }
+            if(0 == CAPT_US_AV_DROIT && EVITEMENT_ADV_AVANT == ON)
+            {
+                droite = 1;
+            }
+        #endif
     }
     else
     {
@@ -2023,7 +2019,7 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
             for(j=-1 - ajout ; j<=largeur+1 + ajout; j++)
             {
                 if(x_present+i+1 < x_max && y_present +offset +j >= 0 && y_present +offset +j < y_max && obstacle [x_present+i+1][y_present +offset + j] == 0)
-                    obstacle [x_present+i+1][y_present +offset + j]=action;
+                obstacle [x_present+i+1][y_present +offset + j]=action;
             }
         }
     }
@@ -2060,15 +2056,15 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
                 x_obs = x_present+1+offset+j+i;
                 y_obs = y_present-1+offset+j-i;
                 if(x_obs>=0 && x_obs < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs][y_obs] != 1)
-                    obstacle[x_obs][y_obs] = action;
+                obstacle[x_obs][y_obs] = action;
                 if(!(j == largeur+ajout_diago)  && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
-                    obstacle[x_obs+1][y_obs] = action;
+                obstacle[x_obs+1][y_obs] = action;
                 if(!(j == largeur+ajout_diago)&& x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
-                    obstacle[x_obs][y_obs+1] = action;
+                obstacle[x_obs][y_obs+1] = action;
                 if(!(j == -ajout_diago )  && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
-                    obstacle[x_obs-1][y_obs] = action;
+                obstacle[x_obs-1][y_obs] = action;
                 if(!(j == -ajout_diago)  && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
-                    obstacle[x_obs][y_obs-1] = action;
+                obstacle[x_obs][y_obs-1] = action;
             }
         }
     }
@@ -2102,7 +2098,7 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
             for(j=-1-ajout; j<=largeur+1+ajout; j++)
             {
                 if(y_present-i-1 >= 0 && x_present +offset + j>= 0 && x_present + offset + j < x_max && obstacle [x_present + offset + j][y_present-i-1] ==0)
-                    obstacle [x_present + offset + j][y_present-i-1]=action;
+                obstacle [x_present + offset + j][y_present-i-1]=action;
             }
         }
     }
@@ -2140,15 +2136,15 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
                 x_obs = x_present-1+offset-j-i;
                 y_obs = y_present-1-offset+j-i;
                 if(x_obs>=0 && x_obs < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs][y_obs] != 1)
-                    obstacle[x_obs][y_obs] = action;
+                obstacle[x_obs][y_obs] = action;
                 if(!(j == -ajout_diago) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
-                    obstacle[x_obs+1][y_obs] = action;
+                obstacle[x_obs+1][y_obs] = action;
                 if(!(j == largeur+ajout_diago) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
-                    obstacle[x_obs][y_obs+1] = action;
+                obstacle[x_obs][y_obs+1] = action;
                 if(!(j == largeur+ajout_diago) && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
-                    obstacle[x_obs-1][y_obs] = action;
+                obstacle[x_obs-1][y_obs] = action;
                 if(!(j == -ajout_diago) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
-                    obstacle[x_obs][y_obs-1] = action;
+                obstacle[x_obs][y_obs-1] = action;
             }
         }
     }
@@ -2183,7 +2179,7 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
             for(j=-1-ajout; j<=largeur+1+ajout; j++)
             {
                 if(x_present-i-1 >=0 && y_present +offset + j >= 0 && y_present +offset + j < y_max && obstacle [x_present-i-1][y_present + offset + j]==0)
-                    obstacle [x_present-i-1][y_present +offset + j]=action;
+                obstacle [x_present-i-1][y_present +offset + j]=action;
             }
         }
     }
@@ -2219,13 +2215,13 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
                 if(x_obs>=0 && x_obs < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs][y_obs] != 1)
                 obstacle[x_obs][y_obs] = action;
                 if(!(j == largeur+ajout_diago ) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
-                    obstacle[x_obs+1][y_obs] = action;
+                obstacle[x_obs+1][y_obs] = action;
                 if(!(j == largeur+ajout_diago ) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
-                    obstacle[x_obs][y_obs+1] = action;
+                obstacle[x_obs][y_obs+1] = action;
                 if(!(j == -ajout_diago ) && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
-                    obstacle[x_obs-1][y_obs] = action;
+                obstacle[x_obs-1][y_obs] = action;
                 if(!(j == -ajout_diago ) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
-                    obstacle[x_obs][y_obs-1] = action;
+                obstacle[x_obs][y_obs-1] = action;
             }
         }
     }
@@ -2258,7 +2254,7 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
             for(j=-1-ajout; j<=largeur+1+ajout; j++)
             {
                 if(y_present+i+1 < y_max && x_present+ offset + j>= 0 && x_present + offset + j < x_max && obstacle [x_present + offset + j][y_present+i+1]==0)
-                    obstacle [x_present + offset + j][y_present+i+1]=action;
+                obstacle [x_present + offset + j][y_present+i+1]=action;
             }
         }
     }
@@ -2292,15 +2288,15 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
                 x_obs = x_present+1+offset-j+i;
                 y_obs = y_present+1-offset+j+i;
                 if(x_obs>=0 && x_obs < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs][y_obs] != 1)
-                    obstacle[x_obs][y_obs] = action;
+                obstacle[x_obs][y_obs] = action;
                 if(!(j == -ajout_diago ) && x_obs+1>=0 && x_obs+1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs+1][y_obs] != 1)
-                    obstacle[x_obs+1][y_obs] = action;
+                obstacle[x_obs+1][y_obs] = action;
                 if(!(j == largeur+ajout_diago ) && x_obs>=0 && x_obs < x_max && y_obs+1 >=0 && y_obs+1 < y_max && obstacle [x_obs][y_obs+1] != 1)
-                    obstacle[x_obs][y_obs+1] = action;
+                obstacle[x_obs][y_obs+1] = action;
                 if(!(j == largeur+ajout_diago )  && x_obs-1>=0 && x_obs-1 < x_max && y_obs >=0 && y_obs < y_max && obstacle [x_obs-1][y_obs] != 1)
-                    obstacle[x_obs-1][y_obs] = action;
+                obstacle[x_obs-1][y_obs] = action;
                 if(!(j == -ajout_diago) && x_obs>=0 && x_obs < x_max && y_obs-1 >=0 && y_obs-1 < y_max && obstacle [x_obs][y_obs-1] != 1)
-                    obstacle[x_obs][y_obs-1] = action;
+                obstacle[x_obs][y_obs-1] = action;
             }
         }
     }
@@ -2340,150 +2336,150 @@ void deplacement_arriere(int8_t sens_marche)
     //si elles sont libres, alors on peut reculer ou avancer
     //si on rentre en evitement dans ce reculer ou avancer, on se stoppera et on continuera la fonction d'evitement
 
-#ifdef ORDI
-    if(angle <= 22 || angle >= 339 ) //horizontale vers la droite
-    {
-        if(obstacle[x_actuel - i][y_actuel] == 0 && obstacle[x_actuel - 2*i][y_actuel] == 0 )
+    #ifdef ORDI
+        if(angle <= 22 || angle >= 339 ) //horizontale vers la droite
+        {
+            if(obstacle[x_actuel - i][y_actuel] == 0 && obstacle[x_actuel - 2*i][y_actuel] == 0 )
+            {
+                DETECTION = OFF;
+                cout << "avancer_reculer("<<-100*i<<", 50)";
+            }
+        }
+
+        else if (angle <= 68) //diagonale en haut à droite
+        {
+            if( obstacle[x_actuel - i][y_actuel +1*i] == 0 && obstacle[x_actuel - 2*i][y_actuel +2*i] == 0 )
+            {
+                DETECTION = OFF;
+                cout << "avancer_reculer("<<-100*i<<", 50)";
+            }
+        }
+        else if (angle <= 112) //verticale haut
+        {
+            if(obstacle[x_actuel][y_actuel +i] == 0 && obstacle[x_actuel][y_actuel +2*i] == 0 )
+            {
+                DETECTION = OFF;
+                cout << "avancer_reculer("<<-100*i<<", 50)";
+            }
+        }
+
+        else if (angle <= 158) //diagonale en haut à gauche
+        {
+            if(obstacle[x_actuel +i][y_actuel +i] == 0 && obstacle[x_actuel + 2*i][y_actuel +2*i] == 0)
+            {
+                DETECTION = OFF;
+                cout << "avancer_reculer("<<-100*i<<", 50)";
+            }
+        }
+
+        else if (angle <= 202) //horizontale gauche
+        {
+            if(obstacle[x_actuel +i][y_actuel] == 0 && obstacle[x_actuel + 2*i][y_actuel] == 0 )
+            {
+                DETECTION = OFF;
+                cout << "avancer_reculer("<<-100*i<<", 50)";
+            }
+        }
+        else if (angle <= 248) //diagonale bas gauche
+
+        {
+
+            if(obstacle[x_actuel +i][y_actuel -i] == 0 && obstacle[x_actuel + 2*i][y_actuel -2*i] == 0 )
+            {
+                DETECTION = OFF;
+                cout << "avancer_reculer("<<-100*i<<", 50)";
+            }
+        }
+
+        else if (angle <= 292) //verticale bas
+        {
+            if( obstacle[x_actuel][y_actuel -i] == 0 && obstacle[x_actuel][y_actuel -2*i] == 0 )
+            {
+                DETECTION = OFF;
+                cout << "avancer_reculer("<<-100*i<<", 50)";
+            }
+        }
+
+        else if (obstacle[x_actuel -i][y_actuel-i] == 0 && obstacle[x_actuel - 2*i][y_actuel-2*i] == 0 ) //diagonale bas droite
         {
             DETECTION = OFF;
             cout << "avancer_reculer("<<-100*i<<", 50)";
         }
-    }
+        #else
 
-    else if (angle <= 68) //diagonale en haut à droite
-    {
-        if( obstacle[x_actuel - i][y_actuel +1*i] == 0 && obstacle[x_actuel - 2*i][y_actuel +2*i] == 0 )
+        if(angle <= 22 || angle >= 339 ) //horizontale vers la droite
         {
-            DETECTION = OFF;
-            cout << "avancer_reculer("<<-100*i<<", 50)";
+            if(obstacle[x_actuel - i][y_actuel] == 0 && obstacle[x_actuel - 2*i][y_actuel] == 0 )
+            {
+                DETECTION = OFF;
+                avancer_reculer((double)(-100*i), 50.);
+            }
         }
-    }
-    else if (angle <= 112) //verticale haut
-    {
-        if(obstacle[x_actuel][y_actuel +i] == 0 && obstacle[x_actuel][y_actuel +2*i] == 0 )
+
+        else if (angle <= 68) //diagonale en haut à droite
         {
-            DETECTION = OFF;
-            cout << "avancer_reculer("<<-100*i<<", 50)";
+            if( obstacle[x_actuel - i][y_actuel +1*i] == 0 && obstacle[x_actuel - 2*i][y_actuel +2*i] == 0 )
+            {
+                DETECTION = OFF;
+                avancer_reculer((double)(-100*i), 50.);
+            }
         }
-    }
-
-    else if (angle <= 158) //diagonale en haut à gauche
-    {
-        if(obstacle[x_actuel +i][y_actuel +i] == 0 && obstacle[x_actuel + 2*i][y_actuel +2*i] == 0)
+        else if (angle <= 112) //verticale haut
         {
-            DETECTION = OFF;
-            cout << "avancer_reculer("<<-100*i<<", 50)";
+            if(obstacle[x_actuel][y_actuel +i] == 0 && obstacle[x_actuel][y_actuel +2*i] == 0 )
+            {
+                DETECTION = OFF;
+                avancer_reculer((double)(-100*i), 50.);
+            }
         }
-    }
 
-    else if (angle <= 202) //horizontale gauche
-    {
-        if(obstacle[x_actuel +i][y_actuel] == 0 && obstacle[x_actuel + 2*i][y_actuel] == 0 )
+        else if (angle <= 158) //diagonale en haut à gauche
         {
-            DETECTION = OFF;
-            cout << "avancer_reculer("<<-100*i<<", 50)";
+            if(obstacle[x_actuel +i][y_actuel +i] == 0 && obstacle[x_actuel + 2*i][y_actuel +2*i] == 0)
+            {
+                DETECTION = OFF;
+                avancer_reculer((double)(-100*i), 50.);
+            }
         }
-    }
-    else if (angle <= 248) //diagonale bas gauche
 
-    {
-
-        if(obstacle[x_actuel +i][y_actuel -i] == 0 && obstacle[x_actuel + 2*i][y_actuel -2*i] == 0 )
+        else if (angle <= 202) //horizontale gauche
         {
-            DETECTION = OFF;
-            cout << "avancer_reculer("<<-100*i<<", 50)";
+            if(obstacle[x_actuel +i][y_actuel] == 0 && obstacle[x_actuel + 2*i][y_actuel] == 0 )
+            {
+                DETECTION = OFF;
+                avancer_reculer((double)(-100*i), 50.);
+            }
         }
-    }
+        else if (angle <= 248) //diagonale bas gauche
 
-    else if (angle <= 292) //verticale bas
-    {
-        if( obstacle[x_actuel][y_actuel -i] == 0 && obstacle[x_actuel][y_actuel -2*i] == 0 )
         {
-            DETECTION = OFF;
-            cout << "avancer_reculer("<<-100*i<<", 50)";
+            if(obstacle[x_actuel +i][y_actuel -i] == 0 && obstacle[x_actuel + 2*i][y_actuel -2*i] == 0 )
+            {
+                //TIMER_DEBUG = ACTIVE;
+                DETECTION = OFF;
+                //TODO
+                //A ENLEVER
+                //i=-i;
+                avancer_reculer((double)(-100*i), 50.);
+            }
+
         }
-    }
 
-    else if (obstacle[x_actuel -i][y_actuel-i] == 0 && obstacle[x_actuel - 2*i][y_actuel-2*i] == 0 ) //diagonale bas droite
-    {
-        DETECTION = OFF;
-        cout << "avancer_reculer("<<-100*i<<", 50)";
-    }
-#else
-
-    if(angle <= 22 || angle >= 339 ) //horizontale vers la droite
-    {
-        if(obstacle[x_actuel - i][y_actuel] == 0 && obstacle[x_actuel - 2*i][y_actuel] == 0 )
+        else if (angle <= 292) //verticale bas
         {
-            DETECTION = OFF;
-            avancer_reculer((double)(-100*i), 50.);
+            if( obstacle[x_actuel][y_actuel -i] == 0 && obstacle[x_actuel][y_actuel -2*i] == 0 )
+            {
+                DETECTION = OFF;
+                avancer_reculer((double)(-100*i), 50.);
+            }
         }
-    }
 
-    else if (angle <= 68) //diagonale en haut à droite
-    {
-        if( obstacle[x_actuel - i][y_actuel +1*i] == 0 && obstacle[x_actuel - 2*i][y_actuel +2*i] == 0 )
+        else if (obstacle[x_actuel -i][y_actuel-i] == 0 && obstacle[x_actuel - 2*i][y_actuel-2*i] == 0 ) //diagonale bas droite
         {
             DETECTION = OFF;
             avancer_reculer((double)(-100*i), 50.);
         }
-    }
-    else if (angle <= 112) //verticale haut
-    {
-        if(obstacle[x_actuel][y_actuel +i] == 0 && obstacle[x_actuel][y_actuel +2*i] == 0 )
-        {
-            DETECTION = OFF;
-            avancer_reculer((double)(-100*i), 50.);
-        }
-    }
-
-    else if (angle <= 158) //diagonale en haut à gauche
-    {
-        if(obstacle[x_actuel +i][y_actuel +i] == 0 && obstacle[x_actuel + 2*i][y_actuel +2*i] == 0)
-        {
-            DETECTION = OFF;
-            avancer_reculer((double)(-100*i), 50.);
-        }
-    }
-
-    else if (angle <= 202) //horizontale gauche
-    {
-        if(obstacle[x_actuel +i][y_actuel] == 0 && obstacle[x_actuel + 2*i][y_actuel] == 0 )
-        {
-            DETECTION = OFF;
-            avancer_reculer((double)(-100*i), 50.);
-        }
-    }
-    else if (angle <= 248) //diagonale bas gauche
-
-    {
-        if(obstacle[x_actuel +i][y_actuel -i] == 0 && obstacle[x_actuel + 2*i][y_actuel -2*i] == 0 )
-        {
-            //TIMER_DEBUG = ACTIVE;
-            DETECTION = OFF;
-            //TODO
-            //A ENLEVER
-            //i=-i;
-            avancer_reculer((double)(-100*i), 50.);
-        }
-
-    }
-
-    else if (angle <= 292) //verticale bas
-    {
-        if( obstacle[x_actuel][y_actuel -i] == 0 && obstacle[x_actuel][y_actuel -2*i] == 0 )
-        {
-            DETECTION = OFF;
-            avancer_reculer((double)(-100*i), 50.);
-        }
-    }
-
-    else if (obstacle[x_actuel -i][y_actuel-i] == 0 && obstacle[x_actuel - 2*i][y_actuel-2*i] == 0 ) //diagonale bas droite
-    {
-        DETECTION = OFF;
-        avancer_reculer((double)(-100*i), 50.);
-    }
-#endif
+    #endif
 
     //on remet l'evitement comme il etait au départ
     if(sens_marche == MARCHE_AVANT)
@@ -2518,9 +2514,6 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
     calcul_en_cours = ON;
     compteur_evitement = 0;
 
-//    printf("\n\n\n\rX: %lf, Y : %lf, Teta : %lf\n", get_X(), get_Y(), get_orientation());
-//    printf("\n\r X Consigne : %lf Y Consigne : %lf", x_objectif, y_objectif);
-
     if(pourcentage_deplacement > 50) // si la vitesse est supérieur à 50% de la vitesse maximale
     {
         pourcentage_deplacement = 50; // on la remet à 50% ce qui nous permet d'éviter les collisions à trop haute vitesse
@@ -2528,6 +2521,8 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
 
     if(id == id_evitement_initial) // si c'est le premier evitement lors de cette phase de deplacement
     {
+        x_souhaite = x_objectif;
+        y_souhaite = y_objectif;
         //on donne la cellule d'objectif
         x_obj = x_objectif/100;
         y_obj = y_objectif/100;
@@ -2557,46 +2552,46 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
 
     // on efface le précédent obstacle mobile
     for(i=0; i<x_max; i++)
-        for(j=0; j<y_max; j++)
-            if(obstacle[i][j] == 2)
-                obstacle[i][j] = 0;
+    for(j=0; j<y_max; j++)
+    if(obstacle[i][j] == 2)
+    obstacle[i][j] = 0;
 
     if(ajout == 1)
-        MAJ_obstacle(x_actuel,y_actuel,- get_orientation(),sens_marche,AJOUTER); // on place notre nouvel obstacle
+    MAJ_obstacle(x_actuel,y_actuel,- get_orientation(),sens_marche,AJOUTER); // on place notre nouvel obstacle
 
-#ifdef DEBUG_HUGO
-    printf("\n\r%d %d||%d %d\n\r", x_actuel, y_actuel, x_obj, y_obj);
-    for(j=0; j<y_max; j++)
-    {
-        for(i=0; i+4<x_max; i=i+5)
+    #ifdef DEBUG_HUGO
+        printf("\n\r%d %d||%d %d\n\r", x_actuel, y_actuel, x_obj, y_obj);
+        for(j=0; j<y_max; j++)
         {
-            printf("%d", obstacle[i][j]*10000+obstacle[i+1][j]*1000+obstacle[i+2][j]*100+obstacle[i+3][j]*10+obstacle[i+4][j]);
+            for(i=0; i+4<x_max; i=i+5)
+            {
+                printf("%d", obstacle[i][j]*10000+obstacle[i+1][j]*1000+obstacle[i+2][j]*100+obstacle[i+3][j]*10+obstacle[i+4][j]);
+            }
+            printf("\n\r");
         }
-        printf("\n\r");
-    }
-#endif
+    #endif
 
-#ifdef ORDI
-    for(int j=y_max-1; j>=0; j--)
-    {
+    #ifdef ORDI
+        for(int j=y_max-1; j>=0; j--)
+        {
+            for(i=0; i<x_max; i++)
+            {
+                if(i==x_actuel && j==y_actuel)
+                cout << "D";
+                else if(i==x_obj && j==y_obj)
+                cout << "A";
+                else if(obstacle[i][j] !=0)
+                cout << "X";
+                else cout << "-";
+            }
+            cout << " "<<j<<endl;
+        }
         for(i=0; i<x_max; i++)
         {
-            if(i==x_actuel && j==y_actuel)
-                cout << "D";
-            else if(i==x_obj && j==y_obj)
-                cout << "A";
-            else if(obstacle[i][j] !=0)
-                cout << "X";
-            else cout << "-";
+            cout << i%10;
         }
-        cout << " "<<j<<endl;
-    }
-    for(i=0; i<x_max; i++)
-    {
-        cout << i%10;
-    }
-    cout <<endl;
-#endif
+        cout <<endl;
+    #endif
 
     curseur =0;//on remet notre curseur de point itineraire au début
 
@@ -2709,12 +2704,12 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
             else    // si on a pas un chemin plus court
             {
                 if(chemin_court ==1)
-                    for(i=0; i<curseur_finale+1; i++) // on remet l'itineraire comme il était
-                    {
-                        itineraire[i][0] = itineraire_court[i][0];
-                        itineraire[i][1] = itineraire_court[i][1];
-                        itineraire[i][2] = itineraire_court[i][2];
-                    }
+                for(i=0; i<curseur_finale+1; i++) // on remet l'itineraire comme il était
+                {
+                    itineraire[i][0] = itineraire_court[i][0];
+                    itineraire[i][1] = itineraire_court[i][1];
+                    itineraire[i][2] = itineraire_court[i][2];
+                }
 
                 curseur_obstacle_finale = curseur_obstacle_finale-1; // et on recharge le curseur d'obstacle
             }
@@ -2741,25 +2736,25 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
                 retour =evitement (x_obj,y_obj,(sens_depart+1)%2); // on essaye de trouver un chemin. On renvoi 0 si on a pu trouver un chemin, -1 sinon
 
                 if(retour ==0)  // si on en a trouver un
-            {
-                chemin_court = 1;
-                nouvelle_distance = distance(); //on recalcule le nombre de point
-            }
-            if(retour == 0 &&  (itineraire_court[0][0] == -1 || curseur < curseur_finale || nouvelle_distance < distance_courante))  // si on a un chemin valide soit on en avait pas soit plus court
-            {
-
-                for(i=0; i<curseur+1; i++) // on sauvegarde le nouvel itineraire
                 {
-                    itineraire_court[i][0] = itineraire[i][0];
-                    itineraire_court[i][1] = itineraire[i][1];
-                    itineraire_court[i][2] = itineraire[i][2];
+                    chemin_court = 1;
+                    nouvelle_distance = distance(); //on recalcule le nombre de point
                 }
+                if(retour == 0 &&  (itineraire_court[0][0] == -1 || curseur < curseur_finale || nouvelle_distance < distance_courante))  // si on a un chemin valide soit on en avait pas soit plus court
+                {
 
-                // ainsi que les données qui le caractérisent
-                curseur_finale = curseur;
-                distance_courante = nouvelle_distance;
-                curseur_obstacle_finale = curseur_obstacle;
-            }
+                    for(i=0; i<curseur+1; i++) // on sauvegarde le nouvel itineraire
+                    {
+                        itineraire_court[i][0] = itineraire[i][0];
+                        itineraire_court[i][1] = itineraire[i][1];
+                        itineraire_court[i][2] = itineraire[i][2];
+                    }
+
+                    // ainsi que les données qui le caractérisent
+                    curseur_finale = curseur;
+                    distance_courante = nouvelle_distance;
+                    curseur_obstacle_finale = curseur_obstacle;
+                }
                 else //sinon on va initialiser les valeurs que l'on peut
                 {
                     curseur_obstacle_finale = curseur_obstacle;
@@ -2777,8 +2772,9 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
         if(chemin_court == 1) // si on a trouve un chemin
         {
 
-        //printf("\n\ron a un chemin\n\r");
+
             curseur=curseur_finale; //on reprend notre curseur de l'itineraire le plus court
+
             deplacement(sens_marche,pourcentage_deplacement,last);// et on lance les deplacements
         }
 
@@ -2786,35 +2782,34 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
         {
             //alors on va reculer puis repartir vers l'objectif
             curseur = 0;
+            x_actuel = get_X()/100;
+            y_actuel = get_Y()/100;
             deplacement_arriere(sens_marche);
         }
     }
 
     DETECTION = OFF;
 
-    if(id_evitement-1 == id)
-    {
-        id_evitement_initial = id_evitement;
+if(id == id_evitement_initial){
 
-#ifdef ORDI
+            id_evitement_initial = id_evitement;
+
+    #ifdef ORDI
         //on redonne la consigne de base
         if(last == rej || last == FIN_TRAJECTOIRE)
         {
-            cout << "rejoindre("<<x_objectif<<","<<y_objectif<<","<<sens_marche<<","<<pourcentage_deplacement<<")"<<endl;
+            cout << "rejoindre("<<x_souhaite<<","<<y_souhaite<<","<<sens_marche<<","<<pourcentage_deplacement<<")"<<endl;
         }
         else
         {
-            cout <<"passe_part("<<x_objectif<<","<<y_objectif<<","<<sens_marche<<","<<pourcentage_deplacement<<","<<DEBUT_TRAJECTOIRE<<")"<<endl;
+            cout <<"passe_part("<<x_souhaite<<","<<y_souhaite<<","<<sens_marche<<","<<pourcentage_deplacement<<","<<DEBUT_TRAJECTOIRE<<")"<<endl;
         }
-#else
+        #else
         //on redonne la consigne de base
-
-
 
         if(last == rej) // si nous utilisions un rejoindre
         {
-             //printf("\n\ron renvoi l'ordre de rejoindre\n\r");
-            rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement);
+            rejoindre(x_souhaite,y_souhaite,sens_marche,pourcentage_deplacement);
         }
         else if (last == FIN_TRAJECTOIRE)// si on utilise un passe-part
         {
@@ -2822,12 +2817,11 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
 
             if(chemin_court == 1 && curseur >1)// si on a eu un chemin avec des points intermédiaires
             {
-                passe_part(x_objectif,y_objectif,sens_marche,pourcentage_deplacement,last);// on renvoi l'ordre initial
+                passe_part(x_souhaite,y_souhaite,sens_marche,pourcentage_deplacement,last);// on renvoi l'ordre initial
             }
             else
             {
-                //printf"\n\ron renvoi l'ordre via fin trajectoire\n\r");
-                rejoindre(x_objectif,y_objectif,sens_marche,pourcentage_deplacement); // sinon on envoi un rejoindre pour éviter les conflits de passe-part
+                rejoindre(x_souhaite,y_souhaite,sens_marche,pourcentage_deplacement); // sinon on envoi un rejoindre pour éviter les conflits de passe-part
             }
         }
         else
@@ -2836,18 +2830,21 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
             {
 
 
-                passe_part(x_objectif,y_objectif,sens_marche,pourcentage_deplacement,MILIEU_TRAJECTOIRE);
+                passe_part(x_souhaite,y_souhaite,sens_marche,pourcentage_deplacement,MILIEU_TRAJECTOIRE);
 
             }
             else
             {
-                passe_part(x_objectif,y_objectif,sens_marche,pourcentage_deplacement,DEBUT_TRAJECTOIRE);
+                passe_part(x_souhaite,y_souhaite,sens_marche,pourcentage_deplacement,DEBUT_TRAJECTOIRE);
             }
         }
-#endif
-    }
+    #endif
+
+        }
 
     DETECTION = OFF;
     calcul_en_cours = OFF;
 }
+
+void detect (uint8_t arg) {DETECTION = arg;}
 

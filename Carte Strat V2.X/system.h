@@ -228,6 +228,8 @@ extern "C" {
     extern int point_obstacle[nb_point_max][3];
     extern int x_actuel;
     extern int y_actuel;
+    extern int x_souhaite;
+    extern int y_souhaite;
     extern int x_obj;
     extern int y_obj;
     extern int id_evitement;
