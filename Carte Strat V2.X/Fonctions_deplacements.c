@@ -93,60 +93,7 @@ void carre (int8_t sens_marche)
 
 void action_evitement (void)
 {
-#ifdef GROS_ROBOT
-    //Stratégie alternatives possibles en focntion des évitements
-    EVITEMENT_ADV_AVANT = ON;
-    FLAG_EVITEMENT_STRATEGIQUE = MONTEE_EVITEMENT_EN_COURS;
-    //tapis(DROIT, DEPOSE);
 
-    uint8_t presence = 0;
-
-    if (check_capteur(DROIT))
-    {
-        pince(DROIT, OUVERT);
-        presence = 1;
-    }
-    if (check_capteur(DROIT))
-    {
-        pince(GAUCHE, OUVERT);
-        presence = 1;
-    }
-
-    if (presence == 1)
-    {
-        delay_ms(500);
-        avancer_reculer(-100, 100);
-        delay_ms (500);
-        pince(DROITE, RANGEMENT);
-        pince(GAUCHE, RANGEMENT);
-        ascenseur(ARRIERE);
-
-    }
-
-
-     //alignement aux marches
-    if (get_X() > 2000)
-    {
-        plus_court(2000, 900, MARCHE_AVANT, 70, rej, 0);
-    }
-    if (get_X() > 1200)
-    {
-         plus_court(1200, 830, MARCHE_AVANT, 70, rej, 0);
-    }
-
-    if (COULEUR == JAUNE)
-        plus_court(1200, 1240, MARCHE_AVANT, 70, rej, 0);
-    else
-        plus_court(1240, 1240, MARCHE_AVANT, 70, rej, 0);
-
-
-    // on s'aligne puis on monte
-    orienter(90, 100);
-
-    marche();
-
-    while(1);
-#endif 
 }
 
 void cibler (double x, double y, double pourcentage_vitesse)
@@ -193,98 +140,64 @@ void orienter (double angle, double pourcentage_vitesse)
 
 void rejoindre (double x, double y, int8_t sens_marche, double pourcentage_vitesse)
 {
-#ifdef GROS_ROBOT
-     if (FLAG_EVITEMENT_STRATEGIQUE != PREPARATION_MARCHE )
-     {
-#endif
-        uint8_t erreur = _rejoindre (x, y, sens_marche, pourcentage_vitesse);
-        if ( erreur == EVITEMENT)
+    uint8_t erreur = _rejoindre (x, y, sens_marche, pourcentage_vitesse);
+    if ( erreur == EVITEMENT)
+    {
+        if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)
         {
-            if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)
-            {
-                action_evitement();
-            }
-            else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
-            {
-                plus_court(x,y,sens_marche,pourcentage_vitesse,rej,1);
-            }
+            action_evitement();
         }
-        else if (erreur == BLOCAGE)
+        else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
         {
-            //Actions a faire en cas de blocage
+            plus_court(x,y,sens_marche,pourcentage_vitesse,rej,1);
         }
-#ifdef GROS_ROBOT
-     }
-     else
-     {
-         action_evitement();
-     }
-#endif
-    
+    }
+    else if (erreur == BLOCAGE)
+    {
+        //Actions a faire en cas de blocage
+    }    
 }
 
 void avancer_reculer (double distance, double pourcentage_vitesse)
 {
-#ifdef GROS_ROBOT
-     if (FLAG_EVITEMENT_STRATEGIQUE != PREPARATION_MARCHE)
-     {
-#endif
-        uint8_t erreur = _avancer_reculer (distance, pourcentage_vitesse);
-        if ( erreur == EVITEMENT)
+    uint8_t erreur = _avancer_reculer (distance, pourcentage_vitesse);
+    if ( erreur == EVITEMENT)
+    {
+        if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)
         {
-            if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)
-            {
-                action_evitement();
-            }
-            else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
-            {
-                //action en cas d'évitements
-            }
+            action_evitement();
         }
-        else if (erreur == BLOCAGE)
+        else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
         {
+            //action en cas d'évitements
+        }
+    }
+    else if (erreur == BLOCAGE)
+    {
 
-            //Actions a faire en cas de blocage
-        }
-#ifdef GROS_ROBOT
-     }
-     else
-     {
-         action_evitement();
-     }
-#endif
+        //Actions a faire en cas de blocage
+    }
 }
 
 void passe_part (double x, double y, int8_t sens_marche, double pourcentage_vitesse, char last)
 {
-#ifdef GROS_ROBOT
-     if (FLAG_EVITEMENT_STRATEGIQUE != PREPARATION_MARCHE)
-     {
-#endif
-        uint8_t erreur = _passe_part (x, y, sens_marche, pourcentage_vitesse, last);
-        if ( erreur == EVITEMENT)
+    uint8_t erreur = _passe_part (x, y, sens_marche, pourcentage_vitesse, last);
+    if ( erreur == EVITEMENT)
+    {
+        if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)
         {
-            if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)
-            {
-                action_evitement();
-            }
-            else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
-            {
+            action_evitement();
+        }
+        else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
+        {
 
-                plus_court(x,y,sens_marche,pourcentage_vitesse,last,1);
-            }
+            plus_court(x,y,sens_marche,pourcentage_vitesse,last,1);
         }
-        else if (erreur == BLOCAGE)
-        {
-            //Actions a faire en cas de blocage
-        }
-#ifdef GROS_ROBOT
-     }
-     else
-     {
-         action_evitement();
-     }
-#endif
+    }
+    else if (erreur == BLOCAGE)
+    {
+        //Actions a faire en cas de blocage
+    }
 }
 
 /******************************************************************************/

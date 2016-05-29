@@ -157,7 +157,7 @@ extern "C" {
 #define PRIO_INTER_QEI1                 7   // Codeurs : prio la plus haute
 #define PRIO_INTER_QEI2                 7   // Codeurs : prio la plus haute
 
-#define ACTIV_INTER_UART1_RX            0   // Uart XBEE
+#define ACTIV_INTER_UART1_RX            1   // Uart XBEE
 #define ACTIV_INTER_TIMER3              1   // Timer 90 secondes : fin de match
 #define ACTIV_INTER_TIMER2              0   // Osef : TIMER 2 et 3 sur 32 bits
 #define ACTIV_INTER_TIMER1              1   // Timer asserv : 5 ms

@@ -60,8 +60,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
     if(calcul_en_cours == ON)
     {
         compteur_evitement++;
-        if(compteur_evitement > ATTENTE_EVITEMENT*2)
-            compteur_evitement = ATTENTE_EVITEMENT *2;
+        if(compteur_evitement > ATTENTE_EVITEMENT * 2)
+            compteur_evitement = ATTENTE_EVITEMENT * 2;
     }
     else
     {
@@ -81,24 +81,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
     COMPTEUR_TEMPS_MATCH ++;
 
 
-    if (COMPTEUR_TEMPS_MATCH >= 55 && etat_autom == 0)
-    {
-        #ifdef GROS_ROBOT
-        if (FLAG_EVITEMENT_STRATEGIQUE != EN_ROUTE_MONTEE_MARCHE)
-            FLAG_EVITEMENT_STRATEGIQUE = PREPARATION_MARCHE;
-        #endif
-        etat_autom = 1;
-    }
-    else if (COMPTEUR_TEMPS_MATCH >= 85 && etat_autom == 1 )
-    {
-        #ifdef PETIT_ROBOT
-            if (FLAG_ACTION != FIN_DE_MATCH)
-                FLAG_ACTION = DEPOSE_PIEDS;
-        #endif
-
-        etat_autom = 2;
-    }
-    else if (COMPTEUR_TEMPS_MATCH >= 90)
+    
+    if (COMPTEUR_TEMPS_MATCH >= 90)
     {
         PORTCbits.RC5 = 0;
 
@@ -122,17 +106,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
         envoit_pwm(MOTEUR_X, 0);
 
         IPC7bits.U2TXIP	= 7;
-        IPC7bits.U2RXIP = 7;
-
-    #ifdef PETIT_ROBOT
-        pinces(PINCE_HAUT, RANGEMENT);
-        pinces(PINCE_MILIEU, RANGEMENT);
-        pinces(PINCE_BAS, RANGEMENT);
-        pinces(PINCE_ASCENSEUR, RACLETTE);
-    #endif
-
+        IPC7bits.U2RXIP = 7;     
         
-
         while(1);
     }
     FLAG_TIMER_90s = 0;        //On clear le flag d'interruption du timer
@@ -199,15 +174,28 @@ void __attribute__ ((interrupt, no_auto_psv)) 	_U1RXInterrupt (void)
 	IFS0bits.U1RXIF = 0;
 
         uint8_t buf;
-        static uint8_t value = 0;
         buf= U1RXREG;
+        
+        // CTRL-A       : 1 = Start of heading
+        // CTRL-B       : 2 = Start of text
+        // CTRL-C       : 3 = End of text
+        // ECHAP        : 27
+        // TAB          : 9 et /t ?
 
-        PORTCbits.RC5 = value;
-
-        if (value == 0)
-            value = 1;
-        else
-            value = 0;
+        if (buf == '\0')
+            printf("a ");
+        else if (buf == '\n') // CTRL-J
+        {
+            printf("b ");
+        }
+        else if (buf == '\b' ) //CTRL -H
+            printf("c ");
+        else if (buf == '\a') // CTRL-D
+            printf("d ");
+        else if (buf == '\r') // ENTER ou CTRL-M
+            printf("e ");
+        else 
+            printf("%d ", buf);
         
 	// Traitement
 	//char buff = U1RXREG;

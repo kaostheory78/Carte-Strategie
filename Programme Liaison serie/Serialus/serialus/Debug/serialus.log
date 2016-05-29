@@ -1,18 +1,9 @@
-﻿La génération a démarré 04/05/2015 22:08:56.
-     1>Projet "C:\Users\Quentin\Desktop\Carte-Strategie\Programme Liaison serie\Serialus\serialus\serialus.vcxproj" sur le nœud 2 (Build cible(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /AI"C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral" /Zi /clr:safe /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\mscorlib.dll" /analyze- /errorReport:prompt /clr:nostdlib Source.cpp
-         Source.cpp
-     1>Source.cpp(19): warning C4101: 'name' : variable locale non référencée
-     1>Source.cpp(70): warning C4101: 'i' : variable locale non référencée
-     1>Source.cpp(70): warning C4101: 'j' : variable locale non référencée
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Quentin\Desktop\Carte-Strategie\Programme Liaison serie\Serialus\Debug\serialus.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Quentin\Desktop\Carte-Strategie\Programme Liaison serie\Serialus\Debug\serialus.pdb" /ASSEMBLYDEBUG /TLBID:1 /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 /CLRIMAGETYPE:SAFE Debug\Source.obj
-         "Debug\.NETFramework,Version=v4.0.AssemblyAttributes.obj"
-     1>LINK : warning LNK4075: ' /INCREMENTAL' ignoré à cause de la spécification '/CLRIMAGETYPE'
-         serialus.vcxproj -> C:\Users\Quentin\Desktop\Carte-Strategie\Programme Liaison serie\Serialus\Debug\serialus.exe
-     1>Génération du projet "C:\Users\Quentin\Desktop\Carte-Strategie\Programme Liaison serie\Serialus\serialus\serialus.vcxproj" terminée (Build cible(s)).
+﻿La génération a démarré 29/05/2016 11:42:02.
+     1>Projet "C:\Users\KaosTheory\Desktop\Carte-Strategie\Programme Liaison serie\Serialus\serialus\serialus.vcxproj" sur le nœud 2 (build cible(s)).
+       Le fichier projet contient ToolsVersion="12.0". Cet ensemble d'outils est peut-être inconnu ou manquant. Dans ce cas, vous pouvez résoudre le problème en installant la version appropriée de MSBuild. Sinon, il est possible que la build ait été forcée vers un ToolsVersion spécifique pour des raisons liées à une stratégie. Projet traité comme si ToolsVersion="4.0". Pour plus d'informations, consultez http://go.microsoft.com/fwlink/?LinkId=291333.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Platforms\Win32\Microsoft.Cpp.Win32.Targets(511,5): error MSB8008: L'ensemble d'outils de plateforme (v120) n'est pas installé ou n'est pas valide. Vérifiez qu'une valeur PlatformToolset prise en charge est sélectionnée.
+     1>Génération du projet "C:\Users\KaosTheory\Desktop\Carte-Strategie\Programme Liaison serie\Serialus\serialus\serialus.vcxproj" terminée (build cible(s)) -- ÉCHEC.
 
-La génération a réussi.
+ÉCHEC de la build.
 
-Temps écoulé 00:00:01.40
+Temps écoulé 00:00:00.01
