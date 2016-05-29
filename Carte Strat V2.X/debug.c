@@ -20,15 +20,15 @@
 void debug ()
 {
     //asserv
-    printf("%lf \t%lf \t%lf \t%lf", ORIENTATION.consigne, ORIENTATION.actuelle, DISTANCE.consigne, DISTANCE.actuelle);
-    printf("\t%lf ", VITESSE[SYS_ROBOT].theorique);
-    printf("\t%lf \t%lf ", VITESSE[ROUE_GAUCHE].consigne, VITESSE[ROUE_GAUCHE].actuelle);
-    printf("\t%lf \t%lf ", VITESSE[ROUE_DROITE].consigne, VITESSE[ROUE_DROITE].actuelle);
-    printf("\t%lf \t%lf ", ERREUR_VITESSE[ROUE_GAUCHE].actuelle, ERREUR_VITESSE[ROUE_GAUCHE].integralle);
-    printf("\t%lf \t%lf ", ERREUR_VITESSE[ROUE_DROITE].actuelle, ERREUR_VITESSE[ROUE_DROITE].integralle);
-    printf("\t%lf \t%lf ", COMMANDE.droit, COMMANDE.gauche);
-    printf("\t%lf \t%lf ", ERREUR_ORIENTATION.actuelle, ERREUR_DISTANCE.actuelle);
-    printf("\t%lld \t%lf ", FLAG_ASSERV.immobilite, VITESSE_MAX.orientation);
-    printf("\n\r");
+//    printf("%lf \t%lf \t%lf \t%lf", ORIENTATION.consigne, ORIENTATION.actuelle, DISTANCE.consigne, DISTANCE.actuelle);
+//    printf("\t%lf ", VITESSE[SYS_ROBOT].theorique);
+//    printf("\t%lf \t%lf ", VITESSE[ROUE_GAUCHE].consigne, VITESSE[ROUE_GAUCHE].actuelle);
+//    printf("\t%lf \t%lf ", VITESSE[ROUE_DROITE].consigne, VITESSE[ROUE_DROITE].actuelle);
+//    printf("\t%lf \t%lf ", ERREUR_VITESSE[ROUE_GAUCHE].actuelle, ERREUR_VITESSE[ROUE_GAUCHE].integralle);
+//    printf("\t%lf \t%lf ", ERREUR_VITESSE[ROUE_DROITE].actuelle, ERREUR_VITESSE[ROUE_DROITE].integralle);
+//    printf("\t%lf \t%lf ", COMMANDE.droit, COMMANDE.gauche);
+//    printf("\t%lf \t%lf ", ERREUR_ORIENTATION.actuelle, ERREUR_DISTANCE.actuelle);
+//    printf("\t%lld \t%lf ", FLAG_ASSERV.immobilite, VITESSE_MAX.orientation);
+//    printf("\n\r");
 }
 

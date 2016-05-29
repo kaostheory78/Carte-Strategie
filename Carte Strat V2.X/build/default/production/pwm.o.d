@@ -9,4 +9,5 @@ asserv.h  \
 pwm.h  \
 fonctions_deplacements.h  \
  gestion_AX12.h  \
-autom.h 
+autom.h  \
+Serialus.h 

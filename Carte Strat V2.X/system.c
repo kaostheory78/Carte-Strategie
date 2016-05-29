@@ -43,6 +43,9 @@ void init_system (void)
 
     InitUART(UART_XBEE, 115200);
     InitUART(UART_AX12, 500000);
+    
+    delay_ms(1000);
+    reinit_buffer_serialus();
 
     // Evitement
     DETECTION = OFF;

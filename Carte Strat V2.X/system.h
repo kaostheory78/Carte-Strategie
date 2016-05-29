@@ -246,6 +246,8 @@ extern "C" {
     extern volatile uint8_t COMPTEUR_TEMPS_MATCH;
 
     extern volatile _ax12 ax12;
+    
+    extern volatile _serialus serialus;
 
 /******************************************************************************/
 /****************************** Prototypes ************************************/

@@ -110,10 +110,11 @@ int main(int argc, char** argv)
 
     init_system();
     init_evitement();
-    //TIMER_DEBUG = ACTIVE;
+    TIMER_DEBUG = ACTIVE;
     delay_ms(500);
 
     printf("\n\n\n\n\r INIT ROBOT : \n\n\n\n\n\n\r");
+
 
     /**************************************************************************/
     /**************************************************************************/
@@ -138,7 +139,8 @@ int main(int argc, char** argv)
 
     delay_ms(2000);
 
-    printf("\n\n\n\rX: %lf, Y : %lf, Teta : %lf\n", get_X(), get_Y(), get_orientation());
+    printf("\n\n\n\r");
+    print_position();
    
     /**************************************************************************/
     /**************************************************************************/

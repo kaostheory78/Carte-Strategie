@@ -122,7 +122,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
 void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void)
 {
     TIMER_DEBUG = DESACTIVE;
-    debug();
+    traitement_serialus();
+    //debug();
     FLAG_TIMER_DEBUG = 0;        //On clear le flag d'interruption du timer
     TIMER_DEBUG = ACTIVE;
 }
@@ -166,33 +167,11 @@ void __attribute__ ((interrupt, no_auto_psv)) 	_U1RXInterrupt (void)
 	IEC0bits.U1RXIE	= 0;
 	IFS0bits.U1RXIF = 0;
 
-        uint8_t buf;
-        buf= U1RXREG;
+    uint8_t buf;
+    buf= U1RXREG;
         
-        // CTRL-A       : 1 = Start of heading
-        // CTRL-B       : 2 = Start of text
-        // CTRL-C       : 3 = End of text
-        // ECHAP        : 27
-        // TAB          : 9 et /t ?
-
-        if (buf == '\0')
-            printf("a ");
-        else if (buf == '\n') // CTRL-J
-        {
-            printf("b ");
-        }
-        else if (buf == '\b' ) //CTRL -H
-            printf("c ");
-        else if (buf == '\a') // CTRL-D
-            printf("d ");
-        else if (buf == '\r') // ENTER ou CTRL-M
-            printf("e ");
-        else 
-            printf("%d ", buf);
+    action_reception_serialus(buf);
         
-	// Traitement
-	//char buff = U1RXREG;
-
 	// Activation de l'interruption
 	IEC0bits.U1RXIE	= 1;
 }

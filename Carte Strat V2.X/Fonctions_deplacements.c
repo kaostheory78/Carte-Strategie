@@ -1541,8 +1541,8 @@ void traitement_escalier()
 {
     int i=0;
     int j,k;
-    int direction_1;
-    int direction_2;
+    int direction_1 =0;
+    int direction_2 =0;
 
     while (i+1<curseur)
     {
@@ -1602,9 +1602,9 @@ void post_traitement() //simplifie le trajet en elevant le maximum de deplacemen
 
 int aiguillage_evitement(int x_objectif, int y_objectif, int direction,int haut)  // evitement par le haut ou par le bas
 {
-    int direction_longement;
-    int cul_de_sac;
-    int curseur_initial=curseur;
+    int direction_longement = 0;
+    int cul_de_sac = 0;
+    int curseur_initial = curseur;
     int obstacle_initial = curseur_obstacle;
     int i;
     int test = 0;
