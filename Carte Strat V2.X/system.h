@@ -213,10 +213,10 @@ extern "C" {
     extern volatile __attribute__((near)) _commande_moteur COMMANDE;
     
     //Evitement adversaire
-    extern volatile uint8_t DETECTION;
-    extern volatile uint8_t EVITEMENT_ADV_AVANT;
-    extern volatile uint8_t EVITEMENT_ADV_ARRIERE;
-    extern volatile uint8_t STRATEGIE_EVITEMENT;
+    extern volatile _enum_on_off DETECTION;
+    extern volatile _enum_on_off EVITEMENT_ADV_AVANT;
+    extern volatile _enum_on_off EVITEMENT_ADV_ARRIERE;
+    extern volatile _enum_evitement STRATEGIE_EVITEMENT;
 
     extern int obstacle[x_max][y_max];
     extern int curseur;
@@ -240,11 +240,8 @@ extern "C" {
 
 
     // FLAG Automs
-    extern volatile uint8_t COULEUR;
-    extern volatile uint16_t FLAG_ACTION;
-    extern volatile uint8_t FLAG_EVITEMENT_STRATEGIQUE;
-    extern volatile uint8_t ETAT_AUTOM;
-    extern volatile uint16_t COMPTEUR_MARCHE;
+    extern volatile _enum_couleurs COULEUR;
+    extern volatile _enum_flag_action FLAG_ACTION;
     extern volatile uint8_t COMPTEUR_TEMPS_MATCH;
 
     extern volatile _ax12 ax12;

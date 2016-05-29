@@ -87,32 +87,32 @@ void rotation_us_avant ()
     angle_AX12(AX_US_GAUCHE, position_G, 1023, SANS_ATTENTE);
 }
 
-uint8_t inversion_autom (uint8_t cote)
-{
-    if (COULEUR == JAUNE)
-        return cote;
-    else
-    {
-        if (cote == DROIT)
-            return GAUCHE;
-        else if (cote == GAUCHE)
-            return DROIT;
-        else
-            return cote;
-    }
-}
-
-uint8_t check_capteur (uint8_t cote)
-{
-    cote = inversion_autom(cote);
-
-    if (cote == DROIT)
-        return CAPT_GOBELET_D;
-    else if (cote == GAUCHE)
-        return CAPT_GOBELET_G;
-    else
-        return 1;
-}
+//uint8_t inversion_autom (uint8_t cote)
+//{
+//    if (COULEUR == JAUNE)
+//        return cote;
+//    else
+//    {
+//        if (cote == DROIT)
+//            return GAUCHE;
+//        else if (cote == GAUCHE)
+//            return DROIT;
+//        else
+//            return cote;
+//    }
+//}
+//
+//uint8_t check_capteur (uint8_t cote)
+//{
+//    cote = inversion_autom(cote);
+//
+//    if (cote == DROIT)
+//        return CAPT_GOBELET_D;
+//    else if (cote == GAUCHE)
+//        return CAPT_GOBELET_G;
+//    else
+//        return 1;
+//}
 
 
 /******************************************************************************/

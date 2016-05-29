@@ -66,16 +66,13 @@
 /********************* DECLARATION DES VARIABLES GLOBALES *********************/
 /******************************************************************************/
 
-    volatile uint8_t COULEUR;
+    volatile _enum_couleurs COULEUR;
 
-    volatile uint8_t DETECTION;
-    volatile uint8_t EVITEMENT_ADV_AVANT;
-    volatile uint8_t EVITEMENT_ADV_ARRIERE;
-    volatile uint8_t STRATEGIE_EVITEMENT;
-    volatile uint16_t FLAG_ACTION;
-    volatile uint8_t FLAG_EVITEMENT_STRATEGIQUE;
-    volatile uint8_t ETAT_AUTOM;
-    volatile uint16_t COMPTEUR_MARCHE;
+    volatile _enum_on_off DETECTION;
+    volatile _enum_on_off EVITEMENT_ADV_AVANT;
+    volatile _enum_on_off EVITEMENT_ADV_ARRIERE;
+    volatile _enum_evitement STRATEGIE_EVITEMENT;
+    volatile _enum_flag_action FLAG_ACTION;
     volatile uint8_t COMPTEUR_TEMPS_MATCH;
 
 

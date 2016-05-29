@@ -34,12 +34,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
 
    if (FLAG_ASSERV.totale == ON)
         asserv();
-
-#ifdef GROS_ROBOT
-   if (FLAG_ACTION == ARRIVEE_MARCHE)
-       COMPTEUR_MARCHE = COMPTEUR_MARCHE + 1;
-#endif
-
+   
+   // Clignotement d'une led de ALIVE
    __attribute__((near)) static int led = 1, compteur = 0;
    compteur++;
 
@@ -77,11 +73,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
  */
 void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
 {
-    static uint8_t etat_autom = 0;
     COMPTEUR_TEMPS_MATCH ++;
 
-
-    
     if (COMPTEUR_TEMPS_MATCH >= 90)
     {
         PORTCbits.RC5 = 0;

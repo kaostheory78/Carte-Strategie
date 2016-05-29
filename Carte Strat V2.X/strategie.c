@@ -38,7 +38,6 @@ void strategie()
         STRATEGIE_EVITEMENT = STOP;
 
         init_position_robot(180., 988., 0.);
-        FLAG_ACTION = INIT_ASCENSEUR;
 
         delay_ms(1000);   
     #endif
