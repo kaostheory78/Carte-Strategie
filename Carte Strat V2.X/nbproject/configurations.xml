@@ -14,6 +14,7 @@
       <itemPath>interruptions.h</itemPath>
       <itemPath>pwm.h</itemPath>
       <itemPath>system.h</itemPath>
+      <itemPath>Serialus.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
