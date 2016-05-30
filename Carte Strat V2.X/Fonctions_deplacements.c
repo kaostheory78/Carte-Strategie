@@ -272,7 +272,7 @@ void calage_teta (double teta, int8_t sens_marche, double pourcentage_vitesse)
 /******************************************************************************/
 
 
-uint8_t _calage (double distance, double pourcentage_vitesse)
+_enum_erreur_asserv _calage (double distance, double pourcentage_vitesse)
 {
     FLAG_ASSERV.brake = OFF;
     reinit_asserv();
@@ -306,7 +306,7 @@ uint8_t _calage (double distance, double pourcentage_vitesse)
 }
 
 
-uint8_t _cibler (double x, double y, double pourcentage_vitesse)
+_enum_erreur_asserv _cibler (double x, double y, double pourcentage_vitesse)
 {
     y = inversion_couleur(y);
     FLAG_ASSERV.brake = OFF;
@@ -343,7 +343,7 @@ uint8_t _cibler (double x, double y, double pourcentage_vitesse)
     return FLAG_ASSERV.erreur;
 }
 
-uint8_t _orienter (double angle, double pourcentage_vitesse)
+_enum_erreur_asserv _orienter (double angle, double pourcentage_vitesse)
 {
     angle = inversion_couleur(angle);
     FLAG_ASSERV.brake = OFF;
@@ -445,7 +445,7 @@ void _fdt (double angle, char last)
     while (FLAG_ASSERV.fin_deplacement != FIN_DEPLACEMENT);
 }
 
-uint8_t _rejoindre (double x, double y, int8_t sens_marche, double pourcentage_vitesse)
+_enum_erreur_asserv _rejoindre (double x, double y, int8_t sens_marche, double pourcentage_vitesse)
 {
     y = inversion_couleur(y);
     FLAG_ASSERV.brake = OFF;
@@ -491,7 +491,7 @@ uint8_t _rejoindre (double x, double y, int8_t sens_marche, double pourcentage_v
     return FLAG_ASSERV.erreur;
 }
 
-uint8_t _avancer_reculer (double distance, double pourcentage_vitesse)
+_enum_erreur_asserv _avancer_reculer (double distance, double pourcentage_vitesse)
 {
     FLAG_ASSERV.brake = OFF;
     reinit_asserv();
@@ -522,7 +522,7 @@ uint8_t _avancer_reculer (double distance, double pourcentage_vitesse)
     return FLAG_ASSERV.erreur;
 }
 
-uint8_t _passe_part (double x, double y, int8_t sens_marche, double pourcentage_vitesse, char last)
+_enum_erreur_asserv _passe_part (double x, double y, int8_t sens_marche, double pourcentage_vitesse, char last)
 {
     if (last == DEBUT_TRAJECTOIRE)
     {

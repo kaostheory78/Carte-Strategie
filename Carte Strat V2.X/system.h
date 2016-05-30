@@ -147,14 +147,14 @@ extern "C" {
 
 #define PRIO_INTER_TIMER1               5   // Timer Assev
 #define PRIO_INTER_TIMER2               0   // Timer 2 en mode 32 bits (couplé à T3 donc osef)
-#define PRIO_INTER_UART1_RX             1   // Prio XBEE
+#define PRIO_INTER_UART1_RX             2   // Prio XBEE
 #define PRIO_INTER_TIMER3               6   // Timer Fin de match
-#define PRIO_INTER_I2C_MAITRE           5   // I²C désactivé pour le moment
-#define PRIO_INTER_I2C_ESCLAVE          4   // I²C désactivé pour le moment
-#define PRIO_INTER_TIMER4               2   // Autom
+#define PRIO_INTER_I2C_MAITRE           0   // I²C désactivé pour le moment
+#define PRIO_INTER_I2C_ESCLAVE          0   // I²C désactivé pour le moment
+#define PRIO_INTER_TIMER4               3   // Autom
 #define PRIO_INTER_TIMER5               1   //Prio Timer debug
-#define PRIO_INTER_UART2_TX             3   // AX12
-#define PRIO_INTER_UART2_RX             3   // AX12
+#define PRIO_INTER_UART2_TX             4   // AX12
+#define PRIO_INTER_UART2_RX             4   // AX12
 #define PRIO_INTER_QEI1                 7   // Codeurs : prio la plus haute
 #define PRIO_INTER_QEI2                 7   // Codeurs : prio la plus haute
 

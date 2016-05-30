@@ -48,6 +48,7 @@ void reinit_buffer_serialus()
     serialus.erreur_confirmation = false;
     serialus.info_a_traiter = false;
     serialus.nb_param = 0;
+    serialus.deplacement_en_cours = false;
     
     printf("\n\n\r");
 }
@@ -92,6 +93,11 @@ void reception_serialus(uint8_t octet)
     }
     else if (octet == '\r')
     {
+        //supression de l'espace en trop a la fin si l'utilisateur est con comme
+        //moi à mettre un espace en trop à la fin
+        if (serialus.index[serialus.nb_param] == 0 && serialus.buffer[serialus.nb_param][serialus.index[serialus.nb_param]] == '\0' && serialus.nb_param > 0 )
+            serialus.nb_param --;
+        
         serialus.info_a_traiter = true;
     }
     else
@@ -108,18 +114,22 @@ void reception_serialus(uint8_t octet)
 
 void action_reception_serialus(uint8_t buf)
 {
-    if (serialus.info_a_traiter == false)
+    if (buf == 3)
     {
-        if (buf == 3) // CTRL-C
+        print_abort("CTRL-C");
+        reinit_buffer_serialus();
+        if (serialus.info_a_traiter == true)
         {
-            reinit_buffer();
-            printf("\n\r");
+            if (check_string(1, "de"))
+            {        
+                brake();
+            }
         }
-        else
-        {
-            putchar(buf);
-            reception_serialus(buf);
-        }
+    }
+    else if (serialus.info_a_traiter == false)
+    {
+        putchar(buf);
+        reception_serialus(buf);
     }
     else if (serialus.attente_confirmation == true)
     {
@@ -158,9 +168,7 @@ void traitement_serialus ()
             conversion_string_to_function_code();
             reinit_buffer_serialus();
         }
-    }
-    
-    
+    }   
 }
 
 
@@ -200,16 +208,22 @@ void conversion_string_to_function_code()
         // Fonction d'ax12
         else if (check_string(0, "ax"))
         {
-            serialus_traitement_position();
+            serialus_traitement_ax12();
         }
         else if (check_string(0, "list"))
         {
             serialus_traitement_list();
         }
+        //effacer la fenêtre
+        else if (check_string(0, "clear") || check_string(0, "clc"))
+        {
+            printf("\e[1;1H\e[2J");
+        }
         // Code Fonction non reconnu
         else
         {
             print_non_reconnu(0);
+            list_serialus(SER_LIST);
         }
     }  
 }
@@ -239,9 +253,9 @@ void serialus_traitement_deplacement ()
 
                if (check_coherence(abs(x) < 4000 && abs(y) < 4000 && abs(v) < 200 ))
                {
-                   printf("\n\rcibler X : %d, Y : %d, V : %d",(int) x,(int) y,(int) v);
-                   //cibler(x, y, v);
-                   //print_position();
+                   //printf("\n\rcibler X : %d, Y : %d, V : %d",(int) x,(int) y,(int) v);
+                   serialus.deplacement_en_cours = true;
+                   print_erreur_deplacement(_cibler(x, y, v));
                }
            }
        }
@@ -258,9 +272,9 @@ void serialus_traitement_deplacement ()
 
                 if (check_coherence(abs(a) <= 180 && abs(v) < 200 ))
                 {
-                    printf("\n\rorienter Teta : %d, V : %d",(int) a,(int) v);
-                    //orienter(a, v);
-                    //print_position();
+                    serialus.deplacement_en_cours = true;
+                    //printf("\n\rorienter Teta : %d, V : %d",(int) a,(int) v);
+                    print_erreur_deplacement(_orienter(a, v));
                 }
             }
         }
@@ -279,9 +293,9 @@ void serialus_traitement_deplacement ()
 
                 if (check_coherence(abs(x) < 3000 && abs(y) < 2000 && abs(v) < 150 && abs(s) == 1))
                 {
-                    printf("\n\rrejoindre X : %d, Y : %d,sens : %d, V : %d",(int) x,(int) y,(int) s,(int) v);
-                    //rejoindre(x, y, s, v);
-                    //print_position();
+                    serialus.deplacement_en_cours = true;
+                    //printf("\n\rrejoindre X : %d, Y : %d,sens : %d, V : %d",(int) x,(int) y,(int) s,(int) v);
+                    print_erreur_deplacement(_rejoindre(x, y, s, v));
                 }
             }
         }
@@ -298,9 +312,9 @@ void serialus_traitement_deplacement ()
 
                 if (check_coherence(d < 3000 && d > 0 && abs(v) < 150))
                 {
-                    printf("\n\ravancer d : %d, V : %d",(int) d,(int) v);
-                    //avancer_reculer(d, v);
-                    //print_position();
+                    serialus.deplacement_en_cours = true;
+                    //printf("\n\ravancer d : %d, V : %d",(int) d,(int) v);
+                    print_erreur_deplacement(_avancer_reculer(d, v));
                 }
             }
         }
@@ -317,9 +331,9 @@ void serialus_traitement_deplacement ()
 
                 if (check_coherence(d < 3000 && d > 0 && abs(v) < 150))
                 {
-                    printf("\n\rreculer d : %d, V : %d",(int) d,(int) v);
-                    //avancer_reculer(-d, v);
-                    //print_position();
+                    serialus.deplacement_en_cours = true;
+                    //printf("\n\rreculer d : %d, V : %d",(int) d,(int) v);
+                    print_erreur_deplacement(_avancer_reculer(-d, v));
                 }
             }
         }
@@ -335,9 +349,11 @@ void serialus_traitement_deplacement ()
 
                 if (check_coherence(abs(nb) < 60))
                 {
-                    printf("\n\rtourner de %d tours", nb);
-                    //faire_des_tours(nb);
-                    //print_position();
+                    serialus.deplacement_en_cours = true;
+                    //printf("\n\rtourner de %d tours", nb);
+                    faire_des_tours(nb);
+                    serialus.deplacement_en_cours = false;
+                    print_position();
                 }
             }
             else
@@ -349,9 +365,11 @@ void serialus_traitement_deplacement ()
     {
         if (check_nb_param(1))
         {
-            printf("\n\rje fais un trapeze");
-            //trapeze(MARCHE_AVANT);
-            //print_position();
+            serialus.deplacement_en_cours = true;
+            //printf("\n\rje fais un trapeze");
+            trapeze(MARCHE_AVANT);
+            serialus.deplacement_en_cours = false;
+            print_position();
         }
     }
     // Fonction carré
@@ -359,9 +377,11 @@ void serialus_traitement_deplacement ()
     {
         if (check_nb_param(1))
         {
-            printf("\n\rje fais un carre");
-            //carre(MARCHE_AVANT);
-            //print_position();
+            serialus.deplacement_en_cours = true;
+            //printf("\n\rje fais un carre");
+            carre(MARCHE_AVANT);
+            serialus.deplacement_en_cours = false;
+            print_position();
         }
     }
     // Fonction brake
@@ -369,8 +389,8 @@ void serialus_traitement_deplacement ()
     {
         if (check_nb_param(1))
         {
-            printf("\n\rJe brake");
-            //brake();
+            printf("\n\rbrake");
+            brake();
         }
     }
     // Fonction unbrake
@@ -378,8 +398,8 @@ void serialus_traitement_deplacement ()
     {
         if (check_nb_param(1))
         {
-            printf("\n\rJ'unbrake");
-            //unbrake();
+            printf("\n\rUnbrake");
+            unbrake();
         }
     }
     else if (check_string(1, "list"))
@@ -416,9 +436,11 @@ void serialus_traitement_calage()
 
                 if (check_coherence(d < 3000 && d > 0 && abs(v) < 150))
                 {
-                    printf("\n\rCalage d : %d, V : %d",(int) d,(int) v);
+                    serialus.deplacement_en_cours = true;
+                    //printf("\n\rCalage d : %d, V : %d",(int) d,(int) v);
                     calage(d, v);
-                    //print_position();
+                    serialus.deplacement_en_cours = false;
+                    print_position();
                 }
             }
         }
@@ -437,9 +459,11 @@ void serialus_traitement_calage()
 
                 if (check_coherence(abs(x) < 3000 && abs(t) <= 180 && abs(v) < 150 && abs(s) == 1))
                 {
-                    printf("\n\rCalage en X x : %d, teta : %d, sens : %d, vitessse : %d",(int) x,(int) t, (int) s, (int) v);
-                    //calage_X(x, t, s, v);
-                    //print_position();
+                    serialus.deplacement_en_cours = true;
+                    //printf("\n\rCalage en X x : %d, teta : %d, sens : %d, vitessse : %d",(int) x,(int) t, (int) s, (int) v);
+                    calage_X(x, t, s, v);
+                    serialus.deplacement_en_cours = false;
+                    print_position();
                 }
             }
         }
@@ -458,9 +482,11 @@ void serialus_traitement_calage()
 
                 if (check_coherence(abs(y) < 2000 && abs(t) <= 180 && abs(v) < 150 && abs(s) == 1))
                 {
-                    printf("\n\rCalage en Y y : %d, teta : %d, sens : %d, vitessse : %d",(int) y,(int) t, (int) s, (int) v);
-                    //calage_Y(y, t, s, v);
-                    //print_position();
+                    serialus.deplacement_en_cours = true;
+                    //printf("\n\rCalage en Y y : %d, teta : %d, sens : %d, vitessse : %d",(int) y,(int) t, (int) s, (int) v);
+                    calage_Y(y, t, s, v);
+                    serialus.deplacement_en_cours = false;
+                    print_position();
                 }
             }
         }
@@ -478,9 +504,11 @@ void serialus_traitement_calage()
 
                 if (check_coherence(abs(t) <= 180 && abs(v) < 150 && abs(s) == 1))
                 {
-                    printf("\n\rCalage en Teta,  teta : %d, sens : %d, vitessse : %d",(int) t, (int) s, (int) v);
-                    //calage_teta(t, s, v);
-                    //print_position();
+                    serialus.deplacement_en_cours = true;
+                    //printf("\n\rCalage en Teta,  teta : %d, sens : %d, vitessse : %d",(int) t, (int) s, (int) v);
+                    calage_teta(t, s, v);
+                    serialus.deplacement_en_cours = false;
+                    print_position();
                 }
             }
         }
@@ -550,14 +578,8 @@ void serialus_traitement_position()
 
                     if (check_coherence(abs(x) <= 3000 && abs(y) <= 2000 && abs(t) <= 180))
                     {
-                        do
-                        {
-                            printf("\n\rPlease confirm : Init X : %lf, Y : %lf, Teta : %lf (y/n) ? : ", x, y, t);
-                            serialus.erreur_confirmation = false;
-                            serialus.attente_confirmation = true;
-                            while(serialus.attente_confirmation == true);
-                        }while(serialus.erreur_confirmation == true);
                         
+                        printf("\n\rInit X : %f, Y : %f, Teta : %f",(float) x,(float) y,(float) t);   
                         if (check_confirmation())
                         {
                             init_position_robot(x, y, t);
@@ -576,14 +598,8 @@ void serialus_traitement_position()
                     double x = (double) atof((char *)serialus.buffer[3]);
                     if (check_coherence(abs(x) <= 3000))
                     {
-                        do
-                        {
-                            printf("\n\rPlease confirm : Init X : %lf (y/n) ? : ", x);
-                            serialus.erreur_confirmation = false;
-                            serialus.attente_confirmation = true;
-                            while(serialus.attente_confirmation == true);
-                        }while(serialus.erreur_confirmation == true);
-
+                        printf("\n\rInit X : %f",(float) x);
+                        
                         if (check_confirmation())
                         {
                             init_X(x);
@@ -602,14 +618,8 @@ void serialus_traitement_position()
                     double y = (double) atof((char *)serialus.buffer[3]);
                     if (check_coherence(abs(y) <= 2000))
                     {
-                        do
-                        {
-                            printf("\n\rPlease confirm : Init Y : %lf (y/n) ? : ", y);
-                            serialus.erreur_confirmation = false;
-                            serialus.attente_confirmation = true;
-                            while(serialus.attente_confirmation == true);
-                        }while(serialus.erreur_confirmation == true);
-
+                        printf("\n\rInit Y : %f", (float) y);
+                        
                         if (check_confirmation())
                         {
                             init_X(y);
@@ -628,14 +638,8 @@ void serialus_traitement_position()
                     double t = (double) atof((char *)serialus.buffer[3]);
                     if (check_coherence(abs(t) <= 180))
                     {
-                        do
-                        {
-                            printf("\n\rPlease confirm : Init Teta : %lf (y/n) ? : ", t);
-                            serialus.erreur_confirmation = false;
-                            serialus.attente_confirmation = true;
-                            while(serialus.attente_confirmation == true);
-                        }while(serialus.erreur_confirmation == true);
-
+                        printf("\n\rInit Teta : %f", (float) t);
+                            
                         if (check_confirmation())
                         {
                             init_orientation(t);
@@ -665,21 +669,21 @@ void serialus_traitement_position()
         {
             if (check_nb_param(2))
             {
-                printf("\n\r Position X : %lf", get_X());
+                printf("\n\rX : %f",(float) get_X());
             }
         }
         else if (check_string(2, "y"))
         {
             if (check_nb_param(2))
             {
-                printf("\n\r Position Y : %lf", get_Y());
+                printf("\n\rY : %f", (float) get_Y());
             }
         }
         else if (check_string(2, "t"))
         {
             if (check_nb_param(2))
             {
-                printf("\n\r Orientation : %lf", get_orientation());
+                printf("\n\rTeta : %f",(float) get_orientation());
             }
         }
         else 
@@ -700,9 +704,106 @@ void serialus_traitement_position()
  */
 void serialus_traitement_ax12()
 {
-    if (serialus.nb_param < 1)
+    if (serialus.nb_param < 2)
     {
         print_manque_parametre();
+        list_serialus(SER_AX12);
+    }
+    else if (check_string(1, "set"))
+    {
+        // bouger un ax12 sur un angle
+        if (check_string(2, "ang"))
+        {
+            if (check_nb_param(5))
+            {
+                if (check_sont_des_nombres(3, serialus.buffer[3], serialus.buffer[4], serialus.buffer[5]))
+                {
+                    uint8_t id = (uint8_t) atoi((char *)serialus.buffer[3]);
+                    uint8_t angle = (uint8_t) atoi((char *)serialus.buffer[4]);
+                    uint8_t v = (uint8_t) atoi((char *)serialus.buffer[5]);
+
+                    if (check_coherence(id >= 0 && id <= ID_MAX_AX12 && abs(angle) <= 270 && v >= 0 && v <= 1023))
+                    {
+                        printf("ID : %d, angle : %d, v : %d", id, angle, v);
+                        synchro_AX12(id, (float)angle, v, SANS_ATTENTE);
+                        print_erreur_ax12();
+                    }
+                }
+            } 
+        }
+        else if  (check_string(2, "pos"))
+        {
+            if (check_nb_param(5))
+            {
+                if (check_sont_des_nombres(3, serialus.buffer[3], serialus.buffer[4], serialus.buffer[5]))
+                {
+                    uint8_t id = (uint8_t) atoi((char *)serialus.buffer[3]);
+                    uint8_t position = (uint8_t) atoi((char *)serialus.buffer[4]);
+                    uint8_t v = (uint8_t) atoi((char *)serialus.buffer[5]);
+
+                    if (check_coherence(id >= 0 && id <= ID_MAX_AX12 && position>=0 && position <= 1023 && v >= 0 && v <= 1023))
+                    {
+                        printf("ID : %d, position : %d, v : %d", id, position, v);
+                        angle_AX12(id, position, v, SANS_ATTENTE);
+                        print_erreur_ax12();
+                    }
+                }
+            } 
+        }
+        else if (check_string(2, "led"))
+        {
+            if (check_nb_param(4))
+            {
+                // si c'est un id
+                int16_t id = check_id_ax12(3);
+                if (id != -1)
+                {
+                    if (check_string(4, "on"))
+                    {
+                        printf("id : %d -> led on", id);
+                        allumer_LED_AX12((uint8_t)id);
+                        print_erreur_ax12();
+                    }
+                    else if (check_string(4, "off"))
+                    {
+                        printf("id : %d -> led off", id);
+                        eteindre_LED_AX12((uint8_t) id);
+                        print_erreur_ax12();
+                    }
+                    else
+                    {
+                        print_non_reconnu(4);
+                        list_serialus(SER_POSITION);
+                    }
+                }
+            } 
+        }
+        else 
+        {
+            print_non_reconnu(2);
+            list_serialus(SER_AX12);
+        }
+    }
+    else if (check_string(1, "get"))
+    {
+        // position de l'ax
+        if (check_string(2, "pos"))
+        {
+            
+        }
+        else if (check_string(2, "ping"))
+        {
+            
+        }
+        else 
+        {
+            print_non_reconnu(2);
+            list_serialus(SER_AX12);
+        }
+    }
+    else
+    {
+        print_non_reconnu(1);
         list_serialus(SER_AX12);
     }
 }
@@ -715,6 +816,40 @@ void serialus_traitement_list()
 {
     if (serialus.nb_param < 1)
     {
+        list_serialus(SER_LIST);
+    }
+    else if (check_string(1, "all"))
+    {
+        list_serialus(SER_LIST);
+        list_serialus(SER_DEPLACEMENT);
+        list_serialus(SER_ASSERV);
+        list_serialus(SER_ODOMETRIE);
+        list_serialus(SER_POSITION);
+        list_serialus(SER_AX12);
+    }
+    else if (check_string(1, "de"))
+    {
+        list_serialus(SER_DEPLACEMENT);
+    }
+    else if (check_string(1, "as"))
+    {
+        list_serialus(SER_ASSERV);
+    }
+    else if (check_string(1, "odo"))
+    {
+        list_serialus(SER_ODOMETRIE);
+    }
+    else if (check_string(1, "pos"))
+    {
+        list_serialus(SER_POSITION);
+    }
+    else if (check_string(1, "ax"))
+    {
+        list_serialus(SER_AX12);
+    }
+    else 
+    {
+        print_non_reconnu(1);
         list_serialus(SER_LIST);
     }
 }
@@ -748,6 +883,28 @@ _Bool check_est_un_nombre(uint8_t* buffer)
         }
     }
     return true;
+}
+
+int16_t check_id_ax12(uint8_t param)
+{
+    int16_t id;
+    if (check_est_un_nombre((uint8_t*) serialus.buffer[param]))
+    {
+        id = atoi((char *)serialus.buffer[param]);
+        if (!(id >= 0 && id <= ID_MAX_AX12))
+            id = -1;
+    }
+    else if (check_string(param, "all"))
+    {
+        id = TOUS_LES_AX12;
+    }
+    else 
+        id =-1;
+    
+    if (id == -1)
+        print_abort("Probleme ID");
+    
+    return id;
 }
 
 /**
@@ -930,6 +1087,15 @@ _Bool check_coherence (_Bool test)
 _Bool check_confirmation()
 {
     _Bool result = true;
+    
+    do
+    {
+        print_confirm();
+        serialus.erreur_confirmation = false;
+        serialus.attente_confirmation = true;
+        while(serialus.attente_confirmation == true);
+    }while(serialus.erreur_confirmation == true);
+    
     if (serialus.confirmation == false)
     {
         result = false;
@@ -937,6 +1103,7 @@ _Bool check_confirmation()
     }
     return result;
 }
+
 
 /******************************************************************************/
 /************************ FONCTIONS DE PRINT **********************************/
@@ -949,6 +1116,7 @@ void list_serialus (uint8_t truc_a_lister)
     {
         case SER_LIST :
             printf(" :");
+            printf("\n\rPour lister : list");
             printf("\n\rDEPLACEMENT  de");
             printf("\n\rCALAGE       ca");
             printf("\n\rASSERV       as");
@@ -1001,16 +1169,16 @@ void list_serialus (uint8_t truc_a_lister)
             
         case SER_AX12 :
             printf("pour ax : ");
-            printf("\n\rPour Get    : get x");
             printf("\n\rPour Set    : set x");
             printf("\n\r\tangle     : ang");
             printf("\n\r\tposition  : pos");
-            printf("\n\r\tping(get) : ping");
             printf("\n\r\tled       : led");
-            printf("\n\r\t... a venir");
+            printf("\n\rPour Get    : get x");
+            printf("\n\r\tposition  : pos");
+            printf("\n\r\tping      : ping");
+            printf("\n\r... a venir ?");
             printf("\n\r");
     }
-    printf("\n\rPour lister : list");
     printf("\n\r");
    
 }
@@ -1047,12 +1215,60 @@ void print_incoherent()
 
 void print_position()
 {
-    printf("\n\rX: %lf, Y : %lf, Teta : %lf\n", get_X(), get_Y(), get_orientation());
+    printf("\n\rX: %f, Y : %f, Teta : %f\n",(float) get_X(), (float) get_Y(),(float) get_orientation());
 }
 
 void print_abort_confirmation()
 {
-    printf("\n\rAbort no received !");
+    print_abort("no received !");
 }
 
+void print_confirm()
+{
+     printf("\n\rPlease confirm : (y/n) ?");
+}
 
+void print_erreur_deplacement(_enum_erreur_asserv erreur)
+{
+    serialus.deplacement_en_cours = false;
+    switch(erreur)
+    {
+        case EVITEMENT :
+            print_abort("Evitement");
+            break;
+        case BLOCAGE :
+            print_abort("Blocage");
+            break;
+        case DEPLACEMENT_NORMAL :
+            break;
+    }
+    print_position();
+}
+
+void print_abort(char* raison)
+{
+    printf("\n\rAbort : %s", raison);
+}
+
+void print_erreur_ax12()
+{
+    switch(ax12.erreur)
+    {
+        case PAS_D_ERREUR :  
+            break;
+        case TIME_OUT :
+            print_abort("TIME OUT");
+            break;
+        case ERREUR_CS :
+            print_abort("Erreur checksum");
+            break;
+        default :
+            break;
+    }  
+}
+
+//void print_clignotement()
+//{
+//    printf("\n\r");
+//    serialus.deplacement_en_cours == true;
+//}

@@ -161,6 +161,7 @@ extern "C" {
         _Bool attente_confirmation      : 1;
         _Bool confirmation              : 1;
         _Bool erreur_confirmation       : 1;
+        _Bool deplacement_en_cours      : 1;
         uint8_t index[MAX_PARAM];
         uint8_t nb_param;
         uint8_t buffer[MAX_PARAM][MAX_BUFF];
@@ -180,24 +181,23 @@ extern "C" {
     _Bool check_erreur_serialus();
     _Bool check_est_un_nombre(uint8_t* buffer);
     _Bool check_sont_des_nombres(uint8_t nb_nombre, ...);
+    int16_t check_id_ax12(uint8_t param);
     
     /**
- * Fonction qui vérifie si une liste de chaine représente bien des nombres flottants
- * @param nb_nombre : nombre de nombre à vérifier
- * @param ...       : liste de chaine de nombre (de type (int8_t *))
- * @return          : true / false
- */
-_Bool check_sont_des_nombres_flottants(uint8_t nb_nombre, ...);
+    * Fonction qui vérifie si une liste de chaine représente bien des nombres flottants
+    * @param nb_nombre : nombre de nombre à vérifier
+    * @param ...       : liste de chaine de nombre (de type (int8_t *))
+    * @return          : true / false
+    */
+   _Bool check_sont_des_nombres_flottants(uint8_t nb_nombre, ...);
 
-/**
- * Fonction qui vérifie que la chaine reçu est bien un nombre flottant
- * @param buffer : buffer contenant le nombre
- * @return       : true / false
- */
-_Bool check_est_un_nombre_flottant(uint8_t* buffer);
-
-_Bool check_confirmation();
-    
+   /**
+    * Fonction qui vérifie que la chaine reçu est bien un nombre flottant
+    * @param buffer : buffer contenant le nombre
+    * @return       : true / false
+    */
+    _Bool check_est_un_nombre_flottant(uint8_t* buffer);
+    _Bool check_confirmation();
     _Bool check_nb_param (uint8_t nombre_attendu);
     _Bool check_coherence (_Bool test);
     void list_serialus (uint8_t truc_a_lister);
@@ -206,17 +206,17 @@ _Bool check_confirmation();
     
     // Fonctions Print : 
     void print_non_reconnu(uint8_t numero);
-
     void print_manque_parametre();
-
     void print_trop_parametre();
-
     void print_pas_nombre();
     void print_pas_nombre_flottant();
     void print_abort_confirmation();
     void print_incoherent();
-
+    void print_confirm();
     void print_position();
+    void print_erreur_deplacement(_enum_erreur_asserv erreur);
+    void print_abort(char* raison);
+    void print_erreur_ax12();
     
     // Fonctions traitements : 
     void serialus_traitement_deplacement ();
@@ -226,6 +226,7 @@ _Bool check_confirmation();
     void serialus_traitement_position();
     void serialus_traitement_ax12();
     void serialus_traitement_list();
+    
 
     
     

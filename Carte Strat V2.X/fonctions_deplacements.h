@@ -197,17 +197,17 @@ void calage_teta (double teta, int8_t sens_marche, double pourcentage_vitesse);
 
 
 
-uint8_t _calage (double distance, double pourcentage_vitesse);
+_enum_erreur_asserv _calage (double distance, double pourcentage_vitesse);
 
-uint8_t _cibler (double x, double y, double pourcentage_vitesse);
+_enum_erreur_asserv _cibler (double x, double y, double pourcentage_vitesse);
 
-uint8_t _orienter (double angle, double pourcentage_vitesse);
+_enum_erreur_asserv _orienter (double angle, double pourcentage_vitesse);
 
-uint8_t _rejoindre (double x, double y, int8_t sens_marche, double pourcentage_vitesse);
+_enum_erreur_asserv _rejoindre (double x, double y, int8_t sens_marche, double pourcentage_vitesse);
 
-uint8_t _avancer_reculer (double distance, double pourcentage_vitesse);
+_enum_erreur_asserv _avancer_reculer (double distance, double pourcentage_vitesse);
 
-uint8_t _passe_part (double x, double y, int8_t sens_marche, double pourcentage_vitesse, char last);
+_enum_erreur_asserv _passe_part (double x, double y, int8_t sens_marche, double pourcentage_vitesse, char last);
 
 /**
  * Fonction qui ajuste en temps réel la consigne d'angle pour que le robot
