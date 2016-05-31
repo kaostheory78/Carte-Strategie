@@ -217,6 +217,8 @@ extern "C" {
     void print_erreur_deplacement(_enum_erreur_asserv erreur);
     void print_abort(char* raison);
     void print_erreur_ax12();
+    void print_ping(uint8_t id);
+    void print_position_ax12(uint8_t id, int16_t position);
     
     // Fonctions traitements : 
     void serialus_traitement_deplacement ();

@@ -743,7 +743,7 @@ void serialus_traitement_ax12()
 
                     if (check_coherence(id >= 0 && id <= ID_MAX_AX12 && position>=0 && position <= 1023 && v >= 0 && v <= 1023))
                     {
-                        printf("ID : %d, position : %d, v : %d", id, position, v);
+                        //printf("ID : %d, position : %d, v : %d", id, position, v);
                         angle_AX12(id, position, v, SANS_ATTENTE);
                         print_erreur_ax12();
                     }
@@ -778,6 +778,23 @@ void serialus_traitement_ax12()
                 }
             } 
         }
+        else if (check_string(2, "data"))
+        {
+            if (check_nb_param(5))
+            {
+                if (check_sont_des_nombres(2, serialus.buffer[3], serialus.buffer[4], serialus.buffer[5]))
+                {
+                    uint8_t id   = (uint8_t) atoi((char *)serialus.buffer[3]);
+                    uint8_t add  = (uint8_t) atoi((char *)serialus.buffer[4]);
+                    uint8_t data = (uint8_t) atoi((char *)serialus.buffer[5]);
+                    
+                    if (check_coherence(data <= 255))
+                    {
+                        commande_AX12(id, _4PARAM, WRITE_DATA, add, data);
+                    }
+                }
+            }
+        }
         else 
         {
             print_non_reconnu(2);
@@ -789,11 +806,83 @@ void serialus_traitement_ax12()
         // position de l'ax
         if (check_string(2, "pos"))
         {
-            
+            if (check_nb_param(3))
+            {
+                // si c'est un id
+                int16_t id = check_id_ax12(3);
+                if (id == TOUS_LES_AX12)
+                {
+                    uint8_t id = 0, index = 0;
+                    uint8_t tab[ID_MAX_AX12];
+                    for (id = 0 ; id < ID_MAX_AX12 ; id++)
+                    {
+                        if (Ping(id) == REPONSE_OK)
+                        {
+                            tab[index++] = id;
+                        }
+                    }
+                    printf("\n");
+                    while(serialus.info_a_traiter == true)
+                    {
+                        printf("\r");
+                        for (id = 0 ; id < index ; id++)
+                        {
+                            print_position_ax12(tab[id], read_data(tab[id], LIRE_POSITION_ACTU));
+                        }
+                    }
+                }
+                else if (id != -1)
+                {
+                    if (Ping(id) == REPONSE_OK)
+                    {
+                        printf("\n\r");
+                        print_position_ax12(id, read_data(id, LIRE_POSITION_ACTU));
+                    }
+                    else 
+                        print_abort("PAS DE REPONSE");
+                }
+            } 
         }
         else if (check_string(2, "ping"))
         {
-            
+            if (check_nb_param(3))
+            {
+                // si c'est un id
+                int16_t id = check_id_ax12(3);
+                if (id == TOUS_LES_AX12)
+                {
+                    uint8_t id = 0;
+                    for (id = 0 ; id < ID_MAX_AX12 ; id++)
+                    {
+                        if (Ping(id) == REPONSE_OK)
+                        {
+                            print_ping(id);
+                        }
+                    }
+                }
+                else if (id != -1)
+                {
+                    if (Ping(id) == REPONSE_OK)
+                    {
+                        print_ping(id);
+                    }
+                    else 
+                        print_abort("PAS DE REPONSE");
+                }
+            } 
+        }
+        else if (check_string(2, "data"))
+        {
+            if (check_nb_param(4))
+            {
+                if (check_sont_des_nombres(2, serialus.buffer[3], serialus.buffer[4]))
+                {
+                    uint8_t id   = (uint8_t) atoi((char *)serialus.buffer[3]);
+                    uint8_t add  = (uint8_t) atoi((char *)serialus.buffer[4]);
+
+                    printf("\n\rdata = %d", read_data(id, add));
+                }
+            }
         }
         else 
         {
@@ -1265,6 +1354,16 @@ void print_erreur_ax12()
         default :
             break;
     }  
+}
+
+void print_ping(uint8_t id)
+{
+    printf("\n\rID : %d", id);
+}
+
+void print_position_ax12(uint8_t id, int16_t position)
+{
+    printf(" ID : %d = %d", id, position);
 }
 
 //void print_clignotement()
