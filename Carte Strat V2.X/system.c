@@ -30,6 +30,8 @@ void init_system (void)
     position[CODEUR_D].nouvelle = 0;
     position[CODEUR_G].nouvelle = 0;
     
+    check_limitation_courant = CKECK_LIMITATION_COURANT;
+    
     config_timer_10ms();
     config_timer_5ms();
     config_timer_90s();

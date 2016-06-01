@@ -112,6 +112,8 @@ extern "C" {
 
     #define _TENSION_SORTIE_PTN          34L 
 
+    #define _CKECK_LIMITATION_COURANT    true 
+
 
     /**************************************************************************/
     /*************************** CONFIGS MOTEURS ******************************/
@@ -271,6 +273,8 @@ extern "C" {
     #define _TENSION_MOTEUR_X            12L
 
     #define _TENSION_SORTIE_PTN          17L
+
+    #define _CKECK_LIMITATION_COURANT    true 
 
 
     /**************************************************************************/

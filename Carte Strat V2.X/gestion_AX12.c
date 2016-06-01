@@ -49,6 +49,7 @@
 /******************************************************************************/
 
 volatile _ax12 ax12;
+volatile _Bool check_limitation_courant;
 volatile decal decalage[ID_MAX_AX12];
 volatile pos position_AX12[ID_MAX_AX12];
 
@@ -379,6 +380,11 @@ void mode_rotation_AX12 (uint8_t ID, uint8_t mode)
         commande_AX12(ID, _5PARAM, WRITE_DATA, 0x08, 0xFF, 0x03);
 }
 
+void torque_enable_ax12(uint8_t ID, _Bool mode)
+{
+    commande_AX12(ID, _4PARAM, WRITE_DATA, 0x18, (uint8_t) mode);
+}
+
 /******************************************************************************/
 /********************** Fonctions diverses AX12 *******************************/
 /******************************************************************************/
@@ -445,9 +451,15 @@ void traitement_reception_ax12 ()
 
     if (ax12.erreur != TIME_OUT)
     {
-        ax12.erreur = ax12.buffer[4];
-        printf("\n\rerreur : %d", ax12.buffer[4]);
-        uint8_t checksum = calcul_checksum(ax12.buffer[_ID], ax12.buffer[LONGUEUR], ax12.erreur, ax12.buffer[PARAM1], ax12.buffer[PARAM2], ax12.buffer[PARAM3], ax12.buffer[PARAM4], ax12.buffer[PARAM5]);
+        if (ax12.buffer[4] != 0)
+        {
+            if ((ax12.buffer[4] & 0b00100000) != 0)
+                ax12.erreur = LIMITATION_DE_COURANT;
+            else
+                ax12.erreur = AUTRE_ERREUR;
+            //printf(" erreur code : %d", ax12.buffer[4]);
+        }
+        uint8_t checksum = calcul_checksum(ax12.buffer[_ID], ax12.buffer[LONGUEUR], ax12.buffer[4], ax12.buffer[PARAM1], ax12.buffer[PARAM2], ax12.buffer[PARAM3], ax12.buffer[PARAM4], ax12.buffer[PARAM5]);
 
         ax12.buffer[CHSUM] = ax12.buffer[ax12.offset - 1];
 
@@ -474,9 +486,21 @@ void reinit_buffer (void)
     ax12.nb_octet_attente = 0;
 }
 
+void reinit_alim_ax12()
+{
+    INHIBIT_AX12 = ETEINT;
+    delay_ms(30);
+    print_abort("reinit alim ax12");
+    INHIBIT_AX12 = ALLUME;
+    // test jusqu'à 10 secondes non concluant
+    // Il faut tester une autre solution
+    delay_ms(10);
+}
+
 void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, ...)
 {
     static uint64_t __attribute__((unused)) nb1 = 0,__attribute__((unused)) nb2 = 0, nb3 = 0;
+    uint8_t nombre_reset = 0;
     
     va_list liste_param; // liste des arguments potentiels (param1, 2, 3, 4, 5)
     va_start(liste_param, instruction);
@@ -543,8 +567,16 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, ...)
             DIR_UART_AX12 = RECEPTION;
             traitement_reception_ax12();
         }
-
+   
         //delay_us(10);
+        if (ax12.erreur == LIMITATION_DE_COURANT && check_limitation_courant == true && nombre_reset < 2)
+        {
+            ax12.tentatives = 0;
+            nombre_reset++;
+            reinit_alim_ax12();
+        }
+        
+        //printf("\n\rtest %d, erreur : %d", ax12.tentatives, ax12.erreur);
 
     }while (ax12.erreur != PAS_D_ERREUR && ax12.tentatives < MAX_TENTATIVES );
 

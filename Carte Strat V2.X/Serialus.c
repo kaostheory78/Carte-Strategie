@@ -122,7 +122,7 @@ void action_reception_serialus(uint8_t buf)
         {
             if (check_string(1, "de"))
             {        
-                brake();
+                fin_deplacement();
             }
         }
     }
@@ -390,7 +390,7 @@ void serialus_traitement_deplacement ()
         if (check_nb_param(1))
         {
             printf("\n\rbrake");
-            brake();
+            fin_deplacement();
         }
     }
     // Fonction unbrake
@@ -719,8 +719,8 @@ void serialus_traitement_ax12()
                 if (check_sont_des_nombres(3, serialus.buffer[3], serialus.buffer[4], serialus.buffer[5]))
                 {
                     uint8_t id = (uint8_t) atoi((char *)serialus.buffer[3]);
-                    uint8_t angle = (uint8_t) atoi((char *)serialus.buffer[4]);
-                    uint8_t v = (uint8_t) atoi((char *)serialus.buffer[5]);
+                    int16_t angle = (int16_t) atoi((char *)serialus.buffer[4]);
+                    uint16_t v = (uint16_t) atoi((char *)serialus.buffer[5]);
 
                     if (check_coherence(id >= 0 && id <= ID_MAX_AX12 && abs(angle) <= 270 && v >= 0 && v <= 1023))
                     {
@@ -738,8 +738,8 @@ void serialus_traitement_ax12()
                 if (check_sont_des_nombres(3, serialus.buffer[3], serialus.buffer[4], serialus.buffer[5]))
                 {
                     uint8_t id = (uint8_t) atoi((char *)serialus.buffer[3]);
-                    uint8_t position = (uint8_t) atoi((char *)serialus.buffer[4]);
-                    uint8_t v = (uint8_t) atoi((char *)serialus.buffer[5]);
+                    uint16_t position = (uint16_t) atoi((char *)serialus.buffer[4]);
+                    uint16_t v = (uint16_t) atoi((char *)serialus.buffer[5]);
 
                     if (check_coherence(id >= 0 && id <= ID_MAX_AX12 && position>=0 && position <= 1023 && v >= 0 && v <= 1023))
                     {
@@ -795,6 +795,56 @@ void serialus_traitement_ax12()
                 }
             }
         }
+        else if (check_string(2, "torque"))
+        {
+            if (check_nb_param(4))
+            {
+                // si c'est un id
+                int16_t id = check_id_ax12(3);
+                if (id != -1)
+                {
+                    if (check_string(4, "on"))
+                    {
+                        //printf("\n\rid : %d -> roque on", id);
+                        torque_enable_ax12((uint8_t)id, true);
+                        print_erreur_ax12();
+                    }
+                    else if (check_string(4, "off"))
+                    {
+                        //printf("\n\rid : %d -> roeque off", id);
+                        torque_enable_ax12((uint8_t) id, false);
+                        print_erreur_ax12();
+                    }
+                    else
+                    {
+                        print_non_reconnu(4);
+                        list_serialus(SER_POSITION);
+                    }
+                }
+            } 
+        }
+        else if (check_string(2, "alim"))
+        {
+            if (check_nb_param(3))
+            {
+               
+                if (check_string(3, "on"))
+                {
+                    //printf("\n\rid : %d -> roque on", id);
+                    INHIBIT_AX12 = ALLUME;
+                }
+                else if (check_string(3, "off"))
+                {
+                    //printf("\n\rid : %d -> roeque off", id);
+                    INHIBIT_AX12 = ETEINT;
+                }
+                else
+                {
+                    print_non_reconnu(4);
+                    list_serialus(SER_POSITION);
+                }
+            } 
+        }     
         else 
         {
             print_non_reconnu(2);
@@ -1351,6 +1401,11 @@ void print_erreur_ax12()
         case ERREUR_CS :
             print_abort("Erreur checksum");
             break;
+        case LIMITATION_DE_COURANT :
+            print_abort("Limitation de courant");
+            break;
+        case AUTRE_ERREUR :
+            print_abort("erreur ax inconnu");
         default :
             break;
     }  

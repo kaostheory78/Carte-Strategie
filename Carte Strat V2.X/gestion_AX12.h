@@ -46,6 +46,9 @@ extern "C" {
 // /!\      VALEUR MAX : 15         /!\ //
 #define MAX_TENTATIVES          10
     
+    
+#define CKECK_LIMITATION_COURANT _CKECK_LIMITATION_COURANT 
+    
 #define _ID                     2
 #define LONGUEUR                3
 #define INSTRUCTION             4
@@ -169,11 +172,13 @@ extern "C" {
     {
         // /!\ ENUM CODEE SUR 3 BIT !!! /!\ //
         // /!\      VALEUR MAX : 7      /!\ //
-        PAS_D_ERREUR,       // 0
-        TIME_OUT,           // 1
-        REPONSE_OK,         // 2
-        PAS_DE_REPONSE,     // 3
-        ERREUR_CS           // 4
+        PAS_D_ERREUR,           // 0
+        TIME_OUT,               // 1
+        REPONSE_OK,             // 2
+        PAS_DE_REPONSE,         // 3
+        ERREUR_CS,              // 4
+        LIMITATION_DE_COURANT,  // 5
+        AUTRE_ERREUR            // 6
     }_enum_erreur_ax12;
     
     typedef enum
@@ -264,6 +269,7 @@ void traitement_reception_ax12 ();
  */
 void reinit_buffer (void);
 
+void reinit_alim_ax12();
 
 /**
  *  Fonction qui envoit les trames de commande des AX12 sur l'uart puis gère la réception
@@ -403,6 +409,9 @@ void baud_AX12 (uint8_t ID, uint8_t bauds);
  * @param mode : MODE_INFINI ou MODE_NORMAL
  */
 void mode_rotation_AX12 (uint8_t ID, uint8_t mode);
+
+
+void torque_enable_ax12(uint8_t ID, _Bool mode);
 
 
 /******************************************************************************/
