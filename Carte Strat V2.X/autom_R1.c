@@ -145,7 +145,7 @@ void init_depart()
 /******************************************************************************/
 
 
-void autom_10ms (void)
+void autom_20ms (void)
 {
 
     static uint16_t compteur = 0;

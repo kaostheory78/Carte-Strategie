@@ -58,14 +58,16 @@ extern "C" {
 #define ANALOGIQUE              0
 
 #define TIMER_5ms               T1CONbits.TON
-#define TIMER_10ms              T4CONbits.TON
-#define TIMER_90s               T2CONbits.TON
-#define TIMER_DEBUG             T5CONbits.TON
+#define TIMER_10ms              T2CONbits.TON
+#define TIMER_20ms              T3CONbits.TON
+#define TIMER_100ms             T4CONbits.TON
+#define TIMER_200ms             T5CONbits.TON
 
 #define FLAG_TIMER_5ms          IFS0bits.T1IF
-#define FLAG_TIMER_10ms         IFS1bits.T4IF
-#define FLAG_TIMER_90s          IFS0bits.T3IF
-#define FLAG_TIMER_DEBUG        IFS1bits.T5IF
+#define FLAG_TIMER_10ms         IFS0bits.T2IF
+#define FLAG_TIMER_20ms         IFS0bits.T3IF
+#define FLAG_TIMER_100ms        IFS1bits.T4IF
+#define FLAG_TIMER_200ms        IFS1bits.T5IF
 
 /******************************************************************************/
 /********************************  PORT CARTE   *******************************/
@@ -145,29 +147,36 @@ extern "C" {
 /******************************* Interruptions  *******************************/
 /******************************************************************************/
 
-#define PRIO_INTER_TIMER1               5   // Timer Assev
-#define PRIO_INTER_TIMER2               0   // Timer 2 en mode 32 bits (couplé à T3 donc osef)
-#define PRIO_INTER_UART1_RX             2   // Prio XBEE
-#define PRIO_INTER_TIMER3               6   // Timer Fin de match
+#define PRIO_INTER_TIMER1               6   // Timer Assev
+#define PRIO_INTER_TIMER2               4   // Timer Evitement
+#define PRIO_INTER_TIMER3               3   // Timer Autom
+#define PRIO_INTER_TIMER4               5   // Timer scheduleur
+#define PRIO_INTER_TIMER5               1   // Timer Serialus
+
 #define PRIO_INTER_I2C_MAITRE           0   // I²C désactivé pour le moment
 #define PRIO_INTER_I2C_ESCLAVE          0   // I²C désactivé pour le moment
-#define PRIO_INTER_TIMER4               3   // Autom
-#define PRIO_INTER_TIMER5               1   //Prio Timer debug
+
+#define PRIO_INTER_UART1_RX             2   // Prio XBEE
 #define PRIO_INTER_UART2_TX             4   // AX12
 #define PRIO_INTER_UART2_RX             4   // AX12
+    
 #define PRIO_INTER_QEI1                 7   // Codeurs : prio la plus haute
 #define PRIO_INTER_QEI2                 7   // Codeurs : prio la plus haute
 
-#define ACTIV_INTER_UART1_RX            1   // Uart XBEE
-#define ACTIV_INTER_TIMER3              1   // Timer 90 secondes : fin de match
-#define ACTIV_INTER_TIMER2              0   // Osef : TIMER 2 et 3 sur 32 bits
+
 #define ACTIV_INTER_TIMER1              1   // Timer asserv : 5 ms
-#define ACTIV_INTER_UART2_TX            1   // UART AX12 : Acquittement trame envoyée
-#define ACTIV_INTER_UART2_RX            1   // UART AX12
+#define ACTIV_INTER_TIMER2              0   // Osef : TIMER 2 et 3 sur 32 bits    
+#define ACTIV_INTER_TIMER3              1   // Timer 90 secondes : fin de match
 #define ACTIV_INTER_TIMER4              1   // Timer Autom : 10 ms
 #define ACTIV_INTER_TIMER5              1   // Timer debug : 200 ms
+    
 #define ACTIV_INTER_I2C_MAITRE          0   // Pas implémenté pour le moment
-#define ACTIV_INTER_I2C_ESCLAVE         0   // Pas implémenté pour le moment
+#define ACTIV_INTER_I2C_ESCLAVE         0   // Pas implémenté pour le moment    
+    
+#define ACTIV_INTER_UART1_RX            1   // Uart XBEE
+#define ACTIV_INTER_UART2_TX            1   // UART AX12 : Acquittement trame envoyée
+#define ACTIV_INTER_UART2_RX            1   // UART AX12
+    
 #define ACTIV_INTER_QEI1                1   // Codeurs
 #define ACTIV_INTER_QEI2                1   // Codeurs
 
@@ -190,7 +199,7 @@ extern "C" {
     
     //Codeurs
     extern volatile __attribute__((near)) int8_t OVERFLOW_CODEUR[3] ;
-    extern volatile __attribute__((near)) _position position[3];
+    extern volatile __attribute__((near)) _position POSITION[3];
 
     //Asserv
     extern volatile __attribute__((near)) _robot ROBOT;
@@ -246,7 +255,7 @@ extern "C" {
     extern volatile uint8_t COMPTEUR_TEMPS_MATCH;
 
     extern volatile _ax12 ax12;
-    extern volatile _Bool check_limitation_courant;
+    extern volatile _Bool CHECK_LIMITATION_COURANT;
     
     extern volatile _serialus serialus;
 
@@ -269,21 +278,50 @@ extern "C" {
     void init_clock(void);
 
     /**
-     * Fonction qui init le Timer asserv
-     */
+    * Configuration du Timer de 5 ms pour l'asservissement
+    *        /!\  ATTENTION : TIMER SAFE   /!\
+    * /!\ INTERDICTION D'UTILISER DES FONCTIONS BLOQUANTES /!\
+    * /!\ OU DE DESACTIVER LE DECOMPTE DU TIMER PENDANT   /!\
+    * /!\ L'INTERRUPTION, MERCI !                         /!\       
+    */
     void config_timer_5ms();
 
 
-    /**
-     * Fonction qui init le Timer d'autom
-     */
+   /**
+    * Configuration du Timer de 10 ms pour l'évitement
+    *        /!\  ATTENTION : TIMER SAFE   /!\
+    * /!\ INTERDICTION D'UTILISER DES FONCTIONS BLOQUANTES /!\
+    * /!\ OU DE DESACTIVER LE DECOMPTE DU TIMER PENDANT   /!\
+    * /!\ L'INTERRUPTION, MERCI (PAS D'AX12) !            /!\       
+    */
     void config_timer_10ms();
 
 
     /**
-     * Fonction qui init le timer de fin de match
-     */
-    void config_timer_90s(void);
+    * Configuration du Timer de 20 ms pour l'autom
+    *      NB : TIMER NON SAFE 
+    *  POSSIBILITE D'UTILISER DES FONCTIONS BLOQUANTES
+    *  UTILISE POUR DES TACHES NON CRITIQUES     
+    */
+    void config_timer_20ms();
+    
+    
+    /**
+    * Configuration du Timer de 100 ms pour le scheduler temps de match
+    *      NB : TIMER NON SAFE 
+    *  POSSIBILITE D'UTILISER DES FONCTIONS BLOQUANTES
+    *  UTILISE POUR DES TACHES NON CRITIQUES     
+    */
+    void config_timer_100ms();
+    
+    
+    /**
+    * Configuration du Timer de 200 ms pour la liaison serie (debug + serialus)
+    *      NB : TIMER NON SAFE 
+    *  POSSIBILITE D'UTILISER DES FONCTIONS BLOQUANTES
+    *  UTILISE POUR DES TACHES NON CRITIQUES     
+    */
+    void config_timer_200ms();
 
 
     /**

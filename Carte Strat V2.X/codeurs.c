@@ -18,7 +18,7 @@
 
 
     volatile __attribute__((near)) int8_t OVERFLOW_CODEUR[3] ;//= { PAS_D_OVERFLOW_CODEUR, PAS_D_OVERFLOW_CODEUR };
-    volatile __attribute__((near)) _position position[3] ;// = {{0, 0}, {0, 0}};
+    volatile __attribute__((near)) _position POSITION[3] ;// = {{0, 0}, {0, 0}};
 
 
 /******************************************************************************/
@@ -106,14 +106,14 @@ void get_valeur_codeur (int codeur)
         sens_rotation = SENS_ROT_G;
     }
 
-    res = (int32_t)( (int32_t) position[codeur].nouvelle - (int32_t) position[codeur].ancien );
+    res = (int32_t)( (int32_t) POSITION[codeur].nouvelle - (int32_t) POSITION[codeur].ancien );
     if (etat_overflow != PAS_D_OVERFLOW_CODEUR)
     {
         res+= (int32_t) etat_overflow * max_codeur;
     }
 
     position [codeur].ecart = res * RESOLUTION_LOGICIELLE * sens_rotation;
-    position[codeur].ancien = position[codeur].nouvelle;
+    POSITION[codeur].ancien = POSITION[codeur].nouvelle;
 }
 
 

@@ -123,7 +123,7 @@ extern "C" {
     void jack();
     void allumer_pompes ();
     void eteindre_pompe();
-    void autom_10ms (void);
+    void autom_20ms (void);
     void son_evitement (uint8_t melodie);
 
 #ifdef  PETIT_ROBOT

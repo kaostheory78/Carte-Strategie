@@ -48,7 +48,7 @@ volatile __attribute__((near)) _flag_asserv FLAG_ASSERV;
 /**
  * Fonction qui initialise les flag de l'asserv pour démarer l'asserv
  */
-void init_flag()
+void init_flag_asserv()
 {
     FLAG_ASSERV.position = OFF;
     FLAG_ASSERV.vitesse = OFF;
@@ -946,25 +946,25 @@ void calcul_position_robot (void)
     get_valeur_codeur (CODEUR_D);
     get_valeur_codeur (CODEUR_G);
 
-    position[CODEUR_D].ecart *= COEF_D;
-    position[CODEUR_G].ecart *= COEF_G;
+    POSITION[CODEUR_D].ecart *= COEF_D;
+    POSITION[CODEUR_G].ecart *= COEF_G;
 
     //calcul des modifs
-    delta_o = (position[CODEUR_D].ecart - position[CODEUR_G].ecart) /2;
-    delta_d = (int32_t) (position[CODEUR_D].ecart + position[CODEUR_G].ecart) /2;
+    delta_o = (POSITION[CODEUR_D].ecart - POSITION[CODEUR_G].ecart) /2;
+    delta_d = (int32_t) (POSITION[CODEUR_D].ecart + POSITION[CODEUR_G].ecart) /2;
 
     if (FLAG_ASSERV.brake == ON)
     {
-        BRAKE[ROUE_DROITE].actuelle -= position[CODEUR_D].ecart;
-        BRAKE[ROUE_GAUCHE].actuelle -= position[CODEUR_G].ecart;
+        BRAKE[ROUE_DROITE].actuelle -= POSITION[CODEUR_D].ecart;
+        BRAKE[ROUE_GAUCHE].actuelle -= POSITION[CODEUR_G].ecart;
     }
 
     //cumul des valeurs pour l'asserv
     DISTANCE.actuelle += (double) delta_d;
 
     VITESSE[SYS_ROBOT].actuelle = (double) delta_d;
-    VITESSE[ROUE_DROITE].actuelle = (double) position[CODEUR_D].ecart;
-    VITESSE[ROUE_GAUCHE].actuelle = (double) position[CODEUR_G].ecart;
+    VITESSE[ROUE_DROITE].actuelle = (double) POSITION[CODEUR_D].ecart;
+    VITESSE[ROUE_GAUCHE].actuelle = (double) POSITION[CODEUR_G].ecart;
 
     VITESSE_ORIENTATION[SYS_ROBOT].actuelle = (double) delta_o;
 

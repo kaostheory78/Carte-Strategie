@@ -49,7 +49,7 @@
 /******************************************************************************/
 
 volatile _ax12 ax12;
-volatile _Bool check_limitation_courant;
+volatile _Bool CHECK_LIMITATION_COURANT;
 volatile decal decalage[ID_MAX_AX12];
 volatile pos position_AX12[ID_MAX_AX12];
 
@@ -569,7 +569,7 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, ...)
         }
    
         //delay_us(10);
-        if (ax12.erreur == LIMITATION_DE_COURANT && check_limitation_courant == true && nombre_reset < 2)
+        if (ax12.erreur == LIMITATION_DE_COURANT && CHECK_LIMITATION_COURANT == true && nombre_reset < 2)
         {
             ax12.tentatives = 0;
             nombre_reset++;

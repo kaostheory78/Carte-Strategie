@@ -22,19 +22,22 @@ void init_system (void)
 {
     init_clock();
 
+    
     OVERFLOW_CODEUR[CODEUR_D] = PAS_D_OVERFLOW_CODEUR;
     OVERFLOW_CODEUR[CODEUR_G] = PAS_D_OVERFLOW_CODEUR;
 
-    position[CODEUR_D].ancien = 0;
-    position[CODEUR_G].ancien = 0;
-    position[CODEUR_D].nouvelle = 0;
-    position[CODEUR_G].nouvelle = 0;
+    POSITION[CODEUR_D].ancien = 0;
+    POSITION[CODEUR_G].ancien = 0;
+    POSITION[CODEUR_D].nouvelle = 0;
+    POSITION[CODEUR_G].nouvelle = 0;
     
-    check_limitation_courant = CKECK_LIMITATION_COURANT;
-    
-    config_timer_10ms();
+    // Config des Timers
     config_timer_5ms();
-    config_timer_90s();
+    config_timer_10ms();
+    config_timer_20ms();
+    config_timer_100ms();
+    config_timer_200ms();
+   
 
     ConfigMapping ();
     ConfigPorts ();
@@ -48,6 +51,7 @@ void init_system (void)
     
     delay_ms(1000);
     reinit_buffer_serialus();
+    CHECK_LIMITATION_COURANT = CKECK_LIMITATION_COURANT;
 
     // Evitement
     DETECTION = OFF;
@@ -61,8 +65,9 @@ void init_system (void)
 
     COMPTEUR_TEMPS_MATCH = 0;
 
-    TIMER_5ms = ACTIVE;
-    TIMER_10ms = ACTIVE;
+    TIMER_5ms   = ACTIVE;
+    TIMER_10ms  = ACTIVE;
+    TIMER_100ms = ACTIVE;
 
 #ifdef PETIT_ROBOT
     TRISCbits.TRISC2 = 0;
@@ -71,7 +76,7 @@ void init_system (void)
     //TRISAbits.TRISA3 = 0;
 #endif
     
-    init_flag();
+    init_flag_asserv();
 }
 
 
@@ -79,32 +84,99 @@ void init_system (void)
 /******************************************************************************/
 /***************************** Configurations Timers **************************/
 /******************************************************************************/
+
+
+/**
+ * Configuration du Timer de 5 ms pour l'asservissement
+ *        /!\  ATTENTION : TIMER SAFE   /!\                 //
+ * /!\ INTERDICTION D'UTILISER DES FONCTIONS BLOQUANTES /!\  //
+ * /!\ OU DE DESACTIVER LE DECOMPTE DU TIMER PENDANT   /!\  //
+ * /!\ L'INTERRUPTION, MERCI !                         /!\  //     
+ */
 void config_timer_5ms()
 {
-    //Timer de 5,00373 ms
+    //Timer de 5,00052846 ms
 
     TIMER_5ms = DESACTIVE;
     T1CONbits.TCS = 0;          //clock sur FCY
     T1CONbits.TGATE = 0;        //Mode Gate désactivé
-    T1CONbits.TCKPS = 0b11;     //Divise la fréquence par 256 (prescaler 1:256)
+    T1CONbits.TCKPS = 0b10;     //Divise la fréquence par 64 (prescaler 1:64)
     TMR1 = 0x00;                //Reset du timer
+
+    // FOSC = 80 MhZ, FCY = FOSC/2 = 40 Mhz 
+    // T = 0, 250 ns
+    // Presacler 1 : 64 => T = 3,4 µs
+    // 3127 * 3,4µs = 5 ms
+    PR1 = 782;                  //décompte de 5ms
+
+    FLAG_TIMER_5ms = 0;         //Clear flag interrupt timer
+    IEC0bits.T1IE = 1;          //Enable Timer1 interrupt
+}
+
+
+/**
+ * Configuration du Timer de 10 ms pour l'évitement
+ *        /!\  ATTENTION : TIMER SAFE   /!\                 //
+ * /!\ INTERDICTION D'UTILISER DES FONCTIONS BLOQUANTES /!\  //
+ * /!\ OU DE DESACTIVER LE DECOMPTE DU TIMER PENDANT   /!\  //
+ * /!\ L'INTERRUPTION, MERCI (PAS D'AX12) !            /!\  //       
+ */
+void config_timer_10ms() //Timer autom
+{
+    //Timer de 10,00106 ms
+
+    TIMER_10ms = DESACTIVE;
+    T2CONbits.TCS = 0;          //clock sur FCY
+    T2CONbits.T32 = 0;          //Timer 16 bits
+    T2CONbits.TGATE = 0;        //Mode Gate désactivé
+    T2CONbits.TCKPS = 0b11;     //Divise la fréquence par 256 (prescaler 1:256)
+    TMR2 = 0x00;                //Reset du timer
 
     // FOSC = 80 MhZ, FCY = FOSC/2 = 40 MHz
     // T = 0, 250 ns
     // Presacler 1 : 256 => T = 6,4 µs
-    // 782 * 6,4µs = 5 ms
-    PR1 = 782;                 //décompte de 5ms
+    // 1563 * 6,4 µs = 10 ms
+    PR2 = 1563;                 //décompte de 10ms
 
-    //IPC0bits.T1IP = 0x02;       //priorité à 2  -> définit dans la table des vecteurs
-    FLAG_TIMER_5ms = 0;         //Clear flag interrupt timer
-    IEC0bits.T1IE = 1;          //Enable Timer1 interrupt
-
-    //TIMER_5ms = ACTIVE;
+    FLAG_TIMER_10ms = 0;        //Clear flag interrupt timer
+    IEC0bits.T2IE = 1;          //Enable Timer2 interrupt
 }
 
-void config_timer_10ms() //Timer autom
+/**
+ * Configuration du Timer de 20 ms pour l'autom
+ *      NB : TIMER NON SAFE 
+ *  POSSIBILITE D'UTILISER DES FONCTIONS BLOQUANTES
+ *  UTILISE POUR DES TACHES NON CRITIQUES     
+ */
+void config_timer_20ms()
 {
-    //Timer de 10,00105 ms
+    //Timer de 20,00211 ms
+
+    TIMER_10ms = DESACTIVE;
+    T3CONbits.TCS = 0;          //clock sur FCY
+    T3CONbits.TGATE = 0;        //Mode Gate désactivé
+    T3CONbits.TCKPS = 0b11;     //Divise la fréquence par 256 (prescaler 1:256)
+    TMR3 = 0x00;                //Reset du timer
+
+    // FOSC = 80 MhZ, FCY = FOSC/2 = 40 MHz
+    // T = 0, 250 ns
+    // Presacler 1 : 256 => T = 6,4 µs
+    // 1563 * 6,4 µs = 10 ms
+    PR3 = 3126;                 //décompte de 20ms
+
+    FLAG_TIMER_20ms = 0;        //Clear flag interrupt timer
+    IEC0bits.T3IE = 1;          //Enable Timer3 interrupt
+}
+
+/**
+ * Configuration du Timer de 100 ms pour le scheduler temps de match
+ *      NB : TIMER NON SAFE 
+ *  POSSIBILITE D'UTILISER DES FONCTIONS BLOQUANTES
+ *  UTILISE POUR DES TACHES NON CRITIQUES     
+ */
+void config_timer_100ms()
+{
+    //Timer de 99,99777 ms
 
     TIMER_10ms = DESACTIVE;
     T4CONbits.TCS = 0;          //clock sur FCY
@@ -117,63 +189,33 @@ void config_timer_10ms() //Timer autom
     // T = 0, 250 ns
     // Presacler 1 : 256 => T = 6,4 µs
     // 1563 * 6,4 µs = 10 ms
-    PR4 = 1563;                 //décompte de 10ms
+    PR4 = 15628;                //décompte de 100ms
 
-    //IPC6bits.T4IP = 0x03;       //priorité à 3 --> définit dans la table des interrupt
-    FLAG_TIMER_10ms = 0;        //Clear flag interrupt timer
+    FLAG_TIMER_100ms = 0;       //Clear flag interrupt timer
     IEC1bits.T4IE = 1;          //Enable Timer4 interrupt
-
-    //TIMER_10ms = ACTIVE;
 }
 
 
-void config_timer_debug() //int periode_ms
+/**
+ * Configuration du Timer de 200 ms pour la liaison serie (debug + serialus)
+ *      NB : TIMER NON SAFE 
+ *  POSSIBILITE D'UTILISER DES FONCTIONS BLOQUANTES
+ *  UTILISE POUR DES TACHES NON CRITIQUES     
+ */
+void config_timer_200ms() 
 {
-    TIMER_DEBUG = DESACTIVE;
+    //Timer de 200,00194 ms
+    TIMER_200ms = DESACTIVE;
     T5CONbits.TCS = 0;          //clock sur FCY
     T5CONbits.TGATE = 0;        //Mode Gate désactivé
     T5CONbits.TCKPS = 0b11;     //Divise la fréquence par 256 (prescaler 1:256)
     TMR4 = 0x00;                //Reset du timer
 
-    PR4 = 31256 ;                 //décompte de 200ms
+    PR4 = 31257;                //décompte de 200ms
 
-    //IPC6bits.T4IP = 0x03;       //priorité à 3 --> définit dans la table des interrupt
-    FLAG_TIMER_DEBUG = 0;        //Clear flag interrupt timer
+    //IPC6bits.T4IP = 0x03;     //priorité à 3 --> définit dans la table des interrupt
+    FLAG_TIMER_200ms = 0;       //Clear flag interrupt timer
     IEC1bits.T5IE = 1;          //Enable Timer4 interrupt
-}
-
-void config_timer_90s()
-{
-    // TIMER de 0.999 999 750 secondes
-    // /!\ CE TIMER N'EST PAS LE PLUS PRIORITAIRE /!\ //
-    // /!\ DONC PAS LE PLUS PRECIS NON PLUS  /!\ //
-
-    T3CONbits.TON = 0;          //On arrête le timer 3
-    T2CONbits.TON = 0;          //On arrête le Timer 2
-    T2CONbits.T32 = 1;          //On choisit un Timer 32 bits
-    T2CONbits.TCS = 0;          //On se synchro sur FCY = 40 MHz
-    T2CONbits.TGATE = 0;        //Desactive le mode Gate
-    T2CONbits.TCKPS = 0b11;     //Precaler = 1:256
-
-    TMR3 = 0x00;                //On remet le TIMER3 à 0
-    TMR2 = 0x00;                //On remet le Timer2 à 0
-
-    //    //Timer de 90,000 004 secondes
-//    //On décompte 14 065 514 pour faire 90 secondes
-//    PR3 = 0x00D6;               //adresse haute
-//    PR2 = 0x9F6A;               //adresse basse
-
-    // On décompte de 156 284 pour faire 0, 999 999 750 secondes
-    PR3 = 2;                        // adresse haute
-    PR2 = 25212;                    // adresse basse
-    //IPC2bits.T3IP = 0x01;       //Interruption sur ptiotité 1  -> définit dans la table des interrupt
-    FLAG_TIMER_90s = 0;         //On clear le flag du timer
-    IEC0bits.T3IE = 1;          //On enable l'interrup
-}
-
-void start_timer_90s (void)
-{
-    TIMER_90s = ACTIVE;         //on active le timer de 90 secondes
 }
 
 /******************************************************************************/

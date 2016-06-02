@@ -24,6 +24,7 @@
 
 /**
  *  Timer 5 ms : Asserv
+ *  /!\ FONCTION BLOQUANTE INTERDITE !!!!  
  */
 void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
 {
@@ -63,69 +64,86 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
     {
         compteur_evitement =0;
     }
-
-   Nop();
-   
 }
 
 /**
- * Timer fin de match : 90 secondes
+ *  Timer 10 ms : Check capteurs
+ *  /!\ TIMER SAFE : FONCTION BLOQUANTE INTERDITE /!\ //
+ *      /!\ PAS DE FONCTIONS AX12 ICI !!! /!\ //
+ */
+void __attribute__((__interrupt__, no_auto_psv)) _T2Interrupt(void)
+{
+    FLAG_TIMER_10ms = 0;
+    
+    //evitement();
+}
+
+/**
+ * Timer d'autom : 20 ms
+ * UNSFAE : fonction bloquante autorisée
  */
 void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
 {
-    COMPTEUR_TEMPS_MATCH ++;
+    
+    TIMER_20ms = DESACTIVE;
+    autom_20ms();
 
-    if (COMPTEUR_TEMPS_MATCH >= 90)
-    {
-        PORTCbits.RC5 = 0;
-
-        //On désactive toutes les interruptions :
-        IEC0bits.T2IE = 0;
-        IEC0bits.T1IE = 0;
-        IEC1bits.T4IE = 0;
-        IEC1bits.T5IE = 0;
-        IEC3bits.QEI1IE = 0;
-        IEC4bits.QEI2IE = 0;
-
-        ALIM_MOTEUR_Y = DESACTIVE;
-
-        TIMER_10ms = DESACTIVE;
-        TIMER_5ms = DESACTIVE;
-        TIMER_90s = DESACTIVE;
-        TIMER_DEBUG = DESACTIVE;
-
-        envoit_pwm(MOTEUR_DROIT, 0);
-        envoit_pwm(MOTEUR_GAUCHE, 0);
-        envoit_pwm(MOTEUR_X, 0);
-
-        IPC7bits.U2TXIP	= 7;
-        IPC7bits.U2RXIP = 7;     
-        
-        while(1);
-    }
-    FLAG_TIMER_90s = 0;        //On clear le flag d'interruption du timer
+    TMR3 = 0;
+    FLAG_TIMER_20ms = 0;        //On clear le flag d'interruption du timer
+    TIMER_20ms = ACTIVE;
 }
 
 /**
- * Timer 10 ms : Autom et capteurs
+ * Timer 100 ms : Scheduleur temps de match
  */
 void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
 {
-    TIMER_10ms = DESACTIVE;
-    autom_10ms();
-
-    TMR4 = 0;
-    FLAG_TIMER_10ms = 0;        //On clear le flag d'interruption du timer
-    TIMER_10ms = ACTIVE;
+   //    COMPTEUR_TEMPS_MATCH ++;
+//
+//    if (COMPTEUR_TEMPS_MATCH >= 90)
+//    {
+//        PORTCbits.RC5 = 0;
+//
+//        //On désactive toutes les interruptions :
+//        IEC0bits.T2IE = 0;
+//        IEC0bits.T1IE = 0;
+//        IEC1bits.T4IE = 0;
+//        IEC1bits.T5IE = 0;
+//        IEC3bits.QEI1IE = 0;
+//        IEC4bits.QEI2IE = 0;
+//
+//        ALIM_MOTEUR_Y = DESACTIVE;
+//
+//        TIMER_10ms = DESACTIVE;
+//        TIMER_5ms = DESACTIVE;
+//        TIMER_90s = DESACTIVE;
+//        TIMER_DEBUG = DESACTIVE;
+//
+//        envoit_pwm(MOTEUR_DROIT, 0);
+//        envoit_pwm(MOTEUR_GAUCHE, 0);
+//        envoit_pwm(MOTEUR_X, 0);
+//
+//        IPC7bits.U2TXIP	= 7;
+//        IPC7bits.U2RXIP = 7;     
+//        
+//        while(1);
+//    }
+//    FLAG_TIMER_90s = 0;        //On clear le flag d'interruption du timer
 }
 
+/**
+ *  Timer 200 ms : Liaison série
+ *  UNSAFE : Fonction bloquante autorisée 
+ */
 void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void)
 {
-    TIMER_DEBUG = DESACTIVE;
+    TIMER_200ms = DESACTIVE;
     traitement_serialus();
     //debug();
-    FLAG_TIMER_DEBUG = 0;        //On clear le flag d'interruption du timer
-    TIMER_DEBUG = ACTIVE;
+    
+    TMR5 = 0;
+    FLAG_TIMER_200ms = 0;        //On clear le flag d'interruption du timer
+    TIMER_200ms = ACTIVE;
 }
 
 /******************************************************************************/

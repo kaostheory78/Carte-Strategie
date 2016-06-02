@@ -576,7 +576,7 @@ void init_commande_moteur(void);
 /**
  * Fonction qui initialise les flag de l'asserv pour démarer l'asserv
  */
-void init_flag();
+void init_flag_asserv();
 
 /**
  * Fonction qui écrete les commandes moteurs pour ne pas envoyer plus que la tension nominale des moteurs
