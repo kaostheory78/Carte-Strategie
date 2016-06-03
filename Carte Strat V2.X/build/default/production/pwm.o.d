@@ -10,4 +10,5 @@ pwm.h  \
 fonctions_deplacements.h  \
  gestion_AX12.h  \
 autom.h  \
-Serialus.h 
+Serialus.h  \
+evitement.h 

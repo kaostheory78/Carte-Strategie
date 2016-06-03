@@ -231,8 +231,8 @@ void _fdt (double angle, char last);
     int tracer_ligne_y(int y_objectif); //cree une ligne droite suivant l'axe des y. Fais avancer ou reculer sur l'axe des y
     void post_traitement(); //simplifie le trajet en elevant le maximum de deplacements inutiles
     void deplacement(int8_t sens_marche,double pourcentage_deplacement,char last); //transforme l'itineraire en commande
-    int evitement(int x_objectif,int y_objectif,int haut); //determine l'itineraire pour aller de notre position a l'objectif en tenant compte des obstacles eventuels
-    void init_evitement();
+    int evitement_hugo(int x_objectif,int y_objectif,int haut); //determine l'itineraire pour aller de notre position a l'objectif en tenant compte des obstacles eventuels
+    void init_evitement_hugo();
     int distance();
     int aiguillage_evitement(int x_objectif, int y_objectif, int direction,int haut);
     void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcentage_deplacement,char last,int ajout);

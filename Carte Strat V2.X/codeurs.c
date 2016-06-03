@@ -95,13 +95,13 @@ void get_valeur_codeur (int codeur)
 
     if (codeur == CODEUR_D)
     {
-        position [codeur].nouvelle = POS1CNT;
+        POSITION [codeur].nouvelle = POS1CNT;
         max_codeur = MAX_CODEUR_D;
         sens_rotation = SENS_ROT_D;
     }
     else
     {
-        position [codeur].nouvelle = POS2CNT;
+        POSITION [codeur].nouvelle = POS2CNT;
         max_codeur = MAX_CODEUR_G;
         sens_rotation = SENS_ROT_G;
     }
@@ -112,7 +112,7 @@ void get_valeur_codeur (int codeur)
         res+= (int32_t) etat_overflow * max_codeur;
     }
 
-    position [codeur].ecart = res * RESOLUTION_LOGICIELLE * sens_rotation;
+    POSITION[codeur].ecart = res * RESOLUTION_LOGICIELLE * sens_rotation;
     POSITION[codeur].ancien = POSITION[codeur].nouvelle;
 }
 

@@ -43,6 +43,7 @@ void reinit_buffer_serialus()
         serialus.index[i] = 0;
     }  
     
+    serialus.actif = true;
     serialus.attente_confirmation = false;
     serialus.confirmation = false;
     serialus.erreur_confirmation = false;

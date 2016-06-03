@@ -101,11 +101,11 @@ void cibler (double x, double y, double pourcentage_vitesse)
     uint8_t erreur = _cibler (x, y, pourcentage_vitesse);
     if ( erreur == EVITEMENT)
     {
-        if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)
+        if (EVITEMENT_ADV.mode == ACTION_EVITEMENT)
         {
             action_evitement();
         }
-        else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
+        else if (EVITEMENT_ADV.mode == EVITEMENT_NORMAL)
         {
             //action en cas d'évitements
             cibler(x,y,pourcentage_vitesse);
@@ -122,11 +122,11 @@ void orienter (double angle, double pourcentage_vitesse)
     uint8_t erreur = _orienter (angle, pourcentage_vitesse);
     if ( erreur == EVITEMENT)
     {
-        if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)
+        if (EVITEMENT_ADV.mode == ACTION_EVITEMENT)
         {
             action_evitement();
         }
-        else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
+        else if (EVITEMENT_ADV.mode == EVITEMENT_NORMAL)
         {
             //action en cas d'évitements
             orienter ( angle, pourcentage_vitesse);
@@ -143,11 +143,11 @@ void rejoindre (double x, double y, int8_t sens_marche, double pourcentage_vites
     uint8_t erreur = _rejoindre (x, y, sens_marche, pourcentage_vitesse);
     if ( erreur == EVITEMENT)
     {
-        if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)
+        if (EVITEMENT_ADV.mode == ACTION_EVITEMENT)
         {
             action_evitement();
         }
-        else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
+        else if (EVITEMENT_ADV.mode == EVITEMENT_NORMAL)
         {
             plus_court(x,y,sens_marche,pourcentage_vitesse,rej,1);
         }
@@ -163,11 +163,11 @@ void avancer_reculer (double distance, double pourcentage_vitesse)
     uint8_t erreur = _avancer_reculer (distance, pourcentage_vitesse);
     if ( erreur == EVITEMENT)
     {
-        if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)
+        if (EVITEMENT_ADV.mode == ACTION_EVITEMENT)
         {
             action_evitement();
         }
-        else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
+        else if (EVITEMENT_ADV.mode == EVITEMENT_NORMAL)
         {
             //action en cas d'évitements
         }
@@ -184,11 +184,11 @@ void passe_part (double x, double y, int8_t sens_marche, double pourcentage_vite
     uint8_t erreur = _passe_part (x, y, sens_marche, pourcentage_vitesse, last);
     if ( erreur == EVITEMENT)
     {
-        if (STRATEGIE_EVITEMENT == ACTION_EVITEMENT)
+        if (EVITEMENT_ADV.mode == ACTION_EVITEMENT)
         {
             action_evitement();
         }
-        else if (STRATEGIE_EVITEMENT == EVITEMENT_NORMAL)
+        else if (EVITEMENT_ADV.mode == EVITEMENT_NORMAL)
         {
 
             plus_court(x,y,sens_marche,pourcentage_vitesse,last,1);
@@ -285,6 +285,8 @@ _enum_erreur_asserv _calage (double distance, double pourcentage_vitesse)
         FLAG_ASSERV.sens_deplacement = MARCHE_ARRIERE;
     else
         FLAG_ASSERV.sens_deplacement = MARCHE_AVANT;
+    
+    EVITEMENT_ADV.sens = FLAG_ASSERV.sens_deplacement;
 	
     calcul_vitesse_position(pourcentage_vitesse);
     calcul_acceleration_position();
@@ -447,6 +449,7 @@ void _fdt (double angle, char last)
 
 _enum_erreur_asserv _rejoindre (double x, double y, int8_t sens_marche, double pourcentage_vitesse)
 {
+    EVITEMENT_ADV.sens = sens_marche;
     y = inversion_couleur(y);
     FLAG_ASSERV.brake = OFF;
     //delay_ms(10);
@@ -504,6 +507,8 @@ _enum_erreur_asserv _avancer_reculer (double distance, double pourcentage_vitess
         FLAG_ASSERV.sens_deplacement = MARCHE_ARRIERE;
     else
         FLAG_ASSERV.sens_deplacement = MARCHE_AVANT;
+    
+    EVITEMENT_ADV.sens = FLAG_ASSERV.sens_deplacement;
 
     calcul_vitesse_position(pourcentage_vitesse);
     calcul_acceleration_position();
@@ -524,6 +529,8 @@ _enum_erreur_asserv _avancer_reculer (double distance, double pourcentage_vitess
 
 _enum_erreur_asserv _passe_part (double x, double y, int8_t sens_marche, double pourcentage_vitesse, char last)
 {
+    EVITEMENT_ADV.sens = sens_marche;
+    
     if (last == DEBUT_TRAJECTOIRE)
     {
         FLAG_ASSERV.brake = OFF;
@@ -602,8 +609,6 @@ void deplacement(int8_t sens_marche,double pourcentage_deplacement,char last) //
 {
     int i=1;
     int id = id_evitement;
-    int evit_avant=EVITEMENT_ADV_AVANT;
-    int evit_arriere=EVITEMENT_ADV_ARRIERE;
 
     #ifdef ORDI
         if(itineraire_court[i][0] != -1);
@@ -631,9 +636,8 @@ void deplacement(int8_t sens_marche,double pourcentage_deplacement,char last) //
         }
         #else
         //permet le cibler sans probleme
-        EVITEMENT_ADV_ARRIERE = OFF;
-        EVITEMENT_ADV_AVANT = OFF;
-        DETECTION = OFF;
+        EVITEMENT_ADV.actif = false;
+        EVITEMENT_ADV.detection = OFF;
 
         if(itineraire_court[i][0] != -1);
         cibler((double)(itineraire_court[i][0]*100)+50,(double)((itineraire_court[i][1])*100)+50,pourcentage_deplacement);
@@ -641,9 +645,8 @@ void deplacement(int8_t sens_marche,double pourcentage_deplacement,char last) //
 
         //on remet l'evitement
 
-        DETECTION = OFF;
-        EVITEMENT_ADV_ARRIERE = evit_arriere;
-        EVITEMENT_ADV_AVANT = evit_avant;
+        EVITEMENT_ADV.detection = OFF;
+        EVITEMENT_ADV.actif = true;
 
         while(i<curseur && id == id_evitement && itineraire_court[i][0] != -1 )//affiche l'itineraire
         {
@@ -695,7 +698,7 @@ int distance()
     return dist;
 }
 
-void init_evitement()
+void init_evitement_hugo()
 {
     int i,j;
 
@@ -1689,7 +1692,7 @@ int aiguillage_evitement(int x_objectif, int y_objectif, int direction,int haut)
 
 }
 
-int evitement(int x_objectif,int y_objectif,int haut) //determine l'itineraire pour aller de notre position a l'objectif en tenant compte des obstacles eventuels
+int evitement_hugo(int x_objectif,int y_objectif,int haut) //determine l'itineraire pour aller de notre position a l'objectif en tenant compte des obstacles eventuels
 {
     int flag=1;// on essaye selon les x quand flag =1, selon les y si flag = 2
     int direction=0;
@@ -1845,7 +1848,7 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
     precedent_obstacle[2]= angle;
     precedent_obstacle[3] = sens_marche;
 
-    if(EVITEMENT_ADV_ARRIERE == ON)
+    if(EVITEMENT_ADV.sens == MARCHE_ARRIERE)
     {
         angle += 180;
     }
@@ -1869,19 +1872,38 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
             }
         #endif
 
-        #ifdef GROS_ROBOT
-            if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (CAPT_US_ARRIERE == 1 && EVITEMENT_ADV_ARRIERE == ON))
+        #ifdef GROS_ROBOT           
+            if (EVITEMENT_ADV.sens == MARCHE_AVANT)
             {
-                centre = 1;
+                if ( ((EVITEMENT_ADV.cote & EV_CENTRE) != 0) && (CAPT_ADV_AVANT_C == ETAT_ADV_AVANT_C) )
+                {
+                    centre = 1;
+                }
+                if ( ((EVITEMENT_ADV.cote & EV_GAUCHE) != 0) && (CAPT_ADV_AVANT_G == ETAT_ADV_AVANT_G) )
+                {
+                    gauche = 1;
+                }
+                if ( ((EVITEMENT_ADV.cote & EV_CENTRE) != 0) && (CAPT_ADV_AVANT_D == ETAT_ADV_AVANT_D) )
+                {
+                    droite = 1;
+                }
             }
-            if(0 == CAPT_US_AV_GAUCHE && EVITEMENT_ADV_AVANT == ON)
+            else
             {
-                gauche = 1;
+                if ( ((EVITEMENT_ADV.cote & EV_CENTRE) != 0) && (CAPT_ADV_ARRIERE_C == ETAT_ADV_ARRIERE_C) )
+                {
+                    centre = 1;
+                }
+                if ( ((EVITEMENT_ADV.cote & EV_GAUCHE) != 0) && (CAPT_ADV_ARRIERE_G == ETAT_ADV_ARRIERE_G) )
+                {
+                    gauche = 1;
+                }
+                if ( ((EVITEMENT_ADV.cote & EV_CENTRE) != 0) && (CAPT_ADV_ARRIERE_D == ETAT_ADV_ARRIERE_D) )
+                {
+                    droite = 1;
+                }                
             }
-            if(0 == CAPT_US_AV_DROIT && EVITEMENT_ADV_AVANT == ON)
-            {
-                droite = 1;
-            }
+            
         #endif
     }
     else
@@ -2221,21 +2243,12 @@ void deplacement_arriere(int8_t sens_marche)
     if(sens_marche == MARCHE_AVANT) // si on est en marche avant, alors on reculera donc on multipliera -100 du avancer_reculer par 1 (i), et on change l'evitement
     {
         i=1;
-        DETECTION = OFF;
-        EVITEMENT_ADV_AVANT = OFF;
-        EVITEMENT_ADV_ARRIERE = ON;
-        DETECTION = OFF;
-
+        EVITEMENT_ADV.detection = OFF;
     }
     else // si on est en marche arriere, alors on voudra avancer et non reculer, du coup on multpliera -100 par -1(i), et on change l'evitement
     {
         i=-1;
-
-        DETECTION = OFF;
-        EVITEMENT_ADV_ARRIERE = OFF;
-        EVITEMENT_ADV_AVANT = ON;
-        DETECTION = OFF;
-
+        EVITEMENT_ADV.detection = OFF;
     }
 
     angle= - get_orientation();
@@ -2254,7 +2267,7 @@ void deplacement_arriere(int8_t sens_marche)
         {
             if(obstacle[x_actuel - i][y_actuel] == 0 && obstacle[x_actuel - 2*i][y_actuel] == 0 )
             {
-                DETECTION = OFF;
+                EVITEMENT_ADV.detection = OFF;
                 cout << "avancer_reculer("<<-100*i<<", 50)";
             }
         }
@@ -2263,7 +2276,7 @@ void deplacement_arriere(int8_t sens_marche)
         {
             if( obstacle[x_actuel - i][y_actuel +1*i] == 0 && obstacle[x_actuel - 2*i][y_actuel +2*i] == 0 )
             {
-                DETECTION = OFF;
+                EVITEMENT_ADV.detection = OFF;
                 cout << "avancer_reculer("<<-100*i<<", 50)";
             }
         }
@@ -2271,7 +2284,7 @@ void deplacement_arriere(int8_t sens_marche)
         {
             if(obstacle[x_actuel][y_actuel +i] == 0 && obstacle[x_actuel][y_actuel +2*i] == 0 )
             {
-                DETECTION = OFF;
+                EVITEMENT_ADV.detection = OFF;
                 cout << "avancer_reculer("<<-100*i<<", 50)";
             }
         }
@@ -2280,7 +2293,7 @@ void deplacement_arriere(int8_t sens_marche)
         {
             if(obstacle[x_actuel +i][y_actuel +i] == 0 && obstacle[x_actuel + 2*i][y_actuel +2*i] == 0)
             {
-                DETECTION = OFF;
+                EVITEMENT_ADV.detection = OFF;
                 cout << "avancer_reculer("<<-100*i<<", 50)";
             }
         }
@@ -2289,7 +2302,7 @@ void deplacement_arriere(int8_t sens_marche)
         {
             if(obstacle[x_actuel +i][y_actuel] == 0 && obstacle[x_actuel + 2*i][y_actuel] == 0 )
             {
-                DETECTION = OFF;
+                EVITEMENT_ADV.detection = OFF;
                 cout << "avancer_reculer("<<-100*i<<", 50)";
             }
         }
@@ -2299,7 +2312,7 @@ void deplacement_arriere(int8_t sens_marche)
 
             if(obstacle[x_actuel +i][y_actuel -i] == 0 && obstacle[x_actuel + 2*i][y_actuel -2*i] == 0 )
             {
-                DETECTION = OFF;
+                EVITEMENT_ADV.detection = OFF;
                 cout << "avancer_reculer("<<-100*i<<", 50)";
             }
         }
@@ -2308,14 +2321,14 @@ void deplacement_arriere(int8_t sens_marche)
         {
             if( obstacle[x_actuel][y_actuel -i] == 0 && obstacle[x_actuel][y_actuel -2*i] == 0 )
             {
-                DETECTION = OFF;
+                EVITEMENT_ADV.detection = OFF;
                 cout << "avancer_reculer("<<-100*i<<", 50)";
             }
         }
 
         else if (obstacle[x_actuel -i][y_actuel-i] == 0 && obstacle[x_actuel - 2*i][y_actuel-2*i] == 0 ) //diagonale bas droite
         {
-            DETECTION = OFF;
+            EVITEMENT_ADV.detection = OFF;
             cout << "avancer_reculer("<<-100*i<<", 50)";
         }
         #else
@@ -2324,7 +2337,7 @@ void deplacement_arriere(int8_t sens_marche)
         {
             if(obstacle[x_actuel - i][y_actuel] == 0 && obstacle[x_actuel - 2*i][y_actuel] == 0 )
             {
-                DETECTION = OFF;
+                EVITEMENT_ADV.detection = OFF;
                 avancer_reculer((double)(-100*i), 50.);
             }
         }
@@ -2333,7 +2346,7 @@ void deplacement_arriere(int8_t sens_marche)
         {
             if( obstacle[x_actuel - i][y_actuel +1*i] == 0 && obstacle[x_actuel - 2*i][y_actuel +2*i] == 0 )
             {
-                DETECTION = OFF;
+                EVITEMENT_ADV.detection = OFF;
                 avancer_reculer((double)(-100*i), 50.);
             }
         }
@@ -2341,7 +2354,7 @@ void deplacement_arriere(int8_t sens_marche)
         {
             if(obstacle[x_actuel][y_actuel +i] == 0 && obstacle[x_actuel][y_actuel +2*i] == 0 )
             {
-                DETECTION = OFF;
+                EVITEMENT_ADV.detection = OFF;
                 avancer_reculer((double)(-100*i), 50.);
             }
         }
@@ -2350,7 +2363,7 @@ void deplacement_arriere(int8_t sens_marche)
         {
             if(obstacle[x_actuel +i][y_actuel +i] == 0 && obstacle[x_actuel + 2*i][y_actuel +2*i] == 0)
             {
-                DETECTION = OFF;
+                EVITEMENT_ADV.detection = OFF;
                 avancer_reculer((double)(-100*i), 50.);
             }
         }
@@ -2359,7 +2372,7 @@ void deplacement_arriere(int8_t sens_marche)
         {
             if(obstacle[x_actuel +i][y_actuel] == 0 && obstacle[x_actuel + 2*i][y_actuel] == 0 )
             {
-                DETECTION = OFF;
+                EVITEMENT_ADV.detection = OFF;
                 avancer_reculer((double)(-100*i), 50.);
             }
         }
@@ -2369,7 +2382,7 @@ void deplacement_arriere(int8_t sens_marche)
             if(obstacle[x_actuel +i][y_actuel -i] == 0 && obstacle[x_actuel + 2*i][y_actuel -2*i] == 0 )
             {
                 //TIMER_DEBUG = ACTIVE;
-                DETECTION = OFF;
+                EVITEMENT_ADV.detection = OFF;
                 //TODO
                 //A ENLEVER
                 //i=-i;
@@ -2382,14 +2395,14 @@ void deplacement_arriere(int8_t sens_marche)
         {
             if( obstacle[x_actuel][y_actuel -i] == 0 && obstacle[x_actuel][y_actuel -2*i] == 0 )
             {
-                DETECTION = OFF;
+                EVITEMENT_ADV.detection = OFF;
                 avancer_reculer((double)(-100*i), 50.);
             }
         }
 
         else if (obstacle[x_actuel -i][y_actuel-i] == 0 && obstacle[x_actuel - 2*i][y_actuel-2*i] == 0 ) //diagonale bas droite
         {
-            DETECTION = OFF;
+            EVITEMENT_ADV.detection = OFF;
             avancer_reculer((double)(-100*i), 50.);
         }
     #endif
@@ -2397,16 +2410,11 @@ void deplacement_arriere(int8_t sens_marche)
     //on remet l'evitement comme il etait au départ
     if(sens_marche == MARCHE_AVANT)
     {
-
-        DETECTION = OFF;
-        EVITEMENT_ADV_ARRIERE = OFF;
-        EVITEMENT_ADV_AVANT = ON;
+        EVITEMENT_ADV.detection = OFF;
     }
     else
     {
-        DETECTION = OFF;
-        EVITEMENT_ADV_AVANT = OFF;
-        EVITEMENT_ADV_ARRIERE = ON;
+        EVITEMENT_ADV.detection = OFF;
     }
 }
 
@@ -2521,7 +2529,7 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
     else // si notre cellule et celle de l'objectif sont libres
     {
 
-        retour =evitement (x_obj,y_obj,sens_depart); // on essaye de trouver un chemin. On renvoi 0 si on a pu trouver un chemin, -1 sinon
+        retour =evitement_hugo (x_obj,y_obj,sens_depart); // on essaye de trouver un chemin. On renvoi 0 si on a pu trouver un chemin, -1 sinon
 
         if(retour == 0) // si on a trouver un chemin
         {
@@ -2586,7 +2594,7 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
                 haut = 1;// alors on passera par le haut
             }
 
-            retour=evitement(x_obj,y_obj,haut);//on retente de trouver un evitement
+            retour=evitement_hugo(x_obj,y_obj,haut);//on retente de trouver un evitement
 
 
             if(curseur_obstacle >= nb_point_max)
@@ -2646,7 +2654,7 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
                 itineraire[curseur][0]=x_actuel;
                 itineraire[curseur][1]=y_actuel;
 
-                retour =evitement (x_obj,y_obj,(sens_depart+1)%2); // on essaye de trouver un chemin. On renvoi 0 si on a pu trouver un chemin, -1 sinon
+                retour =evitement_hugo (x_obj,y_obj,(sens_depart+1)%2); // on essaye de trouver un chemin. On renvoi 0 si on a pu trouver un chemin, -1 sinon
 
                 if(retour ==0)  // si on en a trouver un
                 {
@@ -2701,7 +2709,7 @@ void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcent
         }
     }
 
-    DETECTION = OFF;
+    EVITEMENT_ADV.detection = OFF;
 
 if(id == id_evitement_initial){
 
@@ -2755,9 +2763,9 @@ if(id == id_evitement_initial){
 
         }
 
-    DETECTION = OFF;
+    EVITEMENT_ADV.detection = OFF;
     calcul_en_cours = OFF;
 }
 
-void detect (uint8_t arg) {DETECTION = arg;}
+void detect (uint8_t arg) {EVITEMENT_ADV.detection = arg;}
 

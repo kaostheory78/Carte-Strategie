@@ -58,126 +58,25 @@ void son_evitement (uint8_t melodie)
 void autom_20ms (void)
 {
 
-        static uint16_t compteur = 0;
-        static uint8_t  evitement_en_cours = OFF;
-
-        /**********************************************************************/
-        /******************************* Autom ********************************/
-        /**********************************************************************/
-
-        //fonction qui definit les actions
-        switch (FLAG_ACTION)
-        {
-            case NE_RIEN_FAIRE:
-                break;
-           
-            default :
-                break;
-        }
-
-        /**********************************************************************/
-        /**************************** Evitement *******************************/
-        /**********************************************************************/
-
-
-        //Fonction permettant de lancer la fonction d'évitement
-        if(EVITEMENT_ADV_AVANT == ON)
-        {
-            if ( (CAPT_US_GAUCHE == 1 || CAPT_US_BALISE == 1 || CAPT_US_DROIT == 1) )
-            {
-                if ( DETECTION == OFF)
-                {
-                    compteur = 0;
-                    DETECTION = ON;
-                    evitement_en_cours = OFF;
-                    FLAG_ASSERV.erreur = EVITEMENT;
-                    brake();
-                    son_evitement(49);
-                }
-                else
-                    son_evitement(2);
-            }
-            if (DETECTION == ON && STRATEGIE_EVITEMENT == STOP)
-            {
-                compteur ++;
-                if (compteur > 20)
-                {
-                    compteur = 20;
-                    if (CAPT_US_GAUCHE == 0 && CAPT_US_BALISE == 0 && CAPT_US_DROIT == 0)
-                    {
-                        DETECTION = OFF;
-                        unbrake();
-                    }
-                }
-            }
-            else if (DETECTION == ON && (STRATEGIE_EVITEMENT == ACTION_EVITEMENT || STRATEGIE_EVITEMENT == EVITEMENT_NORMAL ))
-            {
-                if (evitement_en_cours == OFF)
-                {
-                    compteur ++;
-                    if (compteur > 40)
-                    {
-                        evitement_en_cours = ON;
-                        compteur = 0;
-                        fin_deplacement();
-                        son_evitement(30);
-                    }
-                    else
-                    {
-                        son_evitement(2);
-                    }
-
-                }
-            }
-        }
-
-        else if (EVITEMENT_ADV_ARRIERE == ON)
-        {
-            if ( (CAPT_IR_ARRIERE_CENTRE == 0 || CAPT_IR_ARRIERE_DROIT == 0 || CAPT_IR_ARRIERE_GAUCHE == 0)  && DETECTION == OFF)
-            {
-                compteur = 0;
-                DETECTION = ON;
-                evitement_en_cours = OFF;
-                FLAG_ASSERV.erreur = EVITEMENT;
-                brake();
-            }
-            if (DETECTION == ON && STRATEGIE_EVITEMENT == STOP)
-            {
-                compteur ++;
-                if (compteur > 20)
-                {
-                    compteur = 20;
-                    if (CAPT_IR_ARRIERE_CENTRE == 1 && CAPT_IR_ARRIERE_DROIT == 1 && CAPT_IR_ARRIERE_GAUCHE == 1)
-                    {
-                        DETECTION = OFF;
-                        unbrake();
-                    }
-                }
-            }
-            else if (DETECTION == ON && (STRATEGIE_EVITEMENT == ACTION_EVITEMENT || STRATEGIE_EVITEMENT == EVITEMENT_NORMAL ))
-            {
-                if (evitement_en_cours == OFF)
-                {
-                    compteur ++;
-                    if (compteur > 40)
-                    {
-                        evitement_en_cours = ON;
-                        compteur = 0;
-                        fin_deplacement();
-                        son_evitement(30);
-                    }
-                     else
-                     {
-                        son_evitement(2);
-                    }
-                }
-            }
-        }
-        else if (DETECTION == ON)
-        {
-            DETECTION = OFF;
-            unbrake();
-        }
+    //fonction qui definit les actions
+    switch (FLAG_ACTION)
+    {
+        case NE_RIEN_FAIRE:
+            break;
+        default :
+            break;
+    }
+    
+    if (EVITEMENT_ADV.actif == true && EVITEMENT_ADV.detection == OFF)
+    {
+        if (EVITEMENT_ADV.sens == MARCHE_AVANT)
+            rotation_us_avant();
+        else
+            rotation_us();
+    }
+    //else
+        //position standart
+    
 }
 
 #endif

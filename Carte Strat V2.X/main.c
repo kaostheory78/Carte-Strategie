@@ -66,14 +66,9 @@
 /********************* DECLARATION DES VARIABLES GLOBALES *********************/
 /******************************************************************************/
 
+    volatile __attribute__((near)) _compteur_temps_match CPT_TEMPS_MATCH;
     volatile _enum_couleurs COULEUR;
-
-    volatile _enum_on_off DETECTION;
-    volatile _enum_on_off EVITEMENT_ADV_AVANT;
-    volatile _enum_on_off EVITEMENT_ADV_ARRIERE;
-    volatile _enum_evitement STRATEGIE_EVITEMENT;
     volatile _enum_flag_action FLAG_ACTION;
-    volatile uint8_t COMPTEUR_TEMPS_MATCH;
 
 
     int obstacle[30][20];
@@ -109,8 +104,8 @@ int main(int argc, char** argv)
     /**************************************************************************/
 
     init_system();
-    init_evitement();
-    TIMER_DEBUG = ACTIVE;
+    init_evitement_hugo();
+    TIMER_200ms = ACTIVE;
     delay_ms(500);
 
     printf("\n\n\n\n\r INIT ROBOT : \n\n\n\n\n\n\r");

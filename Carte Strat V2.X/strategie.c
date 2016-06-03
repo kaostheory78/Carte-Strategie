@@ -33,9 +33,9 @@ void strategie()
         while(!SYS_JACK);
 
         // Démarage du match
-        TIMER_90s = ACTIVE;
-        EVITEMENT_ADV_AVANT = OFF;
-        STRATEGIE_EVITEMENT = STOP;
+        CPT_TEMPS_MATCH.actif = true;
+        EVITEMENT_ADV.actif = OFF;
+        EVITEMENT_ADV.mode = STOP;
 
         init_position_robot(180., 988., 0.);
 
@@ -55,7 +55,7 @@ void strategie()
         while(!SYS_JACK);
         TIMER_90s = ACTIVE;
 
-        STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;     
+        EVITEMENT_ADV.mode = EVITEMENT_NORMAL;     
     #endif
 }
 
@@ -72,9 +72,9 @@ void homologation()
         while(!SYS_JACK);
 
         // Démarage du match
-        TIMER_90s = ACTIVE;
-        EVITEMENT_ADV_AVANT = ON;
-        STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;
+        CPT_TEMPS_MATCH.actif = true;
+        EVITEMENT_ADV.actif = OFF;
+        EVITEMENT_ADV.mode = STOP;
 
         init_position_robot(180., 988., 0.);
 #endif
@@ -97,12 +97,8 @@ void reglage_odometrie()
 #ifdef GROS_ROBOT
     init_jack();
 #endif
-    EVITEMENT_ADV_ARRIERE = OFF;
-    EVITEMENT_ADV_AVANT = OFF;
-
-
-
-
+    EVITEMENT_ADV.actif = OFF;
+    
       init_position_robot (0, 0, 0);
           //orienter(5, 100);
 

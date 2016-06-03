@@ -42,18 +42,6 @@ extern "C" {
         VERT,
         JAUNE
     }_enum_couleurs;
-
-    //Evitement
-    typedef enum
-    {
-        ACTIF,
-        INACTIF,
-        ACTION_EVITEMENT,
-        EVITEMENT_NORMAL,
-        STOP,
-        DISTANCE_STOP = STOP,
-        ANGLE_STOP = STOP
-    }_enum_evitement;
     
 
     /**************************************************************************/
@@ -84,10 +72,6 @@ extern "C" {
 #endif
 
     /**************************************************************************/
-    /************************* DEFINE ETAT PINCES *****************************/
-    /**************************************************************************/
-
-    /**************************************************************************/
     /************************* DEFINE FLAG_ACTION *****************************/
     /**************************************************************************/
 
@@ -96,11 +80,11 @@ extern "C" {
         NE_RIEN_FAIRE,                                       
 
 #ifdef  PETIT_ROBOT
-
+        // FLAG_ACTION DU PETIT ROBOT
 #endif
 
 #ifdef GROS_ROBOT
-
+       // FLAG ACTION DU GROS ROBOT       
 #endif 
      
         FIN_DE_MATCH

@@ -157,6 +157,7 @@ extern "C" {
 
     typedef struct
     {
+        _Bool actif                     : 1;
         _Bool info_a_traiter            : 1;
         _Bool attente_confirmation      : 1;
         _Bool confirmation              : 1;

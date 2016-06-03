@@ -36,34 +36,25 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
    if (FLAG_ASSERV.totale == ON)
         asserv();
    
-   // Clignotement d'une led de ALIVE
-   __attribute__((near)) static int led = 1, compteur = 0;
-   compteur++;
-
-    if (compteur == 100)
-    {
-       if (led == 1)
-            led = 0;
-        else
-            led = 1;
-
-#ifdef PETIT_ROBOT
-        CAPTEUR3 = led;
-#endif
-        compteur = 0;
-    }
-
-    // Compteur pour évitement Hugo
-    if(calcul_en_cours == ON)
-    {
-        compteur_evitement++;
-        if(compteur_evitement > ATTENTE_EVITEMENT * 2)
-            compteur_evitement = ATTENTE_EVITEMENT * 2;
-    }
-    else
-    {
-        compteur_evitement =0;
-    }
+   if (CPT_TEMPS_MATCH.actif == true)
+       CPT_TEMPS_MATCH.t_ms +=  5;
+   
+//   // Clignotement d'une led de ALIVE
+//   __attribute__((near)) static int led = 1, compteur = 0;
+//   compteur++;
+//
+//    if (compteur == 100)
+//    {
+//       if (led == 1)
+//            led = 0;
+//        else
+//            led = 1;
+//
+//#ifdef PETIT_ROBOT
+//        CAPTEUR3 = led;
+//#endif
+//        compteur = 0;
+//    }
 }
 
 /**
@@ -75,17 +66,31 @@ void __attribute__((__interrupt__, no_auto_psv)) _T2Interrupt(void)
 {
     FLAG_TIMER_10ms = 0;
     
-    //evitement();
+    evitement();
+    
+    // Compteur pour évitement Hugo
+    if(calcul_en_cours == ON)
+    {
+        compteur_evitement++;
+        if(compteur_evitement > ATTENTE_EVITEMENT)
+            compteur_evitement = ATTENTE_EVITEMENT;
+    }
+    else
+    {
+        compteur_evitement =0;
+    }
 }
 
 /**
  * Timer d'autom : 20 ms
+ * Décompte relancé à la fin de la fonctions -> temps non fiable
  * UNSFAE : fonction bloquante autorisée
  */
 void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
 {
     
     TIMER_20ms = DESACTIVE;
+    
     autom_20ms();
 
     TMR3 = 0;
@@ -98,37 +103,39 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
  */
 void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
 {
-   //    COMPTEUR_TEMPS_MATCH ++;
-//
-//    if (COMPTEUR_TEMPS_MATCH >= 90)
-//    {
-//        PORTCbits.RC5 = 0;
-//
-//        //On désactive toutes les interruptions :
-//        IEC0bits.T2IE = 0;
-//        IEC0bits.T1IE = 0;
-//        IEC1bits.T4IE = 0;
-//        IEC1bits.T5IE = 0;
-//        IEC3bits.QEI1IE = 0;
-//        IEC4bits.QEI2IE = 0;
-//
-//        ALIM_MOTEUR_Y = DESACTIVE;
-//
-//        TIMER_10ms = DESACTIVE;
-//        TIMER_5ms = DESACTIVE;
-//        TIMER_90s = DESACTIVE;
-//        TIMER_DEBUG = DESACTIVE;
-//
-//        envoit_pwm(MOTEUR_DROIT, 0);
-//        envoit_pwm(MOTEUR_GAUCHE, 0);
-//        envoit_pwm(MOTEUR_X, 0);
-//
-//        IPC7bits.U2TXIP	= 7;
-//        IPC7bits.U2RXIP = 7;     
-//        
-//        while(1);
-//    }
-//    FLAG_TIMER_90s = 0;        //On clear le flag d'interruption du timer
+    if (CPT_TEMPS_MATCH.t_ms >= 90000UL)
+    {
+        PORTCbits.RC5 = 0;
+
+        //On désactive toutes les interruptions :
+        IEC0bits.T1IE = 0;
+        IEC0bits.T2IE = 0;
+        IEC0bits.T3IE = 0;
+        IEC1bits.T4IE = 0;
+  
+        IEC1bits.T5IE = 0;
+        IEC3bits.QEI1IE = 0;
+        IEC4bits.QEI2IE = 0;
+
+        ALIM_MOTEUR_Y = DESACTIVE;
+
+        TIMER_5ms   = DESACTIVE;
+        TIMER_10ms  = DESACTIVE;
+        TIMER_20ms  = DESACTIVE;
+        TIMER_100ms = DESACTIVE;
+
+        envoit_pwm(MOTEUR_DROIT, 0);
+        envoit_pwm(MOTEUR_GAUCHE, 0);
+        envoit_pwm(MOTEUR_X, 0);
+
+        // Pour permettre l'envoit de commande AX12 
+        // Depuis ici
+        IPC7bits.U2TXIP	= 7;
+        IPC7bits.U2RXIP = 7;     
+        
+        while(1);
+    }
+    FLAG_TIMER_100ms = 0;        //On clear le flag d'interruption du timer
 }
 
 /**
@@ -138,7 +145,10 @@ void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
 void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void)
 {
     TIMER_200ms = DESACTIVE;
-    traitement_serialus();
+    
+    if (serialus.actif == true)
+        traitement_serialus();
+    
     //debug();
     
     TMR5 = 0;
@@ -188,7 +198,8 @@ void __attribute__ ((interrupt, no_auto_psv)) 	_U1RXInterrupt (void)
     uint8_t buf;
     buf= U1RXREG;
         
-    action_reception_serialus(buf);
+    if (serialus.actif == true)
+        action_reception_serialus(buf);
         
 	// Activation de l'interruption
 	IEC0bits.U1RXIE	= 1;

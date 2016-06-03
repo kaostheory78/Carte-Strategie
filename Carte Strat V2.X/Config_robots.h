@@ -171,6 +171,25 @@ extern "C" {
     #define CAPT_US_AV_GAUCHE           CAPTEUR2
     #define CAPT_US_AV_DROIT            CAPTEUR8
 
+    // Définition des standart pour la fonction évitement
+    // ETAT : etat de detection du capteur (si il détecte à un : ETAT_HAUT)
+    // NB : Si un capteur n'existe pas, le mettre à AUCUN et à ETAT_HAUT
+    #define _CAPT_ADV_AVANT_G           AUCUN            
+    #define _CAPT_ADV_AVANT_D           AUCUN
+    #define _CAPT_ADV_AVANT_C           AUCUN
+
+    #define _ETAT_ADV_AVANT_G           ETAT_HAUT
+    #define _ETAT_ADV_AVANT_D           ETAT_HAUT
+    #define _ETAT_ADV_AVANT_C           ETAT_HAUT
+
+    #define _CAPT_ADV_ARRIERE_G         AUCUN
+    #define _CAPT_ADV_ARRIERE_C         AUCUN
+    #define _CAPT_ADV_ARRIERE_D         AUCUN
+
+    #define _ETAT_ADV_ARRIERE_G         ETAT_HAUT
+    #define _ETAT_ADV_ARRIERE_C         ETAT_HAUT
+    #define _ETAT_ADV_ARRIERE_D         ETAT_HAUT
+
     #define INCLINOMETRE                CAPTEUR5
 
     #define _CAPTEUR1_ANALOGIQUE        DIGITAL
@@ -322,6 +341,25 @@ extern "C" {
     #define CAPT_US_DROIT              CAPTEUR5
     #define CAPT_US_GAUCHE             CAPTEUR4
     #define CAPT_US_BALISE             CAPTEUR8
+
+    // Définition des standart pour la fonction évitement
+    // ETAT : etat de detection du capteur (si il détecte à un : ETAT_HAUT)
+    // NB : Si un capteur n'existe pas, le mettre à AUCUN et à ETAT_HAUT
+    #define _CAPT_ADV_AVANT_G            AUCUN            
+    #define _CAPT_ADV_AVANT_D            AUCUN
+    #define _CAPT_ADV_AVANT_C            AUCUN
+
+    #define _ETAT_ADV_AVANT_G            ETAT_HAUT
+    #define _ETAT_ADV_AVANT_D            ETAT_HAUT
+    #define _ETAT_ADV_AVANT_C            ETAT_HAUT
+
+    #define _CAPT_ADV_ARRIERE_G          AUCUN
+    #define _CAPT_ADV_ARRIERE_C          AUCUN
+    #define _CAPT_ADV_ARRIERE_D          AUCUN
+
+    #define _ETAT_ADV_ARRIERE_G          ETAT_HAUT
+    #define _ETAT_ADV_ARRIERE_C          ETAT_HAUT
+    #define _ETAT_ADV_ARRIERE_D          ETAT_HAUT
 
     #define _CAPTEUR1_ANALOGIQUE        DIGITAL
     #define _CAPTEUR2_ANALOGIQUE        DIGITAL

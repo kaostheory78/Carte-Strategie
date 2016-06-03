@@ -10,8 +10,16 @@
  *
  ******************************************************************************/
 
+/******************************************************************************/
+/******************************* INCLUDES *************************************/
+/******************************************************************************/
 
 #include "system.h"
+
+/******************************************************************************/
+/************************** VARIABLES GLOBALES ********************************/
+/******************************************************************************/
+
 
 
 /******************************************************************************/
@@ -21,8 +29,7 @@
 void init_system (void)
 {
     init_clock();
-
-    
+ 
     OVERFLOW_CODEUR[CODEUR_D] = PAS_D_OVERFLOW_CODEUR;
     OVERFLOW_CODEUR[CODEUR_G] = PAS_D_OVERFLOW_CODEUR;
 
@@ -38,7 +45,7 @@ void init_system (void)
     config_timer_100ms();
     config_timer_200ms();
    
-
+    // Config des modules
     ConfigMapping ();
     ConfigPorts ();
     ConfigQEI ();
@@ -46,6 +53,7 @@ void init_system (void)
     ConfigPWM();
     //ConfigADC();
 
+    // Init des uart
     InitUART(UART_XBEE, 115200);
     InitUART(UART_AX12, 500000);
     
@@ -54,35 +62,35 @@ void init_system (void)
     CHECK_LIMITATION_COURANT = CKECK_LIMITATION_COURANT;
 
     // Evitement
-    DETECTION = OFF;
-    EVITEMENT_ADV_AVANT = OFF;
-    EVITEMENT_ADV_ARRIERE = OFF;
-    STRATEGIE_EVITEMENT = STOP;
+    init_evitement();
 
     // AUTOMS
     FLAG_ACTION = NE_RIEN_FAIRE;
     COULEUR = JAUNE;
+    
+    init_compteur_temps_match();
+    init_flag_asserv();
 
-    COMPTEUR_TEMPS_MATCH = 0;
-
+    
     TIMER_5ms   = ACTIVE;
     TIMER_10ms  = ACTIVE;
     TIMER_100ms = ACTIVE;
 
+    // Configuration de led qui clignote a une fréquence de 1 Hz
+    // Sur le timer asserv pour checker que la carte n'a pas planté
+    // (appelée "mode Alive ?")
 #ifdef PETIT_ROBOT
-    TRISCbits.TRISC2 = 0;
+    //TRISCbits.TRISC2 = 0;
 #endif
 #ifdef GROS_ROBOT
     //TRISAbits.TRISA3 = 0;
 #endif
-    
-    init_flag_asserv();
 }
 
 
 
 /******************************************************************************/
-/***************************** Configurations Timers **************************/
+/***************************** CONFIGURATIONS TIMERS **************************/
 /******************************************************************************/
 
 
@@ -219,7 +227,7 @@ void config_timer_200ms()
 }
 
 /******************************************************************************/
-/********************************** Init Clock ********************************/
+/********************************** INIT CLOCK ********************************/
 /******************************************************************************/
 
 void init_clock(void)
@@ -250,6 +258,12 @@ void init_clock(void)
 
     // Wait for PLL to lock
     while(OSCCONbits.LOCK!=1);
+}
+
+void init_compteur_temps_match()
+{
+    CPT_TEMPS_MATCH.actif = false;
+    CPT_TEMPS_MATCH.t_ms = 0;
 }
 
 /******************************************************************************/

@@ -33,6 +33,7 @@ extern "C" {
     #include "gestion_AX12.h"
     #include "autom.h"
     #include "Serialus.h"
+    #include "evitement.h"
     
 
 /******************************************************************************/
@@ -51,11 +52,16 @@ extern "C" {
 /********************************* Timers *************************************/
 /******************************************************************************/
 
+#define AUCUN                   0    
+    
 #define ACTIVE                  0b1
 #define DESACTIVE               0b0
 
 #define DIGITAL                 1
 #define ANALOGIQUE              0
+    
+#define ETAT_HAUT               1
+#define ETAT_BAS                0
 
 #define TIMER_5ms               T1CONbits.TON
 #define TIMER_10ms              T2CONbits.TON
@@ -180,6 +186,15 @@ extern "C" {
 #define ACTIV_INTER_QEI1                1   // Codeurs
 #define ACTIV_INTER_QEI2                1   // Codeurs
 
+/******************************************************************************/
+/********************** DEFINITION DES STRUCTURES *****************************/
+/******************************************************************************/
+
+typedef struct
+{
+    uint32_t t_ms   :31;
+    _Bool actif     : 1;
+}_compteur_temps_match;
 
 /******************************************************************************/
 /*************************** Variables Globales *******************************/
@@ -223,11 +238,20 @@ extern "C" {
     extern volatile __attribute__((near)) _commande_moteur COMMANDE;
     
     //Evitement adversaire
-    extern volatile _enum_on_off DETECTION;
-    extern volatile _enum_on_off EVITEMENT_ADV_AVANT;
-    extern volatile _enum_on_off EVITEMENT_ADV_ARRIERE;
-    extern volatile _enum_evitement STRATEGIE_EVITEMENT;
+    extern volatile _evitement EVITEMENT_ADV;
+    
+    // FLAG Automs
+    extern volatile _enum_couleurs COULEUR;
+    extern volatile _enum_flag_action FLAG_ACTION;
+    extern volatile __attribute__((near)) _compteur_temps_match CPT_TEMPS_MATCH;
 
+    extern volatile _ax12 ax12;
+    extern volatile _Bool CHECK_LIMITATION_COURANT;
+    
+    extern volatile _serialus serialus;
+
+    
+    // Evitement Hugo : pas optimisé ....
     extern int obstacle[x_max][y_max];
     extern int curseur;
 	extern int calcul_en_cours;
@@ -249,15 +273,7 @@ extern "C" {
     extern int precedent_obstacle[7];
 
 
-    // FLAG Automs
-    extern volatile _enum_couleurs COULEUR;
-    extern volatile _enum_flag_action FLAG_ACTION;
-    extern volatile uint8_t COMPTEUR_TEMPS_MATCH;
 
-    extern volatile _ax12 ax12;
-    extern volatile _Bool CHECK_LIMITATION_COURANT;
-    
-    extern volatile _serialus serialus;
 
 /******************************************************************************/
 /****************************** Prototypes ************************************/
@@ -276,6 +292,11 @@ extern "C" {
      * Fonction qui rèfle l'horloge à 80Mhz
      */
     void init_clock(void);
+    
+    /**
+     * Fonction qui initialise le compteur de temps de match à zéro
+     */
+    void init_compteur_temps_match();
 
     /**
     * Configuration du Timer de 5 ms pour l'asservissement
