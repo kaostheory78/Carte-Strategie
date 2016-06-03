@@ -75,6 +75,19 @@ _Bool check_evitement()
     return result;
 }
 
+/******************************************************************************/
+/****************************** GESTION EVITEMENT  ****************************/
+/******************************************************************************/
+
+/**
+ * Cette fonction a pour but de désactiver automatiquement l'évitement dans 
+ * des zones critiques comme les bordures de terrain
+ */
+void ajustement_evitement_autonome()
+{
+    // TO DO 
+}
+
 
 /******************************************************************************/
 /***************************** FONCTION EVITEMENT  ****************************/
@@ -87,6 +100,8 @@ void evitement()
     
     if (EVITEMENT_ADV.actif == ON)
     {
+        ajustement_evitement_autonome();
+        
         if (check_evitement() && EVITEMENT_ADV.detection == OFF)
         {
             compteur = 0;
@@ -128,3 +143,7 @@ void evitement()
         }
     }
 }
+
+/******************************************************************************/
+/******************************************************************************/
+/******************************************************************************/

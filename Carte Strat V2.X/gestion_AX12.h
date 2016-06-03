@@ -220,10 +220,14 @@ extern "C" {
 
     typedef struct pos
     {
+        _Bool present               :  1;
+        _enum_erreur_ax12 erreur    :  3;
+        uint16_t nb_echec           : 12;
         uint16_t point;
         //int point_mini;   //si implémentation de limite mini et max dans le code
         //int point_maxi;
         float angle;
+       
     }pos;
 
 
@@ -248,92 +252,106 @@ extern "C" {
 /****************************** Prototypes ************************************/
 /******************************************************************************/
 
-
-void lecture_position_AX12 (uint8_t *ax12, int taille);
-
-
+    
+/******************************************************************************/
+/*************************** FONCTIONS INITS **********************************/
+/******************************************************************************/    
+    
 /**
- *  @brief : Fonction qui est appelé lors de l'interrution de reception sur l'uart AX12
+ * Fonction qui ninitialise les décalege des AX12
+ * Suivre le mode d'emploi dans le .C pour comprendre le fonctionnement
  */
-void reception_uart_ax12 (void);
-
+void init_decalage_AX12 (void);
 
 /**
- *  Fonction qui traite les octets reçus
+ * Fonction qui sert à associer une première position aux AX12 pour le calcul
  */
-void traitement_reception_ax12 ();
+void init_position_AX12 (void);
 
+
+/******************************************************************************/
+/************* Fonction de conversion des positions primaires *****************/
+/******************************************************************************/
 
 /**
- * Réinitialisation du buffer contenant les octets reçus
+ * Produit en croix pour déterminer l'angle équivalent à une position
+ * @param position : en points
+ * @return : angle en °
  */
-void reinit_buffer (void);
-
-void reinit_alim_ax12();
+float convertion_position (uint16_t position);
 
 /**
- *  Fonction qui envoit les trames de commande des AX12 sur l'uart puis gère la réception
- *  \n
- * Elle s'assure de vérifier que les AX12 ont correctement reçus les infos, et les renvois
- * si nécéssaire jusqu'à 5 fois. Sinon elle passe à autre chose
+ * Produit en croix pour déterminer une position équivalente à un angle
+ * @param angle en ° (nombre réel)
+ * @return position (nombre entier)
+ */
+int convertion_angle (float angle);
+
+/******************************************************************************/
+/*************** Fonction de calcul des positions à envoyer *******************/
+/******************************************************************************/
+
+/**
+ * calcul la position à envoyer à partir de l'angle souhaitée dans le plan fictif
+ * @param ID : ID de l'AX12 dont on veut calculer le mouvement
+ * @param angle : angle consigne en ° (nombre réel)
+ * @return : position en point à donner en consigne à l'AX12
+ */
+int calcul_position (uint8_t ID, float angle);
+
+
+/******************************************************************************/
+/******************** Fonctions pour faire bouger les AX12 ********************/
+/******************************************************************************/
+
+/**
+ * Bouge les AX12 à partir d'un angle donné.
+ * Cet angle est relatif à un plan, 0° = parallèle au terrain
+ * \n
+ * La fonction prend aussi en compte la couleur de départ et inverse les bras à utiliser
+ * Elle permet aussi d'inverser les angles sur certains AX12
+ * \n
+ * Toute l'autom peut donc être fait pour en rouge et sera adaptée automatiquement en Jaune
  *
- * @param ID : ID de l'AX12
- * @param longueur : nombre de paramètre envoyé en argument + 2 : _2PARAM, _3PARAM ... _6PARAM, _ALL_PARAM
- * @param instruction : PING, READ_DATA, WRITE_DATA, REG_WRITE, ACTION, RESET_AX
- * @param param1      : si pas de paramètre : NC
- * @param param2      : si pas de paramètre : NC
- * @param param3      : si pas de paramètre : NC
- * @param param4      : si pas de paramètre : NC
- * @param param5      : si pas de paramètre : NC
+ * @param ID : ID de l'AX12 à déplacer
+ * @param angle : en ° (nombre réel)
+ * @param vitesse : VIT_AX_NORMAL, VIT_AX_REDUITE, VIT_AX_MOITIE ( de 0 à 1023)
+ * @param attente : AVEC_ATTENTE, SANS_ATTENTE, pour permettre de synchro les mouvements
  */
-void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, ...);
-
-/**
- *  Fonction qui demande une donnée à un AX-12
- * @param ID : AX12 de qui on peut connaitre la donnée
- * @param type_donnee : temps de réponse    : LIRE_TEMPS_REPONSE (valeur * 2µs)\n
- *                      position actuelle   : LIRE_POSITION_ACTU\n
- *                      vitesse actuelle    : LIRE_VITESSE_ACTU\n
- *                      tension de l'AX12   : LIRE_TENSION (valeur / 10)\n
- *                      Température interne : LIRE_TEMPERATURE\n
- *                      Est en mouvement ?  : LIRE_MOUV_FLAG\n
- * @return Renvoit la donnée | -1 en cas d'erreur
- */
-int16_t read_data (uint8_t ID, uint8_t type_donnee);
+void synchro_AX12 (uint8_t ID, float angle, uint16_t vitesse, uint8_t attente);
 
 
 /**
- *  Fonction qui permet de calculer le checksum de vérification de trames
- * \n
- * Prend en argument les mêmes paramètres que la fonction de commande
- * @param ID : ID de l'AX12
- * @param longueur : nombre de paramètre envoyé en argument + 2 : _2PARAM, _3PARAM ... _6PARAM, _ALL_PARAM
- * @param instruction : PING, READ_DATA, WRITE_DATA, REG_WRITE, ACTION, RESET_AX
- * @param param1      : si pas de paramètre : NC
- * @param param2      : si pas de paramètre : NC
- * @param param3      : si pas de paramètre : NC
- * @param param4      : si pas de paramètre : NC
- * @param param5      : si pas de paramètre : NC
- * @return            : renvoit la valeur de checksum sur un octet
+ * Fonction de commande simple des AX12, pour les faire bouger
+ *
+ * @param ID
+ * @param position : position de 0 à 1023 points
+ * @param vitesse : VIT_AX_NORMAL, VIT_AX_MOITIE, VIT_AX_REDUITE (de 0 à 1023)
+ * @param ATTENTE : AVEC_ATTENTE, SANS_ATTENTE
+ * \n Il faut bien penser à lancer la fonction lancer_autom_AX12(); si AVEC_ATTENTE
  */
-uint8_t calcul_checksum (uint8_t ID, uint8_t longueur, uint8_t instruction, ...);
+void angle_AX12 (uint8_t ID,  uint16_t position, uint16_t vitesse, uint8_t ATTENTE );
 
 
 /**
- * Fonction qui permet de calculer le checksum de vérification de trames à partir d'une va_list
- * \n
- * @param ID            : ID de l'AX12
- * @param longueur      : nombre de paramètre envoyé en argument + 2 : _2PARAM, _3PARAM ... _6PARAM, _ALL_PARAM
- * @param instruction   : PING, READ_DATA, WRITE_DATA, REG_WRITE, ACTION, RESET_AX
- * @param liste_param   : liste de taille non défini d'arguments
- * @return              : renvoit la valeur de checksum sur un octet
+ * Flag de lancement de l'autom des AX12
+ * \n Il faut avoir utilisé l'option AVEC_ATTENTE lors du lancement des mouvements
  */
-uint8_t calcul_checksum_variadic (uint8_t ID, uint8_t longueur, uint8_t instruction, va_list liste_param);
+void lancer_autom_AX12 (void);
+
+
+/**
+ * Permet de configurer un AX12 en mode roue inifi ou en mode normal
+ * Le mode est enregistré en mémoire EPPROM (non volatile)
+ * @param ID
+ * @param mode : MODE_INFINI ou MODE_NORMAL
+ */
+void rotation_AX12 (uint8_t ID, uint8_t sens, uint16_t vitesse);
+
 
 /******************************************************************************/
+/****************** Fonctions de reconfiguration des AX12**********************/
 /******************************************************************************/
-/******************************************************************************/
-
 
 /**
  * Fonction qui permet de configurer le renvois de données par les AX12
@@ -410,13 +428,10 @@ void baud_AX12 (uint8_t ID, uint8_t bauds);
  */
 void mode_rotation_AX12 (uint8_t ID, uint8_t mode);
 
-
-void torque_enable_ax12(uint8_t ID, _Bool mode);
-
-
 /******************************************************************************/
+/********************** Fonctions diverses AX12 *******************************/
 /******************************************************************************/
-/******************************************************************************/
+
 
 /**
  * Fonction pour allumer les LEDS des AX12 ... =)
@@ -433,95 +448,146 @@ void eteindre_LED_AX12 (uint8_t ID);
 
 
 /**
- * Fonction de commande simple des AX12, pour les faire bouger
+ * Fonction qui permet d'activer ou de désactiver l'asservissement en position
+ * de l'ax12
+ * @param ID        : ID de l'ax12 ou TOUS_LES_AX12 
+ * @param mode      : true or false
+ */
+void torque_enable_ax12(uint8_t ID, _Bool mode);
+
+
+
+/******************************************************************************/
+/***************** Fonction de communication AX - 12 **************************/
+/******************************************************************************/
+
+
+/**
+ *  @brief : Fonction qui est appelé lors de l'interrution de reception sur l'uart AX12
+ */
+void reception_uart_ax12 (void);
+
+
+/**
+ *  Fonction qui traite les octets reçus
+ */
+void traitement_reception_ax12 ();
+
+
+/**
+ * Réinitialisation du buffer contenant les octets reçus
+ */
+void reinit_buffer (void);
+
+
+/**
+ *  Fonction qui envoit les trames de commande des AX12 sur l'uart puis gère la réception
+ *  \n
+ * Elle s'assure de vérifier que les AX12 ont correctement reçus les infos, et les renvois
+ * si nécéssaire jusqu'à 5 fois. Sinon elle passe à autre chose
  *
- * @param ID
- * @param position : position de 0 à 1023 points
- * @param vitesse : VIT_AX_NORMAL, VIT_AX_MOITIE, VIT_AX_REDUITE (de 0 à 1023)
- * @param ATTENTE : AVEC_ATTENTE, SANS_ATTENTE
- * \n Il faut bien penser à lancer la fonction lancer_autom_AX12(); si AVEC_ATTENTE
+ * @param ID : ID de l'AX12
+ * @param longueur : nombre de paramètre envoyé en argument + 2 : _2PARAM, _3PARAM ... _6PARAM, _ALL_PARAM
+ * @param instruction : PING, READ_DATA, WRITE_DATA, REG_WRITE, ACTION, RESET_AX
+ * @param param1      : si pas de paramètre : NC
+ * @param param2      : si pas de paramètre : NC
+ * @param param3      : si pas de paramètre : NC
+ * @param param4      : si pas de paramètre : NC
+ * @param param5      : si pas de paramètre : NC
  */
-void angle_AX12 (uint8_t ID,  uint16_t position, uint16_t vitesse, uint8_t ATTENTE );
+void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, ...);
+
 
 /**
- * Bouge les AX12 à partir d'un angle donné.
- * Cet angle est relatif à un plan, 0° = parallèle au terrain
+ *  Fonction qui permet de calculer le checksum de vérification de trames
  * \n
- * La fonction prend aussi en compte la couleur de départ et inverse les bras à utiliser
- * Elle permet aussi d'inverser les angles sur certains AX12
+ * Prend en argument les mêmes paramètres que la fonction de commande
+ * @param ID : ID de l'AX12
+ * @param longueur : nombre de paramètre envoyé en argument + 2 : _2PARAM, _3PARAM ... _6PARAM, _ALL_PARAM
+ * @param instruction : PING, READ_DATA, WRITE_DATA, REG_WRITE, ACTION, RESET_AX
+ * @param param1      : si pas de paramètre : NC
+ * @param param2      : si pas de paramètre : NC
+ * @param param3      : si pas de paramètre : NC
+ * @param param4      : si pas de paramètre : NC
+ * @param param5      : si pas de paramètre : NC
+ * @return            : renvoit la valeur de checksum sur un octet
+ */
+uint8_t calcul_checksum (uint8_t ID, uint8_t longueur, uint8_t instruction, ...);
+
+
+/**
+ * Fonction qui permet de calculer le checksum de vérification de trames à partir d'une va_list
  * \n
- * Toute l'autom peut donc être fait pour en rouge et sera adaptée automatiquement en Jaune
- *
- * @param ID : ID de l'AX12 à déplacer
- * @param angle : en ° (nombre réel)
- * @param vitesse : VIT_AX_NORMAL, VIT_AX_REDUITE, VIT_AX_MOITIE ( de 0 à 1023)
- * @param attente : AVEC_ATTENTE, SANS_ATTENTE, pour permettre de synchro les mouvements
+ * @param ID            : ID de l'AX12
+ * @param longueur      : nombre de paramètre envoyé en argument + 2 : _2PARAM, _3PARAM ... _6PARAM, _ALL_PARAM
+ * @param instruction   : PING, READ_DATA, WRITE_DATA, REG_WRITE, ACTION, RESET_AX
+ * @param liste_param   : liste de taille non défini d'arguments
+ * @return              : renvoit la valeur de checksum sur un octet
  */
-void synchro_AX12 (uint8_t ID, float angle, uint16_t vitesse, uint8_t attente);
+uint8_t calcul_checksum_variadic (uint8_t ID, uint8_t longueur, uint8_t instruction, va_list liste_param);
 
 
 /**
- * Flag de lancement de l'autom des AX12
- * \n Il faut avoir utilisé l'option AVEC_ATTENTE lors du lancement des mouvements
+ *  Fonction qui demande une donnée à un AX-12
+ * @param ID : AX12 de qui on peut connaitre la donnée
+ * @param type_donnee : temps de réponse    : LIRE_TEMPS_REPONSE (valeur * 2µs)\n
+ *                      position actuelle   : LIRE_POSITION_ACTU\n
+ *                      vitesse actuelle    : LIRE_VITESSE_ACTU\n
+ *                      tension de l'AX12   : LIRE_TENSION (valeur / 10)\n
+ *                      Température interne : LIRE_TEMPERATURE\n
+ *                      Est en mouvement ?  : LIRE_MOUV_FLAG\n
+ * @return Renvoit la donnée | -1 en cas d'erreur
  */
-void lancer_autom_AX12 (void);
-
-/******************************************************************************/
-/******************************************************************************/
-/******************************************************************************/
+int16_t read_data (uint8_t ID, uint8_t type_donnee);
 
 
 /**
- * Permet de configurer un AX12 en mode roue inifi ou en mode normal
- * Le mode est enregistré en mémoire EPPROM (non volatile)
- * @param ID
- * @param mode : MODE_INFINI ou MODE_NORMAL
+ * Fonction qui permet d'afficher sur la liaison série la position en temps réel
+ * des ax12 choisis
+ * @param ax12      : tableau avec les id des ax12 à checker
+ * @param taille    : taille du tableau
  */
-void rotation_AX12 (uint8_t ID, uint8_t sens, uint16_t vitesse);
-
-/**
- * calcul la position à envoyer à partir de l'angle souhaitée dans le plan fictif
- * @param ID : ID de l'AX12 dont on veut calculer le mouvement
- * @param angle : angle consigne en ° (nombre réel)
- * @return : position en point à donner en consigne à l'AX12
- */
-int calcul_position (uint8_t ID, float angle);
-
-/**
- * Produit en croix pour déterminer l'angle équivalent à une position
- * @param position : en points
- * @return : angle en °
- */
-float convertion_position (uint16_t position);
-
-/**
- * Produit en croix pour déterminer une position équivalente à un angle
- * @param angle en ° (nombre réel)
- * @return position (nombre entier)
- */
-int convertion_angle (float angle);
-
-
-float formule(float longueur, float longueur_1, float longueur_2);
+void lecture_position_AX12 (uint8_t *ax12, int taille);
 
 /******************************************************************************/
-/******************************************************************************/
+/*************************** GESTION DES ERREURS ******************************/
 /******************************************************************************/
 
 /**
- * Fonction qui ninitialise les décalege des AX12
- * Suivre le mode d'emploi dans le .C pour comprendre le fonctionnement
+ * Fonction qui va pinguer régulièrement les ax12 configurés comme présent dans 
+ * le code
+ * Si jamais un ax12 né répond pas, son état d'erreur va être mis à jour lors du 
+ * Ping et l'on pourra traiter l'erreur plus tard en temps voulu
  */
-void init_decalage_AX12 (void);
+void checkup_com_ax12();
+
 
 /**
- * Fonction qui sert à associer une première position aux AX12 pour le calcul
+ * Fonction qui va réinitialisé l'alim et renvoyer les dernières positions 
+ * enregistrés des ax12 si l'on détecte qu'un ax12 et en limitation de courant
  */
-void init_position_AX12 (void);
+void clean_des_erreurs_ax12();
+
+
+/**
+ * Fonction à appeler à la fin du code, ou même avant le début du match pour 
+ * se rendre compte si il y a des problèmes de com récurent avec certains ax12
+ */
+void print_statistique_ax12();
+
+
+/**
+ * Pour clearer des erreurs d'overload, il faut couper l'alimentation des ax12
+ * puis la rallumer
+ */
+void reinit_alim_ax12();
+
 
 /******************************************************************************/
 /******************************************************************************/
 /******************************************************************************/
+
+
 
 #ifdef	__cplusplus
 }

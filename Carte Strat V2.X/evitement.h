@@ -62,6 +62,7 @@ extern "C" {
     // /!\ CODE SUR 3 BIT DANS LA STRUCTURE /!\ //
     typedef enum
     {
+        AUCUN     = 0b000,
         EV_DROIT  = 0b001,
         EV_CENTRE = 0b010,
         EV_GAUCHE = 0b100,
@@ -109,6 +110,12 @@ extern "C" {
      * @return true si évitement false sinon
      */
     _Bool check_evitement();
+    
+    /**
+    * Cette fonction a pour but de désactiver automatiquement l'évitement dans 
+    * des zones critiques comme les bordures de terrain
+    */
+    void ajustement_evitement_autonome();
     
     /**
      * Fonction qui gère tout l'évitement

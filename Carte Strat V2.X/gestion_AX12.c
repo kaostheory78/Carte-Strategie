@@ -53,6 +53,11 @@ volatile _Bool CHECK_LIMITATION_COURANT;
 volatile decal decalage[ID_MAX_AX12];
 volatile pos position_AX12[ID_MAX_AX12];
 
+
+/******************************************************************************/
+/*************************** FONCTIONS INITS **********************************/
+/******************************************************************************/
+
 void init_decalage_AX12 (void)      //Declaration de l'enchainement de montage des AX12
 {
     //US
@@ -72,10 +77,20 @@ void init_decalage_AX12 (void)      //Declaration de l'enchainement de montage d
 
 void init_position_AX12 (void)      //Force l'état premier des AX12 à l'angle 0
 {
+    uint8_t i = 0;
+    for (i = 0 ; i < ID_MAX_AX12 ; i++)
+    {
+        position_AX12[i].angle    = 0;
+        position_AX12[i].point    = 0;
+        position_AX12[i].nb_echec = 0;
+        position_AX12[i].present  = false;
+    }
+    
 #ifdef GROS_ROBOT
     //us
-    position_AX12[AX_US].angle = 0;
-    position_AX12[AX_US].point = 512;   
+    position_AX12[AX_US].present = true;
+    position_AX12[AX_US].angle   = 0;
+    position_AX12[AX_US].point   = 512;   
 #endif
     
 #ifdef PETIT_ROBOT
@@ -208,6 +223,17 @@ void angle_AX12 (uint8_t ID,  uint16_t position, uint16_t vitesse, uint8_t ATTEN
     uint8_t vitesse_L  = 0;   //vitesse paramètre 1
     uint8_t vitesse_H  = 0;  //vitesse paramètre
 
+    
+    // Stockage de la position de l'ax12 
+    if (ID != TOUS_LES_AX12)
+        position_AX12[ID].point = position;
+    else 
+    {
+        uint8_t i = 0;
+        for (i = 0 ; i < ID_MAX_AX12 ; i++)
+            position_AX12[i].point = position;
+    }
+    
     //Calcul de la position :
     if (position >= 256)
     {
@@ -231,7 +257,7 @@ void angle_AX12 (uint8_t ID,  uint16_t position, uint16_t vitesse, uint8_t ATTEN
         vitesse_L = (uint8_t) vitesse;
         vitesse_H = (uint8_t) 0;
     }
-
+    
    //Lancement de l'autom :
     if (ATTENTE == SANS_ATTENTE) //Si un seul AX à bouger :
     {
@@ -380,11 +406,6 @@ void mode_rotation_AX12 (uint8_t ID, uint8_t mode)
         commande_AX12(ID, _5PARAM, WRITE_DATA, 0x08, 0xFF, 0x03);
 }
 
-void torque_enable_ax12(uint8_t ID, _Bool mode)
-{
-    commande_AX12(ID, _4PARAM, WRITE_DATA, 0x18, (uint8_t) mode);
-}
-
 /******************************************************************************/
 /********************** Fonctions diverses AX12 *******************************/
 /******************************************************************************/
@@ -406,6 +427,18 @@ void eteindre_LED_AX12 (uint8_t ID)
 {
     commande_AX12(ID, _5PARAM, WRITE_DATA, 0x19);
 }
+
+/**
+ * Fonction qui permet d'activer ou de désactiver l'asservissement en position
+ * de l'ax12
+ * @param ID        : ID de l'ax12 ou TOUS_LES_AX12 
+ * @param mode      : true or false
+ */
+void torque_enable_ax12(uint8_t ID, _Bool mode)
+{
+    commande_AX12(ID, _4PARAM, WRITE_DATA, 0x18, (uint8_t) mode);
+}
+
 
 /******************************************************************************/
 /***************** Fonction de communication AX - 12 **************************/
@@ -484,17 +517,6 @@ void reinit_buffer (void)
     ax12.offset = 0;
     ax12.erreur = PAS_D_ERREUR;
     ax12.nb_octet_attente = 0;
-}
-
-void reinit_alim_ax12()
-{
-    INHIBIT_AX12 = ETEINT;
-    delay_ms(30);
-    print_abort("reinit alim ax12");
-    INHIBIT_AX12 = ALLUME;
-    // test jusqu'à 10 secondes non concluant
-    // Il faut tester une autre solution
-    delay_ms(10);
 }
 
 void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, ...)
@@ -579,6 +601,11 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, ...)
         //printf("\n\rtest %d, erreur : %d", ax12.tentatives, ax12.erreur);
 
     }while (ax12.erreur != PAS_D_ERREUR && ax12.tentatives < MAX_TENTATIVES );
+    
+    // Enregistrement des données AX12 :
+    position_AX12[ID].nb_echec += (uint16_t) (ax12.tentatives - 1);
+    position_AX12[ID].erreur = ax12.erreur;
+    
 
 //    if (ax12.erreur != PAS_D_ERREUR)
 //    {
@@ -693,3 +720,91 @@ void lecture_position_AX12 (uint8_t *ax12, int taille)
 //    }
 
 }
+
+/******************************************************************************/
+/*************************** GESTION DES ERREURS ******************************/
+/******************************************************************************/
+
+/**
+ * Fonction qui va pinguer régulièrement les ax12 configurés comme présent dans 
+ * le code
+ * Si jamais un ax12 né répond pas, son état d'erreur va être mis à jour lors du 
+ * Ping et l'on pourra traiter l'erreur plus tard en temps voulu
+ */
+void checkup_com_ax12()
+{
+    uint8_t id = 0;
+    for (id = 0 ; id < ID_MAX_AX12 ; id++)
+    {
+        if (position_AX12[id].present == true)
+        {
+            Ping(id);
+        }
+    }
+}
+
+/**
+ * Fonction qui va réinitialisé l'alim et renvoyer les dernières positions 
+ * enregistrés des ax12 si l'on détecte qu'un ax12 et en limitation de courant
+ */
+void clean_des_erreurs_ax12()
+{
+    uint8_t id = 0;
+    _Bool erreur_overload = false;
+    
+    for (id = 0 ; id < ID_MAX_AX12 ; id++)
+    {
+        if (position_AX12[id].erreur == LIMITATION_DE_COURANT)
+            erreur_overload = true;
+    }
+    
+    if (erreur_overload == true)
+    {
+        reinit_alim_ax12();
+        
+        for (id = 0 ; id < ID_MAX_AX12 ; id++)
+        {
+            if (position_AX12[id].present == true)
+            {
+                angle_AX12(id, position_AX12[id].point, 500, SANS_ATTENTE);
+            }
+        }
+    }   
+}
+
+
+/**
+ * Fonction à appeler à la fin du code, ou même avant le début du match pour 
+ * se rendre compte si il y a des problèmes de com récurent avec certains ax12
+ */
+void print_statistique_ax12()
+{
+    uint8_t id = 0;
+    for (id = 0 ; id < ID_MAX_AX12 ; id++)
+    {
+        if (position_AX12[id].present == true)
+        {
+            printf("\n\rID : %d\tEchec : %d\tErr Act : %d",  id, position_AX12[id].nb_echec, position_AX12[id].erreur);
+        }
+    }
+}
+
+
+/**
+ * Pour clearer des erreurs d'overload, il faut couper l'alimentation des ax12
+ * puis la rallumer
+ */
+void reinit_alim_ax12()
+{
+    INHIBIT_AX12 = ETEINT;
+    delay_ms(30);
+    print_abort("reinit alim ax12");
+    INHIBIT_AX12 = ALLUME;
+    // test jusqu'à 10 secondes non concluant
+    // Il faut tester une autre solution
+    delay_ms(200);
+}
+
+/******************************************************************************/
+/******************************************************************************/
+/******************************************************************************/

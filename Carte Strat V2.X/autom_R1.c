@@ -147,7 +147,8 @@ void init_depart()
 
 void autom_20ms (void)
 {
-
+    static uint8_t compteur_checkup_ax12 = 0;
+    
     //fonction qui definit les actions
     switch (FLAG_ACTION)
     {
@@ -157,6 +158,7 @@ void autom_20ms (void)
             break;
     }
     
+    // Rotation des us pour la détection adversaire
     if (EVITEMENT_ADV.actif == true && EVITEMENT_ADV.detection == OFF)
     {
         if (EVITEMENT_ADV.sens == MARCHE_AVANT)
@@ -167,7 +169,18 @@ void autom_20ms (void)
     //else
         //position standart
     
+    // Checkup que les ax12 vont bien toutes les 500 ms
+    compteur_checkup_ax12++;
+    if (compteur_checkup_ax12 == 25) // 500 ms
+    {
+        checkup_com_ax12();
+    }
+    
 }
 
+
+/******************************************************************************/
+/******************************************************************************/
+/******************************************************************************/
 
 #endif
