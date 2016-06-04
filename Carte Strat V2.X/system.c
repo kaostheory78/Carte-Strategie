@@ -58,7 +58,11 @@ void init_system (void)
     InitUART(UART_AX12, 500000);
     
     delay_ms(1000);
+    
+#ifndef NO_SERIALUS
     reinit_buffer_serialus();
+#endif
+    
     CHECK_LIMITATION_COURANT = CKECK_LIMITATION_COURANT;
 
     // Evitement

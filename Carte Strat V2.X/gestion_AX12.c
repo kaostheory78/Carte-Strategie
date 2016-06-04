@@ -666,7 +666,7 @@ uint8_t calcul_checksum_variadic (uint8_t ID, uint8_t longueur, uint8_t instruct
 int16_t read_data (uint8_t ID, uint8_t type_donnee)
 {
     uint8_t nombre_octets_a_recevoir = 0;
-    uint16_t buffer;
+    uint16_t buffer =0;
 
     //Détermination du nombres d'octets de données à recevoir
     switch (type_donnee)
@@ -779,6 +779,7 @@ void clean_des_erreurs_ax12()
  */
 void print_statistique_ax12()
 {
+#ifndef NO_SERIALUS
     uint8_t id = 0;
     for (id = 0 ; id < ID_MAX_AX12 ; id++)
     {
@@ -787,6 +788,7 @@ void print_statistique_ax12()
             printf("\n\rID : %d\tEchec : %d\tErr Act : %d",  id, position_AX12[id].nb_echec, position_AX12[id].erreur);
         }
     }
+#endif
 }
 
 

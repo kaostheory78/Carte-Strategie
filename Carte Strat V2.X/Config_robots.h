@@ -28,6 +28,8 @@ extern "C" {
 #define GROS_ROBOT
 //#define PETIT_ROBOT
 //#define ROBOT_TEST
+    
+//#define NO_SERIALUS
 
 #define _Pi                             3.14159265359
 

@@ -246,8 +246,9 @@ typedef struct
     extern volatile _ax12 ax12;
     extern volatile _Bool CHECK_LIMITATION_COURANT;
     
+#ifndef NO_SERIALUS
     extern volatile _serialus serialus;
-
+#endif
     
     // Evitement Hugo : pas optimisé ....
     extern int obstacle[x_max][y_max];

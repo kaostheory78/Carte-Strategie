@@ -20,10 +20,9 @@
 /**************************** VARIABLES GLOBALES ******************************/
 /******************************************************************************/
 
+#ifndef NO_SERIALUS
 
 volatile _serialus serialus;
-
-
 
 /******************************************************************************/
 /**************************** FONCTIONS DE CONFIG  ****************************/
@@ -49,7 +48,7 @@ void reinit_buffer_serialus()
     serialus.erreur_confirmation = false;
     serialus.info_a_traiter = false;
     serialus.nb_param = 0;
-    serialus.deplacement_en_cours = false;
+    serialus.clignotement_en_cours = false;
     
     printf("\n\n\r");
 }
@@ -255,7 +254,7 @@ void serialus_traitement_deplacement ()
                if (check_coherence(abs(x) < 4000 && abs(y) < 4000 && abs(v) < 200 ))
                {
                    //printf("\n\rcibler X : %d, Y : %d, V : %d",(int) x,(int) y,(int) v);
-                   serialus.deplacement_en_cours = true;
+                   init_clignotement();
                    print_erreur_deplacement(_cibler(x, y, v));
                }
            }
@@ -273,7 +272,7 @@ void serialus_traitement_deplacement ()
 
                 if (check_coherence(abs(a) <= 180 && abs(v) < 200 ))
                 {
-                    serialus.deplacement_en_cours = true;
+                    init_clignotement();
                     //printf("\n\rorienter Teta : %d, V : %d",(int) a,(int) v);
                     print_erreur_deplacement(_orienter(a, v));
                 }
@@ -294,7 +293,7 @@ void serialus_traitement_deplacement ()
 
                 if (check_coherence(abs(x) < 3000 && abs(y) < 2000 && abs(v) < 150 && abs(s) == 1))
                 {
-                    serialus.deplacement_en_cours = true;
+                    init_clignotement();
                     //printf("\n\rrejoindre X : %d, Y : %d,sens : %d, V : %d",(int) x,(int) y,(int) s,(int) v);
                     print_erreur_deplacement(_rejoindre(x, y, s, v));
                 }
@@ -313,7 +312,7 @@ void serialus_traitement_deplacement ()
 
                 if (check_coherence(d < 3000 && d > 0 && abs(v) < 150))
                 {
-                    serialus.deplacement_en_cours = true;
+                    init_clignotement();
                     //printf("\n\ravancer d : %d, V : %d",(int) d,(int) v);
                     print_erreur_deplacement(_avancer_reculer(d, v));
                 }
@@ -332,7 +331,7 @@ void serialus_traitement_deplacement ()
 
                 if (check_coherence(d < 3000 && d > 0 && abs(v) < 150))
                 {
-                    serialus.deplacement_en_cours = true;
+                    init_clignotement();
                     //printf("\n\rreculer d : %d, V : %d",(int) d,(int) v);
                     print_erreur_deplacement(_avancer_reculer(-d, v));
                 }
@@ -350,10 +349,10 @@ void serialus_traitement_deplacement ()
 
                 if (check_coherence(abs(nb) < 60))
                 {
-                    serialus.deplacement_en_cours = true;
+                    init_clignotement();
                     //printf("\n\rtourner de %d tours", nb);
                     faire_des_tours(nb);
-                    serialus.deplacement_en_cours = false;
+                    serialus.clignotement_en_cours = false;
                     print_position();
                 }
             }
@@ -366,10 +365,10 @@ void serialus_traitement_deplacement ()
     {
         if (check_nb_param(1))
         {
-            serialus.deplacement_en_cours = true;
+            init_clignotement();
             //printf("\n\rje fais un trapeze");
             trapeze(MARCHE_AVANT);
-            serialus.deplacement_en_cours = false;
+            serialus.clignotement_en_cours = false;
             print_position();
         }
     }
@@ -378,10 +377,10 @@ void serialus_traitement_deplacement ()
     {
         if (check_nb_param(1))
         {
-            serialus.deplacement_en_cours = true;
+            init_clignotement();
             //printf("\n\rje fais un carre");
             carre(MARCHE_AVANT);
-            serialus.deplacement_en_cours = false;
+            serialus.clignotement_en_cours = false;
             print_position();
         }
     }
@@ -437,10 +436,10 @@ void serialus_traitement_calage()
 
                 if (check_coherence(d < 3000 && d > 0 && abs(v) < 150))
                 {
-                    serialus.deplacement_en_cours = true;
+                    init_clignotement();
                     //printf("\n\rCalage d : %d, V : %d",(int) d,(int) v);
                     calage(d, v);
-                    serialus.deplacement_en_cours = false;
+                    serialus.clignotement_en_cours = false;
                     print_position();
                 }
             }
@@ -460,10 +459,10 @@ void serialus_traitement_calage()
 
                 if (check_coherence(abs(x) < 3000 && abs(t) <= 180 && abs(v) < 150 && abs(s) == 1))
                 {
-                    serialus.deplacement_en_cours = true;
+                    init_clignotement();
                     //printf("\n\rCalage en X x : %d, teta : %d, sens : %d, vitessse : %d",(int) x,(int) t, (int) s, (int) v);
                     calage_X(x, t, s, v);
-                    serialus.deplacement_en_cours = false;
+                    serialus.clignotement_en_cours = false;
                     print_position();
                 }
             }
@@ -483,10 +482,10 @@ void serialus_traitement_calage()
 
                 if (check_coherence(abs(y) < 2000 && abs(t) <= 180 && abs(v) < 150 && abs(s) == 1))
                 {
-                    serialus.deplacement_en_cours = true;
+                    init_clignotement();
                     //printf("\n\rCalage en Y y : %d, teta : %d, sens : %d, vitessse : %d",(int) y,(int) t, (int) s, (int) v);
                     calage_Y(y, t, s, v);
-                    serialus.deplacement_en_cours = false;
+                    serialus.clignotement_en_cours = false;
                     print_position();
                 }
             }
@@ -505,10 +504,10 @@ void serialus_traitement_calage()
 
                 if (check_coherence(abs(t) <= 180 && abs(v) < 150 && abs(s) == 1))
                 {
-                    serialus.deplacement_en_cours = true;
+                    init_clignotement();
                     //printf("\n\rCalage en Teta,  teta : %d, sens : %d, vitessse : %d",(int) t, (int) s, (int) v);
                     calage_teta(t, s, v);
-                    serialus.deplacement_en_cours = false;
+                    serialus.clignotement_en_cours = false;
                     print_position();
                 }
             }
@@ -1353,11 +1352,6 @@ void print_incoherent()
     printf("\n\rUn des parametre recu est incoherent, action refusee");
 }
 
-void print_position()
-{
-    printf("\n\rX: %f, Y : %f, Teta : %f\n",(float) get_X(), (float) get_Y(),(float) get_orientation());
-}
-
 void print_abort_confirmation()
 {
     print_abort("no received !");
@@ -1370,7 +1364,7 @@ void print_confirm()
 
 void print_erreur_deplacement(_enum_erreur_asserv erreur)
 {
-    serialus.deplacement_en_cours = false;
+    serialus.clignotement_en_cours = false;
     switch(erreur)
     {
         case EVITEMENT :
@@ -1383,11 +1377,6 @@ void print_erreur_deplacement(_enum_erreur_asserv erreur)
             break;
     }
     print_position();
-}
-
-void print_abort(char* raison)
-{
-    printf("\n\rAbort : %s", raison);
 }
 
 void print_erreur_ax12()
@@ -1422,8 +1411,41 @@ void print_position_ax12(uint8_t id, int16_t position)
     printf(" ID : %d = %d", id, position);
 }
 
-//void print_clignotement()
-//{
-//    printf("\n\r");
-//    serialus.deplacement_en_cours == true;
-//}
+void init_clignotement()
+{
+    printf("\n");
+    serialus.clignotement_en_cours = true;
+}
+
+void print_clignotement()
+{
+    static uint8_t tempo = 0;
+    tempo ++;
+    if (tempo == 5)
+        printf("\r -");
+    else if (tempo == 10)
+    {
+        printf("\r  ");
+        tempo = 0;
+    }
+}
+
+#endif
+
+/******************************************************************************/
+/**************** FONCTION DE PRINT UTILISEES AILLEURS ************************/
+/******************************************************************************/
+
+void print_position()
+{
+    //printf("\n\rX: %f, Y : %f, Teta : %f\n",(float) get_X(), (float) get_Y(),(float) get_orientation());
+}
+
+void print_abort(char* raison)
+{
+    //printf("\n\rAbort : %s", raison);
+}
+
+/******************************************************************************/
+/******************************************************************************/
+/******************************************************************************/

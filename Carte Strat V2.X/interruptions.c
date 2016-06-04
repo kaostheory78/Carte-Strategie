@@ -102,7 +102,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
  * Timer 100 ms : Scheduleur temps de match
  */
 void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
-{
+{  
     if (CPT_TEMPS_MATCH.t_ms >= 90000UL)
     {
         PORTCbits.RC5 = 0;
@@ -112,8 +112,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
         IEC0bits.T2IE = 0;
         IEC0bits.T3IE = 0;
         IEC1bits.T4IE = 0;
-  
         IEC1bits.T5IE = 0;
+        
         IEC3bits.QEI1IE = 0;
         IEC4bits.QEI2IE = 0;
 
@@ -135,6 +135,12 @@ void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
         
         while(1);
     }
+    
+#ifndef NO_SERIALUS   
+    if (serialus.clignotement_en_cours == true)
+        print_clignotement();
+#endif
+    
     FLAG_TIMER_100ms = 0;        //On clear le flag d'interruption du timer
 }
 
@@ -146,8 +152,10 @@ void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void)
 {
     TIMER_200ms = DESACTIVE;
     
+#ifndef NO_SERIALUS
     if (serialus.actif == true)
         traitement_serialus();
+#endif
     
     //debug();
     
@@ -197,9 +205,11 @@ void __attribute__ ((interrupt, no_auto_psv)) 	_U1RXInterrupt (void)
 
     uint8_t buf;
     buf= U1RXREG;
-        
+ 
+#ifndef NO_SERIALUS
     if (serialus.actif == true)
         action_reception_serialus(buf);
+#endif
         
 	// Activation de l'interruption
 	IEC0bits.U1RXIE	= 1;

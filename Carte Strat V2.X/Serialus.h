@@ -22,7 +22,7 @@ extern "C" {
 /******************************************************************************/
 /******************************************************************************/
 
-
+#ifndef NO_SERIALUS
 
 /******************************************************************************/
 /****************************** DEFINES GLOBALES ******************************/
@@ -162,7 +162,7 @@ extern "C" {
         _Bool attente_confirmation      : 1;
         _Bool confirmation              : 1;
         _Bool erreur_confirmation       : 1;
-        _Bool deplacement_en_cours      : 1;
+        _Bool clignotement_en_cours     : 1;
         uint8_t index[MAX_PARAM];
         uint8_t nb_param;
         uint8_t buffer[MAX_PARAM][MAX_BUFF];
@@ -214,12 +214,12 @@ extern "C" {
     void print_abort_confirmation();
     void print_incoherent();
     void print_confirm();
-    void print_position();
-    void print_erreur_deplacement(_enum_erreur_asserv erreur);
-    void print_abort(char* raison);
+    void print_position_ax12(uint8_t id, int16_t position);
+    void print_erreur_deplacement(_enum_erreur_asserv erreur); 
     void print_erreur_ax12();
     void print_ping(uint8_t id);
-    void print_position_ax12(uint8_t id, int16_t position);
+    void init_clignotement();
+    void print_clignotement();
     
     // Fonctions traitements : 
     void serialus_traitement_deplacement ();
@@ -230,12 +230,19 @@ extern "C" {
     void serialus_traitement_ax12();
     void serialus_traitement_list();
     
-
+#endif
     
+/******************************************************************************/
+/**************** FONCTION DE PRINT UTILISEES AILLEURS ************************/
+/******************************************************************************/
+   
+    void print_abort(char* raison);
+    void print_position();
     
 /******************************************************************************/
 /******************************************************************************/
 /******************************************************************************/    
+
 
 
 #ifdef	__cplusplus
