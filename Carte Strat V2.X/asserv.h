@@ -97,15 +97,15 @@
 /************************* CONSIGNES DIVERSES *********************************/
 /******************************************************************************/
 
-#define SEUIL_DISTANCE_MINI_MM      1
-#define SEUIL_DISTANCE_MINI_PAS     (int32_t) ( SEUIL_DISTANCE_MINI_MM * TICKS_PAR_MM )
-
-#define SEUIL_ORIENTATION_MINI      1
-#define SEUIL_ORIENTATION_MINI_PAS  (int32_t) ( SEUIL_ORIENTATION_MINI * Pi / 180 * (ENTRAXE_TICKS/2) )
+//#define SEUIL_DISTANCE_MINI_MM      1
+//#define SEUIL_DISTANCE_MINI_PAS     (int32_t) ( SEUIL_DISTANCE_MINI_MM * TICKS_PAR_MM )
+//
+//#define SEUIL_ORIENTATION_MINI      1
+//#define SEUIL_ORIENTATION_MINI_PAS  (int32_t) ( SEUIL_ORIENTATION_MINI * Pi / 180 * (ENTRAXE_TICKS/2) )
 
 #define SEUIL_IMMOBILITE            _SEUIL_IMMOBILITE
 
-#define CONSIGNE_MAX                100L
+#define CONSIGNE_MAX                100.
 
     //Association Distance - Vitesse - Accélérations Max
 #define VITESSE_CONSIGNE_MAX_MM     _VITESSE_CONSIGNE_MAX_MM
@@ -128,11 +128,11 @@
     //Association Orientation - Vitesse - Accélération Max
 #define VITESSE_ANGLE_MAX           _VITESSE_ANGLE_MAX
 #define VITESSE_ANGLE_MIN           _VITESSE_ANGLE_MIN
-#define VITESSE_ANGLE_PAS           ( VITESSE_ANGLE_MAX * (ENTRAXE_TICKS / 2) )
-#define VITESSE_ANGLE_MIN_PAS       ( VITESSE_ANGLE_MIN * (ENTRAXE_TICKS / 2) )
+#define VITESSE_ANGLE_PAS           ( VITESSE_ANGLE_MAX * (ENTRAXE_TICKS / 2.) )
+#define VITESSE_ANGLE_MIN_PAS       ( VITESSE_ANGLE_MIN * (ENTRAXE_TICKS / 2.) )
 
 #define ORIENTATION_CONSIGNE_DEG    _ORIENTATION_CONSIGNE_DEG
-#define ORIENTATION_CONSIGNE_PAS    ( ORIENTATION_CONSIGNE_DEG * Pi /180 * (ENTRAXE_TICKS /2) )
+#define ORIENTATION_CONSIGNE_PAS    ( ORIENTATION_CONSIGNE_DEG * Pi /180. * (ENTRAXE_TICKS /2.) )
 
 #define ACC_ORIENTATION_CONSIGNE    _ACC_ORIENTATION_CONSIGNE
 #define DCC_ORIENTATION_CONSIGNE    _DCC_ORIENTATION_CONSIGNE

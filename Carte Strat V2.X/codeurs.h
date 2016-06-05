@@ -23,8 +23,8 @@ extern "C" {
 /******************************************************************************/
 
 
-#define CODEUR_1                        1L
-#define CODEUR_2                        2L
+#define CODEUR_1                        1U
+#define CODEUR_2                        2U
 
 #define CODEUR_D                        CODEUR_1
 #define CODEUR_G                        CODEUR_2
@@ -41,12 +41,12 @@ extern "C" {
 #define RESOLUTION_LOGICIELLE           _RESOLUTION_LOGICIELLE
 
 
-#define CODEUR_D_NB_IMP_LOG             (RESOLUTION_LOGICIELLE * 4 * CODEUR_D_NB_IMP * RAPPORT_REDUCTION)
+#define CODEUR_D_NB_IMP_LOG             (RESOLUTION_LOGICIELLE * 4U * CODEUR_D_NB_IMP * RAPPORT_REDUCTION)
 
-#define MAX_CODEUR_D                    (4 * CODEUR_D_NB_IMP * RAPPORT_REDUCTION - 1)
-#define MAX_CODEUR_G                    (4 * CODEUR_G_NB_IMP * RAPPORT_REDUCTION - 1)
-#define MAX_CODEUR_D_LOGICIEL           (RESOLUTION_LOGICIELLE * CODEUR_D_NB_IMP * 4 * RAPPORT_REDUCTION - 1)
-#define MAX_CODEUR_G_LOGICIEL           (RESOLUTION_LOGICIELLE * CODEUR_G_NB_IMP * 4 * RAPPORT_REDUCTION - 1)
+#define MAX_CODEUR_D                    (4U * CODEUR_D_NB_IMP * RAPPORT_REDUCTION - 1U)
+#define MAX_CODEUR_G                    (4U * CODEUR_G_NB_IMP * RAPPORT_REDUCTION - 1U)
+#define MAX_CODEUR_D_LOGICIEL           (RESOLUTION_LOGICIELLE * CODEUR_D_NB_IMP * 4U * RAPPORT_REDUCTION - 1U)
+#define MAX_CODEUR_G_LOGICIEL           (RESOLUTION_LOGICIELLE * CODEUR_G_NB_IMP * 4U * RAPPORT_REDUCTION - 1U)
 
 #define PAS_D_OVERFLOW_CODEUR           0
 

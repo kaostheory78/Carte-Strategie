@@ -77,8 +77,8 @@ extern "C" {
     #define _DCC_ORIENTATION_MIN         3.
 
         //Autres réglages asserv
-    #define _SEUIL_IMMOBILITE            100 //200
-    #define _MAX_ERREUR_INTEGRALLE_V     4500
+    #define _SEUIL_IMMOBILITE            100ULL //200
+    #define _MAX_ERREUR_INTEGRALLE_V     4500.
     #define _MAX_E_INTEGRALLE_BRAKE      500.
 
     /**************************************************************************/
@@ -123,12 +123,12 @@ extern "C" {
 
 
     //Paramètres codeurs, et moteurs
-    #define _RAPPORT_REDUCTION           1
+    #define _RAPPORT_REDUCTION           1U
 
-    #define _CODEUR_D_NB_IMP             3600
-    #define _CODEUR_G_NB_IMP             3600
+    #define _CODEUR_D_NB_IMP             3600U
+    #define _CODEUR_G_NB_IMP             3600U
 
-    #define _RESOLUTION_LOGICIELLE       1
+    #define _RESOLUTION_LOGICIELLE       1LL
 
     //PWM
 #ifdef CARTE_V1
@@ -258,8 +258,8 @@ extern "C" {
     #define _DCC_ORIENTATION_MIN         0.5
 
         //Autres réglages asserv
-    #define _SEUIL_IMMOBILITE            75 //200
-    #define _MAX_ERREUR_INTEGRALLE_V     3500
+    #define _SEUIL_IMMOBILITE            75ULL //200
+    #define _MAX_ERREUR_INTEGRALLE_V     3500.
     #define _MAX_E_INTEGRALLE_BRAKE      12000.
 
     /**************************************************************************/
@@ -308,12 +308,12 @@ extern "C" {
     #define _SENS_ROT_D                  -1L
     #define _SENS_ROT_G                  1L
 
-    #define _RAPPORT_REDUCTION           1
+    #define _RAPPORT_REDUCTION           1U
 
-    #define _CODEUR_D_NB_IMP             3600
-    #define _CODEUR_G_NB_IMP             3600
+    #define _CODEUR_D_NB_IMP             3600U
+    #define _CODEUR_G_NB_IMP             3600U
 
-    #define _RESOLUTION_LOGICIELLE       1
+    #define _RESOLUTION_LOGICIELLE       1LL
 
     //PWM : sens de rotation du moteur
     #define _AVANCER_MOTEUR_D            0

@@ -33,10 +33,10 @@ void init_system (void)
     OVERFLOW_CODEUR[CODEUR_D] = PAS_D_OVERFLOW_CODEUR;
     OVERFLOW_CODEUR[CODEUR_G] = PAS_D_OVERFLOW_CODEUR;
 
-    POSITION[CODEUR_D].ancien = 0;
-    POSITION[CODEUR_G].ancien = 0;
-    POSITION[CODEUR_D].nouvelle = 0;
-    POSITION[CODEUR_G].nouvelle = 0;
+    POSITION[CODEUR_D].ancien = 0U;
+    POSITION[CODEUR_G].ancien = 0U;
+    POSITION[CODEUR_D].nouvelle = 0U;
+    POSITION[CODEUR_G].nouvelle = 0U;
     
     // Config des Timers
     config_timer_5ms();

@@ -84,9 +84,9 @@ void ConfigQEI (void)
 
 void get_valeur_codeur (int codeur)
 {
-    static int32_t res = 0;
+    static int32_t res = 0L;
     static uint16_t max_codeur;
-    int etat_overflow, sens_rotation;
+    int8_t etat_overflow, sens_rotation;
 
 
 
@@ -112,7 +112,7 @@ void get_valeur_codeur (int codeur)
         res+= (int32_t) etat_overflow * max_codeur;
     }
 
-    POSITION[codeur].ecart = res * RESOLUTION_LOGICIELLE * sens_rotation;
+    POSITION[codeur].ecart = res * RESOLUTION_LOGICIELLE * (int32_t) sens_rotation;
     POSITION[codeur].ancien = POSITION[codeur].nouvelle;
 }
 

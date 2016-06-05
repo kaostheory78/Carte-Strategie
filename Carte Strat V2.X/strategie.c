@@ -99,13 +99,13 @@ void reglage_odometrie()
 #endif
     EVITEMENT_ADV.actif = OFF;
     
-      init_position_robot (0, 0, 0);
+      init_position_robot (0., 0., 0.);
           //orienter(5, 100);
 
 
 
 
-            init_position_robot (-100, 0, 0);
+            init_position_robot (-100., 0., 0.);
             rejoindre(0, 0, MARCHE_AVANT, 100);
             trapeze(MARCHE_AVANT);
             trapeze(MARCHE_AVANT);
