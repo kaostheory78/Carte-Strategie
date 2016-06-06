@@ -1421,9 +1421,9 @@ void print_clignotement()
 {
     static uint8_t tempo = 0;
     tempo ++;
-    if (tempo == 5)
+    if (tempo == 2)
         printf("\r -");
-    else if (tempo == 10)
+    else if (tempo == 4)
     {
         printf("\r  ");
         tempo = 0;
@@ -1438,12 +1438,16 @@ void print_clignotement()
 
 void print_position()
 {
-    //printf("\n\rX: %f, Y : %f, Teta : %f\n",(float) get_X(), (float) get_Y(),(float) get_orientation());
+#ifndef NO_SERIALUS
+    printf("\n\rX: %f, Y : %f, Teta : %f\n",(float) get_X(), (float) get_Y(),(float) get_orientation());
+#endif
 }
 
 void print_abort(char* raison)
 {
-    //printf("\n\rAbort : %s", raison);
+#ifndef NO_SERIALUS
+    printf("\n\rAbort : %s", raison);
+#endif
 }
 
 /******************************************************************************/
