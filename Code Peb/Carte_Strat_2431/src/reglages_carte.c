@@ -1,5 +1,5 @@
 /*****************************************************************************
-* SUDRIABOTIK
+* 
 ******************************************************************************
 * Nom Fichier 		:	reglages_carte.c
 * Operating System	:	Pas d'OS, Fichiers "maison" pour dsPIC

@@ -1,5 +1,5 @@
 /*****************************************************************************
-* SUDRIABOTIK
+* 
 ******************************************************************************
 * Nom Fichier 	:	interrupt.c
 * Operating System:	Pas d'OS, Fichiers "maison" pour carte INTERCONNEXION

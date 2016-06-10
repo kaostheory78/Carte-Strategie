@@ -1,5 +1,5 @@
 /*****************************************************************************
-* SUDRIABOTIK
+* 
 ******************************************************************************
 * Nom Fichier 	:	v_glob_cod.h
 * Operating System:	Pas d'OS, Fichiers "maison" pour Carte INTERCONNEXION
