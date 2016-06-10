@@ -63,7 +63,7 @@ void init_system (void)
     reinit_buffer_serialus();
 #endif
     
-    CHECK_LIMITATION_COURANT = CKECK_LIMITATION_COURANT;
+    //CHECK_LIMITATION_COURANT = CKECK_LIMITATION_COURANT;
 
     // Evitement
     init_evitement();
@@ -84,7 +84,7 @@ void init_system (void)
     // Sur le timer asserv pour checker que la carte n'a pas planté
     // (appelée "mode Alive ?")
 #ifdef PETIT_ROBOT
-    //TRISCbits.TRISC2 = 0;
+    TRISCbits.TRISC2 = 0;
 #endif
 #ifdef GROS_ROBOT
     //TRISAbits.TRISA3 = 0;
@@ -119,7 +119,7 @@ void config_timer_5ms()
     // T = 0, 250 ns
     // Presacler 1 : 64 => T = 3,4 µs
     // 3127 * 3,4µs = 5 ms
-    PR1 = 782;                  //décompte de 5ms
+    PR1 = 3126;                  //décompte de 5ms
 
     FLAG_TIMER_5ms = 0;         //Clear flag interrupt timer
     IEC0bits.T1IE = 1;          //Enable Timer1 interrupt

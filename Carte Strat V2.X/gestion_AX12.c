@@ -522,7 +522,7 @@ void reinit_buffer (void)
 void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, ...)
 {
     static uint64_t __attribute__((unused)) nb1 = 0,__attribute__((unused)) nb2 = 0, nb3 = 0;
-    uint8_t nombre_reset = 0;
+    //uint8_t nombre_reset = 0;
     
     va_list liste_param; // liste des arguments potentiels (param1, 2, 3, 4, 5)
     va_start(liste_param, instruction);
@@ -591,12 +591,12 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, ...)
         }
    
         //delay_us(10);
-        if (ax12.erreur == LIMITATION_DE_COURANT && CHECK_LIMITATION_COURANT == true && nombre_reset < 2)
-        {
-            ax12.tentatives = 0;
-            nombre_reset++;
-            reinit_alim_ax12();
-        }
+//        if (ax12.erreur == LIMITATION_DE_COURANT && CHECK_LIMITATION_COURANT == true && nombre_reset < 2)
+//        {
+//            ax12.tentatives = 0;
+//            nombre_reset++;
+//            reinit_alim_ax12();
+//        }
         
         //printf("\n\rtest %d, erreur : %d", ax12.tentatives, ax12.erreur);
 

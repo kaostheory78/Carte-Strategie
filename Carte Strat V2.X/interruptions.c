@@ -39,22 +39,22 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
    if (CPT_TEMPS_MATCH.actif == true)
        CPT_TEMPS_MATCH.t_ms +=  5;
    
-//   // Clignotement d'une led de ALIVE
-//   __attribute__((near)) static int led = 1, compteur = 0;
-//   compteur++;
-//
-//    if (compteur == 100)
-//    {
-//       if (led == 1)
-//            led = 0;
-//        else
-//            led = 1;
-//
-//#ifdef PETIT_ROBOT
-//        CAPTEUR3 = led;
-//#endif
-//        compteur = 0;
-//    }
+   // Clignotement d'une led de ALIVE
+   __attribute__((near)) static int led = 1, compteur = 0;
+   compteur++;
+
+    if (compteur == 100)
+    {
+       if (led == 1)
+            led = 0;
+        else
+            led = 1;
+
+#ifdef PETIT_ROBOT
+        CAPTEUR3 = led;
+#endif
+        compteur = 0;
+    }
 }
 
 /**

@@ -25,8 +25,8 @@ extern "C" {
 /***************************** Defines ****************************************/
 /******************************************************************************/
 
-#define GROS_ROBOT
-//#define PETIT_ROBOT
+//#define GROS_ROBOT
+#define PETIT_ROBOT
 //#define ROBOT_TEST
     
 //#define NO_SERIALUS
@@ -260,7 +260,7 @@ extern "C" {
         //Autres réglages asserv
     #define _SEUIL_IMMOBILITE            75ULL //200
     #define _MAX_ERREUR_INTEGRALLE_V     3500.
-    #define _MAX_E_INTEGRALLE_BRAKE      12000.
+    #define _MAX_E_INTEGRALLE_BRAKE      12000. //12000
 
     /**************************************************************************/
     /********************************* PID ************************************/
@@ -279,9 +279,9 @@ extern "C" {
     #define _ORIENTATION_KI              0.
     #define _ORIENTATION_KD              0.
 
-    #define KP_BRAKE                    0.04 
-    #define KI_BRAKE                    0.0015
-    #define KD_BRAKE                    0.8
+    #define KP_BRAKE                    0.06 //0.04
+    #define KI_BRAKE                    0.0025 //0.0015
+    #define KD_BRAKE                    0.02 //0.8
 
     /**************************************************************************/
     /******************************* TENSIONS *********************************/

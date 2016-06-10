@@ -37,25 +37,26 @@ void strategie()
         EVITEMENT_ADV.actif = OFF;
         EVITEMENT_ADV.mode = STOP;
 
-        init_position_robot(180., 988., 0.);
+        
 
         delay_ms(1000);   
     #endif
 
         
     #ifdef PETIT_ROBOT
-        init_position_robot (153, 1030, 0);
-        EVITEMENT_ADV_AVANT = OFF;
-
-        //Init départ
-        init_pinces_jack();
-        rejoindre (490, 1030, MARCHE_AVANT, 50);
-        cibler(1300, 600, 80);
-
+       
+        
+        CAPTEUR3 = true;
         while(!SYS_JACK);
-        TIMER_90s = ACTIVE;
-
-        EVITEMENT_ADV.mode = EVITEMENT_NORMAL;     
+        CPT_TEMPS_MATCH.actif = true;
+        EVITEMENT_ADV.actif = OFF;
+        EVITEMENT_ADV.mode = STOP;
+        
+        init_position_robot(0., 0., 0.);
+        brake();
+        //avancer_reculer(1000, 100);
+        rejoindre(1000, 0, MARCHE_AVANT, 100);
+                  
     #endif
 }
 
@@ -82,7 +83,6 @@ void homologation()
 #ifdef PETIT_ROBOT
 
         init_position_robot (153, 1030, 0);
-        EVITEMENT_ADV_AVANT = OFF;
 
 #endif
 

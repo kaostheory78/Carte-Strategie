@@ -285,6 +285,28 @@ typedef enum
         double orientation;
         double position;
     }_vitesse;
+    
+    
+    /**
+     *  Structure de sous ensemble pour l'accélération
+     *  min / max = config
+     *  consigne = valeur à asservir
+     */
+    typedef struct 
+    {
+        double min;
+        double max;
+        double consigne;
+    }_conf_cons;
+    
+    /**
+     *  Strcutre qui reprend les deux variables asservies pour l'accélération
+     */
+    typedef struct
+    {
+        _conf_cons orientation;
+        _conf_cons position;
+    }_type_acc;
 
     /**
      *  Structure pour stocker les données relatives aux accélération et 
@@ -292,8 +314,8 @@ typedef enum
      */
     typedef struct
     {
-        _vitesse acceleration;
-        _vitesse deceleration;
+        _type_acc acceleration;
+        _type_acc deceleration;
     }_acc;
 
     /**
@@ -319,6 +341,7 @@ typedef enum
         _coef_PID VITESSE_DIS;
         _coef_PID ORIENTATION;
         _coef_PID DISTANCE;
+        _coef_PID BRAKE;
     }_PID;
 
     /**
@@ -341,6 +364,7 @@ typedef enum
     {
         double droit;
         double gauche;
+        double max;
     }_commande_moteur;
 
     

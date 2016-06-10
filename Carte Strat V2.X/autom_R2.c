@@ -69,10 +69,10 @@ void autom_20ms (void)
     
     if (EVITEMENT_ADV.actif == true && EVITEMENT_ADV.detection == OFF)
     {
-        if (EVITEMENT_ADV.sens == MARCHE_AVANT)
-            rotation_us_avant();
-        else
-            rotation_us();
+//        if (EVITEMENT_ADV.sens == MARCHE_AVANT)
+//            rotation_us_avant();
+//        else
+//            rotation_us();
     }
     //else
         //position standart

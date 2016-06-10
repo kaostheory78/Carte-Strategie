@@ -41,6 +41,9 @@ volatile __attribute__((near)) _commande_moteur COMMANDE;
 
 volatile __attribute__((near)) _flag_asserv FLAG_ASSERV;
 
+
+
+
 /******************************************************************************/
 /***************************** Fonctions Inits ********************************/
 /******************************************************************************/
@@ -107,57 +110,69 @@ void reinit_asserv(void)
     FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
     FLAG_ASSERV.phase_deceleration_distance = PHASE_NORMAL;
 
-    FLAG_ASSERV.immobilite = 0;
+    FLAG_ASSERV.immobilite = 0ULL;
 
-    DISTANCE.actuelle = 0;
-    DISTANCE.theorique = 0;
-    DISTANCE.consigne = 0;
+    DISTANCE.actuelle = 0.;
+    DISTANCE.theorique = 0.;
+    DISTANCE.consigne = 0.;
 
-    ORIENTATION.theorique = 0;
-    ORIENTATION.consigne = 0;
+    ORIENTATION.theorique = 0.;
+    ORIENTATION.consigne = 0.;
 
-    ERREUR_DISTANCE.actuelle = 0;
-    ERREUR_DISTANCE.integralle = 0;
-    ERREUR_DISTANCE.precedente = 0;
+    ERREUR_DISTANCE.actuelle = 0.;
+    ERREUR_DISTANCE.integralle = 0.;
+    ERREUR_DISTANCE.precedente = 0.;
 
-    ERREUR_ORIENTATION.actuelle = 0;
-    ERREUR_ORIENTATION.precedente = 0;
-    ERREUR_ORIENTATION.integralle = 0;
+    ERREUR_ORIENTATION.actuelle = 0.;
+    ERREUR_ORIENTATION.precedente = 0.;
+    ERREUR_ORIENTATION.integralle = 0.;
 
-    ERREUR_VITESSE[ROUE_DROITE].actuelle = 0;
-    ERREUR_VITESSE[ROUE_DROITE].integralle = 0;
-    ERREUR_VITESSE[ROUE_DROITE].precedente = 0;
+    ERREUR_VITESSE[ROUE_DROITE].actuelle = 0.;
+    ERREUR_VITESSE[ROUE_DROITE].integralle = 0.;
+    ERREUR_VITESSE[ROUE_DROITE].precedente = 0.;
 
-    ERREUR_VITESSE[ROUE_GAUCHE].actuelle = 0;
-    ERREUR_VITESSE[ROUE_GAUCHE].integralle = 0;
-    ERREUR_VITESSE[ROUE_GAUCHE].precedente = 0;
+    ERREUR_VITESSE[ROUE_GAUCHE].actuelle = 0.;
+    ERREUR_VITESSE[ROUE_GAUCHE].integralle = 0.;
+    ERREUR_VITESSE[ROUE_GAUCHE].precedente = 0.;
 
-    VITESSE[ROUE_DROITE].actuelle = 0;
-    VITESSE[ROUE_DROITE].consigne = 0;
-    VITESSE[ROUE_DROITE].theorique = 0;
+    VITESSE[ROUE_DROITE].actuelle = 0.;
+    VITESSE[ROUE_DROITE].consigne = 0.;
+    VITESSE[ROUE_DROITE].theorique = 0.;
 
-    VITESSE[ROUE_GAUCHE].actuelle = 0;
-    VITESSE[ROUE_GAUCHE].consigne = 0;
-    VITESSE[ROUE_GAUCHE].theorique = 0;
+    VITESSE[ROUE_GAUCHE].actuelle = 0.;
+    VITESSE[ROUE_GAUCHE].consigne = 0.;
+    VITESSE[ROUE_GAUCHE].theorique = 0.;
 
-    VITESSE[SYS_ROBOT].theorique = 0;
-    VITESSE[SYS_ROBOT].consigne = 0;
-    VITESSE[SYS_ROBOT].actuelle = 0;
+    VITESSE[SYS_ROBOT].theorique = 0.;
+    VITESSE[SYS_ROBOT].consigne = 0.;
+    VITESSE[SYS_ROBOT].actuelle = 0.;
 
-    VITESSE_ORIENTATION[ROUE_DROITE].actuelle = 0;
-    VITESSE_ORIENTATION[ROUE_DROITE].consigne = 0;
-    VITESSE_ORIENTATION[ROUE_DROITE].theorique = 0;
+    VITESSE_ORIENTATION[ROUE_DROITE].actuelle = 0.;
+    VITESSE_ORIENTATION[ROUE_DROITE].consigne = 0.;
+    VITESSE_ORIENTATION[ROUE_DROITE].theorique = 0.;
 
-    VITESSE_ORIENTATION[ROUE_GAUCHE].actuelle = 0;
-    VITESSE_ORIENTATION[ROUE_GAUCHE].consigne = 0;
-    VITESSE_ORIENTATION[ROUE_GAUCHE].theorique = 0;
+    VITESSE_ORIENTATION[ROUE_GAUCHE].actuelle = 0.;
+    VITESSE_ORIENTATION[ROUE_GAUCHE].consigne = 0.;
+    VITESSE_ORIENTATION[ROUE_GAUCHE].theorique = 0.;
 
-    VITESSE_ORIENTATION[SYS_ROBOT].actuelle = 0;
-    VITESSE_ORIENTATION[SYS_ROBOT].consigne = 0;
-    VITESSE_ORIENTATION[SYS_ROBOT].theorique = 0;
+    VITESSE_ORIENTATION[SYS_ROBOT].actuelle = 0.;
+    VITESSE_ORIENTATION[SYS_ROBOT].consigne = 0.;
+    VITESSE_ORIENTATION[SYS_ROBOT].theorique = 0.;
 
     PID.VITESSE_DIS.seuil_immobilite = SEUIL_IMMOBILITE;
     PID.VITESSE_DIS.max_I = MAX_ERREUR_INTEGRALLE_V;
+    PID.BRAKE.max_I = MAX_E_INTEGRALLE_BRAKE;
+    
+    acc.acceleration.orientation.max = ACC_ORIENTATION_CONSIGNE;
+    acc.acceleration.orientation.min = ACC_ORIENTATION_MIN;
+    acc.acceleration.position.max = ACC_POSITION_CONSIGNE;
+    acc.acceleration.position.min = ACC_POSITION_MIN;
+    acc.deceleration.orientation.max = DCC_ORIENTATION_CONSIGNE;
+    acc.deceleration.orientation.min = DCC_ORIENTATION_MIN;
+    acc.deceleration.position.max = DCC_POSITION_CONSIGNE;
+    acc.deceleration.position.min = DCC_POSITION_MIN;
+    
+    COMMANDE.max = CONSIGNE_MAX;
 
     PORTCbits.RC5 = 1;
 }
@@ -192,18 +207,18 @@ double get_orientation (void)
  */
 void ecretage_consignes(void)
 {
-    if (COMMANDE.droit > CONSIGNE_MAX)
-        COMMANDE.droit = CONSIGNE_MAX;
-    else if (COMMANDE.droit < - CONSIGNE_MAX)
-        COMMANDE.droit = -CONSIGNE_MAX;
+    if (COMMANDE.droit > COMMANDE.max)
+        COMMANDE.droit = COMMANDE.max;
+    else if (COMMANDE.droit < - COMMANDE.max)
+        COMMANDE.droit = -COMMANDE.max;
 
-    if (COMMANDE.gauche > CONSIGNE_MAX) 
-        COMMANDE.gauche = CONSIGNE_MAX;
-    else if (COMMANDE.gauche < -CONSIGNE_MAX)
-        COMMANDE.gauche = -CONSIGNE_MAX;
+    if (COMMANDE.gauche > COMMANDE.max) 
+        COMMANDE.gauche = COMMANDE.max;
+    else if (COMMANDE.gauche < -COMMANDE.max)
+        COMMANDE.gauche = -COMMANDE.max;
 }
 
-void saturation_vitesse_max (unsigned char type)
+void saturation_vitesse_max (_enum_type_PID type)
 {
     if (type == ASSERV_POSITION)
     {
@@ -218,7 +233,7 @@ void saturation_vitesse_max (unsigned char type)
         //On check, lors de la génération de la courbe de freinage,
         //Que si on va passer négatif alors on écrette à 0.
         else if (VITESSE[SYS_ROBOT].consigne == 0.)
-            if (abs(VITESSE[SYS_ROBOT].theorique) < acc.deceleration.position )
+            if (abs(VITESSE[SYS_ROBOT].theorique) < acc.deceleration.position.consigne )
                 VITESSE[SYS_ROBOT].theorique = 0.;
     }
     else if (type == ASSERV_ORIENTATION)
@@ -234,7 +249,7 @@ void saturation_vitesse_max (unsigned char type)
         //On check, lors de la génération de la courbe de freinage,
         //Que si on va passer négatif alors on écrette à 0.
         else if (VITESSE_ORIENTATION[SYS_ROBOT].consigne == 0.)
-            if (abs(VITESSE_ORIENTATION[SYS_ROBOT].theorique) < acc.deceleration.orientation )
+            if (abs(VITESSE_ORIENTATION[SYS_ROBOT].theorique) < acc.deceleration.orientation.consigne )
                 VITESSE_ORIENTATION[SYS_ROBOT].theorique = 0.;
 
     }
@@ -255,7 +270,8 @@ void saturation_erreur_integralle_vitesse (void)
 
 void detection_blocage (void)
 {
-    if (VITESSE[ROUE_DROITE].actuelle < 0.2 * (VITESSE[ROUE_DROITE].consigne * FLAG_ASSERV.sens_deplacement))
+    double pourcentage_vitesse_mini = 0.2;
+    if (VITESSE[ROUE_DROITE].actuelle < pourcentage_vitesse_mini * (VITESSE[ROUE_DROITE].consigne * FLAG_ASSERV.sens_deplacement))
     {
        if (ERREUR_VITESSE[ROUE_DROITE].integralle == PID.VITESSE_DIS.max_I || ERREUR_VITESSE[ROUE_DROITE].integralle == - PID.VITESSE_DIS.max_I )
         {
@@ -263,7 +279,7 @@ void detection_blocage (void)
             FLAG_ASSERV.erreur = BLOCAGE;
         }
     }
-    else if (VITESSE[ROUE_GAUCHE].actuelle < 0.2 * (VITESSE[ROUE_GAUCHE].consigne * FLAG_ASSERV.sens_deplacement))
+    else if (VITESSE[ROUE_GAUCHE].actuelle < pourcentage_vitesse_mini * (VITESSE[ROUE_GAUCHE].consigne * FLAG_ASSERV.sens_deplacement))
     {
         if (ERREUR_VITESSE[ROUE_GAUCHE].integralle == PID.VITESSE_DIS.max_I || ERREUR_VITESSE[ROUE_GAUCHE].integralle == - PID.VITESSE_DIS.max_I)
         {
@@ -313,43 +329,43 @@ void calcul_acceleration_position (void)
     {
         if (DISTANCE.consigne > 0.)
         {
-            acc.acceleration.position = VITESSE_MAX.position;
-            acc.acceleration.position *= ACC_POSITION_CONSIGNE;
-            acc.acceleration.position /= VITESSE_CONSIGNE_MAX_PAS;
+            acc.acceleration.position.consigne = VITESSE_MAX.position;
+            acc.acceleration.position.consigne *= acc.acceleration.position.max; 
+            acc.acceleration.position.consigne /= VITESSE_CONSIGNE_MAX_PAS;
             
-            acc.deceleration.position = VITESSE_MAX.position;
-            acc.deceleration.position *= DCC_POSITION_CONSIGNE;
-            acc.deceleration.position /= VITESSE_CONSIGNE_MAX_PAS;
+            acc.deceleration.position.consigne = VITESSE_MAX.position;
+            acc.deceleration.position.consigne *= acc.deceleration.position.max; 
+            acc.deceleration.position.consigne /= VITESSE_CONSIGNE_MAX_PAS;
         }
         else //inversion acceleration et deceleration
         {
-            acc.acceleration.position = VITESSE_MAX.position;
-            acc.acceleration.position *= DCC_POSITION_CONSIGNE;
-            acc.acceleration.position /= VITESSE_CONSIGNE_MAX_PAS;
+            acc.acceleration.position.consigne = VITESSE_MAX.position;
+            acc.acceleration.position.consigne *= acc.deceleration.position.max; 
+            acc.acceleration.position.consigne /= VITESSE_CONSIGNE_MAX_PAS;
 
-            acc.deceleration.position = VITESSE_MAX.position;
-            acc.deceleration.position *= ACC_POSITION_CONSIGNE;
-            acc.deceleration.position /= VITESSE_CONSIGNE_MAX_PAS;
+            acc.deceleration.position.consigne = VITESSE_MAX.position;
+            acc.deceleration.position.consigne *= acc.acceleration.position.max; 
+            acc.deceleration.position.consigne /= VITESSE_CONSIGNE_MAX_PAS;
         }
     }
     else //sinon on sature l'acceleration
     {
         if (DISTANCE.consigne > 0.)
         {
-            acc.acceleration.position = ACC_POSITION_CONSIGNE;
-            acc.deceleration.position = DCC_POSITION_CONSIGNE;
+            acc.acceleration.position.consigne = acc.acceleration.position.max; 
+            acc.deceleration.position.consigne = acc.deceleration.position.max; 
         }
         else //inversion acceleration et deceleration
         {
-            acc.acceleration.position = DCC_POSITION_CONSIGNE;
-            acc.deceleration.position = ACC_POSITION_CONSIGNE;
+            acc.acceleration.position.consigne = acc.deceleration.position.max; 
+            acc.deceleration.position.consigne = acc.acceleration.position.max; 
         }
     }
 
-    if (acc.acceleration.position < ACC_POSITION_MIN)
-        acc.acceleration.position = ACC_POSITION_MIN;
-    if (acc.deceleration.position > DCC_POSITION_MIN)
-        acc.deceleration.position = DCC_POSITION_MIN;
+    if (acc.acceleration.position.consigne < acc.acceleration.position.min) 
+        acc.acceleration.position.consigne = acc.acceleration.position.min; 
+    if (acc.deceleration.position.consigne < acc.deceleration.position.min) // /!\ REMPLACEMENT DU SIGNE > PAR <
+        acc.deceleration.position.consigne = acc.deceleration.position.min; 
 }
 
 void calcul_vitesse_orientation (double pourcentage_vitesse)
@@ -379,43 +395,43 @@ void calcul_acceleration_orientation (void)
     {
         if (ERREUR_ORIENTATION.actuelle > 0.)
         {
-            acc.acceleration.orientation = VITESSE_MAX.orientation;
-            acc.acceleration.orientation *= ACC_ORIENTATION_CONSIGNE;
-            acc.acceleration.orientation /= VITESSE_ANGLE_PAS;
+            acc.acceleration.orientation.consigne = VITESSE_MAX.orientation;
+            acc.acceleration.orientation.consigne *= acc.acceleration.orientation.max; 
+            acc.acceleration.orientation.consigne /= VITESSE_ANGLE_PAS;
 
-            acc.deceleration.orientation = VITESSE_MAX.orientation;
-            acc.deceleration.orientation *= DCC_ORIENTATION_CONSIGNE;
-            acc.deceleration.orientation /= VITESSE_ANGLE_PAS;
+            acc.deceleration.orientation.consigne = VITESSE_MAX.orientation;
+            acc.deceleration.orientation.consigne *= acc.deceleration.orientation.max; 
+            acc.deceleration.orientation.consigne /= VITESSE_ANGLE_PAS;
         }
         else //inversion acceleration et deceleration
         {
-            acc.acceleration.orientation = VITESSE_MAX.orientation;
-            acc.acceleration.orientation *= DCC_ORIENTATION_CONSIGNE;
-            acc.acceleration.orientation /= VITESSE_ANGLE_PAS;
+            acc.acceleration.orientation.consigne = VITESSE_MAX.orientation;
+            acc.acceleration.orientation.consigne *= acc.deceleration.orientation.max; 
+            acc.acceleration.orientation.consigne /= VITESSE_ANGLE_PAS;
 
-            acc.deceleration.orientation = VITESSE_MAX.orientation;
-            acc.deceleration.orientation *= ACC_ORIENTATION_CONSIGNE;
-            acc.deceleration.orientation /= VITESSE_ANGLE_PAS;
+            acc.deceleration.orientation.consigne = VITESSE_MAX.orientation;
+            acc.deceleration.orientation.consigne *= acc.acceleration.orientation.max; 
+            acc.deceleration.orientation.consigne /= VITESSE_ANGLE_PAS;
         }
     }
     else //sinon on sature l'acceleration
     {
         if ( ERREUR_ORIENTATION.actuelle > 0.)
         {
-            acc.acceleration.orientation = ACC_ORIENTATION_CONSIGNE;
-            acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
+            acc.acceleration.orientation.consigne = acc.acceleration.orientation.max; 
+            acc.deceleration.orientation.consigne = acc.deceleration.orientation.max; 
         }
         else //inversion acceleration et deceleration
         {
-            acc.acceleration.orientation = DCC_ORIENTATION_CONSIGNE;
-            acc.deceleration.orientation = ACC_ORIENTATION_CONSIGNE;
+            acc.acceleration.orientation.consigne = acc.deceleration.orientation.max; 
+            acc.deceleration.orientation.consigne = acc.acceleration.orientation.max; 
         }
     }
 
-    if (acc.acceleration.orientation < ACC_ORIENTATION_MIN)
-        acc.acceleration.orientation = ACC_ORIENTATION_MIN;
-    if (acc.deceleration.orientation < DCC_ORIENTATION_MIN)
-        acc.deceleration.orientation = DCC_ORIENTATION_MIN;
+    if (acc.acceleration.orientation.consigne < acc.acceleration.orientation.min) 
+        acc.acceleration.orientation.consigne = acc.acceleration.orientation.min; 
+    if (acc.deceleration.orientation.consigne < acc.deceleration.orientation.min) 
+        acc.deceleration.orientation.consigne = acc.deceleration.orientation.min;
 }
 
 void calcul_distance_consigne_XY (void)
@@ -598,18 +614,18 @@ void asserv_brake(void)
     ERREUR_BRAKE[ROUE_DROITE].integralle += ERREUR_BRAKE[ROUE_DROITE].actuelle;
     ERREUR_BRAKE[ROUE_GAUCHE].integralle += ERREUR_BRAKE[ROUE_GAUCHE].actuelle;
 
-    if (ERREUR_BRAKE[ROUE_DROITE].integralle > MAX_E_INTEGRALLE_BRAKE)
-        ERREUR_BRAKE[ROUE_DROITE].integralle = MAX_E_INTEGRALLE_BRAKE;
-    if (ERREUR_BRAKE[ROUE_GAUCHE].integralle > MAX_E_INTEGRALLE_BRAKE)
-        ERREUR_BRAKE[ROUE_GAUCHE].integralle = MAX_E_INTEGRALLE_BRAKE;
+    if (ERREUR_BRAKE[ROUE_DROITE].integralle > PID.BRAKE.max_I)
+        ERREUR_BRAKE[ROUE_DROITE].integralle = PID.BRAKE.max_I;
+    if (ERREUR_BRAKE[ROUE_GAUCHE].integralle > PID.BRAKE.max_I)
+        ERREUR_BRAKE[ROUE_GAUCHE].integralle = PID.BRAKE.max_I;
 
-    if (ERREUR_BRAKE[ROUE_DROITE].integralle < -MAX_E_INTEGRALLE_BRAKE)
-        ERREUR_BRAKE[ROUE_DROITE].integralle = -MAX_E_INTEGRALLE_BRAKE;
-    if (ERREUR_BRAKE[ROUE_GAUCHE].integralle < -MAX_E_INTEGRALLE_BRAKE)
-        ERREUR_BRAKE[ROUE_GAUCHE].integralle = -MAX_E_INTEGRALLE_BRAKE;
+    if (ERREUR_BRAKE[ROUE_DROITE].integralle < -PID.BRAKE.max_I)
+        ERREUR_BRAKE[ROUE_DROITE].integralle = -PID.BRAKE.max_I;
+    if (ERREUR_BRAKE[ROUE_GAUCHE].integralle < -PID.BRAKE.max_I)
+        ERREUR_BRAKE[ROUE_GAUCHE].integralle = -PID.BRAKE.max_I;
 
-    COMMANDE.droit  =  ERREUR_BRAKE[ROUE_DROITE].actuelle * KP_BRAKE + ERREUR_BRAKE[ROUE_DROITE].integralle * KI_BRAKE + (ERREUR_BRAKE[ROUE_DROITE].actuelle - ERREUR_BRAKE[ROUE_DROITE].precedente ) * KD_BRAKE;
-    COMMANDE.gauche =  ERREUR_BRAKE[ROUE_GAUCHE].actuelle * KP_BRAKE + ERREUR_BRAKE[ROUE_GAUCHE].integralle * KI_BRAKE + (ERREUR_BRAKE[ROUE_GAUCHE].actuelle - ERREUR_BRAKE[ROUE_GAUCHE].precedente ) * KD_BRAKE;
+    COMMANDE.droit  =  ERREUR_BRAKE[ROUE_DROITE].actuelle * PID.BRAKE.KP + ERREUR_BRAKE[ROUE_DROITE].integralle * PID.BRAKE.KI + (ERREUR_BRAKE[ROUE_DROITE].actuelle - ERREUR_BRAKE[ROUE_DROITE].precedente ) * PID.BRAKE.KD;
+    COMMANDE.gauche =  ERREUR_BRAKE[ROUE_GAUCHE].actuelle * PID.BRAKE.KP + ERREUR_BRAKE[ROUE_GAUCHE].integralle * PID.BRAKE.KI + (ERREUR_BRAKE[ROUE_GAUCHE].actuelle - ERREUR_BRAKE[ROUE_GAUCHE].precedente ) * PID.BRAKE.KD;
 
     ERREUR_BRAKE[ROUE_DROITE].precedente = ERREUR_BRAKE[ROUE_DROITE].actuelle;
     ERREUR_BRAKE[ROUE_GAUCHE].precedente = ERREUR_BRAKE[ROUE_GAUCHE].actuelle;
@@ -662,22 +678,22 @@ void asserv_distance(void)
         }
 
         FLAG_ASSERV.etat_distance = EN_COURS;
-        if (distance_restante > 0)
+        if (distance_restante > 0.)
         {
             VITESSE[SYS_ROBOT].consigne =  VITESSE_MAX.position; //vmax
-            //temps_freinage = VITESSE[SYS_ROBOT].theorique / (2 * acc.deceleration.position);
+            //temps_freinage = VITESSE[SYS_ROBOT].theorique / (2 * acc.deceleration.position.consigne);
         }
         else if (distance_restante < 0.)
         {
             VITESSE[SYS_ROBOT].consigne = - VITESSE_MAX.position; //Vmin //-120
-            //temps_freinage = VITESSE[SYS_ROBOT].theorique / (acc.acceleration.position);
+            //temps_freinage = VITESSE[SYS_ROBOT].theorique / (acc.acceleration.position.consigne);
         }
 
         //Génération de la courbe de freinage
        if (FLAG_ASSERV.vitesse_fin_nulle == ON)
        {
             temps_restant = distance_restante / VITESSE[SYS_ROBOT].theorique;
-            temps_freinage = VITESSE[SYS_ROBOT].theorique / (acc.deceleration.position);
+            temps_freinage = VITESSE[SYS_ROBOT].theorique / (acc.deceleration.position.consigne);
             temps_freinage /= COEF_FREINAGE;
 
             if (temps_freinage < 0.)
@@ -717,9 +733,9 @@ void asserv_vitesse_distance (void)
     if (FLAG_ASSERV.phase_deceleration_distance == PHASE_NORMAL || VITESSE_ORIENTATION[SYS_ROBOT].consigne == 0. )
     {
         if (VITESSE[SYS_ROBOT].theorique < VITESSE[SYS_ROBOT].consigne)
-            VITESSE[SYS_ROBOT].theorique += acc.acceleration.position;
+            VITESSE[SYS_ROBOT].theorique += acc.acceleration.position.consigne;
         else if (VITESSE[SYS_ROBOT].theorique > VITESSE[SYS_ROBOT].consigne)
-            VITESSE[SYS_ROBOT].theorique -= acc.deceleration.position;
+            VITESSE[SYS_ROBOT].theorique -= acc.deceleration.position.consigne;
 
         saturation_vitesse_max(ASSERV_POSITION);
     }
@@ -754,12 +770,12 @@ void asserv_orientation (void)
         if (angle_restant > 0.) 
         {
             VITESSE_ORIENTATION[SYS_ROBOT].consigne =  VITESSE_MAX.orientation;
-            temps_freinage = VITESSE_ORIENTATION[SYS_ROBOT].theorique / (acc.deceleration.orientation);
+            temps_freinage = VITESSE_ORIENTATION[SYS_ROBOT].theorique / (acc.deceleration.orientation.consigne);
         }
         else if (angle_restant < 0.)
         {
             VITESSE_ORIENTATION[SYS_ROBOT].consigne = - VITESSE_MAX.orientation;
-            temps_freinage = VITESSE_ORIENTATION[SYS_ROBOT].theorique / (acc.acceleration.orientation);
+            temps_freinage = VITESSE_ORIENTATION[SYS_ROBOT].theorique / (acc.acceleration.orientation.consigne);
         }
 
         //Génération de la courbe de freinage
@@ -798,11 +814,11 @@ void asserv_vitesse_orientation (void)
     if (FLAG_ASSERV.phase_decelaration_orientation == PHASE_NORMAL || VITESSE_ORIENTATION[SYS_ROBOT].consigne == 0. )
     {
          if (VITESSE_ORIENTATION[SYS_ROBOT].theorique < VITESSE_ORIENTATION[SYS_ROBOT].consigne)
-            VITESSE_ORIENTATION[SYS_ROBOT].theorique += acc.acceleration.orientation;
+            VITESSE_ORIENTATION[SYS_ROBOT].theorique += acc.acceleration.orientation.consigne;
 
 
         else if (VITESSE_ORIENTATION[SYS_ROBOT].theorique > VITESSE_ORIENTATION[SYS_ROBOT].consigne)
-            VITESSE_ORIENTATION[SYS_ROBOT].theorique -= acc.deceleration.orientation;
+            VITESSE_ORIENTATION[SYS_ROBOT].theorique -= acc.deceleration.orientation.consigne;
 
          saturation_vitesse_max(ASSERV_ORIENTATION);
 
@@ -821,23 +837,28 @@ void asserv_vitesse_orientation (void)
 
 void reglage_PID (void)
 {
-    //PID VITESSE DISTANCE
+    // PID VITESSE DISTANCE
     PID.VITESSE_DIS.KP = VITESSE_DIS_KP;
     PID.VITESSE_DIS.KI = VITESSE_DIS_KI;
     PID.VITESSE_DIS.KD = VITESSE_DIS_KD;
 
-    //PID DISTANCE
+    // PID DISTANCE
     PID.DISTANCE.KP = POSITION_KP;
     PID.DISTANCE.KI = POSITION_KI;
     PID.DISTANCE.KD = POSITION_KD;
 
-    //PID ORIENTATION
+    // PID ORIENTATION
     PID.ORIENTATION.KP = ORIENTATION_KP;
     PID.ORIENTATION.KI = ORIENTATION_KI;
     PID.ORIENTATION.KD = ORIENTATION_KD;
+    
+    // PID BRAKE
+    PID.BRAKE.KP = KP_BRAKE;
+    PID.BRAKE.KP = KI_BRAKE;
+    PID.BRAKE.KP = KD_BRAKE;
 }
 
-double fonction_PID (unsigned char type)
+double fonction_PID (_enum_type_PID type)
 {
     if (type == ASSERV_VITESSE_DISTANCE)
     {

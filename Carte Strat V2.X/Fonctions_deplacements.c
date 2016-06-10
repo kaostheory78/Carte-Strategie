@@ -418,8 +418,8 @@ void _fdt (double angle, char last)
 
 #ifdef PETIT_ROBOT
     VITESSE_MAX.orientation = VITESSE_ANGLE_PAS;
-    acc.acceleration.orientation = ACC_ORIENTATION_CONSIGNE;
-    acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
+    acc.acceleration.orientation.consigne = acc.acceleration.orientation.max;
+    acc.deceleration.orientation.consigne = acc.deceleration.orientation.max;
 #endif
 #ifdef GROS_ROBOT
     VITESSE_MAX.orientation = VITESSE_ANGLE_PAS;
@@ -459,7 +459,7 @@ _enum_erreur_asserv _rejoindre (double x, double y, int8_t sens_marche, double p
     X.consigne = x * TICKS_PAR_MM;
     Y.consigne = y * TICKS_PAR_MM;
 
-//    FLAG_ASSERV.type_consigne = XY;
+    FLAG_ASSERV.type_consigne = XY;
 
     FLAG_ASSERV.sens_deplacement = sens_marche;
 
@@ -469,8 +469,8 @@ _enum_erreur_asserv _rejoindre (double x, double y, int8_t sens_marche, double p
     
 #ifdef PETIT_ROBOT
     VITESSE_MAX.orientation = VITESSE_ANGLE_PAS;
-    acc.acceleration.orientation = DCC_ORIENTATION_CONSIGNE;
-    acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
+    acc.acceleration.orientation.consigne = acc.deceleration.orientation.max;
+    acc.deceleration.orientation.consigne = acc.deceleration.orientation.max;
 #else
     VITESSE_MAX.orientation = VITESSE_ANGLE_PAS / 2;
     calcul_acceleration_orientation();
@@ -548,8 +548,8 @@ _enum_erreur_asserv _passe_part (double x, double y, int8_t sens_marche, double 
     calcul_acceleration_position();
 
     VITESSE_MAX.orientation = VITESSE_ANGLE_PAS;
-    acc.acceleration.orientation = ACC_ORIENTATION_CONSIGNE;
-    acc.deceleration.orientation = DCC_ORIENTATION_CONSIGNE;
+    acc.acceleration.orientation.consigne = acc.acceleration.orientation.max;
+    acc.deceleration.orientation.consigne = acc.deceleration.orientation.max;
 
     //FLAG_ASSERV.erreur = DEPLACEMENT_NORMAL;
     FLAG_ASSERV.position = ON;
@@ -1855,24 +1855,7 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
     if(angle < 0)
     angle = (int)(angle + 360) % 360;
     if(action == AJOUTER)
-    {
-
-        #ifdef PETIT_ROBOT
-            if((1 == CAPT_US_BALISE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_CENTRE && EVITEMENT_ADV_ARRIERE == ON))
-            {
-                centre = 1;
-            }
-            if((1 == CAPT_US_DROIT && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_GAUCHE && EVITEMENT_ADV_ARRIERE == ON))
-            {
-                droite = 1;
-            }
-            if((1 == CAPT_US_GAUCHE && EVITEMENT_ADV_AVANT == ON) || (1 == CAPT_IR_ARRIERE_DROIT && EVITEMENT_ADV_ARRIERE == ON))
-            {
-                gauche = 1;
-            }
-        #endif
-
-        #ifdef GROS_ROBOT           
+    {         
             if (EVITEMENT_ADV.sens == MARCHE_AVANT)
             {
                 if ( ((EVITEMENT_ADV.cote & EV_CENTRE) != 0) && (CAPT_ADV_AVANT_C == ETAT_ADV_AVANT_C) )
@@ -1903,8 +1886,6 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
                     droite = 1;
                 }                
             }
-            
-        #endif
     }
     else
     {
