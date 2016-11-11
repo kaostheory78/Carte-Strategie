@@ -27,15 +27,25 @@ void strategie()
     #ifdef GROS_ROBOT
 
 
-        // Inits avant démarage du robot :
-        init_jack();
-        
+//        // Inits avant démarage du robot :
+//        init_jack();
+//        
+//        while(!SYS_JACK);
+//
+//        // Démarage du match
+//        CPT_TEMPS_MATCH.actif = true;
+//        EVITEMENT_ADV.actif = OFF;
+//        EVITEMENT_ADV.mode = STOP;
+    
         while(!SYS_JACK);
-
-        // Démarage du match
         CPT_TEMPS_MATCH.actif = true;
         EVITEMENT_ADV.actif = OFF;
         EVITEMENT_ADV.mode = STOP;
+        
+        init_position_robot(0., 0., 0.);
+        brake();
+        //avancer_reculer(1000, 100);
+        rejoindre(1000, 0, MARCHE_AVANT, 100);
 
         
 
