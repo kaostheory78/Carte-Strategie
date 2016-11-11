@@ -1,18 +1,11 @@
-#include <iostream>
-#include <string>
+#include "Serialus.h"
 #include "protocole.h"
 
 using namespace std;
 
-typedef struct
-{
-	_eser_header header;
-	_eser_main_type main_od;
-	_eser_data_type data_type;
-	char data[sizeof(double)];
-}_frame;
+#define _ALLOW_RTCc_IN_STL
 
-
+/*
 _frame remplissage_frame(_eser_header header, _eser_main_type main_od, _eser_data_type data_type, _user_data_type data)
 {
 	_frame frame;
@@ -22,35 +15,34 @@ _frame remplissage_frame(_eser_header header, _eser_main_type main_od, _eser_dat
 	//frame.data = data.str;
 	memcpy(&frame.data, (char *) &data.str, sizeof(data.str));
 	return frame;
-}
+}*/
 
 
 
 int main()
 {
-	string buffer_reception;
-	_frame frame;
-	_user_data_type data;
-	_user_data_type data2;
-	double nb;
+	
+	_user_var_id var_id;
+	_user_type_id type_id;
+	_user_data_type data_type;
+	var_id.data_asserv = KD_DISTANCE;
+	type_id.id_ax12 = 10;
+	data_type.uint32 = 64869;
 
-	data.reel64 = 3.145169985544522;
+	Serialus serialus;
+	serialus.print_logo();
+	serialus.reinit_messages();
+	serialus.remplissage_frame(SET_VALEUR, ASSERV, var_id, type_id, data_type);
+	serialus.copie_frame_tx();
+	serialus.envoi_frame();
+	serialus.reception_message();
+	serialus.copie_frame_rx();
+	serialus.check_rx_message();
+	//serialus.reception();
 
-	printf("\nReel : %.20f", data.reel64);
-	frame = remplissage_frame(SET_VALEUR, ODOMETRIE, DOUBLE, data);
-	printf("\nstr : %x", frame.data[0]);
-	memcpy(&data2.str, (char*) frame.data, sizeof(frame.data));
-	memcpy(&nb, (char*) frame.data, sizeof(frame.data));
-	printf("\nstr : %x, value : %.20f", data2.str[0], data2.reel64);
-	printf("\ndouble : %.20f", nb);
-
-	data.uint8 = 3;
-	printf("\n\nint : %d", data.uint8);
-	frame = remplissage_frame(SET_VALEUR, ODOMETRIE, UINT8, data);
-	printf("\nstr : %x", frame.data[0]);
-	memcpy(&data2.str, (char*) frame.data, sizeof(frame.data));
-	printf("\nstr : %x, value : %.20f, int : %d", data2.str[0], data2.reel64, data.int8);
-
+	printf("\nTaille du putain de header : %d", sizeof(_frame_header));
+	printf("\nTaille du putain de message : %d", sizeof(_frame_data_tx));
+	printf("\nTaille du putain de checksum : %d", sizeof(_fletcher_checksum));
 	 
 	printf("\n");
 	system("pause");

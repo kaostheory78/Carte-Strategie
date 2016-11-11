@@ -1,4 +1,4 @@
-/*// Serial.h
+// Serial.h
 
 #ifndef __SERIAL_H__
 #define __SERIAL_H__
@@ -39,4 +39,3 @@ protected:
 };
 
 #endif
-*/

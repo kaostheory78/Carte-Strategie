@@ -1,7 +1,8 @@
-/*// Serial.cpp
+// Serial.cpp
 
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "Serial.h"
+#include <iostream>
 
 CSerial::CSerial()
 {
@@ -164,4 +165,4 @@ int CSerial::ReadData( void *buffer, int limit )
 	return( (int) dwBytesRead );
 
 }
-*/
+
