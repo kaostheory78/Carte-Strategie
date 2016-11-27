@@ -25,10 +25,10 @@ extern "C" {
 /***************************** Defines ****************************************/
 /******************************************************************************/
 
-//#define GROS_ROBOT
+#define GROS_ROBOT
 //#define PETIT_ROBOT
 //#define ROBOT_TEST
-#define UTILISATION_CARTE_BALISE
+//#define UTILISATION_CARTE_BALISE
     
 //#define NO_SERIALUS
 

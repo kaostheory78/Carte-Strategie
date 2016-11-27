@@ -36,6 +36,8 @@ void strategie()
         CPT_TEMPS_MATCH.actif = true;
         EVITEMENT_ADV.actif = OFF;
         EVITEMENT_ADV.mode = STOP;
+        
+        brake();
 
         
 
