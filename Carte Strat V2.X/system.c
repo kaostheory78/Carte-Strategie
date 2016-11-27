@@ -313,6 +313,21 @@ void ConfigMapping (void)
 	_QEA2R	= 0x17;		// QEA2 sur RP23
     #endif
 
+    #ifdef CARTE_BALISE
+        // Mapping UART1 : USB
+	_U1RXR	= 0x0E;		// IN	: UART1 RX sur RP14
+	_RP13R	= 0x03;		// OUT	: UART1 TX sur RP13
+
+        // Mapping UART2 : BLUETOOTH
+	_U2RXR	= 0x09;         // IN	: UART2 RX sur RP9
+	_RP8R	= 0x05;         // OUT	: UART2 TX sur RP8
+
+        // Mapping QEI1 : Codeur 
+    _QEA1R	= 0x14;         // IN	: QEA1 sur RP20
+	_QEB1R	= 0x15;         // IN	: QEB1 sur RP21
+    
+    #endif 
+
 	// Temporisation
 	delay_ms (50);
 }
@@ -439,6 +454,54 @@ void ConfigPorts (void)
 	_TRISC9		= 1;	_CN19IE	= 0;	_CN19PUE	= 0;	// IN  : QEB1
 
     #endif
+
+    #ifdef CARTE_BALISE
+    //****************
+	// PORT x
+	//****************
+	//_CNxIE  : interrup sur broche	| _CN6PUE : pull-up sur broche
+	// Config PORTA
+	_TRISA0		= 0;	_CN2IE	= 0;	_CN2PUE		= 0;	// OUT : (DIGIT) LED4 
+	_TRISA1		= 0;	_CN3IE	= 0;	_CN3PUE		= 0;	// OUT : (DIGIT) LED5
+    _TRISA2     = 1;                                        // IN  : (DIGIT) Clock
+	_TRISA3		= 0;	_CN29IE	= 0;	_CN29PUE	= 0;	// NC
+	_TRISA4		= 0;	_CN0IE	= 0;	_CN0PUE		= 0;	// NC
+    _TRISA7		= 0;                                        // OUT : (DIGIT) LED3
+	_TRISA8		= 0;                                        // NC
+	_TRISA9		= 0;                                        // NC
+	_TRISA10	= 0;                                        // OUT : (DIGIT) LED2
+
+	// Config PORTB
+	_TRISB0		= 0;	_CN4IE	= 0;	_CN4PUE		= 0;	// OUT : (DIGIT) LED6
+	_TRISB1		= 0;	_CN5IE	= 0;	_CN5PUE		= 0;	// OUT : (DIGIT) LED7
+	_TRISB2		= 0;	_CN6IE	= 0;	_CN6PUE		= 0;	// OUT : (DIGIT) LED8
+	_TRISB3		= 0;	_CN7IE	= 0;	_CN7PUE		= 0;	// OUT : (DIGIT) LED9
+	_TRISB4		= 0;	_CN1IE	= 0;	_CN1PUE		= 0;	// NC
+	_TRISB5		= 0;	_CN27IE	= 0;	_CN27PUE	= 0;	// OUT : SDA
+	_TRISB6		= 1;	_CN24IE	= 0;	_CN24PUE	= 0;	// IN  : SCL
+	_TRISB7		= 1;	_CN23IE	= 0;	_CN23PUE	= 0;	// IN  : (DIGIT) Status BL
+	_TRISB8		= 0;	_CN22IE	= 0;	_CN22PUE	= 0;	// OUT : TX BL
+	_TRISB9		= 1;	_CN21IE	= 0;	_CN21PUE	= 0;	// IN  : RX BL
+	_TRISB10	= 0;	_CN16IE	= 0;	_CN16PUE	= 0;	// RES : PGD
+	_TRISB11	= 0;	_CN15IE	= 0;	_CN15PUE	= 0;	// RES : PGC
+	_TRISB12	= 0;	_CN14IE	= 0;	_CN14PUE	= 0;	// OUT : (DIGIT) LED1
+	_TRISB13	= 0;	_CN13IE	= 0;	_CN13PUE	= 0;	// OUT : TX USB
+	_TRISB14	= 1;	_CN12IE	= 0;	_CN12PUE	= 0;	// IN  : RX USB
+	_TRISB15	= 0;	_CN11IE	= 0;	_CN11PUE	= 0;	// OUT : (PWM) PWM Moteur
+
+	// Config PORTC
+	_TRISC0		= 0;	_CN8IE	= 0;	_CN8PUE		= 0;	// OUT : (DIGIT) : Sens moteur 
+	_TRISC1		= 1;	_CN9IE	= 0;	_CN9PUE		= 0;	// IN  : (ANALOG/DIGIT) : capteur (AN7)
+	_TRISC2		= 0;	_CN10IE	= 0;	_CN10PUE	= 0;	// OUT : (DIGIT) : Enable Capteur 
+	_TRISC3		= 0;	_CN28IE	= 0;	_CN28PUE	= 0;	// NC
+	_TRISC4		= 1;	_CN25IE	= 0;	_CN25PUE	= 0;	// IN  : QEA
+	_TRISC5		= 1;	_CN26IE	= 0;	_CN26PUE	= 0;	// IN  : QEB
+	_TRISC6		= 0;	_CN18IE	= 0;	_CN18PUE	= 0;	// OUT : (DIGIT) : ENABLE BL
+	_TRISC7		= 1;	_CN17IE	= 0;	_CN17PUE	= 0;	// IN  : BOUTON3
+	_TRISC8		= 1;	_CN20IE	= 0;	_CN20PUE	= 0;	// IN  : BOUTON2
+	_TRISC9		= 1;	_CN19IE	= 0;	_CN19PUE	= 0;	// IN  : BOUTON1
+
+    #endif 
 
 	//****************
 	// INITIALISATION

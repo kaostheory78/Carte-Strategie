@@ -725,6 +725,10 @@ void init_evitement_hugo()
                 if(i<2 || i > x_max-3 || j<2 || j>y_max-3)
                 obstacle[i][j]=1;
             #endif
+            #ifdef CARTE_BALISE
+                if(i<2 || i > x_max-3 || j<2 || j>y_max-3)
+                obstacle[i][j]=1;
+            #endif
             else
             obstacle[i][j]=0;
         }
@@ -1828,6 +1832,12 @@ void MAJ_obstacle(int x_present, int y_present,int angle,int8_t sens_marche,int 
         int vision = 2;
         int vision_diago = 1;
     #endif
+    #ifdef CARTE_BALISE
+        int taille = 1;// il y a deja 3 de largeur, devant nous, a cette gauche et a cette droite, la taille est ce qu'on met en plus de ces 3 la
+        int taille_diago = 1;
+        int vision = 2;
+        int vision_diago = 1;
+    #endif 
 
     int offset=0; // en fonction de si c'est le capteur gauche ou le droit ou la balise
     int largeur=0; // nombre de case recouverte PAR US (balise = 2us, le gauche et le droit) en plus des 3 cases en face de nous

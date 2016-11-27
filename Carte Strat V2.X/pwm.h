@@ -63,6 +63,11 @@ extern "C" {
     #define REGISTRE_MOTEUR_G   PDC2
 #endif
 
+#ifdef CARTE_BALISE
+    #define REGISTRE_MOTEUR_D   PDC1
+    #define REGISTRE_MOTEUR_G   PDC2
+#endif
+    
 #ifdef CARTE_V2
     #define REGISTRE_MOTEUR_D   PDC2
     #define REGISTRE_MOTEUR_G   PDC3

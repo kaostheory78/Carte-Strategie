@@ -124,7 +124,7 @@ int main(int argc, char** argv)
     /**************************************************************************/
     
 
-    while(SYS_JACK);
+    //while(SYS_JACK);
     strategie();
 
     //reglage_odometrie();

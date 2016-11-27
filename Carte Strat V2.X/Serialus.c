@@ -1179,7 +1179,7 @@ _Bool check_string (uint8_t param, char* string)
     
     // Si on a check l'intégralité du buffer mais pas encore rencontré de '\0'
     // Alors la chaine de référence est d'une part trop grande
-    // Mais surtout on les chaines ne sont pas comparés entirement donc false
+    // Mais surtout les chaines ne sont pas comparés entirement donc false
     if (i > MAX_BUFF)
         result = false;
     
@@ -1254,6 +1254,7 @@ void list_serialus (uint8_t truc_a_lister)
     switch(truc_a_lister)
     {
         case SER_LIST :
+
             printf(" :");
             printf("\n\rPour lister : list");
             printf("\n\rDEPLACEMENT  de");
@@ -1317,6 +1318,7 @@ void list_serialus (uint8_t truc_a_lister)
             printf("\n\r\tping      : ping");
             printf("\n\r... a venir ?");
             printf("\n\r");
+            break;
     }
     printf("\n\r");
    

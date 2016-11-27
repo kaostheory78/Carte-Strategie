@@ -117,8 +117,9 @@ void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
         IEC3bits.QEI1IE = 0;
         IEC4bits.QEI2IE = 0;
 
+    #ifdef CARTE_V2
         ALIM_MOTEUR_Y = DESACTIVE;
-
+    #endif
         TIMER_5ms   = DESACTIVE;
         TIMER_10ms  = DESACTIVE;
         TIMER_20ms  = DESACTIVE;

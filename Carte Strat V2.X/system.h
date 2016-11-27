@@ -137,6 +137,29 @@ extern "C" {
     #define CAPTEUR3_ANALOGIQUE _CAPTEUR3_ANALOGIQUE
 
 #endif
+#ifdef CARTE_BALISE
+    #define SENS_MOTEUR_DROIT   PORTCbits.RC0
+    #define SENS_MOTEUR_GAUCHE  LATAbits.LATA10 // Led 2
+
+    #define XBEE_RESET          PORTCbits.RC6 // enable BL
+    #define INHIBIT_AX12        PORTCbits.RC2 // enable capteur
+    #define DIR_UART_AX12       LATAbits.LATA7 // Led 3
+
+
+    #define SYS_JACK            PORTCbits.RC9 // bouton 1
+    #define _SYS_COULEUR        PORTCbits.RC8 // bouton 2
+    #define _SYS_STRAT          PORTCbits.RC7 // bouton 3
+
+    // LED 2 -  9
+    #define CAPTEUR1            LATAbits.LATA0 // led 4
+    #define CAPTEUR2            LATAbits.LATA1 // led 5
+    #define CAPTEUR3            LATBbits.LATB0 // led 6 
+    #define CAPTEUR4            LATBbits.LATB1 // led 7
+    #define CAPTEUR5            LATBbits.LATB2 // led 8
+    #define CAPTEUR6            LATBbits.LATB3 // led 9
+    #define CAPTEUR7            LATBbits.LATB4 // free pin
+    #define CAPTEUR8            LATAbits.LATA2 // free pin
+#endif
 
 
 /******************************************************************************/
