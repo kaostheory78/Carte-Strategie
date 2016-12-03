@@ -25,15 +25,18 @@ extern "C" {
 /***************************** Defines ****************************************/
 /******************************************************************************/
 
-#define GROS_ROBOT
-//#define PETIT_ROBOT
+#define PETIT_ROBOT
+//#define GROS_ROBOT
+//#define GROS_ROBOT_BOTIK
+//#define PETIT_ROBOT_BOTIK
 //#define ROBOT_TEST
 //#define UTILISATION_CARTE_BALISE
     
 //#define NO_SERIALUS
 
 #define _Pi                             3.14159265359
-
+   
+    
 
 #ifdef GROS_ROBOT
     
@@ -213,9 +216,171 @@ extern "C" {
 #endif
 
 
+#ifdef PETIT_ROBOT
+
+    //#define CARTE_V1
+    #define CARTE_V2
+
+    /**************************************************************************/
+    /****************************** ODOMETRIE *********************************/
+    /**************************************************************************/
+    #define _ENTRAXE_MM                  206.4
+    #define _DIAMETRE_ROUE_CODEUSE       0. //51.9715     //Toujours dans le sens de l'erreur : aler plus loin = diminuer D
+    #define _PERIMETRE_ROUE_MM           ( 130.9 )
 
 
-    #ifdef PETIT_ROBOT
+    //+COEF_D -> + a droite
+    #define  _COEF_D                    (double) 1.  //346  //1.00372
+    #define  _COEF_G                    (double) 1.
+
+    /**************************************************************************/
+    /******************************** ASSERV **********************************/
+    /**************************************************************************/
+        //Association distance - Vitesse - Accélérations max
+    #define _VITESSE_CONSIGNE_MAX_MM     2.8 
+    #define _VITESSE_DISTANCE_MIN        0.6
+    #define _VITESSE_MAX_MM_TENSION      3.
+    #define _DISTANCE_CONSIGNE_MM        500.
+
+    #define _ACC_POSITION_CONSIGNE       2.5
+    #define _DCC_POSITION_CONSIGNE       2.8 //2.8
+    #define _ACC_POSITION_MIN             1.5 //1.
+    #define _DCC_POSITION_MIN             1.
+
+    #define _COEF_FREINAGE                1.
+
+        //Association Angle - Vitesse - Accélérations max
+    #define _VITESSE_ANGLE_MAX           0.015 
+    #define _VITESSE_ANGLE_MIN           0.005
+    #define _ORIENTATION_CONSIGNE_DEG    90.
+
+    #define _ACC_ORIENTATION_CONSIGNE    4. 
+    #define _DCC_ORIENTATION_CONSIGNE    3. 
+    #define _ACC_ORIENTATION_MIN         0.5
+    #define _DCC_ORIENTATION_MIN         0.5
+
+        //Autres réglages asserv
+    #define _SEUIL_IMMOBILITE            75ULL //200
+    #define _MAX_ERREUR_INTEGRALLE_V     3500.
+    #define _MAX_E_INTEGRALLE_BRAKE      12000. //12000
+
+    /**************************************************************************/
+    /********************************* PID ************************************/
+    /**************************************************************************/
+
+    //PID
+    #define _VITESSE_DIS_KP              0.8 
+    #define _VITESSE_DIS_KI              0.03
+    #define _VITESSE_DIS_KD              0.2
+
+    #define _POSITION_KP                 1.
+    #define _POSITION_KI                 0.
+    #define _POSITION_KD                 0.
+
+    #define _ORIENTATION_KP              1.
+    #define _ORIENTATION_KI              0.
+    #define _ORIENTATION_KD              0.
+
+    #define KP_BRAKE                    0.06 //0.04
+    #define KI_BRAKE                    0.0025 //0.0015
+    #define KD_BRAKE                    0.02 //0.8
+
+    /**************************************************************************/
+    /******************************* TENSIONS *********************************/
+    /**************************************************************************/
+
+    //Tensions d'alimentations
+    #define _TENSION_MOTEUR_DROIT        12L
+    #define _TENSION_MOTEUR_GAUCHE       12L
+
+    #define _TENSION_MOTEUR_X            12L
+
+    #define _TENSION_SORTIE_PTN          17L
+
+    #define _CKECK_LIMITATION_COURANT    true 
+
+
+    /**************************************************************************/
+    /*************************** CONFIGS MOTEURS ******************************/
+    /**************************************************************************/
+
+
+    //Paramètres codeurs, et moteurs
+    //Sens rotation codeur
+    #define _SENS_ROT_D                  -1L
+    #define _SENS_ROT_G                  1L
+
+    #define _RAPPORT_REDUCTION           1U
+
+    #define _CODEUR_D_NB_IMP             3600U
+    #define _CODEUR_G_NB_IMP             3600U
+
+    #define _RESOLUTION_LOGICIELLE       1LL
+
+    //PWM : sens de rotation du moteur
+    #define _AVANCER_MOTEUR_D            1
+    #define _RECULER_MOTEUR_D            0
+
+    #define _AVANCER_MOTEUR_G            0
+    #define _RECULER_MOTEUR_G            1
+
+    #define _AVANCER_MOTEUR_X            0
+    #define _RECULER_MOTEUR_X            1
+
+    #define _AVANCER_MOTEUR_Y            0
+    #define _RECULER_MOTEUR_Y            1
+
+    /**************************************************************************/
+    /***************************** PORTS CARTE ********************************/
+    /**************************************************************************/
+
+
+    //La définition des ports relatif à chaque carte se trouve
+    //Dans le fichier system.h
+
+    #define CAPT_PINCE                 CAPTEUR1
+    #define CAPT_IR_ARRIERE_GAUCHE     CAPTEUR2
+    #define CAPT_IR_ARRIERE_DROIT      CAPTEUR6
+    #define CAPT_IR_ARRIERE_CENTRE     CAPTEUR7
+    #define CAPT_US_DROIT              CAPTEUR5
+    #define CAPT_US_GAUCHE             CAPTEUR4
+    #define CAPT_US_BALISE             CAPTEUR8
+
+    // Définition des standart pour la fonction évitement
+    // ETAT : etat de detection du capteur (si il détecte à un : ETAT_HAUT)
+    // NB : Si un capteur n'existe pas, le mettre à AUCUN et à ETAT_HAUT
+    #define _CAPT_ADV_AVANT_G            AUCUN            
+    #define _CAPT_ADV_AVANT_D            AUCUN
+    #define _CAPT_ADV_AVANT_C            AUCUN
+
+    #define _ETAT_ADV_AVANT_G            ETAT_HAUT
+    #define _ETAT_ADV_AVANT_D            ETAT_HAUT
+    #define _ETAT_ADV_AVANT_C            ETAT_HAUT
+
+    #define _CAPT_ADV_ARRIERE_G          AUCUN
+    #define _CAPT_ADV_ARRIERE_C          AUCUN
+    #define _CAPT_ADV_ARRIERE_D          AUCUN
+
+    #define _ETAT_ADV_ARRIERE_G          ETAT_HAUT
+    #define _ETAT_ADV_ARRIERE_C          ETAT_HAUT
+    #define _ETAT_ADV_ARRIERE_D          ETAT_HAUT
+
+    #define _CAPTEUR1_ANALOGIQUE        DIGITAL
+    #define _CAPTEUR2_ANALOGIQUE        DIGITAL
+    #define _CAPTEUR3_ANALOGIQUE        DIGITAL
+
+#ifdef CARTE_V1
+    #define _SYS_COULEUR                CAPTEUR2
+#endif
+
+
+    /**************************************************************************/
+    /**************************************************************************/
+    /**************************************************************************/
+#endif
+
+    
+    #ifdef PETIT_ROBOT_BOTIK
 
     //#define CARTE_V1
     #define CARTE_V2
