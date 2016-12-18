@@ -117,14 +117,14 @@ void action_reception_serialus(uint8_t buf)
     if (buf == 3)
     {
         print_abort("CTRL-C");
-        reinit_buffer_serialus();
-        if (serialus.info_a_traiter == true)
-        {
-            if (check_string(1, "de"))
-            {        
-                fin_deplacement();
-            }
+        
+        // en cas de déplacement
+        if (serialus.clignotement_en_cours == true)
+        {      
+            fin_deplacement();
         }
+        reinit_buffer_serialus();
+
     }
     else if (serialus.info_a_traiter == false)
     {
@@ -313,7 +313,7 @@ void serialus_traitement_deplacement ()
                 if (check_coherence(d < 3000 && d > 0 && abs(v) < 150))
                 {
                     init_clignotement();
-                    //printf("\n\ravancer d : %d, V : %d",(int) d,(int) v);
+                    printf("\n\ravancer d : %d, V : %d",(int) d,(int) v);
                     print_erreur_deplacement(_avancer_reculer(d, v));
                 }
             }
@@ -1421,15 +1421,15 @@ void init_clignotement()
 
 void print_clignotement()
 {
-    static uint8_t tempo = 0;
-    tempo ++;
-    if (tempo == 2)
-        printf("\r -");
-    else if (tempo == 4)
-    {
-        printf("\r  ");
-        tempo = 0;
-    }
+//    static uint8_t tempo = 0;
+//    tempo ++;
+//    if (tempo == 2)
+//        printf("\r -");
+//    else if (tempo == 4)
+//    {
+//        printf("\r  ");
+//        tempo = 0;
+//    }
 }
 
 #endif

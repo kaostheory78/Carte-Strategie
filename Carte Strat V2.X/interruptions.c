@@ -92,6 +92,17 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
     TIMER_20ms = DESACTIVE;
     
     autom_20ms();
+    
+    #ifndef NO_SERIALUS   
+    
+    if (serialus.clignotement_en_cours == true)
+    {
+        #ifdef DEBUG_ACTIF
+            debug();
+        #endif        
+    }
+        
+    #endif
 
     TMR3 = 0;
     FLAG_TIMER_20ms = 0;        //On clear le flag d'interruption du timer
@@ -139,7 +150,12 @@ void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
     
 #ifndef NO_SERIALUS   
     if (serialus.clignotement_en_cours == true)
-        print_clignotement();
+    {
+        #ifndef DEBUG_ACTIF
+            print_clignotement();
+        #endif        
+    }
+        
 #endif
     
     FLAG_TIMER_100ms = 0;        //On clear le flag d'interruption du timer
@@ -157,8 +173,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void)
     if (serialus.actif == true)
         traitement_serialus();
 #endif
-    
-    //debug();
     
     TMR5 = 0;
     FLAG_TIMER_200ms = 0;        //On clear le flag d'interruption du timer

@@ -48,17 +48,13 @@ void strategie()
     #ifdef PETIT_ROBOT
        
         //while(!SYS_JACK);
-        CPT_TEMPS_MATCH.actif = true;
+//        CPT_TEMPS_MATCH.actif = true;
         EVITEMENT_ADV.actif = OFF;
         EVITEMENT_ADV.mode = STOP;
         
         init_position_robot(0., 0., 0.);
         //brake();
         //avancer_reculer(500, 100);
-        orienter(180, 100);
-        orienter(0, 100);
-        orienter(180, 100);
-        orienter(0, 100);
                   
     #endif
 }

@@ -33,6 +33,7 @@ extern "C" {
 //#define UTILISATION_CARTE_BALISE
     
 //#define NO_SERIALUS
+//#define DEBUG_ACTIF
 
 #define _Pi                             3.14159265359
    
@@ -239,7 +240,7 @@ extern "C" {
         //Association distance - Vitesse - Accélérations max
     #define _VITESSE_CONSIGNE_MAX_MM     2.8 
     #define _VITESSE_DISTANCE_MIN        0.6
-    #define _VITESSE_MAX_MM_TENSION      3.
+    #define _VITESSE_MAX_MM_TENSION      2.7
     #define _DISTANCE_CONSIGNE_MM        500.
 
     #define _ACC_POSITION_CONSIGNE       2.5
@@ -270,7 +271,7 @@ extern "C" {
 
     //PID
     #define _VITESSE_DIS_KP              0.8 
-    #define _VITESSE_DIS_KI              0.03
+    #define _VITESSE_DIS_KI              0.04 //0.03
     #define _VITESSE_DIS_KD              0.2
 
     #define _POSITION_KP                 1.

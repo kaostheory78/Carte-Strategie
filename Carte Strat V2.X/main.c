@@ -137,7 +137,7 @@ int main(int argc, char** argv)
 
     printf("\n\n\n\r");
     print_position();
-    printf("\n\n");
+    printf("\n\n\r");
     print_statistique_ax12();
    
     /**************************************************************************/

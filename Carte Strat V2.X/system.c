@@ -78,6 +78,7 @@ void init_system (void)
     
     TIMER_5ms   = ACTIVE;
     TIMER_10ms  = ACTIVE;
+    TIMER_20ms  = ACTIVE;
     TIMER_100ms = ACTIVE;
 
     // Configuration de led qui clignote a une fréquence de 1 Hz

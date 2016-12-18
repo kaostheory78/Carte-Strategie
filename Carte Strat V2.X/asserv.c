@@ -299,6 +299,9 @@ void calcul_vitesse_position (double pourcentage_vitesse)
     calcul_distance_consigne_XY();
     double temp;
 
+    // diminue la v max calculé
+    // on ne considère pas la courbe comme étant linéaire
+    // mais je ne me souviens plus exactment
     if (DISTANCE.consigne > DISTANCE_CONSIGNE_PAS)
     {
         temp =  DISTANCE.consigne - DISTANCE_CONSIGNE_PAS;
@@ -308,18 +311,28 @@ void calcul_vitesse_position (double pourcentage_vitesse)
     else
         temp = DISTANCE.consigne;
 
-
     VITESSE_MAX.position = VITESSE_CONSIGNE_MAX_PAS * temp;
     VITESSE_MAX.position /= DISTANCE_CONSIGNE_PAS;
-    VITESSE_MAX.position *= pourcentage_vitesse;
-    VITESSE_MAX.position /= 100.;
 
+    // On garde la valeur absolue
     if (VITESSE_MAX.position < 0.)
         VITESSE_MAX.position *= -1.;
 
+    // On écréte par le haut avant la mise à l'échelle pour que cette dernière 
+    // ai une réelle signifiacation (la fonction de calcul de vitesse, dans le cas de grande
+    // vitesse, obtiens des vitesse bien superieur au max)
     if (VITESSE_MAX.position > VITESSE_MAX_TENSION)
         VITESSE_MAX.position = VITESSE_MAX_TENSION;
-    else if (VITESSE_MAX.position < VITESSE_DISTANCE_MIN_PAS)
+    
+    // Mise à l'échelle de la vitesse par rapport à la requête utilisateur 
+    // (pourcentage de la vitesse max calculée)
+    VITESSE_MAX.position *= pourcentage_vitesse;
+    VITESSE_MAX.position /= 100.;
+    
+    
+    // On écrète la valeur min après la mise à l'échelle pour empêcher que la mise à l'échelle
+    // induise des vitesse inférieur au minimum
+    if (VITESSE_MAX.position < VITESSE_DISTANCE_MIN_PAS)
         VITESSE_MAX.position = VITESSE_DISTANCE_MIN_PAS;
 }
 
