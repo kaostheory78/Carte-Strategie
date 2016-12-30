@@ -203,6 +203,7 @@ double get_orientation (void)
 /******************************************************************************/
 
 /**
+ * ecretage_consignes()
  * Ecretage des consignes maximum pour respecter la tention max des moteurs 
  */
 void ecretage_consignes(void)
@@ -218,6 +219,13 @@ void ecretage_consignes(void)
         COMMANDE.gauche = -COMMANDE.max;
 }
 
+/**
+ * saturation_vitesse_max()
+ * @brief Fonction appelé lors de la génération des rampes de vitesse
+ * Permet de saturer la vitesse à sa valeur maximale
+ * Permet également d'empêcher l'oscillation entre deux valeurs, si la vmax n'est pas un multiple de l'acel
+ * @param type : asserv concerné (position, orientation)
+ */
 void saturation_vitesse_max (_enum_type_PID type)
 {
     if (type == ASSERV_POSITION)
@@ -230,8 +238,8 @@ void saturation_vitesse_max (_enum_type_PID type)
             VITESSE[SYS_ROBOT].theorique = - VITESSE_MAX.position;
 
         //Pour ne pas osciller autour d'une consigne à 0,
-        //On check, lors de la génération de la courbe de freinage,
-        //Que si on va passer négatif alors on écrette à 0.
+       // Lors de la génération de la courbe de freinage, on empêche la génération de 
+       // vitesse négative
         else if (VITESSE[SYS_ROBOT].consigne == 0.)
             if (abs(VITESSE[SYS_ROBOT].theorique) < acc.deceleration.position.consigne )
                 VITESSE[SYS_ROBOT].theorique = 0.;
@@ -255,6 +263,10 @@ void saturation_vitesse_max (_enum_type_PID type)
     }
 }
 
+/**
+ * saturation_erreur_integralle_vitesse()
+ * @brief : Saturation du terme intégrale 
+ */
 void saturation_erreur_integralle_vitesse (void)
 {
     if (ERREUR_VITESSE[ROUE_DROITE].integralle > PID.VITESSE_DIS.max_I)
@@ -268,9 +280,17 @@ void saturation_erreur_integralle_vitesse (void)
         ERREUR_VITESSE[ROUE_GAUCHE].integralle = - PID.VITESSE_DIS.max_I;
 }
 
+/**
+ * detection_blocage()
+ */
 void detection_blocage (void)
 {
+    
+    // TODO : Define pourcentage mini ailleurs
     double pourcentage_vitesse_mini = 0.2;
+    
+    // Si la vitesse est trop faible (20% de la consigne) et que le terme intégralle est saturé,
+    // Alors on notifie d'un blocage
     if (VITESSE[ROUE_DROITE].actuelle < pourcentage_vitesse_mini * (VITESSE[ROUE_DROITE].consigne * FLAG_ASSERV.sens_deplacement))
     {
        if (ERREUR_VITESSE[ROUE_DROITE].integralle == PID.VITESSE_DIS.max_I || ERREUR_VITESSE[ROUE_DROITE].integralle == - PID.VITESSE_DIS.max_I )
@@ -294,6 +314,15 @@ void detection_blocage (void)
     }
 }
 
+/**
+ * calcul_vitesse_position()
+ * @brief : détermine la vitesse max à atteindre pour le déplacement basé sur : 
+ *      - La longueur du déplacement
+ *      - La vitesse maximale auorisée
+ *      - La vitesse minimale autorisée
+ *      - le ratio envoyé par l'utilisateur
+ * @param pourcentage_vitesse : % appliqué à la valeur max calculée 
+ */
 void calcul_vitesse_position (double pourcentage_vitesse)
 {
     calcul_distance_consigne_XY();
@@ -318,8 +347,8 @@ void calcul_vitesse_position (double pourcentage_vitesse)
     if (VITESSE_MAX.position < 0.)
         VITESSE_MAX.position *= -1.;
 
-    // On écréte par le haut avant la mise à l'échelle pour que cette dernière 
-    // ai une réelle signifiacation (la fonction de calcul de vitesse, dans le cas de grande
+    // On écrète par le haut avant la mise à l'échelle pour que cette dernière 
+    // ait une réelle signifiacation (la fonction de calcul de vitesse, dans le cas de grande
     // vitesse, obtiens des vitesse bien superieur au max)
     if (VITESSE_MAX.position > VITESSE_MAX_TENSION)
         VITESSE_MAX.position = VITESSE_MAX_TENSION;
@@ -329,6 +358,10 @@ void calcul_vitesse_position (double pourcentage_vitesse)
     VITESSE_MAX.position *= pourcentage_vitesse;
     VITESSE_MAX.position /= 100.;
     
+    // on écrète une seconde fois (l'utilisateur pouvant demander une vitesse > 100 %)
+    // On peut avoir dépassé la valeur max
+    if (VITESSE_MAX.position > VITESSE_MAX_TENSION)
+        VITESSE_MAX.position = VITESSE_MAX_TENSION;
     
     // On écrète la valeur min après la mise à l'échelle pour empêcher que la mise à l'échelle
     // induise des vitesse inférieur au minimum
@@ -336,49 +369,67 @@ void calcul_vitesse_position (double pourcentage_vitesse)
         VITESSE_MAX.position = VITESSE_DISTANCE_MIN_PAS;
 }
 
+/**
+ * calcul_acceleration_position()
+ * @brief FOnction qui calcul les accélérations et décélérations pour construire la rampe de votesse
+ * En fonction de la distance à parcourir
+ */
 void calcul_acceleration_position (void)
 {
-    if (VITESSE_MAX.position < VITESSE_CONSIGNE_MAX_PAS) //Si on est inferieur au réglage consigne
+    double accelMax = 0.;
+    double accelMin = 0.;
+    double decelMax = 0.;
+    double decelMin = 0.;
+    
+    // si la consigne de distance est négative :
+    //  -> La dimunition de la vitesse = accélération
+    //  -> L'augmentation de la vitesse = décélération
+    // (on passe d'une vitesse nulle à une vitesse négative pour reculer)
+    // Il faut donc inverser l'accélération et la décélération
+    if (DISTANCE.consigne > 0.)
     {
-        if (DISTANCE.consigne > 0.)
-        {
-            acc.acceleration.position.consigne = VITESSE_MAX.position;
-            acc.acceleration.position.consigne *= acc.acceleration.position.max; 
-            acc.acceleration.position.consigne /= VITESSE_CONSIGNE_MAX_PAS;
-            
-            acc.deceleration.position.consigne = VITESSE_MAX.position;
-            acc.deceleration.position.consigne *= acc.deceleration.position.max; 
-            acc.deceleration.position.consigne /= VITESSE_CONSIGNE_MAX_PAS;
-        }
-        else //inversion acceleration et deceleration
-        {
-            acc.acceleration.position.consigne = VITESSE_MAX.position;
-            acc.acceleration.position.consigne *= acc.deceleration.position.max; 
-            acc.acceleration.position.consigne /= VITESSE_CONSIGNE_MAX_PAS;
-
-            acc.deceleration.position.consigne = VITESSE_MAX.position;
-            acc.deceleration.position.consigne *= acc.acceleration.position.max; 
-            acc.deceleration.position.consigne /= VITESSE_CONSIGNE_MAX_PAS;
-        }
+        accelMin = acc.acceleration.position.min;
+        accelMax = acc.acceleration.position.max;
+        decelMin = acc.deceleration.position.min;
+        decelMax = acc.deceleration.position.max;
     }
-    else //sinon on sature l'acceleration
+    else
     {
-        if (DISTANCE.consigne > 0.)
-        {
-            acc.acceleration.position.consigne = acc.acceleration.position.max; 
-            acc.deceleration.position.consigne = acc.deceleration.position.max; 
-        }
-        else //inversion acceleration et deceleration
-        {
-            acc.acceleration.position.consigne = acc.deceleration.position.max; 
-            acc.deceleration.position.consigne = acc.acceleration.position.max; 
-        }
+        accelMin = acc.deceleration.position.min;
+        accelMax = acc.deceleration.position.max;
+        decelMin = acc.acceleration.position.min;
+        decelMax = acc.acceleration.position.max;
     }
+    
+    //TODO : VITESSE_CONSIGNE_MAX_PAS ?
+    // on fait un produit en croix par rapport à la calib, (petite vitesse, plus faible accélération)
+    acc.acceleration.position.consigne = VITESSE_MAX.position;
+    acc.acceleration.position.consigne *= accelMax; 
+    acc.acceleration.position.consigne /= VITESSE_CONSIGNE_MAX_PAS;
 
-    if (acc.acceleration.position.consigne < acc.acceleration.position.min) 
-        acc.acceleration.position.consigne = acc.acceleration.position.min; 
-    if (acc.deceleration.position.consigne < acc.deceleration.position.min) // /!\ REMPLACEMENT DU SIGNE > PAR <
-        acc.deceleration.position.consigne = acc.deceleration.position.min; 
+    acc.deceleration.position.consigne = VITESSE_MAX.position;
+    acc.deceleration.position.consigne *= decelMax; 
+    acc.deceleration.position.consigne /= VITESSE_CONSIGNE_MAX_PAS;
+
+    
+    // Puis on sature l'acélération/décélaration aux valuers min/max
+    if (acc.acceleration.position.consigne < accelMin)
+    {
+        acc.acceleration.position.consigne = accelMin;
+    }    
+    else if (acc.acceleration.position.consigne > accelMax)
+    {
+        acc.acceleration.position.consigne = accelMax;
+    }
+    
+    if (acc.deceleration.position.consigne < decelMin) // /!\ REMPLACEMENT DU SIGNE > PAR <
+    {
+        acc.deceleration.position.consigne = decelMin;
+    }
+    else if (acc.deceleration.position.consigne > decelMax)
+    {
+        acc.deceleration.position.consigne = decelMax;
+    }
 }
 
 void calcul_vitesse_orientation (double pourcentage_vitesse)
@@ -387,15 +438,25 @@ void calcul_vitesse_orientation (double pourcentage_vitesse)
 
     fonction_PID(ASSERV_ORIENTATION);
 
+    // Calcul de la vitesse à appliquer pour l'orientation
     VITESSE_MAX.orientation = VITESSE_ANGLE_PAS;
     VITESSE_MAX.orientation *= ERREUR_ORIENTATION.actuelle; // orientation restante à parcourir
     VITESSE_MAX.orientation /= ORIENTATION_CONSIGNE_PAS;
+    
+    // Valeur absolue
+    if (VITESSE_MAX.orientation < 0.)
+        VITESSE_MAX.orientation *= - 1.;
+    
+    // Saturation de la valeur max pour que la mise à l'échelle est un sens réel
+    if (VITESSE_MAX.orientation > VITESSE_MAX_TENSION)
+        VITESSE_MAX.orientation = VITESSE_MAX_TENSION;
+    
+    // mise à l'échelle
     VITESSE_MAX.orientation *= pourcentage_vitesse;
     VITESSE_MAX.orientation /= 100.;
 
-    if (VITESSE_MAX.orientation < 0.)
-        VITESSE_MAX.orientation *= - 1.;
 
+    // Re saturation après la mise à l'échelle (pouvant être > 100 %)
     if (VITESSE_MAX.orientation > VITESSE_MAX_TENSION)
         VITESSE_MAX.orientation = VITESSE_MAX_TENSION;
     else if (VITESSE_MAX.orientation < VITESSE_ANGLE_MIN_PAS)
@@ -404,47 +465,60 @@ void calcul_vitesse_orientation (double pourcentage_vitesse)
 
 void calcul_acceleration_orientation (void)
 {
-    if (VITESSE_MAX.orientation < VITESSE_ANGLE_PAS) //Si on est inferieur au réglage consigne
+    double accelMax = 0.;
+    double accelMin = 0.;
+    double decelMax = 0.;
+    double decelMin = 0.;
+    
+    // si la consigne d'orientation est négative :
+    //  -> La dimunition de la vitesse = accélération
+    //  -> L'augmentation de la vitesse = décélération
+    // (on passe d'une vitesse nulle à une vitesse négative pour reculer)
+    // Il faut donc inverser l'accélération et la décélération
+    if (ERREUR_ORIENTATION.actuelle > 0.)
     {
-        if (ERREUR_ORIENTATION.actuelle > 0.)
-        {
-            acc.acceleration.orientation.consigne = VITESSE_MAX.orientation;
-            acc.acceleration.orientation.consigne *= acc.acceleration.orientation.max; 
-            acc.acceleration.orientation.consigne /= VITESSE_ANGLE_PAS;
-
-            acc.deceleration.orientation.consigne = VITESSE_MAX.orientation;
-            acc.deceleration.orientation.consigne *= acc.deceleration.orientation.max; 
-            acc.deceleration.orientation.consigne /= VITESSE_ANGLE_PAS;
-        }
-        else //inversion acceleration et deceleration
-        {
-            acc.acceleration.orientation.consigne = VITESSE_MAX.orientation;
-            acc.acceleration.orientation.consigne *= acc.deceleration.orientation.max; 
-            acc.acceleration.orientation.consigne /= VITESSE_ANGLE_PAS;
-
-            acc.deceleration.orientation.consigne = VITESSE_MAX.orientation;
-            acc.deceleration.orientation.consigne *= acc.acceleration.orientation.max; 
-            acc.deceleration.orientation.consigne /= VITESSE_ANGLE_PAS;
-        }
+        accelMin = acc.acceleration.orientation.min;
+        accelMax = acc.acceleration.orientation.max;
+        decelMin = acc.deceleration.orientation.min;
+        decelMax = acc.deceleration.orientation.max;
     }
-    else //sinon on sature l'acceleration
+    else
     {
-        if ( ERREUR_ORIENTATION.actuelle > 0.)
-        {
-            acc.acceleration.orientation.consigne = acc.acceleration.orientation.max; 
-            acc.deceleration.orientation.consigne = acc.deceleration.orientation.max; 
-        }
-        else //inversion acceleration et deceleration
-        {
-            acc.acceleration.orientation.consigne = acc.deceleration.orientation.max; 
-            acc.deceleration.orientation.consigne = acc.acceleration.orientation.max; 
-        }
+        accelMin = acc.deceleration.orientation.min;
+        accelMax = acc.deceleration.orientation.max;
+        decelMin = acc.acceleration.orientation.min;
+        decelMax = acc.acceleration.orientation.max;
     }
+   
+    // on fait un produit en croix par rapport à la calib, (petite vitesse, plus faible accélération)
+    acc.acceleration.orientation.consigne = VITESSE_MAX.orientation;
+    acc.acceleration.orientation.consigne *= accelMax; 
+    acc.acceleration.orientation.consigne /= VITESSE_ANGLE_PAS;
 
-    if (acc.acceleration.orientation.consigne < acc.acceleration.orientation.min) 
-        acc.acceleration.orientation.consigne = acc.acceleration.orientation.min; 
-    if (acc.deceleration.orientation.consigne < acc.deceleration.orientation.min) 
-        acc.deceleration.orientation.consigne = acc.deceleration.orientation.min;
+    acc.deceleration.orientation.consigne = VITESSE_MAX.orientation;
+    acc.deceleration.orientation.consigne *= decelMax; 
+    acc.deceleration.orientation.consigne /= VITESSE_ANGLE_PAS;
+
+
+    // Puis on sature l'acélération/décélaration aux valuers min/max
+    if (acc.acceleration.orientation.consigne < accelMin)
+    {
+        acc.acceleration.orientation.consigne = accelMin; 
+    }
+    else if (acc.acceleration.orientation.consigne > accelMax)
+    {
+        acc.acceleration.orientation.consigne = accelMax; 
+    }
+        
+    if (acc.deceleration.orientation.consigne < decelMin)
+    {
+        acc.deceleration.orientation.consigne = decelMin;
+    }
+    else if (acc.deceleration.orientation.consigne > decelMax)
+    {
+        acc.deceleration.orientation.consigne = decelMax;
+    }
+        
 }
 
 void calcul_distance_consigne_XY (void)
@@ -457,6 +531,8 @@ void calcul_distance_consigne_XY (void)
 
         ORIENTATION.consigne = atan2(delta_y, delta_x ) * (ENTRAXE_TICKS /2.);
 
+        // Si on va en marche arrière, alors la consigne d'angle est inversée
+        // (une inversion de l'angle revient à lui enlever ou lui ajouter Pi)
         if (FLAG_ASSERV.sens_deplacement == MARCHE_ARRIERE)
         {
             if (ORIENTATION.consigne < 0.)
@@ -471,6 +547,7 @@ void calcul_distance_consigne_XY (void)
         DISTANCE.actuelle = 0.;
 
 
+        // Orientation conprise entre Pi et - Pi
         if ((ORIENTATION.consigne - ORIENTATION.actuelle) > Pi * ENTRAXE_TICKS/2.)
             ORIENTATION.consigne -= Pi * ENTRAXE_TICKS;
         else if (ORIENTATION.consigne - ORIENTATION.actuelle < - Pi * ENTRAXE_TICKS/2.)
@@ -554,7 +631,7 @@ void asserv()
         if (FLAG_ASSERV.vitesse_fin_nulle == ON && FLAG_ASSERV.brake == OFF)
             brake();
      
-        if (FLAG_ASSERV.immobilite >= SEUIL_IMMOBILITE)
+        if (FLAG_ASSERV.immobilite >= PID.VITESSE_DIS.seuil_immobilite)
             FLAG_ASSERV.fin_deplacement = FIN_DEPLACEMENT;
         else if (FLAG_ASSERV.vitesse_fin_nulle == OFF)
             FLAG_ASSERV.fin_deplacement = FIN_DEPLACEMENT;
@@ -599,7 +676,9 @@ void asserv()
             fonction_PID(ASSERV_VITESSE_DISTANCE);
         }
         else
+        {
             asserv_brake();
+        }
         
         ecretage_consignes();
 
