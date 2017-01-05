@@ -54,7 +54,7 @@ extern "C" {
     {
         uint16_t ancien;
         uint16_t nouvelle;
-        int32_t ecart;
+        double ecart;
     }_position;
 
 
