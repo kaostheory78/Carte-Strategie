@@ -33,7 +33,7 @@ extern "C" {
 //#define UTILISATION_CARTE_BALISE
     
 //#define NO_SERIALUS
-//#define DEBUG_ACTIF
+#define DEBUG_ACTIF
 
 #define _Pi                             3.14159265359
    
@@ -243,10 +243,10 @@ extern "C" {
     #define _VITESSE_MAX_MM_TENSION      2.7
     #define _DISTANCE_CONSIGNE_MM        500.
 
-    #define _ACC_POSITION_CONSIGNE       2.5
-    #define _DCC_POSITION_CONSIGNE       2.8 //2.8
-    #define _ACC_POSITION_MIN             1.5 //1.
-    #define _DCC_POSITION_MIN             1.
+    #define _ACC_POSITION_CONSIGNE       1.5 //2.5
+    #define _DCC_POSITION_CONSIGNE       4. //2.8
+    #define _ACC_POSITION_MIN             1. //1.
+    #define _DCC_POSITION_MIN             3. //1.
 
     #define _COEF_FREINAGE                1.
 
