@@ -741,7 +741,7 @@ void asserv_distance(void)
 {
     __attribute__((near)) static double distance_restante = 0.;
     __attribute__((near)) static double distance_freinage = 0.;
-    __attribute__((near)) static double distance_anticipation = 0.;
+    __attribute__((near)) static double distance_anticipation = 0. * TICKS_PAR_MM;
     
     calcul_distance_consigne_XY();
     distance_restante = fonction_PID(ASSERV_POSITION);
@@ -754,7 +754,7 @@ void asserv_distance(void)
             FLAG_ASSERV.sens_deplacement = MARCHE_AVANT;
     }
 
-    if ((FLAG_ASSERV.sens_deplacement * distance_restante > 2. * TICKS_PAR_MM))
+    if ((FLAG_ASSERV.sens_deplacement * distance_restante > 2 * TICKS_PAR_MM)) // 2
     {
         //si on se trouve dans un cercle de 3 cm autour du point d'arrivé
         if (FLAG_ASSERV.sens_deplacement * distance_restante < 30. * TICKS_PAR_MM) //30
@@ -781,7 +781,7 @@ void asserv_distance(void)
             }
         }
 
-        FLAG_ASSERV.etat_distance = EN_COURS;
+//        FLAG_ASSERV.etat_distance = EN_COURS;
         if (distance_restante > 0.)
         {
             VITESSE[SYS_ROBOT].consigne =  VITESSE_MAX.position; //vmax
@@ -795,7 +795,7 @@ void asserv_distance(void)
        if (FLAG_ASSERV.vitesse_fin_nulle == ON)
        {
            // calcul de la distance théorique de freinage (trapèze)
-           distance_freinage = (VITESSE[SYS_ROBOT].actuelle * VITESSE[SYS_ROBOT].actuelle) / (2. * acc.deceleration.position.consigne); // vitesse actu ou théorique ?
+           distance_freinage = (VITESSE[SYS_ROBOT].actuelle * VITESSE[SYS_ROBOT].theorique) / (2. * acc.deceleration.position.consigne); // vitesse actu ou théorique ?
            
             if (distance_restante < 0.)
                 distance_restante *= -1.;

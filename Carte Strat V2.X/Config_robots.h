@@ -243,10 +243,10 @@ extern "C" {
     #define _VITESSE_MAX_MM_TENSION      2.7
     #define _DISTANCE_CONSIGNE_MM        500.
 
-    #define _ACC_POSITION_CONSIGNE       1.5 //2.5
-    #define _DCC_POSITION_CONSIGNE       4. //2.8
-    #define _ACC_POSITION_MIN             1. //1.
-    #define _DCC_POSITION_MIN             3. //1.
+    #define _ACC_POSITION_CONSIGNE       0.5 //2.5
+    #define _DCC_POSITION_CONSIGNE       0.5 //2.8
+    #define _ACC_POSITION_MIN             0.25 //1.
+    #define _DCC_POSITION_MIN             0.25 //1.
 
     #define _COEF_FREINAGE                1.
 
@@ -271,7 +271,7 @@ extern "C" {
 
     //PID
     #define _VITESSE_DIS_KP              0.8 
-    #define _VITESSE_DIS_KI              0.04 //0.03
+    #define _VITESSE_DIS_KI              0.045 //0.03
     #define _VITESSE_DIS_KD              0.2
 
     #define _POSITION_KP                 1.
