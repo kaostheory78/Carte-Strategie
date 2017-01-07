@@ -651,6 +651,7 @@ void asserv()
     }
     else
     {
+        // Le robot est bloqué ou immobile depuis trop longtemps
         if (FLAG_ASSERV.immobilite >= PID.VITESSE_DIS.seuil_immobilite )
         {
             FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
@@ -754,8 +755,8 @@ void asserv_distance(void)
             FLAG_ASSERV.sens_deplacement = MARCHE_AVANT;
     }
 
-    if ((FLAG_ASSERV.sens_deplacement * distance_restante > 2 * TICKS_PAR_MM)) // 2
-    {
+//    if ((FLAG_ASSERV.sens_deplacement * distance_restante > 2 * TICKS_PAR_MM)) // 2
+//    {
         //si on se trouve dans un cercle de 3 cm autour du point d'arrivé
         if (FLAG_ASSERV.sens_deplacement * distance_restante < 30. * TICKS_PAR_MM) //30
         {
@@ -781,7 +782,7 @@ void asserv_distance(void)
             }
         }
 
-//        FLAG_ASSERV.etat_distance = EN_COURS;
+        FLAG_ASSERV.etat_distance = EN_COURS;
         if (distance_restante > 0.)
         {
             VITESSE[SYS_ROBOT].consigne =  VITESSE_MAX.position; //vmax
@@ -807,16 +808,16 @@ void asserv_distance(void)
                     VITESSE[SYS_ROBOT].consigne = 0.;
             }
         }
-    }
-    // Si on arrive à 2mm du point et que l'on veut une vitesse d'arrêt nulle
-    else 
-    {
-        FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
-        FLAG_ASSERV.position = OFF;
-        FLAG_ASSERV.orientation = OFF;
-        FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
-        VITESSE[SYS_ROBOT].consigne = 0.;
-    }
+//    }
+//    // Si on arrive à 2mm du point et que l'on veut une vitesse d'arrêt nulle
+//    else 
+//    {
+//        FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
+//        FLAG_ASSERV.position = OFF;
+//        FLAG_ASSERV.orientation = OFF;
+//        FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
+//        VITESSE[SYS_ROBOT].consigne = 0.;
+//    }
    /* else //Sinon on passe au déplacement suivant sans arrêt
     {
         FLAG_ASSERV.etat_distance = FIN_DEPLACEMENT;
@@ -840,14 +841,10 @@ void asserv_vitesse_distance (void)
     if (FLAG_ASSERV.orientation == ON)
     {
         fonction_PID(KP_HYBRIDE);
-        //VITESSE[ROUE_DROITE].consigne += VITESSE[SYS_ROBOT].theorique * KP_hybride;
-        //VITESSE[ROUE_GAUCHE].consigne += VITESSE[SYS_ROBOT].theorique * KP_hybride;
     }
-    //else
-    //{
-        VITESSE[ROUE_DROITE].consigne += VITESSE[SYS_ROBOT].theorique;
-        VITESSE[ROUE_GAUCHE].consigne += VITESSE[SYS_ROBOT].theorique;
-    //}
+
+    VITESSE[ROUE_DROITE].consigne += VITESSE[SYS_ROBOT].theorique;
+    VITESSE[ROUE_GAUCHE].consigne += VITESSE[SYS_ROBOT].theorique;
 }
 
 
