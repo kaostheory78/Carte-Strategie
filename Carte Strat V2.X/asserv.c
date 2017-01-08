@@ -762,32 +762,7 @@ void asserv_distance(void)
 
 //    if ((FLAG_ASSERV.sens_deplacement * distance_restante > 2 * TICKS_PAR_MM)) // 2
 //    {
-        //si on se trouve dans un cercle de 3 cm autour du point d'arrivé
-        if (FLAG_ASSERV.sens_deplacement * distance_restante < 30. * TICKS_PAR_MM) //30
-        {
-            FLAG_ASSERV.orientation = OFF;
-            //SI on s'éloigne de notre consigne on s'arrête
-            if (ERREUR_DISTANCE.actuelle > erreur_distance_precedente)
-            {
-                FLAG_ASSERV.position = OFF;
-                FLAG_ASSERV.orientation = OFF;
-                FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
-                FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
-                VITESSE[SYS_ROBOT].consigne = 0.;
-                return;
-            }
-        }
-
-        if (FLAG_ASSERV.vitesse_fin_nulle == OFF)
-        {
-            if (FLAG_ASSERV.sens_deplacement * distance_restante < 150. * TICKS_PAR_MM) //150
-            {
-                FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
-                FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
-                return;
-            }
-        }
-
+    
         FLAG_ASSERV.etat_distance = EN_COURS;
         if (distance_restante > 0.)
         {
@@ -799,21 +774,63 @@ void asserv_distance(void)
         }
 
         //Génération de la courbe de freinage
-       if (FLAG_ASSERV.vitesse_fin_nulle == ON)
-       {
-           // calcul de la distance théorique de freinage (trapèze)
-           distance_freinage = (VITESSE[SYS_ROBOT].actuelle * VITESSE[SYS_ROBOT].actuelle) / (2. * acc.deceleration.position.consigne); // vitesse actu ou théorique ?
-           
-            if (distance_restante < 0.)
-                distance_restante *= -1.;
+        if (FLAG_ASSERV.vitesse_fin_nulle == ON)
+        {
+            // calcul de la distance théorique de freinage (trapèze)
+            distance_freinage = (VITESSE[SYS_ROBOT].actuelle * VITESSE[SYS_ROBOT].actuelle) / (2. * acc.deceleration.position.consigne); // vitesse actu ou théorique ?
 
+            if (distance_restante < 0.)
+            {
+                distance_restante *= -1.;
+            }
+             
             // Si le robot doit freiner
             if (distance_freinage >= (distance_restante + distance_anticipation))
             {
-                    FLAG_ASSERV.phase_deceleration_distance = EN_COURS;
+                FLAG_ASSERV.phase_deceleration_distance = EN_COURS;
+                VITESSE[SYS_ROBOT].consigne = 0.;
+            }
+            
+            //si on se trouve dans un cercle de 3 cm autour du point d'arrivé
+//            if (FLAG_ASSERV.sens_deplacement * distance_restante < 30. * TICKS_PAR_MM) //30
+            if (distance_restante < 30. * TICKS_PAR_MM) //30
+            {
+                FLAG_ASSERV.orientation = OFF;
+                //SI on s'éloigne de notre consigne on s'arrête
+//                if (ERREUR_DISTANCE.actuelle > erreur_distance_precedente)
+//                {
+//                    FLAG_ASSERV.position = OFF;
+//                    FLAG_ASSERV.orientation = OFF;
+//                    FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
+//                    FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
+//                    VITESSE[SYS_ROBOT].consigne = 0.;
+//                    return;
+//                }
+                
+                // la vitesse = distance parcouru en 1 cycle d'asserv
+                // Si la distance restante < distance_parcouru au cycle n +1
+                // TODO : anticipation sur plus de cycle ?
+                if (distance_restante < ((VITESSE[SYS_ROBOT].actuelle + VITESSE[SYS_ROBOT].theorique) / 2.) )
+                {
+                    FLAG_ASSERV.position = OFF;
+                    FLAG_ASSERV.orientation = OFF;
+                    FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
+                    FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
                     VITESSE[SYS_ROBOT].consigne = 0.;
+                }
             }
         }
+        else
+        {
+             if (FLAG_ASSERV.sens_deplacement * distance_restante < 150. * TICKS_PAR_MM) //150
+             {
+                 FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
+                 FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
+                 return;
+             }
+        }
+              
+
 //    }
 //    // Si on arrive à 2mm du point et que l'on veut une vitesse d'arrêt nulle
 //    else 
@@ -834,7 +851,7 @@ void asserv_distance(void)
 //Fonction qui génère les rampes de vitesse pour l'asserv en Distance
 void asserv_vitesse_distance (void)
 {
-    if (FLAG_ASSERV.phase_deceleration_distance == PHASE_NORMAL || VITESSE_ORIENTATION[SYS_ROBOT].consigne == 0. )
+    if (FLAG_ASSERV.phase_deceleration_distance == PHASE_NORMAL || VITESSE[SYS_ROBOT].consigne == 0. )
     {
         if (VITESSE[SYS_ROBOT].theorique < VITESSE[SYS_ROBOT].consigne)
             VITESSE[SYS_ROBOT].theorique += acc.acceleration.position.consigne;
