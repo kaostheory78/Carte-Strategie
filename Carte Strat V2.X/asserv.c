@@ -126,6 +126,10 @@ void reinit_asserv(void)
     ERREUR_ORIENTATION.actuelle = 0.;
     ERREUR_ORIENTATION.precedente = 0.;
     ERREUR_ORIENTATION.integralle = 0.;
+    
+    ERREUR_VITESSE[SYS_ROBOT].actuelle = 0.;
+    ERREUR_VITESSE[SYS_ROBOT].integralle = 0.;
+    ERREUR_VITESSE[SYS_ROBOT].precedente = 0.;
 
     ERREUR_VITESSE[ROUE_DROITE].actuelle = 0.;
     ERREUR_VITESSE[ROUE_DROITE].integralle = 0.;
@@ -592,6 +596,10 @@ void brake(void)
 
 void unbrake (void)
 {
+    ERREUR_VITESSE[SYS_ROBOT].actuelle = 0.;
+    ERREUR_VITESSE[SYS_ROBOT].integralle = 0.;
+    ERREUR_VITESSE[SYS_ROBOT].precedente = 0.;
+    
     ERREUR_VITESSE[ROUE_DROITE].actuelle = 0.;
     ERREUR_VITESSE[ROUE_DROITE].integralle = 0.;
     ERREUR_VITESSE[ROUE_DROITE].precedente = 0.;
@@ -743,11 +751,13 @@ void asserv_distance(void)
     __attribute__((near)) static double distance_restante = 0.;
     __attribute__((near)) static double distance_freinage = 0.;
     __attribute__((near)) static double erreur_distance_precedente = 0.;
-    __attribute__((near)) static double distance_anticipation = 0. * TICKS_PAR_MM;
+    __attribute__((near)) static double distance_anticipation = 5. * TICKS_PAR_MM;
+    __attribute__((near)) static double distance_freiange_totale = 0.;
     
     // on sauvegarde l'erreur de distance du cycle précédent avant que la valeur ne soit écrasé
     // Par le calcul de la fonction_PID(ASSERV_POSITION)
     erreur_distance_precedente = ERREUR_DISTANCE.actuelle;
+    distance_anticipation = abs(VITESSE[SYS_ROBOT].theorique - VITESSE[SYS_ROBOT].actuelle);
     
     calcul_distance_consigne_XY();
     distance_restante = fonction_PID(ASSERV_POSITION);
@@ -784,8 +794,8 @@ void asserv_distance(void)
                 distance_restante *= -1.;
             }
              
-            // Si le robot doit freiner
-            if (distance_freinage >= (distance_restante + distance_anticipation))
+            // Si le robot doit freiner       (distance de freinage + distance parcouru en 1 coup)
+            if (distance_restante <= (distance_freinage + 5 *  abs(VITESSE[SYS_ROBOT].actuelle)) )
             {
                 FLAG_ASSERV.phase_deceleration_distance = EN_COURS;
                 VITESSE[SYS_ROBOT].consigne = 0.;
@@ -796,27 +806,35 @@ void asserv_distance(void)
             if (distance_restante < 30. * TICKS_PAR_MM) //30
             {
                 FLAG_ASSERV.orientation = OFF;
-                //SI on s'éloigne de notre consigne on s'arrête
-//                if (ERREUR_DISTANCE.actuelle > erreur_distance_precedente)
-//                {
-//                    FLAG_ASSERV.position = OFF;
-//                    FLAG_ASSERV.orientation = OFF;
-//                    FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
-//                    FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
-//                    VITESSE[SYS_ROBOT].consigne = 0.;
-//                    return;
-//                }
                 
-                // la vitesse = distance parcouru en 1 cycle d'asserv
-                // Si la distance restante < distance_parcouru au cycle n +1
-                // TODO : anticipation sur plus de cycle ?
-                if (distance_restante < ((VITESSE[SYS_ROBOT].actuelle + VITESSE[SYS_ROBOT].theorique) / 2.) )
+                if (distance_restante < 5 * TICKS_PAR_MM) // On est à 5 mm du point d'arrivée
+                {
+                    acc.deceleration.position.consigne = (VITESSE[SYS_ROBOT].actuelle * VITESSE[SYS_ROBOT].actuelle) / (2. * (distance_restante));
+                }
+                
+                // Si le robot est immobile
+                if (VITESSE[SYS_ROBOT].theorique == 0)
                 {
                     FLAG_ASSERV.position = OFF;
                     FLAG_ASSERV.orientation = OFF;
                     FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
                     FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
                     VITESSE[SYS_ROBOT].consigne = 0.;
+                    brake();
+                }
+                
+                
+                // la vitesse = distance parcouru en 1 cycle d'asserv
+                // Si la distance restante < distance_parcouru au cycle n +1
+                // TODO : anticipation sur plus de cycle ?
+                if ( (distance_restante + distance_anticipation) < abs(( 2 * VITESSE[SYS_ROBOT].actuelle + acc.deceleration.position.consigne) / 2.) )
+                {
+                    FLAG_ASSERV.position = OFF;
+                    FLAG_ASSERV.orientation = OFF;
+                    FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
+                    FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
+                    VITESSE[SYS_ROBOT].consigne = 0.;
+                    brake();
                 }
             }
         }
@@ -985,7 +1003,9 @@ double fonction_PID (_enum_type_PID type)
 
         ERREUR_VITESSE[ROUE_GAUCHE].actuelle = VITESSE[ROUE_GAUCHE].consigne - VITESSE[ROUE_GAUCHE].actuelle;
         ERREUR_VITESSE[ROUE_GAUCHE].integralle += ERREUR_VITESSE[ROUE_GAUCHE].actuelle;
-
+        
+//        ERREUR_VITESSE[SYS_ROBOT].actuelle = (ERREUR_VITESSE[ROUE_DROITE].actuelle + ERREUR_VITESSE[ROUE_GAUCHE].actuelle)/2.;
+        
         saturation_erreur_integralle_vitesse();
         detection_blocage();
 

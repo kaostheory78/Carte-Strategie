@@ -278,19 +278,21 @@ section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200              0x3e5c          0x5d8a  (23946)
 .const                      0x405c               0x758           0xb04  (2820)
-.text                       0x47b4              0x92cc          0xdc32  (56370)
-.dinit                      0xda80               0x2ae           0x405  (1029)
-.text                       0xdd2e               0x8e6           0xd59  (3417)
-.init.delay32               0xe614                0x1c            0x2a  (42)
+.text                       0x47b4              0x93ec          0xdde2  (56802)
+.dinit                      0xdba0               0x2ba           0x417  (1047)
+.text                       0xde5a               0x8e6           0xd59  (3417)
+.init.delay32               0xe740                0x1c            0x2a  (42)
 
-                     Total program memory used (bytes):        0x15648  (87624) 66%
+                     Total program memory used (bytes):        0x1580a  (88074) 67%
 
 
 Data Memory  [Origin = 0x800, Length = 0x4000]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-.nbss                        0x800                   0           0x41c  (1052)
+.nbss                        0x800                   0           0x40e  (1038)
+.ndata                       0xc0e                   0             0x8  (8)
+.nbss                        0xc16                   0             0x6  (6)
 .ndata                       0xc1c                   0             0x2  (2)
 .nbss                        0xc1e                   0             0x2  (2)
 .bss                         0xc20                   0           0xf9a  (3994)
@@ -334,25 +336,25 @@ External Symbols in Data Memory (by address):
                     0x0ad8                  _ERREUR_BRAKE
                     0x0b18                  _COMMANDE
                     0x0b30                  _FLAG_ASSERV
-                    0x0bae                  _OVERFLOW_CODEUR
-                    0x0bb2                  _POSITION
-                    0x0bdc                  _CPT_TEMPS_MATCH
-                    0x0be0                  _COULEUR
-                    0x0be1                  _FLAG_ACTION
-                    0x0be2                  _calcul_en_cours
-                    0x0be4                  _curseur
-                    0x0be6                  _curseur_obstacle
-                    0x0be8                  _x_actuel
-                    0x0bea                  _y_actuel
-                    0x0bec                  _x_souhaite
-                    0x0bee                  _y_souhaite
-                    0x0bf0                  _x_obj
-                    0x0bf2                  _y_obj
-                    0x0bf4                  _id_evitement
-                    0x0bf6                  _id_evitement_initial
-                    0x0bf8                  _chemin_court
-                    0x0bfa                  _compteur_evitement
-                    0x0bfc                  _CHECK_LIMITATION_COURANT
+                    0x0ba6                  _OVERFLOW_CODEUR
+                    0x0baa                  _POSITION
+                    0x0bd4                  _CPT_TEMPS_MATCH
+                    0x0bd8                  _COULEUR
+                    0x0bd9                  _FLAG_ACTION
+                    0x0bda                  _calcul_en_cours
+                    0x0bdc                  _curseur
+                    0x0bde                  _curseur_obstacle
+                    0x0be0                  _x_actuel
+                    0x0be2                  _y_actuel
+                    0x0be4                  _x_souhaite
+                    0x0be6                  _y_souhaite
+                    0x0be8                  _x_obj
+                    0x0bea                  _y_obj
+                    0x0bec                  _id_evitement
+                    0x0bee                  _id_evitement_initial
+                    0x0bf0                  _chemin_court
+                    0x0bf2                  _compteur_evitement
+                    0x0bf4                  _CHECK_LIMITATION_COURANT
                     0x0c20                  _obstacle
                     0x10d0                  _itineraire
                     0x1328                  _itineraire_basique
@@ -376,23 +378,23 @@ External Symbols in Data Memory (by address):
 External Symbols in Data Memory (by name):
 
                     0x0908                  _BRAKE
-                    0x0bfc                  _CHECK_LIMITATION_COURANT
+                    0x0bf4                  _CHECK_LIMITATION_COURANT
                     0x0b18                  _COMMANDE
-                    0x0be0                  _COULEUR
-                    0x0bdc                  _CPT_TEMPS_MATCH
+                    0x0bd8                  _COULEUR
+                    0x0bd4                  _CPT_TEMPS_MATCH
                     0x0938                  _DISTANCE
                     0x0ad8                  _ERREUR_BRAKE
                     0x0a58                  _ERREUR_DISTANCE
                     0x0ab8                  _ERREUR_ORIENTATION
                     0x0a78                  _ERREUR_VITESSE
                     0x1ec6                  _EVITEMENT_ADV
-                    0x0be1                  _FLAG_ACTION
+                    0x0bd9                  _FLAG_ACTION
                     0x0b30                  _FLAG_ASSERV
                     0x08c0                  _KP_hybride
                     0x0950                  _ORIENTATION
-                    0x0bae                  _OVERFLOW_CODEUR
+                    0x0ba6                  _OVERFLOW_CODEUR
                     0x0820                  _PID
-                    0x0bb2                  _POSITION
+                    0x0baa                  _POSITION
                     0x0800                  _ROBOT
                     0x09b0                  _VITESSE
                     0x08c8                  _VITESSE_MAX
@@ -409,14 +411,14 @@ External Symbols in Data Memory (by name):
                     0x1ed8                  ___curbrk
                     0x09f8                  _acc
                     0x1a3e                  _ax12
-                    0x0be2                  _calcul_en_cours
-                    0x0bf8                  _chemin_court
-                    0x0bfa                  _compteur_evitement
-                    0x0be4                  _curseur
-                    0x0be6                  _curseur_obstacle
+                    0x0bda                  _calcul_en_cours
+                    0x0bf0                  _chemin_court
+                    0x0bf2                  _compteur_evitement
+                    0x0bdc                  _curseur
+                    0x0bde                  _curseur_obstacle
                     0x1a4e                  _decalage
-                    0x0bf4                  _id_evitement
-                    0x0bf6                  _id_evitement_initial
+                    0x0bec                  _id_evitement
+                    0x0bee                  _id_evitement_initial
                     0x10d0                  _itineraire
                     0x1328                  _itineraire_basique
                     0x1580                  _itineraire_court
@@ -425,12 +427,12 @@ External Symbols in Data Memory (by name):
                     0x1aea                  _position_AX12
                     0x1a30                  _precedent_obstacle
                     0x1cf2                  _serialus
-                    0x0be8                  _x_actuel
-                    0x0bf0                  _x_obj
-                    0x0bec                  _x_souhaite
-                    0x0bea                  _y_actuel
-                    0x0bf2                  _y_obj
-                    0x0bee                  _y_souhaite
+                    0x0be0                  _x_actuel
+                    0x0be8                  _x_obj
+                    0x0be4                  _x_souhaite
+                    0x0be2                  _y_actuel
+                    0x0bea                  _y_obj
+                    0x0be6                  _y_souhaite
 
 External Symbols in Program Memory (by address):
 
@@ -618,157 +620,157 @@ External Symbols in Program Memory (by address):
                   0x008bc4                  _init_orientation
                   0x008c06                  _init_commande_moteur
                   0x008c20                  _reinit_asserv
-                  0x008e42                  _get_X
-                  0x008e4e                  _get_Y
-                  0x008e5c                  _get_orientation
-                  0x008e6a                  _MM_TO_TICK
-                  0x008e82                  _TICK_TO_MM
-                  0x008e98                  _ecretage_consignes
-                  0x008f6e                  _saturation_vitesse_max
-                  0x0090f0                  _saturation_erreur_integralle_vitesse
-                  0x0091c6                  _detection_blocage
-                  0x009348                  _calcul_vitesse_position
-                  0x0094b2                  _calcul_acceleration_position
-                  0x00967a                  _calcul_vitesse_orientation
-                  0x00979e                  _calcul_acceleration_orientation
-                  0x009966                  _calcul_distance_consigne_XY
-                  0x009b2a                  _brake
-                  0x009b82                  _unbrake
-                  0x009c48                  _fin_deplacement
-                  0x009c6c                  _asserv
-                  0x009de4                  _asserv_brake
-                  0x00a04e                  _asserv_distance
-                  0x00a28e                  _asserv_vitesse_distance
-                  0x00a382                  _asserv_orientation
-                  0x00a548                  _asserv_vitesse_orientation
-                  0x00a630                  _reglage_PID
-                  0x00a6ca                  _fonction_PID
-                  0x00aad0                  _calcul_position_robot
-                  0x00ad50                  _reinit_buffer_serialus
-                  0x00adc4                  _reception_serialus
-                  0x00aef8                  _action_reception_serialus
-                  0x00af9e                  _traitement_serialus
-                  0x00afc4                  _conversion_string_to_function_code
-                  0x00b05c                  _serialus_traitement_deplacement
-                  0x00b658                  _serialus_traitement_calage
-                  0x00bac8                  _serialus_traitement_asserv
-                  0x00bafa                  _serialus_traitement_odometrie
-                  0x00bb08                  _serialus_traitement_position
-                  0x00becc                  _serialus_traitement_ax12
-                  0x00c328                  _serialus_traitement_list
-                  0x00c3b8                  _check_est_un_nombre
-                  0x00c422                  _check_id_ax12
-                  0x00c47e                  _check_est_un_nombre_flottant
-                  0x00c51a                  _check_sont_des_nombres
-                  0x00c554                  _check_sont_des_nombres_flottants
-                  0x00c58e                  _check_erreur_serialus
-                  0x00c5ca                  _check_string
-                  0x00c634                  _check_nb_param
-                  0x00c664                  _check_coherence
-                  0x00c678                  _check_confirmation
-                  0x00c6ba                  _list_serialus
-                  0x00c86c                  _print_non_reconnu
-                  0x00c886                  _print_manque_parametre
-                  0x00c894                  _print_trop_parametre
-                  0x00c8a2                  _print_pas_nombre
-                  0x00c8b0                  _print_pas_nombre_flottant
-                  0x00c8be                  _print_incoherent
-                  0x00c8cc                  _print_abort_confirmation
-                  0x00c8d6                  _print_confirm
-                  0x00c8e4                  _print_erreur_deplacement
-                  0x00c90c                  _print_erreur_ax12
-                  0x00c950                  _print_ping
-                  0x00c964                  _print_position_ax12
-                  0x00c97e                  _init_clignotement
-                  0x00c98e                  _print_clignotement
-                  0x00c994                  _print_position
-                  0x00c9d8                  _print_abort
-                  0x00c9ea                  _init_decalage_AX12
-                  0x00c9f0                  _init_position_AX12
-                  0x00ca3c                  _convertion_position
-                  0x00ca5c                  _convertion_angle
-                  0x00ca7c                  _calcul_position
-                  0x00cb8a                  _calcul_modif_angle
-                  0x00cbf0                  _synchro_AX12
-                  0x00cc7a                  _angle_AX12
-                  0x00cd64                  _lancer_autom_AX12
-                  0x00cd76                  _rotation_AX12
-                  0x00cdc6                  _configurer_status_returning_level
-                  0x00cdec                  _configurer_temps_de_reponse_AX12
-                  0x00ce10                  _Ping
-                  0x00ce34                  _reset_AX12
-                  0x00ce48                  _changer_ID_AX12
-                  0x00ce68                  _baud_AX12
-                  0x00ce88                  _mode_rotation_AX12
-                  0x00cec8                  _allumer_LED_AX12
-                  0x00cee8                  _eteindre_LED_AX12
-                  0x00cf00                  _torque_enable_ax12
-                  0x00cf20                  _reception_uart_ax12
-                  0x00cfa4                  _traitement_reception_ax12
-                  0x00d076                  _reinit_buffer
-                  0x00d0b8                  _commande_AX12
-                  0x00d22c                  _calcul_checksum
-                  0x00d28e                  _calcul_checksum_variadic
-                  0x00d2ec                  _read_data
-                  0x00d38c                  _lecture_position_AX12
-                  0x00d396                  _checkup_com_ax12
-                  0x00d3c4                  _clean_des_erreurs_ax12
-                  0x00d434                  _print_statistique_ax12
-                  0x00d48c                  _reinit_alim_ax12
-                  0x00d4a6                  _init_system
-                  0x00d4fc                  _config_timer_5ms
-                  0x00d51a                  _config_timer_10ms
-                  0x00d53a                  _config_timer_20ms
-                  0x00d558                  _config_timer_100ms
-                  0x00d578                  _config_timer_200ms
-                  0x00d596                  _init_clock
-                  0x00d5fc                  _init_compteur_temps_match
-                  0x00d60e                  _ConfigMapping
-                  0x00d66e                  _ConfigPorts
-                  0x00d796                  _ConfigInterrupt
-                  0x00da7a                  _ConfigADC
-                  0x00dd2e                  _InitUART
-                  0x00ddd6                  _calcul_baud
-                  0x00de96                  _modifier_vitesse_com_uart
-                  0x00dec2                  _vider_buffer_reception_uart
-                  0x00def0                  _PutcUART
-                  0x00df32                  _ConfigPWM
-                  0x00df7a                  _envoit_pwm
-                  0x00e0ce                  _alimenter_moteur_Y
-                  0x00e0f0                  _init_evitement
-                  0x00e11a                  _check_evitement_avant
-                  0x00e132                  _check_evitement_arriere
-                  0x00e14a                  _check_evitement
-                  0x00e180                  _ajustement_evitement_autonome
-                  0x00e186                  _evitement
-                  0x00e252                  _ConfigQEI
-                  0x00e2a8                  _get_valeur_codeur
-                  0x00e398                  _debug
-                  0x00e4ce                  _strategie
-                  0x00e4fc                  _homologation
-                  0x00e51a                  _reglage_odometrie
-                  0x00e580                  _jack
-                  0x00e59e                  _allumer_pompes
-                  0x00e5ae                  _eteindre_pompe
-                  0x00e5bc                  _son_evitement
-                  0x00e5c4                  _autom_20ms
-                  0x00e5dc                  _main
-                  0x00e614                  ___delay32
+                  0x008e60                  _get_X
+                  0x008e6c                  _get_Y
+                  0x008e7a                  _get_orientation
+                  0x008e88                  _MM_TO_TICK
+                  0x008ea0                  _TICK_TO_MM
+                  0x008eb6                  _ecretage_consignes
+                  0x008f8c                  _saturation_vitesse_max
+                  0x00910e                  _saturation_erreur_integralle_vitesse
+                  0x0091e4                  _detection_blocage
+                  0x009366                  _calcul_vitesse_position
+                  0x0094d0                  _calcul_acceleration_position
+                  0x009698                  _calcul_vitesse_orientation
+                  0x0097bc                  _calcul_acceleration_orientation
+                  0x009984                  _calcul_distance_consigne_XY
+                  0x009b48                  _brake
+                  0x009ba0                  _unbrake
+                  0x009c84                  _fin_deplacement
+                  0x009ca8                  _asserv
+                  0x009e20                  _asserv_brake
+                  0x00a08a                  _asserv_distance
+                  0x00a3ae                  _asserv_vitesse_distance
+                  0x00a4a2                  _asserv_orientation
+                  0x00a668                  _asserv_vitesse_orientation
+                  0x00a750                  _reglage_PID
+                  0x00a7ea                  _fonction_PID
+                  0x00abf0                  _calcul_position_robot
+                  0x00ae70                  _reinit_buffer_serialus
+                  0x00aee4                  _reception_serialus
+                  0x00b018                  _action_reception_serialus
+                  0x00b0be                  _traitement_serialus
+                  0x00b0e4                  _conversion_string_to_function_code
+                  0x00b17c                  _serialus_traitement_deplacement
+                  0x00b778                  _serialus_traitement_calage
+                  0x00bbe8                  _serialus_traitement_asserv
+                  0x00bc1a                  _serialus_traitement_odometrie
+                  0x00bc28                  _serialus_traitement_position
+                  0x00bfec                  _serialus_traitement_ax12
+                  0x00c448                  _serialus_traitement_list
+                  0x00c4d8                  _check_est_un_nombre
+                  0x00c542                  _check_id_ax12
+                  0x00c59e                  _check_est_un_nombre_flottant
+                  0x00c63a                  _check_sont_des_nombres
+                  0x00c674                  _check_sont_des_nombres_flottants
+                  0x00c6ae                  _check_erreur_serialus
+                  0x00c6ea                  _check_string
+                  0x00c754                  _check_nb_param
+                  0x00c784                  _check_coherence
+                  0x00c798                  _check_confirmation
+                  0x00c7da                  _list_serialus
+                  0x00c98c                  _print_non_reconnu
+                  0x00c9a6                  _print_manque_parametre
+                  0x00c9b4                  _print_trop_parametre
+                  0x00c9c2                  _print_pas_nombre
+                  0x00c9d0                  _print_pas_nombre_flottant
+                  0x00c9de                  _print_incoherent
+                  0x00c9ec                  _print_abort_confirmation
+                  0x00c9f6                  _print_confirm
+                  0x00ca04                  _print_erreur_deplacement
+                  0x00ca2c                  _print_erreur_ax12
+                  0x00ca70                  _print_ping
+                  0x00ca84                  _print_position_ax12
+                  0x00ca9e                  _init_clignotement
+                  0x00caae                  _print_clignotement
+                  0x00cab4                  _print_position
+                  0x00caf8                  _print_abort
+                  0x00cb0a                  _init_decalage_AX12
+                  0x00cb10                  _init_position_AX12
+                  0x00cb5c                  _convertion_position
+                  0x00cb7c                  _convertion_angle
+                  0x00cb9c                  _calcul_position
+                  0x00ccaa                  _calcul_modif_angle
+                  0x00cd10                  _synchro_AX12
+                  0x00cd9a                  _angle_AX12
+                  0x00ce84                  _lancer_autom_AX12
+                  0x00ce96                  _rotation_AX12
+                  0x00cee6                  _configurer_status_returning_level
+                  0x00cf0c                  _configurer_temps_de_reponse_AX12
+                  0x00cf30                  _Ping
+                  0x00cf54                  _reset_AX12
+                  0x00cf68                  _changer_ID_AX12
+                  0x00cf88                  _baud_AX12
+                  0x00cfa8                  _mode_rotation_AX12
+                  0x00cfe8                  _allumer_LED_AX12
+                  0x00d008                  _eteindre_LED_AX12
+                  0x00d020                  _torque_enable_ax12
+                  0x00d040                  _reception_uart_ax12
+                  0x00d0c4                  _traitement_reception_ax12
+                  0x00d196                  _reinit_buffer
+                  0x00d1d8                  _commande_AX12
+                  0x00d34c                  _calcul_checksum
+                  0x00d3ae                  _calcul_checksum_variadic
+                  0x00d40c                  _read_data
+                  0x00d4ac                  _lecture_position_AX12
+                  0x00d4b6                  _checkup_com_ax12
+                  0x00d4e4                  _clean_des_erreurs_ax12
+                  0x00d554                  _print_statistique_ax12
+                  0x00d5ac                  _reinit_alim_ax12
+                  0x00d5c6                  _init_system
+                  0x00d61c                  _config_timer_5ms
+                  0x00d63a                  _config_timer_10ms
+                  0x00d65a                  _config_timer_20ms
+                  0x00d678                  _config_timer_100ms
+                  0x00d698                  _config_timer_200ms
+                  0x00d6b6                  _init_clock
+                  0x00d71c                  _init_compteur_temps_match
+                  0x00d72e                  _ConfigMapping
+                  0x00d78e                  _ConfigPorts
+                  0x00d8b6                  _ConfigInterrupt
+                  0x00db9a                  _ConfigADC
+                  0x00de5a                  _InitUART
+                  0x00df02                  _calcul_baud
+                  0x00dfc2                  _modifier_vitesse_com_uart
+                  0x00dfee                  _vider_buffer_reception_uart
+                  0x00e01c                  _PutcUART
+                  0x00e05e                  _ConfigPWM
+                  0x00e0a6                  _envoit_pwm
+                  0x00e1fa                  _alimenter_moteur_Y
+                  0x00e21c                  _init_evitement
+                  0x00e246                  _check_evitement_avant
+                  0x00e25e                  _check_evitement_arriere
+                  0x00e276                  _check_evitement
+                  0x00e2ac                  _ajustement_evitement_autonome
+                  0x00e2b2                  _evitement
+                  0x00e37e                  _ConfigQEI
+                  0x00e3d4                  _get_valeur_codeur
+                  0x00e4c4                  _debug
+                  0x00e5fa                  _strategie
+                  0x00e628                  _homologation
+                  0x00e646                  _reglage_odometrie
+                  0x00e6ac                  _jack
+                  0x00e6ca                  _allumer_pompes
+                  0x00e6da                  _eteindre_pompe
+                  0x00e6e8                  _son_evitement
+                  0x00e6f0                  _autom_20ms
+                  0x00e708                  _main
+                  0x00e740                  ___delay32
 
 External Symbols in Program Memory (by name):
 
-                  0x00da7a                  _ConfigADC
-                  0x00d796                  _ConfigInterrupt
-                  0x00d60e                  _ConfigMapping
-                  0x00df32                  _ConfigPWM
-                  0x00d66e                  _ConfigPorts
-                  0x00e252                  _ConfigQEI
-                  0x00dd2e                  _InitUART
+                  0x00db9a                  _ConfigADC
+                  0x00d8b6                  _ConfigInterrupt
+                  0x00d72e                  _ConfigMapping
+                  0x00e05e                  _ConfigPWM
+                  0x00d78e                  _ConfigPorts
+                  0x00e37e                  _ConfigQEI
+                  0x00de5a                  _InitUART
                   0x0072d4                  _MAJ_obstacle
-                  0x008e6a                  _MM_TO_TICK
-                  0x00ce10                  _Ping
-                  0x00def0                  _PutcUART
-                  0x008e82                  _TICK_TO_MM
+                  0x008e88                  _MM_TO_TICK
+                  0x00cf30                  _Ping
+                  0x00e01c                  _PutcUART
+                  0x008ea0                  _TICK_TO_MM
                   0x001dc0                  __Atexit
                   0x001c8a                  __Closreg
                   0x001d4c                  __DNKfflush
@@ -808,7 +810,7 @@ External Symbols in Program Memory (by name):
                   0x0027bc                  ___dPutfld_cdfFnopuxX
                   0x00241c                  ___dPutfld_cdnopuxX
                   0x0038bc                  ___dPutfld_s
-                  0x00e614                  ___delay32
+                  0x00e740                  ___delay32
                   0x00080c                  ___divdf3
                   0x0010ba                  ___divdi3
                   0x00400c                  ___divsi3
@@ -882,196 +884,196 @@ External Symbols in Program Memory (by name):
                   0x000200                  __resetPRI
                   0x000d1e                  __sincos
                   0x004ac8                  _action_evitement
-                  0x00aef8                  _action_reception_serialus
+                  0x00b018                  _action_reception_serialus
                   0x006ebc                  _aiguillage_evitement
-                  0x00e180                  _ajustement_evitement_autonome
-                  0x00e0ce                  _alimenter_moteur_Y
-                  0x00cec8                  _allumer_LED_AX12
-                  0x00e59e                  _allumer_pompes
-                  0x00cc7a                  _angle_AX12
-                  0x009c6c                  _asserv
-                  0x009de4                  _asserv_brake
-                  0x00a04e                  _asserv_distance
-                  0x00a382                  _asserv_orientation
-                  0x00a28e                  _asserv_vitesse_distance
-                  0x00a548                  _asserv_vitesse_orientation
+                  0x00e2ac                  _ajustement_evitement_autonome
+                  0x00e1fa                  _alimenter_moteur_Y
+                  0x00cfe8                  _allumer_LED_AX12
+                  0x00e6ca                  _allumer_pompes
+                  0x00cd9a                  _angle_AX12
+                  0x009ca8                  _asserv
+                  0x009e20                  _asserv_brake
+                  0x00a08a                  _asserv_distance
+                  0x00a4a2                  _asserv_orientation
+                  0x00a3ae                  _asserv_vitesse_distance
+                  0x00a668                  _asserv_vitesse_orientation
                   0x0011c8                  _atan
                   0x000792                  _atan2
                   0x000792                  _atan2l
                   0x0011c8                  _atanl
-                  0x00e5c4                  _autom_20ms
+                  0x00e6f0                  _autom_20ms
                   0x004c2a                  _avancer_reculer
-                  0x00ce68                  _baud_AX12
-                  0x009b2a                  _brake
+                  0x00cf88                  _baud_AX12
+                  0x009b48                  _brake
                   0x004cfc                  _calage
                   0x004d26                  _calage_X
                   0x004d9c                  _calage_Y
                   0x004e12                  _calage_teta
-                  0x00979e                  _calcul_acceleration_orientation
-                  0x0094b2                  _calcul_acceleration_position
-                  0x00ddd6                  _calcul_baud
-                  0x00d22c                  _calcul_checksum
-                  0x00d28e                  _calcul_checksum_variadic
-                  0x009966                  _calcul_distance_consigne_XY
-                  0x00cb8a                  _calcul_modif_angle
-                  0x00ca7c                  _calcul_position
-                  0x00aad0                  _calcul_position_robot
-                  0x00967a                  _calcul_vitesse_orientation
-                  0x009348                  _calcul_vitesse_position
+                  0x0097bc                  _calcul_acceleration_orientation
+                  0x0094d0                  _calcul_acceleration_position
+                  0x00df02                  _calcul_baud
+                  0x00d34c                  _calcul_checksum
+                  0x00d3ae                  _calcul_checksum_variadic
+                  0x009984                  _calcul_distance_consigne_XY
+                  0x00ccaa                  _calcul_modif_angle
+                  0x00cb9c                  _calcul_position
+                  0x00abf0                  _calcul_position_robot
+                  0x009698                  _calcul_vitesse_orientation
+                  0x009366                  _calcul_vitesse_position
                   0x004a50                  _carre
-                  0x00ce48                  _changer_ID_AX12
-                  0x00c664                  _check_coherence
-                  0x00c678                  _check_confirmation
-                  0x00c58e                  _check_erreur_serialus
-                  0x00c3b8                  _check_est_un_nombre
-                  0x00c47e                  _check_est_un_nombre_flottant
-                  0x00e14a                  _check_evitement
-                  0x00e132                  _check_evitement_arriere
-                  0x00e11a                  _check_evitement_avant
-                  0x00c422                  _check_id_ax12
-                  0x00c634                  _check_nb_param
-                  0x00c51a                  _check_sont_des_nombres
-                  0x00c554                  _check_sont_des_nombres_flottants
-                  0x00c5ca                  _check_string
-                  0x00d396                  _checkup_com_ax12
+                  0x00cf68                  _changer_ID_AX12
+                  0x00c784                  _check_coherence
+                  0x00c798                  _check_confirmation
+                  0x00c6ae                  _check_erreur_serialus
+                  0x00c4d8                  _check_est_un_nombre
+                  0x00c59e                  _check_est_un_nombre_flottant
+                  0x00e276                  _check_evitement
+                  0x00e25e                  _check_evitement_arriere
+                  0x00e246                  _check_evitement_avant
+                  0x00c542                  _check_id_ax12
+                  0x00c754                  _check_nb_param
+                  0x00c63a                  _check_sont_des_nombres
+                  0x00c674                  _check_sont_des_nombres_flottants
+                  0x00c6ea                  _check_string
+                  0x00d4b6                  _checkup_com_ax12
                   0x004ace                  _cibler
-                  0x00d3c4                  _clean_des_erreurs_ax12
-                  0x00d0b8                  _commande_AX12
-                  0x00d558                  _config_timer_100ms
-                  0x00d51a                  _config_timer_10ms
-                  0x00d578                  _config_timer_200ms
-                  0x00d53a                  _config_timer_20ms
-                  0x00d4fc                  _config_timer_5ms
-                  0x00cdc6                  _configurer_status_returning_level
-                  0x00cdec                  _configurer_temps_de_reponse_AX12
+                  0x00d4e4                  _clean_des_erreurs_ax12
+                  0x00d1d8                  _commande_AX12
+                  0x00d678                  _config_timer_100ms
+                  0x00d63a                  _config_timer_10ms
+                  0x00d698                  _config_timer_200ms
+                  0x00d65a                  _config_timer_20ms
+                  0x00d61c                  _config_timer_5ms
+                  0x00cee6                  _configurer_status_returning_level
+                  0x00cf0c                  _configurer_temps_de_reponse_AX12
                   0x0059aa                  _conversion_direction
-                  0x00afc4                  _conversion_string_to_function_code
-                  0x00ca5c                  _convertion_angle
-                  0x00ca3c                  _convertion_position
+                  0x00b0e4                  _conversion_string_to_function_code
+                  0x00cb7c                  _convertion_angle
+                  0x00cb5c                  _convertion_position
                   0x0007f4                  _cos
                   0x0007f4                  _cosl
                   0x0047b4                  _couleur_depart
-                  0x00e398                  _debug
+                  0x00e4c4                  _debug
                   0x0055d4                  _deplacement
                   0x007f8a                  _deplacement_arriere
                   0x008af2                  _detect
-                  0x0091c6                  _detection_blocage
+                  0x0091e4                  _detection_blocage
                   0x005770                  _distance
                   0x00391a                  _div
-                  0x008e98                  _ecretage_consignes
-                  0x00df7a                  _envoit_pwm
-                  0x00cee8                  _eteindre_LED_AX12
-                  0x00e5ae                  _eteindre_pompe
-                  0x00e186                  _evitement
+                  0x008eb6                  _ecretage_consignes
+                  0x00e0a6                  _envoit_pwm
+                  0x00d008                  _eteindre_LED_AX12
+                  0x00e6da                  _eteindre_pompe
+                  0x00e2b2                  _evitement
                   0x0070d2                  _evitement_hugo
                   0x005138                  _faire_des_tours
                   0x001c9c                  _fclose
-                  0x009c48                  _fin_deplacement
+                  0x009c84                  _fin_deplacement
                   0x00146e                  _fmod
                   0x00146e                  _fmodl
-                  0x00a6ca                  _fonction_PID
+                  0x00a7ea                  _fonction_PID
                   0x00158a                  _fputc
                   0x003930                  _free
                   0x003994                  _fwrite
-                  0x008e42                  _get_X
-                  0x008e4e                  _get_Y
-                  0x008e5c                  _get_orientation
-                  0x00e2a8                  _get_valeur_codeur
+                  0x008e60                  _get_X
+                  0x008e6c                  _get_Y
+                  0x008e7a                  _get_orientation
+                  0x00e3d4                  _get_valeur_codeur
                   0x00495c                  _grand_demi_cercle
-                  0x00e4fc                  _homologation
+                  0x00e628                  _homologation
                   0x008b6e                  _init_X
                   0x008b98                  _init_Y
-                  0x00c97e                  _init_clignotement
-                  0x00d596                  _init_clock
+                  0x00ca9e                  _init_clignotement
+                  0x00d6b6                  _init_clock
                   0x008c06                  _init_commande_moteur
-                  0x00d5fc                  _init_compteur_temps_match
-                  0x00c9ea                  _init_decalage_AX12
-                  0x00e0f0                  _init_evitement
+                  0x00d71c                  _init_compteur_temps_match
+                  0x00cb0a                  _init_decalage_AX12
+                  0x00e21c                  _init_evitement
                   0x0057f8                  _init_evitement_hugo
                   0x008b0e                  _init_flag_asserv
                   0x008bc4                  _init_orientation
-                  0x00c9f0                  _init_position_AX12
+                  0x00cb10                  _init_position_AX12
                   0x008b44                  _init_position_robot
-                  0x00d4a6                  _init_system
+                  0x00d5c6                  _init_system
                   0x0047c8                  _inversion_couleur
                   0x001c4c                  _isalnum
                   0x001c68                  _isspace
-                  0x00e580                  _jack
-                  0x00cd64                  _lancer_autom_AX12
+                  0x00e6ac                  _jack
+                  0x00ce84                  _lancer_autom_AX12
                   0x003a3c                  _ldiv
-                  0x00d38c                  _lecture_position_AX12
-                  0x00c6ba                  _list_serialus
+                  0x00d4ac                  _lecture_position_AX12
+                  0x00c7da                  _list_serialus
                   0x0059de                  _longement
-                  0x00e5dc                  _main
+                  0x00e708                  _main
                   0x003acc                  _malloc
                   0x003b20                  _memchr
                   0x003b34                  _memcpy
-                  0x00ce88                  _mode_rotation_AX12
-                  0x00de96                  _modifier_vitesse_com_uart
+                  0x00cfa8                  _mode_rotation_AX12
+                  0x00dfc2                  _modifier_vitesse_com_uart
                   0x004b44                  _orienter
                   0x004c6c                  _passe_part
                   0x004868                  _petit_demi_cercle
                   0x0082fe                  _plus_court
                   0x006e54                  _post_traitement
-                  0x00c9d8                  _print_abort
-                  0x00c8cc                  _print_abort_confirmation
-                  0x00c98e                  _print_clignotement
-                  0x00c8d6                  _print_confirm
-                  0x00c90c                  _print_erreur_ax12
-                  0x00c8e4                  _print_erreur_deplacement
-                  0x00c8be                  _print_incoherent
-                  0x00c886                  _print_manque_parametre
-                  0x00c86c                  _print_non_reconnu
-                  0x00c8a2                  _print_pas_nombre
-                  0x00c8b0                  _print_pas_nombre_flottant
-                  0x00c950                  _print_ping
-                  0x00c994                  _print_position
-                  0x00c964                  _print_position_ax12
-                  0x00d434                  _print_statistique_ax12
-                  0x00c894                  _print_trop_parametre
+                  0x00caf8                  _print_abort
+                  0x00c9ec                  _print_abort_confirmation
+                  0x00caae                  _print_clignotement
+                  0x00c9f6                  _print_confirm
+                  0x00ca2c                  _print_erreur_ax12
+                  0x00ca04                  _print_erreur_deplacement
+                  0x00c9de                  _print_incoherent
+                  0x00c9a6                  _print_manque_parametre
+                  0x00c98c                  _print_non_reconnu
+                  0x00c9c2                  _print_pas_nombre
+                  0x00c9d0                  _print_pas_nombre_flottant
+                  0x00ca70                  _print_ping
+                  0x00cab4                  _print_position
+                  0x00ca84                  _print_position_ax12
+                  0x00d554                  _print_statistique_ax12
+                  0x00c9b4                  _print_trop_parametre
                   0x0015d6                  _putchar
-                  0x00d2ec                  _read_data
-                  0x00adc4                  _reception_serialus
-                  0x00cf20                  _reception_uart_ax12
-                  0x00a630                  _reglage_PID
-                  0x00e51a                  _reglage_odometrie
-                  0x00d48c                  _reinit_alim_ax12
+                  0x00d40c                  _read_data
+                  0x00aee4                  _reception_serialus
+                  0x00d040                  _reception_uart_ax12
+                  0x00a750                  _reglage_PID
+                  0x00e646                  _reglage_odometrie
+                  0x00d5ac                  _reinit_alim_ax12
                   0x008c20                  _reinit_asserv
-                  0x00d076                  _reinit_buffer
-                  0x00ad50                  _reinit_buffer_serialus
+                  0x00d196                  _reinit_buffer
+                  0x00ae70                  _reinit_buffer_serialus
                   0x004b9e                  _rejoindre
-                  0x00ce34                  _reset_AX12
-                  0x00cd76                  _rotation_AX12
-                  0x0090f0                  _saturation_erreur_integralle_vitesse
-                  0x008f6e                  _saturation_vitesse_max
-                  0x00bac8                  _serialus_traitement_asserv
-                  0x00becc                  _serialus_traitement_ax12
-                  0x00b658                  _serialus_traitement_calage
-                  0x00b05c                  _serialus_traitement_deplacement
-                  0x00c328                  _serialus_traitement_list
-                  0x00bafa                  _serialus_traitement_odometrie
-                  0x00bb08                  _serialus_traitement_position
+                  0x00cf54                  _reset_AX12
+                  0x00ce96                  _rotation_AX12
+                  0x00910e                  _saturation_erreur_integralle_vitesse
+                  0x008f8c                  _saturation_vitesse_max
+                  0x00bbe8                  _serialus_traitement_asserv
+                  0x00bfec                  _serialus_traitement_ax12
+                  0x00b778                  _serialus_traitement_calage
+                  0x00b17c                  _serialus_traitement_deplacement
+                  0x00c448                  _serialus_traitement_list
+                  0x00bc1a                  _serialus_traitement_odometrie
+                  0x00bc28                  _serialus_traitement_position
                   0x000d1a                  _sin
                   0x000d1a                  _sinl
-                  0x00e5bc                  _son_evitement
+                  0x00e6e8                  _son_evitement
                   0x000e78                  _sqrt
                   0x000e78                  _sqrtl
-                  0x00e4ce                  _strategie
+                  0x00e5fa                  _strategie
                   0x003b42                  _strchr
                   0x003b5a                  _strlen
-                  0x00cbf0                  _synchro_AX12
+                  0x00cd10                  _synchro_AX12
                   0x001c78                  _tolower
-                  0x00cf00                  _torque_enable_ax12
+                  0x00d020                  _torque_enable_ax12
                   0x006714                  _tracer_ligne_x
                   0x006862                  _tracer_ligne_y
                   0x006a94                  _traitement_deja_passe
                   0x0069b0                  _traitement_direction_identique
                   0x006b86                  _traitement_escalier
-                  0x00cfa4                  _traitement_reception_ax12
-                  0x00af9e                  _traitement_serialus
+                  0x00d0c4                  _traitement_reception_ax12
+                  0x00b0be                  _traitement_serialus
                   0x0047e4                  _trapeze
-                  0x009b82                  _unbrake
-                  0x00dec2                  _vider_buffer_reception_uart
+                  0x009ba0                  _unbrake
+                  0x00dfee                  _vider_buffer_reception_uart
                   0x001d2c                  fclose.XXelo:_closeall
                   0x002e92                  printf_cdfFnopsuxX.dXXeo:_prout
                   0x00262c                  printf_cdfFnopuxX.dXXeo:_prout
@@ -1559,24 +1561,24 @@ __FUID3
  .debug_abbrev    0x00150f        0x155 build/default/production/evitement.o
  .debug_abbrev    0x001664         0x1f build/default/production/autom_virtual.o
 
-.debug_line       0x000000       0x86e5
+.debug_line       0x000000       0x875d
  *(.debug_line)
  .debug_line      0x000000       0x2c66 build/default/production/Fonctions_deplacements.o
  .debug_line      0x002c66        0x3f3 build/default/production/Uart.o
- .debug_line      0x003059       0x1371 build/default/production/asserv.o
- .debug_line      0x0043ca         0x24 build/default/production/autom_R1.o
- .debug_line      0x0043ee        0x1dc build/default/production/autom_R2.o
- .debug_line      0x0045ca        0x261 build/default/production/codeurs.o
- .debug_line      0x00482b        0x106 build/default/production/debug.o
- .debug_line      0x004931        0xb35 build/default/production/gestion_AX12.o
- .debug_line      0x005466        0x48f build/default/production/interruptions.o
- .debug_line      0x0058f5        0x186 build/default/production/main.o
- .debug_line      0x005a7b        0x2e5 build/default/production/pwm.o
- .debug_line      0x005d60        0x190 build/default/production/strategie.o
- .debug_line      0x005ef0        0xcf3 build/default/production/system.o
- .debug_line      0x006be3       0x17f3 build/default/production/Serialus.o
- .debug_line      0x0083d6        0x2eb build/default/production/evitement.o
- .debug_line      0x0086c1         0x24 build/default/production/autom_virtual.o
+ .debug_line      0x003059       0x13e9 build/default/production/asserv.o
+ .debug_line      0x004442         0x24 build/default/production/autom_R1.o
+ .debug_line      0x004466        0x1dc build/default/production/autom_R2.o
+ .debug_line      0x004642        0x261 build/default/production/codeurs.o
+ .debug_line      0x0048a3        0x106 build/default/production/debug.o
+ .debug_line      0x0049a9        0xb35 build/default/production/gestion_AX12.o
+ .debug_line      0x0054de        0x48f build/default/production/interruptions.o
+ .debug_line      0x00596d        0x186 build/default/production/main.o
+ .debug_line      0x005af3        0x2e5 build/default/production/pwm.o
+ .debug_line      0x005dd8        0x190 build/default/production/strategie.o
+ .debug_line      0x005f68        0xcf3 build/default/production/system.o
+ .debug_line      0x006c5b       0x17f3 build/default/production/Serialus.o
+ .debug_line      0x00844e        0x2eb build/default/production/evitement.o
+ .debug_line      0x008739         0x24 build/default/production/autom_virtual.o
 
 .debug_frame      0x000000       0x1ffc
  *(.debug_frame)
@@ -3336,8 +3338,8 @@ __c30_signature
  __c30_signature
                   0x001bab          0x6 c:/program files (x86)/microchip/xc16/v1.25/bin/bin/../../lib\libm-elf.a(mulsi3.eo)
 
-.nbss               0x0800        0x41c
- .nbss              0x0800        0x3ae build/default/production/asserv.o
+.nbss               0x0800        0x40e
+ .nbss              0x0800        0x3a6 build/default/production/asserv.o
                     0x0800                  _ROBOT
                     0x0820                  _PID
                     0x08c0                  _KP_hybride
@@ -3356,28 +3358,33 @@ __c30_signature
                     0x0ad8                  _ERREUR_BRAKE
                     0x0b18                  _COMMANDE
                     0x0b30                  _FLAG_ASSERV
- .nbss              0x0bae         0x2e build/default/production/codeurs.o
-                    0x0bae                  _OVERFLOW_CODEUR
-                    0x0bb2                  _POSITION
- .nbss              0x0bdc         0x20 build/default/production/main.o
-                    0x0bdc                  _CPT_TEMPS_MATCH
-                    0x0be0                  _COULEUR
-                    0x0be1                  _FLAG_ACTION
-                    0x0be2                  _calcul_en_cours
-                    0x0be4                  _curseur
-                    0x0be6                  _curseur_obstacle
-                    0x0be8                  _x_actuel
-                    0x0bea                  _y_actuel
-                    0x0bec                  _x_souhaite
-                    0x0bee                  _y_souhaite
-                    0x0bf0                  _x_obj
-                    0x0bf2                  _y_obj
-                    0x0bf4                  _id_evitement
-                    0x0bf6                  _id_evitement_initial
-                    0x0bf8                  _chemin_court
-                    0x0bfa                  _compteur_evitement
- .nbss              0x0bfc         0x1a build/default/production/gestion_AX12.o
-                    0x0bfc                  _CHECK_LIMITATION_COURANT
+ .nbss              0x0ba6         0x2e build/default/production/codeurs.o
+                    0x0ba6                  _OVERFLOW_CODEUR
+                    0x0baa                  _POSITION
+ .nbss              0x0bd4         0x20 build/default/production/main.o
+                    0x0bd4                  _CPT_TEMPS_MATCH
+                    0x0bd8                  _COULEUR
+                    0x0bd9                  _FLAG_ACTION
+                    0x0bda                  _calcul_en_cours
+                    0x0bdc                  _curseur
+                    0x0bde                  _curseur_obstacle
+                    0x0be0                  _x_actuel
+                    0x0be2                  _y_actuel
+                    0x0be4                  _x_souhaite
+                    0x0be6                  _y_souhaite
+                    0x0be8                  _x_obj
+                    0x0bea                  _y_obj
+                    0x0bec                  _id_evitement
+                    0x0bee                  _id_evitement_initial
+                    0x0bf0                  _chemin_court
+                    0x0bf2                  _compteur_evitement
+ .nbss              0x0bf4         0x1a build/default/production/gestion_AX12.o
+                    0x0bf4                  _CHECK_LIMITATION_COURANT
+
+.ndata              0x0c0e          0x8
+ .ndata             0x0c0e          0x8 build/default/production/asserv.o
+
+.nbss               0x0c16          0x6
  .nbss              0x0c16          0x4 build/default/production/evitement.o
  .nbss              0x0c1a          0x2 build/default/production/interruptions.o
 
@@ -3478,7 +3485,7 @@ __c30_signature
  .const             0xc75c         0x34 build/default/production/gestion_AX12.o
  .const             0xc790         0x24 build/default/production/main.o
 
-.text             0x0047b4       0x92cc
+.text             0x0047b4       0x93ec
  .text            0x0047b4       0x435a build/default/production/Fonctions_deplacements.o
                   0x0047b4                  _couleur_depart
                   0x0047c8                  _inversion_couleur
@@ -3521,7 +3528,7 @@ __c30_signature
                   0x007f8a                  _deplacement_arriere
                   0x0082fe                  _plus_court
                   0x008af2                  _detect
- .text            0x008b0e       0x2242 build/default/production/asserv.o
+ .text            0x008b0e       0x2362 build/default/production/asserv.o
                   0x008b0e                  _init_flag_asserv
                   0x008b44                  _init_position_robot
                   0x008b6e                  _init_X
@@ -3529,158 +3536,158 @@ __c30_signature
                   0x008bc4                  _init_orientation
                   0x008c06                  _init_commande_moteur
                   0x008c20                  _reinit_asserv
-                  0x008e42                  _get_X
-                  0x008e4e                  _get_Y
-                  0x008e5c                  _get_orientation
-                  0x008e6a                  _MM_TO_TICK
-                  0x008e82                  _TICK_TO_MM
-                  0x008e98                  _ecretage_consignes
-                  0x008f6e                  _saturation_vitesse_max
-                  0x0090f0                  _saturation_erreur_integralle_vitesse
-                  0x0091c6                  _detection_blocage
-                  0x009348                  _calcul_vitesse_position
-                  0x0094b2                  _calcul_acceleration_position
-                  0x00967a                  _calcul_vitesse_orientation
-                  0x00979e                  _calcul_acceleration_orientation
-                  0x009966                  _calcul_distance_consigne_XY
-                  0x009b2a                  _brake
-                  0x009b82                  _unbrake
-                  0x009c48                  _fin_deplacement
-                  0x009c6c                  _asserv
-                  0x009de4                  _asserv_brake
-                  0x00a04e                  _asserv_distance
-                  0x00a28e                  _asserv_vitesse_distance
-                  0x00a382                  _asserv_orientation
-                  0x00a548                  _asserv_vitesse_orientation
-                  0x00a630                  _reglage_PID
-                  0x00a6ca                  _fonction_PID
-                  0x00aad0                  _calcul_position_robot
- .text            0x00ad50       0x1c9a build/default/production/Serialus.o
-                  0x00ad50                  _reinit_buffer_serialus
-                  0x00adc4                  _reception_serialus
-                  0x00aef8                  _action_reception_serialus
-                  0x00af9e                  _traitement_serialus
-                  0x00afc4                  _conversion_string_to_function_code
-                  0x00b05c                  _serialus_traitement_deplacement
-                  0x00b658                  _serialus_traitement_calage
-                  0x00bac8                  _serialus_traitement_asserv
-                  0x00bafa                  _serialus_traitement_odometrie
-                  0x00bb08                  _serialus_traitement_position
-                  0x00becc                  _serialus_traitement_ax12
-                  0x00c328                  _serialus_traitement_list
-                  0x00c3b8                  _check_est_un_nombre
-                  0x00c422                  _check_id_ax12
-                  0x00c47e                  _check_est_un_nombre_flottant
-                  0x00c51a                  _check_sont_des_nombres
-                  0x00c554                  _check_sont_des_nombres_flottants
-                  0x00c58e                  _check_erreur_serialus
-                  0x00c5ca                  _check_string
-                  0x00c634                  _check_nb_param
-                  0x00c664                  _check_coherence
-                  0x00c678                  _check_confirmation
-                  0x00c6ba                  _list_serialus
-                  0x00c86c                  _print_non_reconnu
-                  0x00c886                  _print_manque_parametre
-                  0x00c894                  _print_trop_parametre
-                  0x00c8a2                  _print_pas_nombre
-                  0x00c8b0                  _print_pas_nombre_flottant
-                  0x00c8be                  _print_incoherent
-                  0x00c8cc                  _print_abort_confirmation
-                  0x00c8d6                  _print_confirm
-                  0x00c8e4                  _print_erreur_deplacement
-                  0x00c90c                  _print_erreur_ax12
-                  0x00c950                  _print_ping
-                  0x00c964                  _print_position_ax12
-                  0x00c97e                  _init_clignotement
-                  0x00c98e                  _print_clignotement
-                  0x00c994                  _print_position
-                  0x00c9d8                  _print_abort
- .text            0x00c9ea        0xabc build/default/production/gestion_AX12.o
-                  0x00c9ea                  _init_decalage_AX12
-                  0x00c9f0                  _init_position_AX12
-                  0x00ca3c                  _convertion_position
-                  0x00ca5c                  _convertion_angle
-                  0x00ca7c                  _calcul_position
-                  0x00cb8a                  _calcul_modif_angle
-                  0x00cbf0                  _synchro_AX12
-                  0x00cc7a                  _angle_AX12
-                  0x00cd64                  _lancer_autom_AX12
-                  0x00cd76                  _rotation_AX12
-                  0x00cdc6                  _configurer_status_returning_level
-                  0x00cdec                  _configurer_temps_de_reponse_AX12
-                  0x00ce10                  _Ping
-                  0x00ce34                  _reset_AX12
-                  0x00ce48                  _changer_ID_AX12
-                  0x00ce68                  _baud_AX12
-                  0x00ce88                  _mode_rotation_AX12
-                  0x00cec8                  _allumer_LED_AX12
-                  0x00cee8                  _eteindre_LED_AX12
-                  0x00cf00                  _torque_enable_ax12
-                  0x00cf20                  _reception_uart_ax12
-                  0x00cfa4                  _traitement_reception_ax12
-                  0x00d076                  _reinit_buffer
-                  0x00d0b8                  _commande_AX12
-                  0x00d22c                  _calcul_checksum
-                  0x00d28e                  _calcul_checksum_variadic
-                  0x00d2ec                  _read_data
-                  0x00d38c                  _lecture_position_AX12
-                  0x00d396                  _checkup_com_ax12
-                  0x00d3c4                  _clean_des_erreurs_ax12
-                  0x00d434                  _print_statistique_ax12
-                  0x00d48c                  _reinit_alim_ax12
- .text            0x00d4a6        0x5da build/default/production/system.o
-                  0x00d4a6                  _init_system
-                  0x00d4fc                  _config_timer_5ms
-                  0x00d51a                  _config_timer_10ms
-                  0x00d53a                  _config_timer_20ms
-                  0x00d558                  _config_timer_100ms
-                  0x00d578                  _config_timer_200ms
-                  0x00d596                  _init_clock
-                  0x00d5fc                  _init_compteur_temps_match
-                  0x00d60e                  _ConfigMapping
-                  0x00d66e                  _ConfigPorts
-                  0x00d796                  _ConfigInterrupt
-                  0x00da7a                  _ConfigADC
+                  0x008e60                  _get_X
+                  0x008e6c                  _get_Y
+                  0x008e7a                  _get_orientation
+                  0x008e88                  _MM_TO_TICK
+                  0x008ea0                  _TICK_TO_MM
+                  0x008eb6                  _ecretage_consignes
+                  0x008f8c                  _saturation_vitesse_max
+                  0x00910e                  _saturation_erreur_integralle_vitesse
+                  0x0091e4                  _detection_blocage
+                  0x009366                  _calcul_vitesse_position
+                  0x0094d0                  _calcul_acceleration_position
+                  0x009698                  _calcul_vitesse_orientation
+                  0x0097bc                  _calcul_acceleration_orientation
+                  0x009984                  _calcul_distance_consigne_XY
+                  0x009b48                  _brake
+                  0x009ba0                  _unbrake
+                  0x009c84                  _fin_deplacement
+                  0x009ca8                  _asserv
+                  0x009e20                  _asserv_brake
+                  0x00a08a                  _asserv_distance
+                  0x00a3ae                  _asserv_vitesse_distance
+                  0x00a4a2                  _asserv_orientation
+                  0x00a668                  _asserv_vitesse_orientation
+                  0x00a750                  _reglage_PID
+                  0x00a7ea                  _fonction_PID
+                  0x00abf0                  _calcul_position_robot
+ .text            0x00ae70       0x1c9a build/default/production/Serialus.o
+                  0x00ae70                  _reinit_buffer_serialus
+                  0x00aee4                  _reception_serialus
+                  0x00b018                  _action_reception_serialus
+                  0x00b0be                  _traitement_serialus
+                  0x00b0e4                  _conversion_string_to_function_code
+                  0x00b17c                  _serialus_traitement_deplacement
+                  0x00b778                  _serialus_traitement_calage
+                  0x00bbe8                  _serialus_traitement_asserv
+                  0x00bc1a                  _serialus_traitement_odometrie
+                  0x00bc28                  _serialus_traitement_position
+                  0x00bfec                  _serialus_traitement_ax12
+                  0x00c448                  _serialus_traitement_list
+                  0x00c4d8                  _check_est_un_nombre
+                  0x00c542                  _check_id_ax12
+                  0x00c59e                  _check_est_un_nombre_flottant
+                  0x00c63a                  _check_sont_des_nombres
+                  0x00c674                  _check_sont_des_nombres_flottants
+                  0x00c6ae                  _check_erreur_serialus
+                  0x00c6ea                  _check_string
+                  0x00c754                  _check_nb_param
+                  0x00c784                  _check_coherence
+                  0x00c798                  _check_confirmation
+                  0x00c7da                  _list_serialus
+                  0x00c98c                  _print_non_reconnu
+                  0x00c9a6                  _print_manque_parametre
+                  0x00c9b4                  _print_trop_parametre
+                  0x00c9c2                  _print_pas_nombre
+                  0x00c9d0                  _print_pas_nombre_flottant
+                  0x00c9de                  _print_incoherent
+                  0x00c9ec                  _print_abort_confirmation
+                  0x00c9f6                  _print_confirm
+                  0x00ca04                  _print_erreur_deplacement
+                  0x00ca2c                  _print_erreur_ax12
+                  0x00ca70                  _print_ping
+                  0x00ca84                  _print_position_ax12
+                  0x00ca9e                  _init_clignotement
+                  0x00caae                  _print_clignotement
+                  0x00cab4                  _print_position
+                  0x00caf8                  _print_abort
+ .text            0x00cb0a        0xabc build/default/production/gestion_AX12.o
+                  0x00cb0a                  _init_decalage_AX12
+                  0x00cb10                  _init_position_AX12
+                  0x00cb5c                  _convertion_position
+                  0x00cb7c                  _convertion_angle
+                  0x00cb9c                  _calcul_position
+                  0x00ccaa                  _calcul_modif_angle
+                  0x00cd10                  _synchro_AX12
+                  0x00cd9a                  _angle_AX12
+                  0x00ce84                  _lancer_autom_AX12
+                  0x00ce96                  _rotation_AX12
+                  0x00cee6                  _configurer_status_returning_level
+                  0x00cf0c                  _configurer_temps_de_reponse_AX12
+                  0x00cf30                  _Ping
+                  0x00cf54                  _reset_AX12
+                  0x00cf68                  _changer_ID_AX12
+                  0x00cf88                  _baud_AX12
+                  0x00cfa8                  _mode_rotation_AX12
+                  0x00cfe8                  _allumer_LED_AX12
+                  0x00d008                  _eteindre_LED_AX12
+                  0x00d020                  _torque_enable_ax12
+                  0x00d040                  _reception_uart_ax12
+                  0x00d0c4                  _traitement_reception_ax12
+                  0x00d196                  _reinit_buffer
+                  0x00d1d8                  _commande_AX12
+                  0x00d34c                  _calcul_checksum
+                  0x00d3ae                  _calcul_checksum_variadic
+                  0x00d40c                  _read_data
+                  0x00d4ac                  _lecture_position_AX12
+                  0x00d4b6                  _checkup_com_ax12
+                  0x00d4e4                  _clean_des_erreurs_ax12
+                  0x00d554                  _print_statistique_ax12
+                  0x00d5ac                  _reinit_alim_ax12
+ .text            0x00d5c6        0x5da build/default/production/system.o
+                  0x00d5c6                  _init_system
+                  0x00d61c                  _config_timer_5ms
+                  0x00d63a                  _config_timer_10ms
+                  0x00d65a                  _config_timer_20ms
+                  0x00d678                  _config_timer_100ms
+                  0x00d698                  _config_timer_200ms
+                  0x00d6b6                  _init_clock
+                  0x00d71c                  _init_compteur_temps_match
+                  0x00d72e                  _ConfigMapping
+                  0x00d78e                  _ConfigPorts
+                  0x00d8b6                  _ConfigInterrupt
+                  0x00db9a                  _ConfigADC
 
-.dinit            0x00da80        0x2ae
- .dinit           0x00da80        0x2ae data_init
+.dinit            0x00dba0        0x2ba
+ .dinit           0x00dba0        0x2ba data_init
 
-.text             0x00dd2e        0x8e6
- .text            0x00dd2e        0x204 build/default/production/Uart.o
-                  0x00dd2e                  _InitUART
-                  0x00ddd6                  _calcul_baud
-                  0x00de96                  _modifier_vitesse_com_uart
-                  0x00dec2                  _vider_buffer_reception_uart
-                  0x00def0                  _PutcUART
- .text            0x00df32        0x1be build/default/production/pwm.o
-                  0x00df32                  _ConfigPWM
-                  0x00df7a                  _envoit_pwm
-                  0x00e0ce                  _alimenter_moteur_Y
- .text            0x00e0f0        0x162 build/default/production/evitement.o
-                  0x00e0f0                  _init_evitement
-                  0x00e11a                  _check_evitement_avant
-                  0x00e132                  _check_evitement_arriere
-                  0x00e14a                  _check_evitement
-                  0x00e180                  _ajustement_evitement_autonome
-                  0x00e186                  _evitement
- .text            0x00e252        0x146 build/default/production/codeurs.o
-                  0x00e252                  _ConfigQEI
-                  0x00e2a8                  _get_valeur_codeur
- .text            0x00e398        0x136 build/default/production/debug.o
-                  0x00e398                  _debug
- .text            0x00e4ce         0xb2 build/default/production/strategie.o
-                  0x00e4ce                  _strategie
-                  0x00e4fc                  _homologation
-                  0x00e51a                  _reglage_odometrie
- .text            0x00e580         0x5c build/default/production/autom_R2.o
-                  0x00e580                  _jack
-                  0x00e59e                  _allumer_pompes
-                  0x00e5ae                  _eteindre_pompe
-                  0x00e5bc                  _son_evitement
-                  0x00e5c4                  _autom_20ms
- .text            0x00e5dc         0x38 build/default/production/main.o
-                  0x00e5dc                  _main
+.text             0x00de5a        0x8e6
+ .text            0x00de5a        0x204 build/default/production/Uart.o
+                  0x00de5a                  _InitUART
+                  0x00df02                  _calcul_baud
+                  0x00dfc2                  _modifier_vitesse_com_uart
+                  0x00dfee                  _vider_buffer_reception_uart
+                  0x00e01c                  _PutcUART
+ .text            0x00e05e        0x1be build/default/production/pwm.o
+                  0x00e05e                  _ConfigPWM
+                  0x00e0a6                  _envoit_pwm
+                  0x00e1fa                  _alimenter_moteur_Y
+ .text            0x00e21c        0x162 build/default/production/evitement.o
+                  0x00e21c                  _init_evitement
+                  0x00e246                  _check_evitement_avant
+                  0x00e25e                  _check_evitement_arriere
+                  0x00e276                  _check_evitement
+                  0x00e2ac                  _ajustement_evitement_autonome
+                  0x00e2b2                  _evitement
+ .text            0x00e37e        0x146 build/default/production/codeurs.o
+                  0x00e37e                  _ConfigQEI
+                  0x00e3d4                  _get_valeur_codeur
+ .text            0x00e4c4        0x136 build/default/production/debug.o
+                  0x00e4c4                  _debug
+ .text            0x00e5fa         0xb2 build/default/production/strategie.o
+                  0x00e5fa                  _strategie
+                  0x00e628                  _homologation
+                  0x00e646                  _reglage_odometrie
+ .text            0x00e6ac         0x5c build/default/production/autom_R2.o
+                  0x00e6ac                  _jack
+                  0x00e6ca                  _allumer_pompes
+                  0x00e6da                  _eteindre_pompe
+                  0x00e6e8                  _son_evitement
+                  0x00e6f0                  _autom_20ms
+ .text            0x00e708         0x38 build/default/production/main.o
+                  0x00e708                  _main
 
-.init.delay32     0x00e614         0x1c
- .init.delay32    0x00e614         0x1c c:/program files (x86)/microchip/xc16/v1.25/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
-                  0x00e614                  ___delay32
+.init.delay32     0x00e740         0x1c
+ .init.delay32    0x00e740         0x1c c:/program files (x86)/microchip/xc16/v1.25/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
+                  0x00e740                  ___delay32
