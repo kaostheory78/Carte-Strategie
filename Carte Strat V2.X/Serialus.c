@@ -121,7 +121,7 @@ void action_reception_serialus(uint8_t buf)
         // en cas de déplacement
         if (serialus.clignotement_en_cours == true)
         {      
-            fin_deplacement();
+            fin_deplacement_sans_brake();
         }
         reinit_buffer_serialus();
 
@@ -390,7 +390,8 @@ void serialus_traitement_deplacement ()
         if (check_nb_param(1))
         {
             printf("\n\rbrake");
-            fin_deplacement();
+            fin_deplacement_avec_brake();
+            brake();
         }
     }
     // Fonction unbrake
@@ -434,7 +435,7 @@ void serialus_traitement_calage()
                 double d = (double) atoi((char *)serialus.buffer[2]);
                 double v = (double) atoi((char *)serialus.buffer[3]);
 
-                if (check_coherence(d < 3000 && d > 0 && abs(v) < 150))
+                if (check_coherence(d < 3000 && d > -3000 && abs(v) < 150))
                 {
                     init_clignotement();
                     //printf("\n\rCalage d : %d, V : %d",(int) d,(int) v);

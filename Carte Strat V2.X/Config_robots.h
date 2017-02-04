@@ -262,7 +262,7 @@ extern "C" {
 
         //Autres réglages asserv
     #define _SEUIL_IMMOBILITE            75ULL //200
-    #define _MAX_ERREUR_INTEGRALLE_V     3500.
+    #define _MAX_ERREUR_INTEGRALLE_V     4500.
     #define _MAX_E_INTEGRALLE_BRAKE      12000. //12000
 
     /**************************************************************************/

@@ -132,7 +132,7 @@ void evitement()
                 {
                     evitement_en_cours = true;
                     compteur = 0;
-                    fin_deplacement();
+                    fin_deplacement_avec_brake(); // pas de brake avant ... on faisait un fin_deplacement_sans_brake
                 }
             }
         }

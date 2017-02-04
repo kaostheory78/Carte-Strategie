@@ -299,8 +299,8 @@ _enum_erreur_asserv _calage (double distance, double pourcentage_vitesse)
     FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
     FLAG_ASSERV.etat_distance = EN_COURS;
     FLAG_ASSERV.immobilite = 0;
-    PID.VITESSE_DIS.max_I = MAX_ERREUR_INTEGRALLE_V / 10;
-    PID.VITESSE_DIS.seuil_immobilite = SEUIL_IMMOBILITE /10;
+    PID.VITESSE_DIS.max_I = MAX_ERREUR_INTEGRALLE_V / 4;
+    PID.VITESSE_DIS.seuil_immobilite = SEUIL_IMMOBILITE /4;
 
     FLAG_ASSERV.fin_deplacement = DEBUT_DEPLACEMENT;
     while (FLAG_ASSERV.fin_deplacement != FIN_DEPLACEMENT);

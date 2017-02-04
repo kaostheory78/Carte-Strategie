@@ -577,9 +577,14 @@ void init_orientation (double teta);
 void calcul_position_robot (void);
 
 /**
- * Fonction qui permet de finir un déplacement prématurément
+ * Fonction qui permet de finir avec uniquement une consigne moteur à 0
  */
-void fin_deplacement (void);
+void fin_deplacement_sans_brake (void);
+
+/**
+ * Fonction qui permet de terminer un déplacement avec arrêt sur position
+ */
+void fin_deplacement_avec_brake(void);
 
 /**
  * Fontion qui incrémente l'immobilité en cas de blocage

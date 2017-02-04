@@ -92,6 +92,7 @@ void init_Y (double y)
 void init_orientation (double teta)
 {
     teta = inversion_couleur(teta);
+    ROBOT.orientation_degre = teta;
     ORIENTATION.actuelle =  teta * Pi / 180. * ENTRAXE_TICKS/2;
 }
 
@@ -465,9 +466,14 @@ void calcul_vitesse_orientation (double pourcentage_vitesse)
 
     // Re saturation après la mise à l'échelle (pouvant être > 100 %)
     if (VITESSE_MAX.orientation > VITESSE_MAX_TENSION)
+    {
         VITESSE_MAX.orientation = VITESSE_MAX_TENSION;
-    else if (VITESSE_MAX.orientation < VITESSE_ANGLE_MIN_PAS)
+    }
+    
+    if (VITESSE_MAX.orientation < VITESSE_ANGLE_MIN_PAS)
+    {
         VITESSE_MAX.orientation = VITESSE_ANGLE_MIN_PAS;
+    }
 }
 
 // TODO : faire comme pour la distance ...
@@ -478,26 +484,12 @@ void calcul_acceleration_orientation (void)
     double decelMax = 0.;
     double decelMin = 0.;
     
-    // si la consigne d'orientation est négative :
-    //  -> La dimunition de la vitesse = accélération
-    //  -> L'augmentation de la vitesse = décélération
-    // (on passe d'une vitesse nulle à une vitesse négative pour reculer)
-    // Il faut donc inverser l'accélération et la décélération
-    if (ERREUR_ORIENTATION.actuelle > 0.)
-    {
-        accelMin = acc.acceleration.orientation.min;
-        accelMax = acc.acceleration.orientation.max;
-        decelMin = acc.deceleration.orientation.min;
-        decelMax = acc.deceleration.orientation.max;
-    }
-    else
-    {
-        accelMin = acc.deceleration.orientation.min;
-        accelMax = acc.deceleration.orientation.max;
-        decelMin = acc.acceleration.orientation.min;
-        decelMax = acc.acceleration.orientation.max;
-    }
+    accelMin = acc.acceleration.orientation.min;
+    accelMax = acc.acceleration.orientation.max;
+    decelMin = acc.deceleration.orientation.min;
+    decelMax = acc.deceleration.orientation.max;  
    
+    //TODO : VITESSE_ANGLE_PAS ?
     // on fait un produit en croix par rapport à la calib, (petite vitesse, plus faible accélération)
     acc.acceleration.orientation.consigne = VITESSE_MAX.orientation;
     acc.acceleration.orientation.consigne *= accelMax; 
@@ -568,7 +560,6 @@ void calcul_distance_consigne_XY (void)
 /**************************** Fonctions Asserv ********************************/
 /******************************************************************************/
 
-
 void brake(void)
 {
     ERREUR_BRAKE[ROUE_DROITE].actuelle = 0.;
@@ -619,7 +610,17 @@ void unbrake (void)
     FLAG_ASSERV.brake = OFF;
 }
 
-void fin_deplacement (void)
+void fin_deplacement_avec_brake (void)
+{
+    FLAG_ASSERV.position = OFF;
+    FLAG_ASSERV.orientation = OFF;
+    FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
+    FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
+    VITESSE[SYS_ROBOT].consigne = 0.;
+}
+
+
+void fin_deplacement_sans_brake (void)
 {
     FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
     FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
@@ -653,8 +654,7 @@ void asserv()
         // Le robot est bloqué ou immobile depuis trop longtemps
         if (FLAG_ASSERV.immobilite >= PID.VITESSE_DIS.seuil_immobilite )
         {
-            FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
-            FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
+            fin_deplacement_sans_brake();
         }
     }
 
@@ -753,149 +753,105 @@ void asserv_distance(void)
     erreur_distance_precedente = ERREUR_DISTANCE.actuelle;
     erreur_de_suivie = abs(VITESSE[SYS_ROBOT].theorique - VITESSE[SYS_ROBOT].actuelle);
     
+    // Calcul de la distance restante
     calcul_distance_consigne_XY();
     distance_restante = fonction_PID(ASSERV_POSITION);
 
-    if (FLAG_ASSERV.type_consigne == MM)
+    // Génération des vittesses consignes à atteindre (haut du trapèze))
+    if (distance_restante > 0.)
     {
-        if (distance_restante < 0.)
-        {
-            FLAG_ASSERV.sens_deplacement = MARCHE_ARRIERE;
-        }      
-        else
-        {
-            FLAG_ASSERV.sens_deplacement = MARCHE_AVANT; 
-        }        
+        FLAG_ASSERV.sens_deplacement = MARCHE_AVANT; 
+        VITESSE[SYS_ROBOT].consigne =  VITESSE_MAX.position; //vmax
+    }
+    else if (distance_restante < 0.)
+    {
+        FLAG_ASSERV.sens_deplacement = MARCHE_ARRIERE;
+        VITESSE[SYS_ROBOT].consigne = - VITESSE_MAX.position; //Vmin //-120
+        
+        // ensure the distance is always positive
+        distance_restante *= -1;
     }
 
-//    if ((FLAG_ASSERV.sens_deplacement * distance_restante > 2 * TICKS_PAR_MM)) // 2
-//    {
-        if (distance_restante > 0.)
-        {
-            VITESSE[SYS_ROBOT].consigne =  VITESSE_MAX.position; //vmax
-        }
-        else if (distance_restante < 0.)
-        {
-            VITESSE[SYS_ROBOT].consigne = - VITESSE_MAX.position; //Vmin //-120
-        }
-
-        //Génération de la courbe de freinage
-        if (FLAG_ASSERV.vitesse_fin_nulle == ON)
-        {
-            // calcul de la distance théorique de freinage (trapèze)
-            distance_freinage = (VITESSE[SYS_ROBOT].actuelle * VITESSE[SYS_ROBOT].actuelle) / (2. * acc.deceleration.position.consigne); // vitesse actu ou théorique ?
-            
-            if (distance_restante < 0.)
-            {
-                distance_restante *= -1.;
-            }
-            
-            if (FLAG_ASSERV.phase_deceleration_distance != EN_COURS)
-            {
-                distance_freinage_anticipation = distance_freinage * coef_distance_freinage;
-            }
-             
-            // Si le robot doit freiner       (distance de freinage + distance parcouru en 1 coup)
-            if (distance_restante <= (distance_freinage + distance_freinage_anticipation)) 
-            {
-                FLAG_ASSERV.phase_deceleration_distance = EN_COURS;
-                VITESSE[SYS_ROBOT].consigne = 0.;
-            }
-            
-            //si on se trouve dans un cercle de 3 cm autour du point d'arrivé
-//            if (FLAG_ASSERV.sens_deplacement * distance_restante < 30. * TICKS_PAR_MM) //30
-            if (distance_restante < fenetre_arrivee) //30
-            {
-                FLAG_ASSERV.orientation = OFF;
-                
-//                if (distance_restante < 5 * TICKS_PAR_MM) // On est à 5 mm du point d'arrivée
-                if (distance_restante < distance_freinage_anticipation) // On est à 5 mm du point d'arrivée
-                {
-                    acc.deceleration.position.consigne = (VITESSE[SYS_ROBOT].actuelle * VITESSE[SYS_ROBOT].actuelle) / (2. * (distance_restante));
-                }
-                
-                // Si le robot est immobile
-                if (VITESSE[SYS_ROBOT].theorique == 0 && FLAG_ASSERV.fin_deplacement != DEBUT_DEPLACEMENT)
-                {
-                    FLAG_ASSERV.position = OFF;
-                    FLAG_ASSERV.orientation = OFF;
-                    FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
-                    FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
-                    VITESSE[SYS_ROBOT].consigne = 0.;
-                    brake();
-                }
-                
-                
-                // la vitesse = distance parcouru en 1 cycle d'asserv
-                // Si la distance restante < distance_parcouru au cycle n +1
-                // distance parcouru au cycle n+1 = (Vactu + Vactu+1)/2
-                // (on moyenne la vitesse, et une vitesse = distance parcouru en un cycle)
-                // vrai uniquement en phase de decel ...
-                // TODO : anticipation sur plus de cycle ?
-//                {
-//                    double nextVActu = VITESSE[SYS_ROBOT].actuelle * FLAG_ASSERV.sens_deplacement - acc.deceleration.position.consigne;
-//                    if (nextVActu < 0.)
-//                        nextVActu = 0.;
-//                    
-//                    if ( (distance_restante + erreur_de_suivie) < ((VITESSE[SYS_ROBOT].actuelle * FLAG_ASSERV.sens_deplacement + nextVActu) / 2.) )
-//                    {
-//                        FLAG_ASSERV.position = OFF;
-//                        FLAG_ASSERV.orientation = OFF;
-//                        FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
-//                        FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
-//                        VITESSE[SYS_ROBOT].consigne = 0.;
-//                        brake();
-//                    }
-//                }
-//                if ( (distance_restante + erreur_de_suivie) < abs(( VITESSE[SYS_ROBOT].actuelle - acc.deceleration.position.consigne) / 2.) )
-//                {
-//                    FLAG_ASSERV.position = OFF;
-//                    FLAG_ASSERV.orientation = OFF;
-//                    FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
-//                    FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
-//                    VITESSE[SYS_ROBOT].consigne = 0.;
-//                    brake();
-//                }
-                // on s'éloigne de la cible ( pour consigne en XY)
-//                if ( (((ERREUR_DISTANCE.actuelle - erreur_distance_precedente) * FLAG_ASSERV.sens_deplacement) > 0 ) && FLAG_ASSERV.fin_deplacement != DEBUT_DEPLACEMENT)
-//                {
-//                    FLAG_ASSERV.position = OFF;
-//                    FLAG_ASSERV.orientation = OFF;
-//                    FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
-//                    FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
-//                    VITESSE[SYS_ROBOT].consigne = 0.;
-//                    brake();
-//                }
-            }
-            
-            FLAG_ASSERV.fin_deplacement = EN_COURS;
-        }
-        else
-        {
-             if (FLAG_ASSERV.sens_deplacement * distance_restante < distance_min_passe_part) //150
-             {
-                 FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
-                 FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
-                 return;
-             }
-        }
-              
-
-//    }
-//    // Si on arrive à 2mm du point et que l'on veut une vitesse d'arrêt nulle
-//    else 
-//    {
-//        FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
-//        FLAG_ASSERV.position = OFF;
-//        FLAG_ASSERV.orientation = OFF;
-//        FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
-//        VITESSE[SYS_ROBOT].consigne = 0.;
-//    }
-   /* else //Sinon on passe au déplacement suivant sans arrêt
+    //Génération de la courbe de freinage
+    if (FLAG_ASSERV.vitesse_fin_nulle == ON)
     {
-        FLAG_ASSERV.etat_distance = FIN_DEPLACEMENT;
-    }*/
-       
+        // calcul de la distance théorique de freinage (trapèze)
+        distance_freinage = (VITESSE[SYS_ROBOT].actuelle * VITESSE[SYS_ROBOT].actuelle) / (2. * acc.deceleration.position.consigne);
+
+        // Recalcul de la distance de freinage par anticipation à rajouter à la 
+        // distance de freinage tant qu'on est pas rentré dans la phase de freinage 
+        if (FLAG_ASSERV.phase_deceleration_distance != EN_COURS)
+        {
+            distance_freinage_anticipation = distance_freinage * coef_distance_freinage;
+        }
+
+        // Si le robot doit freiner       (distance de freinage + distance parcouru en 1 coup)
+        if (distance_restante <= (distance_freinage + distance_freinage_anticipation)) 
+        {
+            FLAG_ASSERV.phase_deceleration_distance = EN_COURS;
+            VITESSE[SYS_ROBOT].consigne = 0.;
+        }
+
+        //si on se trouve dans un cercle de 3 cm autour du point d'arrivé
+        if (distance_restante < fenetre_arrivee) //30
+        {
+            FLAG_ASSERV.orientation = OFF;
+
+            // on ajuste la pente de freinage à quand on est proche de la cible 
+            // s'assurer d'arriver avec une v=0 au bon endroit
+            if (distance_restante < distance_freinage_anticipation) 
+            {
+                acc.deceleration.position.consigne = (VITESSE[SYS_ROBOT].actuelle * VITESSE[SYS_ROBOT].actuelle) / (2. * (distance_restante));
+            }
+
+            // Si le robot est immobile
+            if (VITESSE[SYS_ROBOT].theorique == 0 && FLAG_ASSERV.fin_deplacement != DEBUT_DEPLACEMENT)
+            {
+                fin_deplacement_avec_brake();
+            }
+
+
+            // la vitesse = distance parcouru en 1 cycle d'asserv
+            // Si la distance restante < distance_parcouru au cycle n +1
+            // distance parcouru au cycle n+1 = (Vactu + Vactu+1)/2
+            // (on moyenne la vitesse, et une vitesse = distance parcouru en un cycle)
+            // vrai uniquement en phase de decel ...
+            // TODO : anticipation sur plus de cycle ?
+            {
+                double nextVActu = VITESSE[SYS_ROBOT].actuelle * FLAG_ASSERV.sens_deplacement - acc.deceleration.position.consigne;
+                if (nextVActu < 0.)
+                    nextVActu = 0.;
+     
+                if ( (distance_restante + erreur_de_suivie) < ((VITESSE[SYS_ROBOT].actuelle * FLAG_ASSERV.sens_deplacement + nextVActu) / 2.) )
+                {
+                    fin_deplacement_avec_brake();
+                }
+            }
+            
+//            // On aura dépassé la position consigne au prochain coup 
+//            if ( (distance_restante + erreur_de_suivie) < abs(( VITESSE[SYS_ROBOT].actuelle - acc.deceleration.position.consigne) / 2.) )
+//            {
+//                fin_deplacement_avec_brake();
+//            }
+            
+            // on s'éloigne de la cible ( pour consigne en XY)
+            if ( (((ERREUR_DISTANCE.actuelle - erreur_distance_precedente) * FLAG_ASSERV.sens_deplacement) > 0 ) && FLAG_ASSERV.fin_deplacement != DEBUT_DEPLACEMENT)
+            {
+                fin_deplacement_avec_brake();
+            }
+        }
+
+        FLAG_ASSERV.fin_deplacement = EN_COURS;
+    }
+    else // vitesse fin non nulle
+    {
+         if (FLAG_ASSERV.sens_deplacement * distance_restante < distance_min_passe_part) //150
+         {
+             FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
+             FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
+             return;
+         }
+    }      
 }
 
 //Fonction qui génère les rampes de vitesse pour l'asserv en Distance
