@@ -817,16 +817,16 @@ void asserv_distance(void)
             // (on moyenne la vitesse, et une vitesse = distance parcouru en un cycle)
             // vrai uniquement en phase de decel ...
             // TODO : anticipation sur plus de cycle ?
-            {
-                double nextVActu = VITESSE[SYS_ROBOT].actuelle * FLAG_ASSERV.sens_deplacement - acc.deceleration.position.consigne;
-                if (nextVActu < 0.)
-                    nextVActu = 0.;
-     
-                if ( (distance_restante + erreur_de_suivie) < ((VITESSE[SYS_ROBOT].actuelle * FLAG_ASSERV.sens_deplacement + nextVActu) / 2.) )
-                {
-                    fin_deplacement_avec_brake();
-                }
-            }
+//            {
+//                double nextVActu = VITESSE[SYS_ROBOT].actuelle * FLAG_ASSERV.sens_deplacement - acc.deceleration.position.consigne;
+//                if (nextVActu < 0.)
+//                    nextVActu = 0.;
+//     
+//                if ( (distance_restante + erreur_de_suivie) < ((VITESSE[SYS_ROBOT].actuelle * FLAG_ASSERV.sens_deplacement + nextVActu) / 2.) )
+//                {
+//                    fin_deplacement_avec_brake();
+//                }
+//            }
             
 //            // On aura dépassé la position consigne au prochain coup 
 //            if ( (distance_restante + erreur_de_suivie) < abs(( VITESSE[SYS_ROBOT].actuelle - acc.deceleration.position.consigne) / 2.) )
@@ -834,7 +834,7 @@ void asserv_distance(void)
 //                fin_deplacement_avec_brake();
 //            }
             
-            // on s'éloigne de la cible ( pour consigne en XY)
+            // on s'éloigne de la cible 
             if ( (((ERREUR_DISTANCE.actuelle - erreur_distance_precedente) * FLAG_ASSERV.sens_deplacement) > 0 ) && FLAG_ASSERV.fin_deplacement != DEBUT_DEPLACEMENT)
             {
                 fin_deplacement_avec_brake();
