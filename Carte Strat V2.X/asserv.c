@@ -957,24 +957,41 @@ void asserv_orientation (void)
 void asserv_vitesse_orientation (void)
 {
     //Si on a attaqué la phase de décélération, on ne permet plus de réaccélérer
-    if (FLAG_ASSERV.phase_decelaration_orientation == PHASE_NORMAL || VITESSE_ORIENTATION[SYS_ROBOT].consigne == 0. )
-    {
-         if (VITESSE_ORIENTATION[SYS_ROBOT].theorique < VITESSE_ORIENTATION[SYS_ROBOT].consigne)
-            VITESSE_ORIENTATION[SYS_ROBOT].theorique += acc.acceleration.orientation.consigne;
+    
+     if (FLAG_ASSERV.phase_decelaration_orientation == PHASE_NORMAL || VITESSE_ORIENTATION[SYS_ROBOT].consigne == 0. )
+    {     
+        // En marche avant la vitesse consigne est positive
+        if (FLAG_ASSERV.sens_deplacement == MARCHE_AVANT)
+        {
+            // acceleration positive et décélération négative
+            if (VITESSE_ORIENTATION[SYS_ROBOT].theorique < VITESSE_ORIENTATION[SYS_ROBOT].consigne)
+            {
+                VITESSE_ORIENTATION[SYS_ROBOT].theorique += acc.acceleration.orientation.consigne;
+            }
+            else if (VITESSE_ORIENTATION[SYS_ROBOT].theorique > VITESSE_ORIENTATION[SYS_ROBOT].consigne)
+            {
+                VITESSE_ORIENTATION[SYS_ROBOT].theorique -= acc.deceleration.orientation.consigne;
+            }
+        }
+        // En marche arrière la vitesse consigne est négative (inversion de tous les signes)
+        else // MARCHE_ARRIERE
+        {
+            // acceleration négative et décélération positive
+            if (VITESSE_ORIENTATION[SYS_ROBOT].theorique > VITESSE_ORIENTATION[SYS_ROBOT].consigne)
+            {
+                VITESSE_ORIENTATION[SYS_ROBOT].theorique -= acc.acceleration.orientation.consigne;
+            }
+            else if (VITESSE_ORIENTATION[SYS_ROBOT].theorique < VITESSE_ORIENTATION[SYS_ROBOT].consigne)
+            {
+                VITESSE_ORIENTATION[SYS_ROBOT].theorique += acc.deceleration.orientation.consigne;
+            }
+        }
 
-
-        else if (VITESSE_ORIENTATION[SYS_ROBOT].theorique > VITESSE_ORIENTATION[SYS_ROBOT].consigne)
-            VITESSE_ORIENTATION[SYS_ROBOT].theorique -= acc.deceleration.orientation.consigne;
-
-         saturation_vitesse_max(ASSERV_ORIENTATION);
-
-         //débloquage de la l'interdiction d'acceleration si on arrive à une consigne nulle pour enlever l'erreur statiqye
-        // if (VITESSE_ORIENTATION[SYS_ROBOT].theorique == 0)
-        //     FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
-    }
-
-     VITESSE[ROUE_DROITE].consigne += VITESSE_ORIENTATION[SYS_ROBOT].theorique;
-     VITESSE[ROUE_GAUCHE].consigne -= VITESSE_ORIENTATION[SYS_ROBOT].theorique;
+        saturation_vitesse_max(ASSERV_ORIENTATION);
+    
+        VITESSE[ROUE_DROITE].consigne += VITESSE_ORIENTATION[SYS_ROBOT].theorique;
+        VITESSE[ROUE_GAUCHE].consigne -= VITESSE_ORIENTATION[SYS_ROBOT].theorique;
+     }
 }
 
 /******************************************************************************/
