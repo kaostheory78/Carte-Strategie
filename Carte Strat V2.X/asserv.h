@@ -202,7 +202,9 @@ typedef enum
 typedef enum
 {
     MARCHE_AVANT = 1,
-    MARCHE_ARRIERE = -1
+    ROTATION_POSITIVE = 1,
+    MARCHE_ARRIERE = -1,
+    ROTATION_NEGATIVE = -1
 }_enum_sens_deplacement;
 
 
@@ -401,14 +403,17 @@ typedef enum
         _enum_on_off vitesse_fin_nulle                          : 1; // 6
         _enum_type_consigne type_consigne                       : 2; // 8
         
-        _enum_sens_deplacement sens_deplacement                 : 3; // 11 
-        _enum_etat_deplacement etat_angle                       : 3; // 14
-        _enum_etat_deplacement etat_distance                    : 3; // 17
-        _enum_etat_deplacement fin_deplacement                  : 3; // 20
-        _enum_etat_deplacement phase_decelaration_orientation   : 3; // 23
-        _enum_etat_deplacement phase_deceleration_distance      : 3; // 26 
-        _enum_type_deplacement type_deplacement                 : 3; // 29
-        _enum_erreur_asserv erreur                              : 3; // 32           
+        _enum_sens_deplacement sens_deplacement                 : 3; // 11
+        _enum_sens_deplacement sens_rotation                    : 3; // 14 
+        _enum_etat_deplacement etat_angle                       : 3; // 17
+        _enum_etat_deplacement etat_distance                    : 3; // 20
+        _enum_etat_deplacement fin_deplacement                  : 3; // 23
+        _enum_etat_deplacement phase_decelaration_orientation   : 3; // 26
+        _enum_etat_deplacement phase_deceleration_distance      : 3; // 29 
+        _enum_type_deplacement type_deplacement                 : 3; // 32
+        
+        _enum_erreur_asserv erreur                              : 3; // 35
+        unsigned                                                : 13;// 48
         uint64_t immobilite;
     }_flag_asserv;
 
