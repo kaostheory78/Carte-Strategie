@@ -110,6 +110,7 @@ void reinit_asserv(void)
     FLAG_ASSERV.vitesse_fin_nulle = ON;
     FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
     FLAG_ASSERV.phase_deceleration_distance = PHASE_NORMAL;
+    FLAG_ASSERV.sens_rotation = ROTATION_POSITIVE;
 
     FLAG_ASSERV.immobilite = 0ULL;
 
@@ -915,7 +916,7 @@ void asserv_orientation (void)
 
         if (angle_restant > 0.) 
         {
-            VITESSE_ORIENTATION[SYS_ROBOT].consigne =  VITESSE_MAX.orientation;
+            VITESSE_ORIENTATION[SYS_ROBOT].consigne = VITESSE_MAX.orientation;
             temps_freinage = VITESSE_ORIENTATION[SYS_ROBOT].theorique / (acc.deceleration.orientation.consigne);
         }
         else if (angle_restant < 0.)
@@ -950,48 +951,166 @@ void asserv_orientation (void)
         FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
         FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
     }
+//    __attribute__((near)) static double angle_restant = 0.;
+//    __attribute__((near)) static double angle_freinage = 0.;
+//    __attribute__((near)) static double erreur_angle_precedent = 0.;
+//    __attribute__((near)) static double erreur_de_suivie = 0.;
+//    __attribute__((near)) static double angle_freinage_anticipation = 0.;
+//    __attribute__((near)) static double coef_angle_freinage = 0.075;
+//    __attribute__((near)) static double fenetre_angle_arrivee = 5 * Pi / 180. * ENTRAXE_TICKS; //0.1
+//    
+//    // on sauvegarde l'erreur de distance du cycle précédent avant que la valeur ne soit écrasé
+//    // Par le calcul de la fonction_PID(ASSERV_POSITION)
+//    erreur_angle_precedent = ERREUR_ORIENTATION.actuelle;
+//    erreur_de_suivie = abs(VITESSE[SYS_ROBOT].theorique - VITESSE[SYS_ROBOT].actuelle);
+//    
+//    // Calcul de l'angle restant à parcourir
+//    angle_restant = fonction_PID(ASSERV_ORIENTATION);
+//
+//    // Génération des vittesses consignes à atteindre (haut du trapèze))
+//    if (angle_restant > 0.)
+//    {
+//        VITESSE_ORIENTATION[SYS_ROBOT].consigne =  VITESSE_MAX.orientation;
+//        FLAG_ASSERV.sens_rotation = ROTATION_POSITIVE;
+//    }
+//    else if (angle_restant < 0.)
+//    {
+//        VITESSE_ORIENTATION[SYS_ROBOT].consigne = - VITESSE_MAX.orientation;
+//        FLAG_ASSERV.sens_rotation = ROTATION_NEGATIVE;
+//        
+//        // ensure the angle is always positive
+//        angle_restant *= -1;
+//    }
+//
+//    // calcul de l'angle théorique de freinage (trapèze)
+//    angle_freinage = (VITESSE_ORIENTATION[SYS_ROBOT].actuelle * VITESSE_ORIENTATION[SYS_ROBOT].actuelle) / (2. * acc.deceleration.orientation.consigne);
+//
+//    // Recalcul de l'angle de freinage par anticipation à rajouter à l'angle 
+//    // de freinage tant qu'on est pas rentré dans la phase de freinage 
+//    if (FLAG_ASSERV.phase_decelaration_orientation != EN_COURS)
+//    {
+//        angle_freinage_anticipation = angle_freinage * coef_angle_freinage;
+//    }
+//
+//    // Si le robot doit freiner       (distance de freinage + distance parcouru en 1 coup)
+//    if (angle_restant <= (angle_freinage + angle_freinage_anticipation)) 
+//    {
+//        FLAG_ASSERV.phase_decelaration_orientation = EN_COURS;
+//        VITESSE_ORIENTATION[SYS_ROBOT].consigne = 0.;
+//    }
+//
+//    //si on se trouve dans un cercle de 3 cm autour du point d'arrivé
+//    if (angle_restant < fenetre_angle_arrivee) //30
+//    {
+//
+//        // on ajuste la pente de freinage à quand on est proche de la cible 
+//        // s'assurer d'arriver avec une v=0 au bon endroit
+//        if (angle_restant < angle_freinage_anticipation) 
+//        {
+//            acc.deceleration.orientation.consigne = (VITESSE_ORIENTATION[SYS_ROBOT].actuelle * VITESSE_ORIENTATION[SYS_ROBOT].actuelle) / (2. * (angle_restant));
+//        }
+//
+//        // Si le robot est immobile
+//        if (VITESSE_ORIENTATION[SYS_ROBOT].theorique == 0 && FLAG_ASSERV.fin_deplacement != DEBUT_DEPLACEMENT)
+//        {
+//            VITESSE_ORIENTATION[SYS_ROBOT].theorique = 0.;
+//            FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
+//            FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
+//        }
+//
+//
+//        // la vitesse = distance parcouru en 1 cycle d'asserv
+//        // Si la distance restante < distance_parcouru au cycle n +1
+//        // distance parcouru au cycle n+1 = (Vactu + Vactu+1)/2
+//        // (on moyenne la vitesse, et une vitesse = distance parcouru en un cycle)
+//        // vrai uniquement en phase de decel ...
+//        // TODO : anticipation sur plus de cycle ?
+////            {
+////                double nextVActu = VITESSE[SYS_ROBOT].actuelle * FLAG_ASSERV.sens_deplacement - acc.deceleration.position.consigne;
+////                if (nextVActu < 0.)
+////                    nextVActu = 0.;
+////     
+////                if ( (distance_restante + erreur_de_suivie) < ((VITESSE[SYS_ROBOT].actuelle * FLAG_ASSERV.sens_deplacement + nextVActu) / 2.) )
+////                {
+////                    fin_deplacement_avec_brake();
+////                }
+////            }
+//
+////            // On aura dépassé la position consigne au prochain coup 
+////            if ( (distance_restante + erreur_de_suivie) < abs(( VITESSE[SYS_ROBOT].actuelle - acc.deceleration.position.consigne) / 2.) )
+////            {
+////                fin_deplacement_avec_brake();
+////            }
+//
+//        // on s'éloigne de la cible 
+//        if ( (((ERREUR_ORIENTATION.actuelle - erreur_angle_precedent) * FLAG_ASSERV.sens_rotation) > 0 ) && FLAG_ASSERV.fin_deplacement != DEBUT_DEPLACEMENT)
+//        {
+//            VITESSE_ORIENTATION[SYS_ROBOT].theorique = 0.;
+//            FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
+//            FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
+//        }
+//    }          
 }
 
 
 //Fonction qui génère les rampes de Vitesse pour la rotation du robot
 void asserv_vitesse_orientation (void)
 {
+//    //Si on a attaqué la phase de décélération, on ne permet plus de réaccélérer
+//    
+//     if (FLAG_ASSERV.phase_decelaration_orientation == PHASE_NORMAL || VITESSE_ORIENTATION[SYS_ROBOT].consigne == 0. )
+//    {     
+//        // En marche avant la vitesse consigne est positive
+//        if (FLAG_ASSERV.sens_deplacement == ROTATION_POSITIVE)
+//        {
+//            // acceleration positive et décélération négative
+//            if (VITESSE_ORIENTATION[SYS_ROBOT].theorique < VITESSE_ORIENTATION[SYS_ROBOT].consigne)
+//            {
+//                VITESSE_ORIENTATION[SYS_ROBOT].theorique += acc.acceleration.orientation.consigne;
+//            }
+//            else if (VITESSE_ORIENTATION[SYS_ROBOT].theorique > VITESSE_ORIENTATION[SYS_ROBOT].consigne)
+//            {
+//                VITESSE_ORIENTATION[SYS_ROBOT].theorique -= acc.deceleration.orientation.consigne;
+//            }
+//        }
+//        // En marche arrière la vitesse consigne est négative (inversion de tous les signes)
+//        else // MARCHE_ARRIERE
+//        {
+//            // acceleration négative et décélération positive
+//            if (VITESSE_ORIENTATION[SYS_ROBOT].theorique > VITESSE_ORIENTATION[SYS_ROBOT].consigne)
+//            {
+//                VITESSE_ORIENTATION[SYS_ROBOT].theorique -= acc.acceleration.orientation.consigne;
+//            }
+//            else if (VITESSE_ORIENTATION[SYS_ROBOT].theorique < VITESSE_ORIENTATION[SYS_ROBOT].consigne)
+//            {
+//                VITESSE_ORIENTATION[SYS_ROBOT].theorique += acc.deceleration.orientation.consigne;
+//            }
+//        }
+//
+//        saturation_vitesse_max(ASSERV_ORIENTATION);
+//    
+//        VITESSE[ROUE_DROITE].consigne += VITESSE_ORIENTATION[SYS_ROBOT].theorique;
+//        VITESSE[ROUE_GAUCHE].consigne -= VITESSE_ORIENTATION[SYS_ROBOT].theorique;
+//     }
     //Si on a attaqué la phase de décélération, on ne permet plus de réaccélérer
-    
-     if (FLAG_ASSERV.phase_decelaration_orientation == PHASE_NORMAL || VITESSE_ORIENTATION[SYS_ROBOT].consigne == 0. )
-    {     
-        // En marche avant la vitesse consigne est positive
-        if (FLAG_ASSERV.sens_deplacement == MARCHE_AVANT)
-        {
-            // acceleration positive et décélération négative
-            if (VITESSE_ORIENTATION[SYS_ROBOT].theorique < VITESSE_ORIENTATION[SYS_ROBOT].consigne)
-            {
-                VITESSE_ORIENTATION[SYS_ROBOT].theorique += acc.acceleration.orientation.consigne;
-            }
-            else if (VITESSE_ORIENTATION[SYS_ROBOT].theorique > VITESSE_ORIENTATION[SYS_ROBOT].consigne)
-            {
-                VITESSE_ORIENTATION[SYS_ROBOT].theorique -= acc.deceleration.orientation.consigne;
-            }
-        }
-        // En marche arrière la vitesse consigne est négative (inversion de tous les signes)
-        else // MARCHE_ARRIERE
-        {
-            // acceleration négative et décélération positive
-            if (VITESSE_ORIENTATION[SYS_ROBOT].theorique > VITESSE_ORIENTATION[SYS_ROBOT].consigne)
-            {
-                VITESSE_ORIENTATION[SYS_ROBOT].theorique -= acc.acceleration.orientation.consigne;
-            }
-            else if (VITESSE_ORIENTATION[SYS_ROBOT].theorique < VITESSE_ORIENTATION[SYS_ROBOT].consigne)
-            {
-                VITESSE_ORIENTATION[SYS_ROBOT].theorique += acc.deceleration.orientation.consigne;
-            }
-        }
+    if (FLAG_ASSERV.phase_decelaration_orientation == PHASE_NORMAL || VITESSE_ORIENTATION[SYS_ROBOT].consigne == 0. )
+    {
+         if (VITESSE_ORIENTATION[SYS_ROBOT].theorique < VITESSE_ORIENTATION[SYS_ROBOT].consigne)
+            VITESSE_ORIENTATION[SYS_ROBOT].theorique += acc.acceleration.orientation.consigne;
 
-        saturation_vitesse_max(ASSERV_ORIENTATION);
-    
-        VITESSE[ROUE_DROITE].consigne += VITESSE_ORIENTATION[SYS_ROBOT].theorique;
-        VITESSE[ROUE_GAUCHE].consigne -= VITESSE_ORIENTATION[SYS_ROBOT].theorique;
-     }
+
+        else if (VITESSE_ORIENTATION[SYS_ROBOT].theorique > VITESSE_ORIENTATION[SYS_ROBOT].consigne)
+            VITESSE_ORIENTATION[SYS_ROBOT].theorique -= acc.deceleration.orientation.consigne;
+
+         saturation_vitesse_max(ASSERV_ORIENTATION);
+
+         //débloquage de la l'interdiction d'acceleration si on arrive à une consigne nulle pour enlever l'erreur statiqye
+        // if (VITESSE_ORIENTATION[SYS_ROBOT].theorique == 0)
+        //     FLAG_ASSERV.phase_decelaration_orientation = PHASE_NORMAL;
+    }
+
+     VITESSE[ROUE_DROITE].consigne += VITESSE_ORIENTATION[SYS_ROBOT].theorique;
+     VITESSE[ROUE_GAUCHE].consigne -= VITESSE_ORIENTATION[SYS_ROBOT].theorique;
 }
 
 /******************************************************************************/
