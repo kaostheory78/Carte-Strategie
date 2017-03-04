@@ -33,7 +33,7 @@ extern "C" {
 //#define UTILISATION_CARTE_BALISE
     
 //#define NO_SERIALUS
-#define DEBUG_ACTIF
+//#define DEBUG_ACTIF
 
 #define _Pi                             3.14159265359
    

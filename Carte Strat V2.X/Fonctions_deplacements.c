@@ -413,8 +413,10 @@ void _fdt (double angle, char last)
     }
 
     angle = inversion_couleur(angle);
-
+    
     ORIENTATION.consigne = (angle * Pi)/ 180 * (ENTRAXE_TICKS/2);
+    
+    printf("_fdt : angle = %lf, Orientation = %lf\n\r", angle, ORIENTATION.consigne);
 
 #ifdef PETIT_ROBOT
     VITESSE_MAX.orientation = VITESSE_ANGLE_PAS;
