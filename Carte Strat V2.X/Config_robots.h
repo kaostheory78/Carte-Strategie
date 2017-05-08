@@ -227,7 +227,7 @@ extern "C" {
     /**************************************************************************/
     #define _ENTRAXE_MM                  206.4
     #define _DIAMETRE_ROUE_CODEUSE       0. //51.9715     //Toujours dans le sens de l'erreur : aler plus loin = diminuer D
-    #define _PERIMETRE_ROUE_MM           ( 130.9 )
+    #define _PERIMETRE_ROUE_MM           ( 128.)
 
 
     //+COEF_D -> + a droite

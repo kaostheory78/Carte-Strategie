@@ -55,7 +55,7 @@ void init_system (void)
 
     // Init des uart
     InitUART(UART_XBEE, 115200);
-    InitUART(UART_AX12, 500000);
+    InitUART(UART_AX12, 1000000);
     
     delay_ms(1000);
     
