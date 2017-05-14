@@ -339,13 +339,19 @@ extern "C" {
     //La définition des ports relatif à chaque carte se trouve
     //Dans le fichier system.h
 
-    #define CAPT_PINCE                 CAPTEUR1
-    #define CAPT_IR_ARRIERE_GAUCHE     CAPTEUR2
-    #define CAPT_IR_ARRIERE_DROIT      CAPTEUR6
-    #define CAPT_IR_ARRIERE_CENTRE     CAPTEUR7
-    #define CAPT_US_DROIT              CAPTEUR5
-    #define CAPT_US_GAUCHE             CAPTEUR4
-    #define CAPT_US_BALISE             CAPTEUR8
+    #define CAPT_PINCE_AV               CAPTEUR7
+    #define ETAT_CAPTEUR_PINCE_AV       ETAT_BAS
+
+    #define CAPT_PINCE_AR               CAPTEUR8
+    #define ETAT_CAPTEUR_PINCE_AR       ETAT_BAS
+
+//    #define CAPT_PINCE_AV              CAPTEUR1
+//    #define CAPT_IR_ARRIERE_GAUCHE     CAPTEUR2
+//    #define CAPT_IR_ARRIERE_DROIT      CAPTEUR6
+//    #define CAPT_IR_ARRIERE_CENTRE     CAPTEUR7
+//    #define CAPT_US_DROIT              CAPTEUR5
+//    #define CAPT_US_GAUCHE             CAPTEUR4
+//    #define CAPT_US_BALISE             CAPTEUR8
 
     // Définition des standart pour la fonction évitement
     // ETAT : etat de detection du capteur (si il détecte à un : ETAT_HAUT)

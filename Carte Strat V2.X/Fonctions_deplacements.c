@@ -2760,5 +2760,8 @@ if(id == id_evitement_initial){
     calcul_en_cours = OFF;
 }
 
-void detect (uint8_t arg) {EVITEMENT_ADV.detection = arg;}
+void detect (uint8_t arg) 
+{
+    EVITEMENT_ADV.detection = arg;
+}
 

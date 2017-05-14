@@ -69,6 +69,7 @@
     volatile __attribute__((near)) _compteur_temps_match CPT_TEMPS_MATCH;
     volatile _enum_couleurs COULEUR;
     volatile _enum_flag_action FLAG_ACTION;
+    volatile _timer_event timer_event;
 
 
     int obstacle[30][20];
@@ -116,15 +117,13 @@ int main(int argc, char** argv)
     /**************************************************************************/
     /**************************************************************************/
 
-    //init_decalage_AX12 ();
-    //init_position_AX12();
+    init_decalage_AX12 ();
+    init_position_AX12();
 
     /**************************************************************************/
     /**************************************************************************/
     /**************************************************************************/
     
-
-    //while(SYS_JACK);
     strategie();
 
     //reglage_odometrie();

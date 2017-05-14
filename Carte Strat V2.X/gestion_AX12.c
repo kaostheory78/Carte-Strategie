@@ -78,12 +78,15 @@ void init_decalage_AX12 (void)      //Declaration de l'enchainement de montage d
 void init_position_AX12 (void)      //Force l'état premier des AX12 à l'angle 0
 {
     uint8_t i = 0;
+    
     for (i = 0 ; i < ID_MAX_AX12 ; i++)
     {
-        position_AX12[i].angle    = 0;
-        position_AX12[i].point    = 0;
-        position_AX12[i].nb_echec = 0;
-        position_AX12[i].present  = false;
+        position_AX12[i].angle         = 0;
+        position_AX12[i].point         = 0;
+        position_AX12[i].nb_echec      = 0;
+        position_AX12[i].nb_tentatives = 0;
+        position_AX12[i].erreur        = PAS_D_ERREUR;
+        position_AX12[i].present       = false;
     }
     
 #ifdef GROS_ROBOT
@@ -94,7 +97,17 @@ void init_position_AX12 (void)      //Force l'état premier des AX12 à l'angle 0
 #endif
     
 #ifdef PETIT_ROBOT
-
+    position_AX12[PINCE_BAS_AV].present  = true;
+    position_AX12[PINCE_BAS_AR].present  = true;
+    
+    position_AX12[PINCE_HAUT_AV].present  = true;
+    position_AX12[PINCE_HAUT_AR].present  = true;
+    
+    position_AX12[ASC_AVANT].present  = true;
+    position_AX12[ASC_ARRIERE].present  = true;
+    
+    position_AX12[BITE_AV].present = true;
+    position_AX12[BITE_AR].present = true;
 #endif
 }
 
@@ -357,9 +370,14 @@ uint8_t Ping (uint8_t ID)
     commande_AX12(ID, _2PARAM, PING);
 
     if (ax12.erreur == PAS_D_ERREUR)
+    {
         return REPONSE_OK;
+    }
     else
+    {
+        printf("\n\rPing for ax %d FAILED", ID);
         return PAS_DE_REPONSE;
+    }
 }
 
 /**
@@ -437,6 +455,33 @@ void eteindre_LED_AX12 (uint8_t ID)
 void torque_enable_ax12(uint8_t ID, _Bool mode)
 {
     commande_AX12(ID, _4PARAM, WRITE_DATA, 0x18, (uint8_t) mode);
+}
+
+/**
+ * check if ax12 is moving and if position is reached
+ * @param ID
+ * @return bool
+ */
+bool is_target_ax12_reachead (uint8_t ID)
+{
+    bool isPositionReached = false;
+    uint8_t isAx12Moving = read_data(ID, LIRE_MOUV_FLAG);
+    
+    if (isAx12Moving == 0)
+    {
+        int16_t position = read_data(ID, LIRE_POSITION_ACTU);
+        if ( (position < (position_AX12[ID].point + POSITION_REACHED_AX) ) &&
+             (position > (position_AX12[ID].point - POSITION_REACHED_AX) ) )
+        {
+            isPositionReached = true;
+        }
+        else
+        {
+            angle_AX12(ID, position_AX12[ID].point, VITESSE_MAX_AX, SANS_ATTENTE);
+        }
+    }
+    
+    return isPositionReached;
 }
 
 
@@ -590,7 +635,7 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, ...)
             traitement_reception_ax12();
         }
    
-        //delay_us(10);
+        delay_us(50);
 //        if (ax12.erreur == LIMITATION_DE_COURANT && CHECK_LIMITATION_COURANT == true && nombre_reset < 2)
 //        {
 //            ax12.tentatives = 0;
@@ -603,9 +648,13 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, ...)
     }while (ax12.erreur != PAS_D_ERREUR && ax12.tentatives < MAX_TENTATIVES );
     
     // Enregistrement des données AX12 :
-    position_AX12[ID].nb_echec += (uint16_t) (ax12.tentatives - 1);
-    position_AX12[ID].erreur = ax12.erreur;
+    position_AX12[ID].nb_tentatives += (uint16_t) (ax12.tentatives - 1);
     
+    if(ax12.erreur != PAS_D_ERREUR)
+    {
+        position_AX12[ID].nb_echec +=1;
+        position_AX12[ID].erreur = ax12.erreur;
+    }
 
 //    if (ax12.erreur != PAS_D_ERREUR)
 //    {
@@ -731,16 +780,24 @@ void lecture_position_AX12 (uint8_t *ax12, int taille)
  * Si jamais un ax12 né répond pas, son état d'erreur va être mis à jour lors du 
  * Ping et l'on pourra traiter l'erreur plus tard en temps voulu
  */
-void checkup_com_ax12()
+uint8_t checkup_com_ax12()
 {
+    uint8_t status = PAS_D_ERREUR;
     uint8_t id = 0;
+    
     for (id = 0 ; id < ID_MAX_AX12 ; id++)
     {
         if (position_AX12[id].present == true)
         {
-            Ping(id);
+            if (Ping(id) != REPONSE_OK )
+            {
+                printf("\n\r Ping for ax %d FAILED", id);
+                status = PAS_DE_REPONSE;
+            }
         }
     }
+    
+    return status;
 }
 
 /**
@@ -785,7 +842,7 @@ void print_statistique_ax12()
     {
         if (position_AX12[id].present == true)
         {
-            printf("\n\rID : %d\tEchec : %d\tErr Act : %d",  id, position_AX12[id].nb_echec, position_AX12[id].erreur);
+            printf("\n\rID : %d\tEchec : %d\tTentatives : %d\tErr Act : %d",  id, position_AX12[id].nb_echec, position_AX12[id].nb_tentatives, position_AX12[id].erreur);
         }
     }
 #endif

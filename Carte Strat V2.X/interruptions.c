@@ -145,6 +145,9 @@ void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
         IPC7bits.U2TXIP	= 7;
         IPC7bits.U2RXIP = 7;     
         
+        // On coupe le couple de tous les ax12
+        torque_enable_ax12(TOUS_LES_AX12, false);
+                
         while(1);
     }
     
@@ -178,6 +181,44 @@ void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void)
     FLAG_TIMER_200ms = 0;        //On clear le flag d'interruption du timer
     TIMER_200ms = ACTIVE;
 }
+
+/******************************************************************************/
+/************************* GESTION DES TIMER SOFT *****************************/
+/******************************************************************************/
+
+// /!\ ATTENTION 1 SEUL A LA FOIS POUR LE MOMENT AVEC UNIQUEMENT EVENT FLAG_ACTION /!\ //
+
+/**
+ * définit une action à réaliser à la fin d'un temps donné
+ * @param t_ms  : temps dans lequel le timer se déclenche
+ * @param event : event du flag action
+ */
+void arm_timer(uint32_t t_ms, uint8_t event)
+{
+    timer_event.timer_actif = false;
+    timer_event.event = event;
+    timer_event.temps_echeance = CPT_TEMPS_MATCH.t_ms + t_ms;
+    
+    timer_event.timer_actif = true;
+}
+
+void unarm_timer()
+{    
+    timer_event.timer_actif = false;
+}
+
+void check_timer_event()
+{
+    if (timer_event.timer_actif == true)
+    {
+        if (CPT_TEMPS_MATCH.t_ms >= timer_event.temps_echeance)
+        {
+            FLAG_ACTION = timer_event.event;
+            timer_event.timer_actif = false;
+        }
+    }
+}
+
 
 /******************************************************************************/
 /************************** INTERRUPTION DES QEI ******************************/

@@ -46,13 +46,19 @@ void strategie()
 
         
     #ifdef PETIT_ROBOT
-       
-        //while(!SYS_JACK);
+        
 //        CPT_TEMPS_MATCH.actif = true;
         EVITEMENT_ADV.actif = OFF;
         EVITEMENT_ADV.mode = STOP;
         
+        jack();
+        CPT_TEMPS_MATCH.actif = true;
+        
         init_position_robot(0., 0., 0.);
+        delay_ms(2000);
+        FLAG_ACTION = START_ROBOT;
+        
+        while(FLAG_ACTION != TOUR_COMPLETE);
         //brake();
         //avancer_reculer(500, 100);
                   

@@ -266,6 +266,7 @@ typedef struct
     extern volatile _enum_couleurs COULEUR;
     extern volatile _enum_flag_action FLAG_ACTION;
     extern volatile __attribute__((near)) _compteur_temps_match CPT_TEMPS_MATCH;
+    extern volatile _timer_event timer_event;
 
     extern volatile _ax12 ax12;
     extern volatile _Bool CHECK_LIMITATION_COURANT;

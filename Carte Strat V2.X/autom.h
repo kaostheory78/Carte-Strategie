@@ -43,19 +43,26 @@ extern "C" {
         JAUNE
     }_enum_couleurs;
     
+    typedef enum
+    {
+        AVANT,
+        ARRIERE,
+        LES_DEUX
+    }_cote;
+    
 
     /**************************************************************************/
     /*************************** DEFINE ID AX12 *******************************/
     /**************************************************************************/
 
 #ifdef PETIT_ROBOT
-    #define PINCE_BAS_AV            
+    #define PINCE_BAS_AV            7
     #define PINCE_BAS_AR            5
-    #define PINCE_HAUT_AV           
+    #define PINCE_HAUT_AV           1
     #define PINCE_HAUT_AR           2
-    #define ASC_AVANT
+    #define ASC_AVANT               9
     #define ASC_ARRIERE             10
-    #define BITE_AV                 
+    #define BITE_AV                 6
     #define BITE_AR                 8
 #endif
 
@@ -71,13 +78,20 @@ extern "C" {
     /**************************************************************************/
 
 #ifdef  PETIT_ROBOT
-#define PINCE__POS_REPLI
-#define PINCE_POS_OUVERTE               630
-#define PINCE_POS_FERME                 // 530 pour quand fils
-    
-#define ASC_POS_BAS                     320     // AR
-#define ASC_POS_INIT            
-#define ASC_POS_HAUT                    793 // AR
+    #define PINCE_POS_REPLI                 848
+    #define PINCE_POS_OUVERTE               630
+    #define PINCE_POS_ENTROUVERTE           575
+    #define PINCE_POS_FERME                 535  // 540
+
+    #define ASC_AR_POS_BAS                     320    
+    #define ASC_AR_POS_INIT                    440 
+    #define ASC_AR_POS_INIT_MAX                560
+    #define ASC_AR_POS_HAUT                    803 // 793
+
+    #define ASC_AV_POS_BAS                     291    
+    #define ASC_AV_POS_INIT                    392
+    #define ASC_AV_POS_INIT_MAX                510
+    #define ASC_AV_POS_HAUT                    770 // 760
             
 #endif
 
@@ -91,10 +105,38 @@ extern "C" {
 
     typedef enum
     {
-        NE_RIEN_FAIRE,                                       
+        NE_RIEN_FAIRE,   
+        EN_ATTENTE_EVENT,
 
 #ifdef  PETIT_ROBOT
         // FLAG_ACTION DU PETIT ROBOT
+                
+        /*** INIT ***/        
+        START_ROBOT,
+        WAIT_PINCES_OUVERTES,
+        WAIT_INIT_ROBOT_COMPLETE,
+        INIT_ROBOT_COMPLETE,
+                
+        /*** RECHERCHE MODULE ***/
+                PROCESS_MODULE_READY,
+                RECHERCHE_MODULE_AVANT,
+                RECHERCHE_MODULE_ARRIERE,
+                MODULE_DETECTED_AVANT,
+                MODULE_DETECTED_ARRIERE,
+                ATTENTE_MONTEE_AVANT,
+                ATTENTE_MONTEE_ARRIERE,
+                ASC_AVANT_EN_MONTEE,
+                ASC_ARRIERE_EN_MONTEE,
+                FERMETURE_PINCE_HAUT_AVANT,
+                FERMETURE_PINCE_HAUT_ARRIERE,
+                PREPARE_REDESCENTE_AVANT,
+                PREPARE_REDESCENTE_ARRIERE,
+                ATTENTE_REDESCENTE_AVANT,
+                ATTENTE_REDESCENTE_ARRIERE,
+                ATTENTE_CYCLE_MONTAGE_AVANT_COMPLET,
+                ATTENTE_CYCLE_MONTAGE_ARRIERE_COMPLET,
+                TOUR_COMPLETE,
+                
 #endif
 
 #ifdef GROS_ROBOT
@@ -104,9 +146,18 @@ extern "C" {
         FIN_DE_MATCH
             
     }_enum_flag_action;
+    
+    
+/******************************************************************************/
+/********************** DEFINITION DES STRUCTURES *****************************/
+/******************************************************************************/
 
-
-
+typedef struct
+{
+    bool timer_actif;
+    uint32_t temps_echeance;
+    _enum_flag_action event;
+}_timer_event;
 
 /******************************************************************************/
 /******************************************************************************/
@@ -125,7 +176,9 @@ extern "C" {
     void son_evitement (uint8_t melodie);
 
 #ifdef  PETIT_ROBOT
-
+    // Fonctions init
+    void init_system_arriere();
+    void init_system_avant();
 #endif
 
 #ifdef  GROS_ROBOT
@@ -165,4 +218,5 @@ extern "C" {
 #endif
 
 #endif	/* AUTOM_H */
+
 

@@ -45,6 +45,7 @@ extern "C" {
 // /!\ VARIABLE CODEE SUR 4 BIT !!! /!\ //
 // /!\      VALEUR MAX : 15         /!\ //
 #define MAX_TENTATIVES          10
+#define POSITION_REACHED_AX     50
     
     
 #define CKECK_LIMITATION_COURANT _CKECK_LIMITATION_COURANT 
@@ -79,12 +80,14 @@ extern "C" {
 
 //types de données à lire :
 #define LIRE_TEMPS_REPONSE  0x05
+#define LIRE_MAX_TORQUE     0x22
 #define LIRE_POSITION_ACTU  0x24
 #define LIRE_POSITION_CONSIGNE 0x30
 #define LIRE_VITESSE_ACTU   0x26
 #define LIRE_TENSION        0x2A
 #define LIRE_TEMPERATURE    0x2B
 #define LIRE_MOUV_FLAG      0x2E
+#define LIRE_COURANT_MIN    0x30
 
 
     //flag paramètres fonctions
@@ -151,6 +154,7 @@ extern "C" {
 #define POSITION_MAX_AX         1024.
 #define ANGLE_MAX_AX            300.
 #define PAS_DE_CORRECTION_ANGLE_FIN 3000
+#define VITESSE_MAX_AX          1023
 
     //defines vitesses de com
 #define _9600b                  0xCF
@@ -223,6 +227,7 @@ extern "C" {
         _Bool present               :  1;
         _enum_erreur_ax12 erreur    :  3;
         uint16_t nb_echec           : 12;
+        uint16_t nb_tentatives      : 16;
         uint16_t point;
         //int point_mini;   //si implémentation de limite mini et max dans le code
         //int point_maxi;
@@ -348,6 +353,12 @@ void lancer_autom_AX12 (void);
  */
 void rotation_AX12 (uint8_t ID, uint8_t sens, uint16_t vitesse);
 
+/**
+ * check if ax12 is moving and if position is reached
+ * @param ID
+ * @return bool
+ */
+bool is_target_ax12_reachead (uint8_t ID);
 
 /******************************************************************************/
 /****************** Fonctions de reconfiguration des AX12**********************/
@@ -558,8 +569,10 @@ void lecture_position_AX12 (uint8_t *ax12, int taille);
  * le code
  * Si jamais un ax12 né répond pas, son état d'erreur va être mis à jour lors du 
  * Ping et l'on pourra traiter l'erreur plus tard en temps voulu
+ * 
+ * @return uint8_t : PAS_D_ERREUR || PAS_DE_REPONSE
  */
-void checkup_com_ax12();
+uint8_t checkup_com_ax12();
 
 
 /**

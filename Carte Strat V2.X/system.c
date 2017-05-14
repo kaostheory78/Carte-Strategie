@@ -71,6 +71,7 @@ void init_system (void)
     // AUTOMS
     FLAG_ACTION = NE_RIEN_FAIRE;
     COULEUR = JAUNE;
+    timer_event.timer_actif = false;
     
     init_compteur_temps_match();
     init_flag_asserv();
