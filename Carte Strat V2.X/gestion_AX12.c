@@ -416,7 +416,7 @@ void mode_rotation_AX12 (uint8_t ID, uint8_t mode)
  */
 void allumer_LED_AX12 (uint8_t ID)
 {
-    commande_AX12(ID, _5PARAM, WRITE_DATA, 0x19, 0x01, 0x01);
+    commande_AX12(ID, _4PARAM, WRITE_DATA, 0x19, 0x01);
 }
 
 /**
@@ -425,7 +425,7 @@ void allumer_LED_AX12 (uint8_t ID)
  */
 void eteindre_LED_AX12 (uint8_t ID)
 {
-    commande_AX12(ID, _5PARAM, WRITE_DATA, 0x19);
+    commande_AX12(ID, _4PARAM, WRITE_DATA, 0x19, 0x00);
 }
 
 /**

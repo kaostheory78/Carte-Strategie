@@ -49,7 +49,14 @@ extern "C" {
     /**************************************************************************/
 
 #ifdef PETIT_ROBOT
-    
+    #define PINCE_BAS_AV            
+    #define PINCE_BAS_AR            5
+    #define PINCE_HAUT_AV           
+    #define PINCE_HAUT_AR           2
+    #define ASC_AVANT
+    #define ASC_ARRIERE             10
+    #define BITE_AV                 
+    #define BITE_AR                 8
 #endif
 
 #ifdef  GROS_ROBOT
@@ -64,7 +71,14 @@ extern "C" {
     /**************************************************************************/
 
 #ifdef  PETIT_ROBOT
+#define PINCE__POS_REPLI
+#define PINCE_POS_OUVERTE               630
+#define PINCE_POS_FERME                 // 530 pour quand fils
     
+#define ASC_POS_BAS                     320     // AR
+#define ASC_POS_INIT            
+#define ASC_POS_HAUT                    793 // AR
+            
 #endif
 
 #ifdef GROS_ROBOT

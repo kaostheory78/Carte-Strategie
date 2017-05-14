@@ -786,7 +786,7 @@ External Symbols in Program Memory (by address):
                   0x00cae6                  _baud_AX12
                   0x00cb06                  _mode_rotation_AX12
                   0x00cb46                  _allumer_LED_AX12
-                  0x00cb66                  _eteindre_LED_AX12
+                  0x00cb62                  _eteindre_LED_AX12
                   0x00cb7e                  _torque_enable_ax12
                   0x00cb9e                  _reception_uart_ax12
                   0x00cc1e                  _traitement_reception_ax12
@@ -1066,7 +1066,7 @@ External Symbols in Program Memory (by name):
                   0x003ca4                  _div
                   0x008af4                  _ecretage_consignes
                   0x00e172                  _envoit_pwm
-                  0x00cb66                  _eteindre_LED_AX12
+                  0x00cb62                  _eteindre_LED_AX12
                   0x00e7a4                  _eteindre_pompe
                   0x00e380                  _evitement
                   0x006d0a                  _evitement_hugo
@@ -1676,7 +1676,7 @@ __FUID3
  .debug_abbrev    0x0014fa        0x155 build/default/production/evitement.o
  .debug_abbrev    0x00164f         0x1f build/default/production/autom_virtual.o
 
-.debug_line       0x000000       0x20f2
+.debug_line       0x000000       0x20f3
  *(.debug_line)
  .debug_line      0x000000        0x850 build/default/production/Fonctions_deplacements.o
  .debug_line      0x000850        0x166 build/default/production/Uart.o
@@ -1685,15 +1685,15 @@ __FUID3
  .debug_line      0x000dfb        0x13b build/default/production/autom_R2.o
  .debug_line      0x000f36        0x145 build/default/production/codeurs.o
  .debug_line      0x00107b         0xb7 build/default/production/debug.o
- .debug_line      0x001132        0x2a2 build/default/production/gestion_AX12.o
- .debug_line      0x0013d4        0x199 build/default/production/interruptions.o
- .debug_line      0x00156d        0x128 build/default/production/main.o
- .debug_line      0x001695        0x13f build/default/production/pwm.o
- .debug_line      0x0017d4         0xdd build/default/production/strategie.o
- .debug_line      0x0018b1        0x290 build/default/production/system.o
- .debug_line      0x001b41        0x485 build/default/production/Serialus.o
- .debug_line      0x001fc6        0x112 build/default/production/evitement.o
- .debug_line      0x0020d8         0x1a build/default/production/autom_virtual.o
+ .debug_line      0x001132        0x2a3 build/default/production/gestion_AX12.o
+ .debug_line      0x0013d5        0x199 build/default/production/interruptions.o
+ .debug_line      0x00156e        0x128 build/default/production/main.o
+ .debug_line      0x001696        0x13f build/default/production/pwm.o
+ .debug_line      0x0017d5         0xdd build/default/production/strategie.o
+ .debug_line      0x0018b2        0x290 build/default/production/system.o
+ .debug_line      0x001b42        0x485 build/default/production/Serialus.o
+ .debug_line      0x001fc7        0x112 build/default/production/evitement.o
+ .debug_line      0x0020d9         0x1a build/default/production/autom_virtual.o
 
 .debug_frame      0x000000       0x1c84
  *(.debug_frame)
@@ -3526,7 +3526,7 @@ __c30_signature
                   0x00cae6                  _baud_AX12
                   0x00cb06                  _mode_rotation_AX12
                   0x00cb46                  _allumer_LED_AX12
-                  0x00cb66                  _eteindre_LED_AX12
+                  0x00cb62                  _eteindre_LED_AX12
                   0x00cb7e                  _torque_enable_ax12
                   0x00cb9e                  _reception_uart_ax12
                   0x00cc1e                  _traitement_reception_ax12
