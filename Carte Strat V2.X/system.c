@@ -72,13 +72,12 @@ void init_system (void)
     // AUTOMS
     COULEUR = JAUNE;
     
-    for (autom_id = AUTOM_PRINCIPALE ; autom_id < AUTOM_MAX_NB ; autom_id++)
+    for (autom_id = AUTOM_ID_MIN_NB ; autom_id < AUTOM_ID_MAX_NB ; autom_id++)
     {
        FLAG_ACTION[autom_id] = NE_RIEN_FAIRE; 
+       cancel_timer(autom_id);
+       init_ax12_event(autom_id);
     }
-    
-    
-    timer_event.timer_actif = false;
     
     init_compteur_temps_match();
     init_flag_asserv();

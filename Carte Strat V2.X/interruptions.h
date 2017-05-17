@@ -18,12 +18,37 @@
 /***************************** Defines ****************************************/
 /******************************************************************************/
 
+#define AX12_OBSERVER_DEFAULT_TIMER_MS      200 
+
+/******************************************************************************/
+/********************** DEFINITION DES STRUCTURES *****************************/
+/******************************************************************************/
+
+typedef struct
+{
+    bool timer_actif;
+    uint32_t temps_echeance;
+    _enum_flag_action event;
+}_timer_event;
+
+typedef struct
+{
+    _autom_id autom_id;
+    _enum_flag_action event;
+    uint32_t time_to_throw_event;
+    bool is_observed[ID_MAX_AX12];
+}_ax12_event;
+
 /******************************************************************************/
 /****************************** Prototypes ************************************/
 /******************************************************************************/
 
-void arm_timer(uint32_t t_ms, uint8_t event);
-void unarm_timer();
+void arm_timer(_autom_id id, uint32_t t_ms, uint8_t event, bool wait_for_event);
+void void cancel_timer(_autom_id id);
+void init_ax12_event(_autom_id autom_id);
+void register_ax12_event(uint8_t ax12_ID, _autom_id autom_id, _enum_flag_action event, uint32_t timer_ms);
+void register_multiple_ax12_event(uint8_t nb_ax12, _autom_id autom_id, _enum_flag_action event, uint32_t timer_ms, ...);
+void check_ax12_event(_autom_id autom_id);
 void check_timer_event();
 
 /**

@@ -190,35 +190,166 @@ void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void)
 
 /**
  * définit une action à réaliser à la fin d'un temps donné
+ * @param id    : id du timer (contexte d'appel)
  * @param t_ms  : temps dans lequel le timer se déclenche
  * @param event : event du flag action
+ * @param wait_for_event : est ce qu'on reconfigure le flag_action pour attendre sur la fin du 
+ * timer ou non
  */
-void arm_timer(uint32_t t_ms, uint8_t event)
+void arm_timer(_autom_id id, uint32_t t_ms, uint8_t event, bool wait_for_event)
 {
-    timer_event.timer_actif = false;
-    timer_event.event = event;
-    timer_event.temps_echeance = CPT_TEMPS_MATCH.t_ms + t_ms;
+    timer_event[id].timer_actif = false;
+    timer_event[id].event = event;
+    timer_event[id].temps_echeance = CPT_TEMPS_MATCH.t_ms + t_ms;
     
-    timer_event.timer_actif = true;
-}
-
-void cancel_timer()
-{    
-    timer_event.timer_actif = false;
-}
-
-void check_timer_event()
-{
-    if (timer_event.timer_actif == true)
+    timer_event[id].timer_actif = true;
+    
+    if (wait_for_event)
     {
-        if (CPT_TEMPS_MATCH.t_ms >= timer_event.temps_echeance)
-        {
-            FLAG_ACTION = timer_event.event;
-            timer_event.timer_actif = false;
-        }
+        FLAG_ACTION[id] = EN_ATTENTE_EVENT;
     }
 }
 
+/**
+ * cancel_timer()
+ * annule le timer en cours
+ * @param id : id du timer (contexte d'appel)
+ */
+void cancel_timer(_autom_id id)
+{    
+    timer_event[id].timer_actif = false;
+}
+
+/**
+ * check_timer_event()
+ * check if a timer occured
+ */
+void check_timer_event()
+{
+    _autom_id autom_id;
+    
+    for (autom_id = AUTOM_ID_MIN_NB ; autom_id < AUTOM_ID_MAX_NB ; autom_id++)
+    {
+        if (timer_event[autom_id].timer_actif == true)
+        {
+            if (CPT_TEMPS_MATCH.t_ms >= timer_event[autom_id].temps_echeance)
+            {
+                timer_event[autom_id].timer_actif = false;
+                FLAG_ACTION[autom_id] = timer_event[autom_id].event;       
+            }
+        }
+    }  
+}
+
+
+/**
+ * init_ax12_event()
+ * initialise the global variale ax12_event
+ * @param autom_id : id de l'event (contexte d'appel)
+ */
+void init_ax12_event(_autom_id autom_id)
+{
+    uint8_t ax12_id;
+    
+    ax12_event[autom_id].event = NE_RIEN_FAIRE;
+    ax12_event[autom_id].time_to_throw_event = 0;
+    
+    for (ax12_id = 0 ; ax12_id < ID_MAX_AX12 ; ax12_id++)
+    {
+        ax12_event[autom_id].is_observed[ax12_id] = false;
+    }
+}
+
+/**
+ * register_ax12_event()
+ * 
+ * utilisé pour envoyer un évènement lorsque l'ax12 concerné a rejoint sa target
+ * la target de l'ax12 est vérifié toutes les 200 ms
+ * 
+ * @param ax12_ID : id de l'ax12 qu'on veut observer
+ * @param autom_id : id de l'event (contexte d'appel)
+ * @param event : évènement à envoyer quand la target est reached
+ * @param timer_ms : temps avant d'envoyer l'évènement quand la target est reached
+ */
+void register_ax12_event(uint8_t ax12_ID, _autom_id autom_id, _enum_flag_action event, uint32_t timer_ms)
+{
+    register_multiple_ax12_event(1, autom_id, event, timer_ms, ax12_ID);
+}
+
+/**
+ * register_multiple_ax12_event()
+ * 
+ * utilisé pour envoyer un évènement lorsque les concernés ont rejoint leur target
+ * la target de l'ax12 est vérifié toutes les 200 ms
+ * 
+ * @param nb_ax12 : n d'ax12 à observer (nb de paramètres variadiques)
+ * @param autom_id : id de l'event (contexte d'appel)
+ * @param event :  évènement à envoyer quand la target est reached
+ * @param timer_ms : temps avant d'envoyer l'évènement quand la target est reached
+ * @param ... : id des ax12 à observer
+ */
+void register_multiple_ax12_event(uint8_t nb_ax12, _autom_id autom_id, _enum_flag_action event, uint32_t timer_ms, ...)
+{
+    uint8_t i; 
+    va_list liste_ax12;
+    va_start(liste_ax12, timer_ms);
+    
+    // Register event
+    for (i = 0 ; i < nb_ax12 ; i++)
+    {
+       ax12_event[autom_id].is_observed[va_arg(liste_ax12, uint8_t)] = true;
+    }
+    
+    ax12_event[autom_id].time_to_throw_event = timer_ms;
+    ax12_event[autom_id].autom_id = autom_id; // possible to send the event to another timer but not safe for the state machine
+    ax12_event[autom_id].event = event;
+    
+    va_end(liste_ax12);
+    
+    // Start listening event
+    arm_timer(autom_id, AX12_OBSERVER_DEFAULT_TIMER_MS, CHECK_AX12_EVENT, true);
+}
+
+/**
+ * check_ax12_event()
+ * check if an ax12 event occured and need to be notified
+ * @param autom_id : contexte d'appel
+ */
+void check_ax12_event(_autom_id autom_id)
+{
+    bool event_reached = true;
+    uint8_t id_ax12 = 0;
+    
+    for (id_ax12 = 0 ; id_ax12 < ID_MAX_AX12 ; id_ax12++)
+    {
+        // Check is condition is reached for all obvserved ax12
+        if (ax12_event[autom_id].is_observed[id_ax12] == true)
+        {
+            // if the target is reached for an ax12, we remove it from obsvers
+            if (is_target_ax12_reachead(id_ax12) == true)
+            {
+                ax12_event[autom_id].is_observed[id_ax12] = false;
+            }
+            // otherwise the condition is not reached yet
+            else
+            {
+                event_reached = false;
+            }
+        }
+    }
+    
+    // if all observed ax12 have reached target
+    if (event_reached == true)
+    {
+        // event is send after the required time
+        arm_timer(ax12_event[autom_id].autom_id, ax12_event[autom_id].event, ax12_event[autom_id].time_to_throw_event, true);
+    }
+    else
+    {
+        // We're still waiting for the ax12 to reach the target
+        arm_timer(autom_id, AX12_OBSERVER_DEFAULT_TIMER_MS, CHECK_AX12_EVENT, true);
+    }
+}
 
 /******************************************************************************/
 /************************** INTERRUPTION DES QEI ******************************/

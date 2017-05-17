@@ -242,7 +242,7 @@ typedef struct
     extern volatile __attribute__((near)) _robot ROBOT;
     extern volatile __attribute__((near)) _acc acc;
     extern volatile __attribute__((near)) _PID PID;
-    extern volatile __attribute__((near)) _flag_asserv FLAG_ASSERV[AUTOM_MAX_NB];
+    extern volatile __attribute__((near)) _flag_asserv FLAG_ASSERV[AUTOM_ID_MAX_NB];
 
     extern volatile __attribute__((near)) _systeme_asserv X;
     extern volatile __attribute__((near)) _systeme_asserv Y;
@@ -263,10 +263,11 @@ typedef struct
     extern volatile _evitement EVITEMENT_ADV;
     
     // FLAG Automs
-    extern volatile _enum_couleurs COULEUR;
-    extern volatile _enum_flag_action FLAG_ACTION;
     extern volatile __attribute__((near)) _compteur_temps_match CPT_TEMPS_MATCH;
-    extern volatile _timer_event timer_event;
+    extern volatile _enum_couleurs COULEUR;
+    extern volatile _enum_flag_action FLAG_ACTION[AUTOM_ID_MAX_NB];
+    extern volatile _timer_event timer_event[AUTOM_ID_MAX_NB];
+    extern volatile _ax12_event ax12_event[AUTOM_ID_MAX_NB];
 
     extern volatile _ax12 ax12;
     extern volatile _Bool CHECK_LIMITATION_COURANT;

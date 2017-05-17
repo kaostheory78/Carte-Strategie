@@ -345,24 +345,23 @@ void montage_tour()
 
 void recherche_modules_pince(_cote cote)
 {
-    if (cote == AVANT)
+    if (cote == AVANT || cote == LES_DEUX)
     {
         if (CAPT_PINCE_AV == ETAT_CAPTEUR_PINCE_AV)
         {
-            // On attends 400 ms pour vérfier que le module est bien dans la pince
+            // On attends 300 ms pour vérfier que le module est bien dans la pince
             // et que ce n'est pas un faux positif
-            arm_timer(400, MODULE_DETECTED_AVANT);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
+            arm_timer(AUTOM_AVANT, 300, MODULE_DETECTED_AVANT, true);          
         }
     }
-    else if (cote == ARRIERE)
+    
+    if (cote == ARRIERE || cote == LES_DEUX)
     {
         if (CAPT_PINCE_AR == ETAT_CAPTEUR_PINCE_AR)
         {
-            // On attends 400 ms pour vérfier que le module est bien dans la pince
+            // On attends 300 ms pour vérfier que le module est bien dans la pince
             // et que ce n'est pas un faux positif
-            arm_timer(400, MODULE_DETECTED_ARRIERE);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
+            arm_timer(AUTOM_ARRIERE, 300, MODULE_DETECTED_AVANT, true);     
         }
     }
 }
@@ -624,7 +623,7 @@ void attente_rdescente_complete (_cote cote)
 void autom_20ms (void)
 {
     _autom_id autom_id;
-    // Check timer event :
+
     check_timer_event();
     
     //fonction qui definit les actions
@@ -632,6 +631,9 @@ void autom_20ms (void)
     {
         case NE_RIEN_FAIRE:
         case EN_ATTENTE_EVENT :
+            break;
+        case CHECK_AX12_EVENT :
+            check_ax12_event(AUTOM_PRINCIPALE);
             break;
         case START_ROBOT :
             start_robot();
@@ -654,10 +656,16 @@ void autom_20ms (void)
             break;
     }
     
-    for (autom_id = AUTOM_AVANT ; autom_id < AUTOM_ARRIEIRE ; autom_id++)
+    for (autom_id = AUTOM_AVANT ; autom_id < AUTOM_ARRIERE ; autom_id++)
     {
         switch(FLAG_ACTION[autom_id])
         {
+            case NE_RIEN_FAIRE:
+            case EN_ATTENTE_EVENT :
+                break;
+            case CHECK_AX12_EVENT :
+                check_ax12_event(autom_id);
+                break;
             case RECHERCHE_MODULE_AVANT :
             case RECHERCHE_MODULE_ARRIERE :
                 recherche_modules_pince(autom_id);

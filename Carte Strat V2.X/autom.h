@@ -45,16 +45,17 @@ extern "C" {
     
     typedef enum
     {
-        AUTOM_PRINCIPALE = 0,
+        AUTOM_ID_MIN_NB = 0,
+        AUTOM_PRINCIPALE = AUTOM_ID_MIN_NB,
         AUTOM_AVANT,
-        AUTOM_ARRIEIRE,
-        AUTOM_MAX_NB        
+        AUTOM_ARRIERE,
+        AUTOM_ID_MAX_NB        
     }_autom_id;
     
     typedef enum
     {
         AVANT = AUTOM_AVANT,
-        ARRIERE = AUTOM_ARRIEIRE,
+        ARRIERE = AUTOM_ARRIERE,
         LES_DEUX
     }_cote;
     
@@ -117,6 +118,7 @@ extern "C" {
     {
         NE_RIEN_FAIRE,   
         EN_ATTENTE_EVENT,
+        CHECK_AX12_EVENT,
 
 #ifdef  PETIT_ROBOT
         // FLAG_ACTION DU PETIT ROBOT
@@ -157,18 +159,6 @@ extern "C" {
             
     }_enum_flag_action;
     
-    
-/******************************************************************************/
-/********************** DEFINITION DES STRUCTURES *****************************/
-/******************************************************************************/
-
-typedef struct
-{
-    bool timer_actif;
-    uint32_t temps_echeance;
-    _enum_flag_action event;
-}_timer_event;
-
 /******************************************************************************/
 /******************************************************************************/
 /******************************************************************************/
