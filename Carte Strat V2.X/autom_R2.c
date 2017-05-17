@@ -45,6 +45,8 @@ void jack()
     {
         printf("\n\r checkup_com_ax12 FAILED");
         // TODO - qu'est ce qu'on fait ??????
+        init_system_avant();
+        init_system_arriere();
     }
     
     while(SYS_JACK);
@@ -621,12 +623,12 @@ void attente_rdescente_complete (_cote cote)
 
 void autom_20ms (void)
 {
-
+    _autom_id autom_id;
     // Check timer event :
     check_timer_event();
     
     //fonction qui definit les actions
-    switch (FLAG_ACTION)
+    switch (FLAG_ACTION[AUTOM_PRINCIPALE])
     {
         case NE_RIEN_FAIRE:
         case EN_ATTENTE_EVENT :
@@ -645,60 +647,50 @@ void autom_20ms (void)
             arm_timer(4000, PROCESS_MODULE_READY);
             FLAG_ACTION = EN_ATTENTE_EVENT;
             break;
-            
         case PROCESS_MODULE_READY :
             montage_tour();
             break;
-        case RECHERCHE_MODULE_AVANT :
-            recherche_modules_pince(AVANT);
-            break;
-        case RECHERCHE_MODULE_ARRIERE :
-            recherche_modules_pince(ARRIERE);
-            break;
-        case MODULE_DETECTED_AVANT :
-            debut_attrape_module(AVANT);
-            break;
-        case MODULE_DETECTED_ARRIERE :
-            debut_attrape_module(ARRIERE);
-            break;
-        case ATTENTE_MONTEE_AVANT :
-            attente_fermeture_pinces_avant_montee(AVANT);
-            break;
-        case ATTENTE_MONTEE_ARRIERE :
-            attente_fermeture_pinces_avant_montee(ARRIERE);
-            break;
-        case ASC_AVANT_EN_MONTEE :
-            attente_ascenseur_en_haut(AVANT);
-            break;
-        case ASC_ARRIERE_EN_MONTEE :
-            attente_ascenseur_en_haut(ARRIERE);
-            break;
-        case FERMETURE_PINCE_HAUT_AVANT :
-            attente_fermeture_pince_en_haut(AVANT);
-            break;
-        case FERMETURE_PINCE_HAUT_ARRIERE :
-            attente_fermeture_pince_en_haut(ARRIERE);
-            break;
-        case PREPARE_REDESCENTE_AVANT :
-            ouvrir_pince_pour_redescenre(AVANT);
-            break;
-        case PREPARE_REDESCENTE_ARRIERE :
-            ouvrir_pince_pour_redescenre(ARRIERE);
-            break;
-        case ATTENTE_REDESCENTE_AVANT :
-            attente_ouverture_pince_pour_redescente(AVANT);
-            break;
-        case ATTENTE_REDESCENTE_ARRIERE :
-            attente_ouverture_pince_pour_redescente(ARRIERE);
-            break;
-        case ATTENTE_CYCLE_MONTAGE_AVANT_COMPLET :
-            attente_rdescente_complete(AVANT);
-            break;
-        case ATTENTE_CYCLE_MONTAGE_ARRIERE_COMPLET :
-            attente_rdescente_complete(ARRIERE);
-            break;
         default :
             break;
+    }
+    
+    for (autom_id = AUTOM_AVANT ; autom_id < AUTOM_ARRIEIRE ; autom_id++)
+    {
+        switch(FLAG_ACTION[autom_id])
+        {
+            case RECHERCHE_MODULE_AVANT :
+            case RECHERCHE_MODULE_ARRIERE :
+                recherche_modules_pince(autom_id);
+                break;
+            case MODULE_DETECTED_AVANT :
+            case MODULE_DETECTED_ARRIERE :
+                debut_attrape_module(autom_id);
+                break;
+            case ATTENTE_MONTEE_AVANT :
+            case ATTENTE_MONTEE_ARRIERE :
+                attente_fermeture_pinces_avant_montee(autom_id);
+                break;
+            case ASC_AVANT_EN_MONTEE :
+            case ASC_ARRIERE_EN_MONTEE :
+                attente_ascenseur_en_haut(autom_id);
+                break;
+            case FERMETURE_PINCE_HAUT_AVANT :
+            case FERMETURE_PINCE_HAUT_ARRIERE :
+                attente_fermeture_pince_en_haut(autom_id);
+                break;
+            case PREPARE_REDESCENTE_AVANT :
+            case PREPARE_REDESCENTE_ARRIERE :
+                ouvrir_pince_pour_redescenre(autom_id);
+                break;
+            case ATTENTE_REDESCENTE_AVANT :
+            case ATTENTE_REDESCENTE_ARRIERE :
+                attente_ouverture_pince_pour_redescente(autom_id);
+                break;
+            case ATTENTE_CYCLE_MONTAGE_AVANT_COMPLET :
+            case ATTENTE_CYCLE_MONTAGE_ARRIERE_COMPLET :
+                attente_rdescente_complete(autom_id);
+                break;
+        }
     }
     
 //    if (EVITEMENT_ADV.actif == true && EVITEMENT_ADV.detection == OFF)
@@ -710,6 +702,17 @@ void autom_20ms (void)
 //    }
 //    //else
 //        //position standart
+    
+}
+
+
+void autom_avant()
+{
+    
+}
+
+void autom_arriere()
+{
     
 }
 

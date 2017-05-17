@@ -242,7 +242,7 @@ typedef struct
     extern volatile __attribute__((near)) _robot ROBOT;
     extern volatile __attribute__((near)) _acc acc;
     extern volatile __attribute__((near)) _PID PID;
-    extern volatile __attribute__((near)) _flag_asserv FLAG_ASSERV;
+    extern volatile __attribute__((near)) _flag_asserv FLAG_ASSERV[AUTOM_MAX_NB];
 
     extern volatile __attribute__((near)) _systeme_asserv X;
     extern volatile __attribute__((near)) _systeme_asserv Y;

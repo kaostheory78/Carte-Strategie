@@ -45,10 +45,20 @@ extern "C" {
     
     typedef enum
     {
-        AVANT,
-        ARRIERE,
+        AUTOM_PRINCIPALE = 0,
+        AUTOM_AVANT,
+        AUTOM_ARRIEIRE,
+        AUTOM_MAX_NB        
+    }_autom_id;
+    
+    typedef enum
+    {
+        AVANT = AUTOM_AVANT,
+        ARRIERE = AUTOM_ARRIEIRE,
         LES_DEUX
     }_cote;
+    
+//    typedef
     
 
     /**************************************************************************/

@@ -202,7 +202,7 @@ void arm_timer(uint32_t t_ms, uint8_t event)
     timer_event.timer_actif = true;
 }
 
-void unarm_timer()
+void cancel_timer()
 {    
     timer_event.timer_actif = false;
 }

@@ -68,7 +68,7 @@
 
     volatile __attribute__((near)) _compteur_temps_match CPT_TEMPS_MATCH;
     volatile _enum_couleurs COULEUR;
-    volatile _enum_flag_action FLAG_ACTION;
+    volatile _enum_flag_action FLAG_ACTION[AUTOM_MAX_NB];
     volatile _timer_event timer_event;
 
 

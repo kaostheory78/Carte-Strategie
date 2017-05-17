@@ -28,6 +28,7 @@
 
 void init_system (void)
 {
+    uint8_t autom_id = AUTOM_PRINCIPALE;
     init_clock();
  
     OVERFLOW_CODEUR[CODEUR_D] = PAS_D_OVERFLOW_CODEUR;
@@ -69,8 +70,14 @@ void init_system (void)
     init_evitement();
 
     // AUTOMS
-    FLAG_ACTION = NE_RIEN_FAIRE;
     COULEUR = JAUNE;
+    
+    for (autom_id = AUTOM_PRINCIPALE ; autom_id < AUTOM_MAX_NB ; autom_id++)
+    {
+       FLAG_ACTION[autom_id] = NE_RIEN_FAIRE; 
+    }
+    
+    
     timer_event.timer_actif = false;
     
     init_compteur_temps_match();
