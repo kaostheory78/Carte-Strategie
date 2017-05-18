@@ -58,7 +58,7 @@ void strategie()
         delay_ms(2000);
         FLAG_ACTION = START_ROBOT;
         
-        while(FLAG_ACTION != TOUR_COMPLETE);
+        while(FLAG_ACTION != MT_TOUR_COMPLETE);
         //brake();
         //avancer_reculer(500, 100);
                   

@@ -20,8 +20,7 @@
 /*************************** Variables Globales *******************************/
 /******************************************************************************/
 
-static uint8_t modules_tour_avant = 0;
-static uint8_t modules_tour_arriere = 0;
+static uint8_t modules_tour[LES_DEUX] = {0};
 
 /******************************************************************************/
 /***************************** FONCTIONS DIVERSES *****************************/
@@ -67,7 +66,75 @@ void son_evitement (uint8_t melodie)
     commande_AX12(100, _4PARAM, WRITE_DATA, 0x29, 10);
     commande_AX12(100, _4PARAM, WRITE_DATA, 0x28, melodie);
 
-  */}
+  */
+}
+
+uint8_t getIdAx12 (_type_actionneur type_actionneur, _cote cote)
+{
+    uint8_t idAx12;
+    
+    switch(type_actionneur)
+    {
+        case PINCE_BAS :
+            if (cote == AVANT)
+            {
+                idAx12 = PINCE_BAS_AV;
+            }
+            else
+            {
+                idAx12 = PINCE_BAS_AR;
+            }
+            break;
+        case PINCE_HAUT :
+            if (cote == AVANT)
+            {
+                idAx12 = PINCE_HAUT_AV;
+            }
+            else
+            {
+                idAx12 = PINCE_HAUT_AR;
+            }
+            break;
+        case ASCENSEUR :
+            if (cote == AVANT)
+            {
+                idAx12 = ASC_AVANT;
+            }
+            else
+            {
+                idAx12 = ASC_ARRIERE;
+            }
+            break;
+        case RETOURNE_MODULE :
+            if (cote == AVANT)
+            {
+                idAx12 = BITE_AV;
+            }
+            else
+            {
+                idAx12 = BITE_AR;
+            }
+            break;        
+    }
+    
+    return idAx12;
+}
+
+bool check_capteur_pince (_cote cote)
+{
+    bool result = false;
+    
+    if (cote == AVANT)
+    {
+        result = (CAPT_PINCE_AV == ETAT_CAPTEUR_PINCE_AV);
+    }
+    else if (cote == ARRIERE)
+    {
+        result = (CAPT_PINCE_AR == ETAT_CAPTEUR_PINCE_AR);
+    }
+    
+    return result;
+}
 
 /******************************************************************************/
 /********************************  FONCTION AX12  *****************************/
@@ -237,12 +304,17 @@ void monter_ascenseur (_cote cote)
 /*** INIT ROBOT ***/
 /******************/
 
-// ETAPE 1 : ou ouvre les pinces
+// ETAPE 1 : ou ouvre toutes les pinces
 void start_robot()
 {
     ouvrir_pinces_bas(LES_DEUX);
     ouvrir_pinces_haut(LES_DEUX);
-    FLAG_ACTION = WAIT_PINCES_OUVERTES;
+    
+    register_multiple_ax12_event(2, AUTOM_AVANT, INIT_PINCES_OUVERTES, 200, 
+            PINCE_BAS_AV, PINCE_HAUT_AV);
+    register_multiple_ax12_event(2, AUTOM_ARRIERE, INIT_PINCES_OUVERTES, 200, 
+            PINCE_BAS_AR, PINCE_HAUT_AR);
+    
 }
 
 // ETAPE 2 : On descend l'ascenseur
@@ -325,294 +397,121 @@ void wait_init_robot_complete()
     }
 }
 
-void montage_tour()
+void montage_tour(_cote cote)
 {
-    if (modules_tour_avant < 3)
+    if (modules_tour[cote] < 3)
     {
-        FLAG_ACTION = RECHERCHE_MODULE_AVANT;
-    }
-    else if (modules_tour_arriere <  3)
-    {
-        FLAG_ACTION = RECHERCHE_MODULE_ARRIERE;
+        FLAG_ACTION[cote] = MT_RECHERCHE_MODULE_EN_COURS;
     }
     else
-        FLAG_ACTION = TOUR_COMPLETE;
+    {
+        FLAG_ACTION[cote] = MT_TOUR_COMPLETE;
+    }
 }
 
 /********************/
 /*** MONTAGE TOUR ***/
 /********************/
 
-void recherche_modules_pince(_cote cote)
+/**
+ * MT_recherche_modules_pince()
+ * ETATE 1 : on recherche un module dans les pinces
+ * @param cote
+ */
+void MT_recherche_modules_pince(_cote cote)
 {
-    if (cote == AVANT || cote == LES_DEUX)
+    if ( check_capteur_pince(cote) )
     {
-        if (CAPT_PINCE_AV == ETAT_CAPTEUR_PINCE_AV)
-        {
-            // On attends 300 ms pour vérfier que le module est bien dans la pince
-            // et que ce n'est pas un faux positif
-            arm_timer(AUTOM_AVANT, 300, MODULE_DETECTED_AVANT, true);          
-        }
-    }
-    
-    if (cote == ARRIERE || cote == LES_DEUX)
-    {
-        if (CAPT_PINCE_AR == ETAT_CAPTEUR_PINCE_AR)
-        {
-            // On attends 300 ms pour vérfier que le module est bien dans la pince
-            // et que ce n'est pas un faux positif
-            arm_timer(AUTOM_ARRIERE, 300, MODULE_DETECTED_AVANT, true);     
-        }
+        // On attends 300 ms pour vérfier que le module est bien dans la pince
+        // et que ce n'est pas un faux positif
+        arm_timer(cote, 300, MT_MODULE_DETECTE, true);
     }
 }
 
-void debut_attrape_module (_cote cote)
+/**
+ * MT_serrage_module_apres_detection()
+ * ETAPE 2 : Le module est detecté : on commence à le serrer
+ * @param cote
+ */
+void MT_serrage_module_apres_detection(_cote cote)
 {
-    if (cote == AVANT)
+    // on recheck les capteurs, si toujours présent, 
+    // alors on a vraiment détecté un module
+    if ( check_capteur_pince(cote) )
     {
-        // Faux positif, on reprend la recherche
-        if (CAPT_PINCE_AV != ETAT_CAPTEUR_PINCE_AV)
-        {
-            FLAG_ACTION = RECHERCHE_MODULE_AVANT;
-        }
-        else // on commence la procédure
-        {
-            modules_tour_avant++;
-            fermer_pinces_bas(AVANT);
-            arm_timer(200, ATTENTE_MONTEE_AVANT);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
+        // on ferme les pinces sur le module
+        // Et on attends confirmation de la fermeture
+        modules_tour[cote]++;
+        fermer_pinces_bas(cote);
+        register_ax12_event(getIdAx12(PINCE_BAS, cote), cote, MT_MODULE_ATTRAPE, 0); // TODO : change timer
     }
-    else if (cote == ARRIERE)
+    else // on recommence la recherche
     {
-        // Faux positif, on reprend la recherche
-        if (CAPT_PINCE_AR != ETAT_CAPTEUR_PINCE_AR)
-        {
-            FLAG_ACTION = RECHERCHE_MODULE_ARRIERE;
-        }
-        else // on commence la procédure
-        {
-            modules_tour_arriere++;
-            fermer_pinces_bas(ARRIERE);
-            arm_timer(200, ATTENTE_MONTEE_ARRIERE);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
+        FLAG_ACTION[cote] = MT_RECHERCHE_MODULE_EN_COURS;
     }
 }
 
-void attente_fermeture_pinces_avant_montee (_cote cote)
+/**
+ * MT_ouverture_pince_haut_avant_montee()
+ * ETAPE 3 : La pince du bas est fermé, on ouvre la pince du haut
+ * @param cote
+ */
+void MT_ouverture_pince_haut_avant_montee (_cote cote)
 {
-    if (cote == AVANT)
+    // Tour complète = montage finit
+    if (modules_tour[cote] >= 3)
     {
-        // Pinces pas encore fermée, on attend
-        if (is_target_ax12_reachead(PINCE_BAS_AV) == false)
-        {
-            arm_timer(200, ATTENTE_MONTEE_AVANT);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
-        else
-        {
-            // Tour complète = montage finit
-            if (modules_tour_avant >= 3)
-            {
-                FLAG_ACTION = PROCESS_MODULE_READY;
-            }
-            else // on monte la tour en hauteur
-            {
-                ouvrir_pinces_haut(cote);
-                monter_ascenseur(cote);
-                arm_timer(200, ASC_AVANT_EN_MONTEE);
-                FLAG_ACTION = EN_ATTENTE_EVENT;
-            }
-        }
+        FLAG_ACTION[cote] = MT_TOUR_COMPLETE;
     }
-    else if (cote == ARRIERE)
+    else // on monte la tour en hauteur
     {
-        // Pinces pas encore fermée, on attend
-        if (is_target_ax12_reachead(PINCE_BAS_AR) == false)
-        {
-            arm_timer(200, ATTENTE_MONTEE_ARRIERE);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
-        else
-        {
-            // Tour complète = montage finit
-            if (modules_tour_arriere >= 3)
-            {
-                FLAG_ACTION = PROCESS_MODULE_READY;
-            }
-            else // onmonte la tour en hauteur
-            {
-                ouvrir_pinces_haut(cote);
-                monter_ascenseur(cote);
-                arm_timer(200, ASC_ARRIERE_EN_MONTEE);
-                FLAG_ACTION = EN_ATTENTE_EVENT;
-            }
-        }
-    }
-
-}
-
-void attente_ascenseur_en_haut (_cote cote)
-{
-    if (cote == AVANT)
-    {
-        // Ascenseur pas encore arrivé : on attend
-        if (is_target_ax12_reachead(ASC_AVANT) == false)
-        {
-            arm_timer(200, ASC_AVANT_EN_MONTEE);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
-        else
-        {
-            // On referme les pinces du haut
-            fermer_pinces_haut(cote);
-            arm_timer(500, FERMETURE_PINCE_HAUT_AVANT);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
-    }
-    else if (cote == ARRIERE)
-    {
-        // Pinces pas encore fermée, on attend
-        if (is_target_ax12_reachead(ASC_ARRIERE) == false)
-        {
-            arm_timer(200, ASC_ARRIERE_EN_MONTEE);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
-        else
-        {
-            // On referme les pinces du haut
-            fermer_pinces_haut(cote);
-            arm_timer(500, FERMETURE_PINCE_HAUT_ARRIERE);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
-    }
-
-}
-
-void attente_fermeture_pince_en_haut (_cote cote)
-{
-    if (cote == AVANT)
-    {
-        // Pinces pas encore fermée, on attend
-        if (is_target_ax12_reachead(PINCE_HAUT_AV) == false)
-        {
-            arm_timer(200, FERMETURE_PINCE_HAUT_AVANT);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
-        else
-        {
-            // On attends avant de rouvrir  les pinces du bas
-            arm_timer(750, PREPARE_REDESCENTE_AVANT);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
-    }
-    else if (cote == ARRIERE)
-    {
-        // Pinces pas encore fermée, on attend
-        if (is_target_ax12_reachead(PINCE_HAUT_AR) == false)
-        {
-            arm_timer(200, FERMETURE_PINCE_HAUT_ARRIERE);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
-        else
-        {
-            // On attends avant de rouvrir  les pinces du bas
-            arm_timer(750, PREPARE_REDESCENTE_ARRIERE);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
+        ouvrir_pinces_haut(cote);
+        register_ax12_event(getIdAx12(PINCE_HAUT, cote), cote, MT_PRET_A_MONTER, 0); 
     }
 }
 
-void ouvrir_pince_pour_redescenre(_cote cote)
+/**
+ * MT_montage_du_module()
+ * ETAPE 4 : on monte l'ascenseur avec le module
+ * @param cote
+ */
+void MT_montage_du_module (_cote cote)
 {
-    if (cote == AVANT)
-    {
-
-        // Les pinces du haut sont fermés, on peut rouvrir
-        // Les pinces du bas pour redescendre l'ascenseur
-        ouvrir_pinces_bas(cote);
-        arm_timer(200, ATTENTE_REDESCENTE_AVANT);
-        FLAG_ACTION = EN_ATTENTE_EVENT;
-
-    }
-    else if (cote == ARRIERE)
-    {
-        // Les pinces du haut sont fermés, on peut rouvrir
-        // Les pinces du bas pour redescendre l'ascenseur
-        ouvrir_pinces_bas(cote);
-        arm_timer(200, ATTENTE_REDESCENTE_ARRIERE);
-        FLAG_ACTION = EN_ATTENTE_EVENT;
-
-    }
+    monter_ascenseur(cote);
+    register_ax12_event(getIdAx12(ASCENSEUR, cote), cote, MT_ASC_EN_HAUT , 500); // TODO : CHANGE EVENT, change timeout
 }
 
-void attente_ouverture_pince_pour_redescente (_cote cote)
+/**
+ * MT_attrape_module_en_haut()
+ * ETAPE 5 : On réceptionne le module en haut
+ * @param cote
+ */
+void MT_attrape_module_en_haut (_cote cote)
 {
-    if (cote == AVANT)
-    {
-        // Pinces pas encore ouverte, on attend
-        if (is_target_ax12_reachead(PINCE_BAS_AV) == false)
-        {
-            arm_timer(200, ATTENTE_REDESCENTE_AVANT);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
-        else
-        {
-            // Les pinces sont ouvertes on peut descendre l'ascenseur
-            descendre_ascenseur(cote);
-            arm_timer(500, ATTENTE_CYCLE_MONTAGE_AVANT_COMPLET);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
-    }
-    else if (cote == ARRIERE)
-    {
-        // Pinces pas encore ouverte, on attend
-        if (is_target_ax12_reachead(PINCE_HAUT_AR) == false)
-        {
-            arm_timer(200, ATTENTE_REDESCENTE_ARRIERE);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
-        else
-        {
-            // Les pinces sont ouvertes on peut descendre l'ascenseur
-            descendre_ascenseur(cote);
-            arm_timer(500, ATTENTE_CYCLE_MONTAGE_ARRIERE_COMPLET);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
-    }
+    fermer_pinces_haut(cote);
+    register_ax12_event(getIdAx12(PINCE_HAUT, cote), cote, MT_MODULE_ATTRAPE_EN_HAUT, 750); // TODO CHANGE timer
 }
 
-void attente_rdescente_complete (_cote cote)
+/**
+ * MT_ouvrir_pinces_bas_avant_redescente()
+ * ETAPE 6 : on rouvre la pince du bas, pour pouvoir redescendre l'ascenseur
+ * @param cote
+ */
+void MT_ouvrir_pinces_bas_avant_redescente(_cote cote)
 {
-    if (cote == AVANT)
-    {
-        // ascenseur pas encore en bas, on attend
-        if (is_target_ax12_reachead(ASC_AVANT) == false)
-        {
-            arm_timer(200, ATTENTE_CYCLE_MONTAGE_AVANT_COMPLET);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
-        else
-        {
-            // Processus de montage dans la tour terminé
-            FLAG_ACTION = PROCESS_MODULE_READY;
-        }
-    }
-    else if (cote == ARRIERE)
-    {
-        // ascenseur pas encore en bas, on attend
-        if (is_target_ax12_reachead(ASC_ARRIERE) == false)
-        {
-            arm_timer(200, ATTENTE_CYCLE_MONTAGE_ARRIERE_COMPLET);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
-        }
-        else
-        {
-            // Processus de montage dans la tour terminé
-            FLAG_ACTION = PROCESS_MODULE_READY;
-        }
-    }
+    ouvrir_pinces_bas(cote);
+    register_ax12_event(getIdAx12(PINCE_BAS, cote), cote, MT_PRET_A_REDESCENDRE, 0); // TODO CHANGE event
+}
+
+/**
+ * MT_redescendre_ascensseur()
+ * ETAPE 7 : on redescend l'ascenseur : on est pret pour remonter un autre module
+ * @param cote
+ */
+void MT_redescendre_ascensseur(_cote cote)
+{
+    descendre_ascenseur(cote);
+    register_ax12_event(getIdAx12(ASCENSEUR, cote), cote, MONTAGE_TOUR_PRET, 200); // Change event / timer
 }
 
 /******************************************************************************/
@@ -646,10 +545,10 @@ void autom_20ms (void)
             break;
         case INIT_ROBOT_COMPLETE :
 //            FLAG_ACTION = NE_RIEN_FAIRE;
-            arm_timer(4000, PROCESS_MODULE_READY);
+            arm_timer(4000, MONTAGE_TOUR_PRET);
             FLAG_ACTION = EN_ATTENTE_EVENT;
             break;
-        case PROCESS_MODULE_READY :
+        case MONTAGE_TOUR_PRET :
             montage_tour();
             break;
         default :
@@ -660,43 +559,41 @@ void autom_20ms (void)
     {
         switch(FLAG_ACTION[autom_id])
         {
+            // Event standard
             case NE_RIEN_FAIRE:
             case EN_ATTENTE_EVENT :
                 break;
             case CHECK_AX12_EVENT :
                 check_ax12_event(autom_id);
                 break;
-            case RECHERCHE_MODULE_AVANT :
-            case RECHERCHE_MODULE_ARRIERE :
-                recherche_modules_pince(autom_id);
+
+            // Event Montage tour
+            case MONTAGE_TOUR_PRET :
                 break;
-            case MODULE_DETECTED_AVANT :
-            case MODULE_DETECTED_ARRIERE :
-                debut_attrape_module(autom_id);
+            case MT_RECHERCHE_MODULE_EN_COURS :
+                MT_recherche_modules_pince(autom_id);
                 break;
-            case ATTENTE_MONTEE_AVANT :
-            case ATTENTE_MONTEE_ARRIERE :
-                attente_fermeture_pinces_avant_montee(autom_id);
+            case MT_MODULE_DETECTE :
+                MT_serrage_module_apres_detection(autom_id);
                 break;
-            case ASC_AVANT_EN_MONTEE :
-            case ASC_ARRIERE_EN_MONTEE :
-                attente_ascenseur_en_haut(autom_id);
+            case MT_MODULE_ATTRAPE :
+                MT_ouverture_pince_haut_avant_montee(autom_id);
                 break;
-            case FERMETURE_PINCE_HAUT_AVANT :
-            case FERMETURE_PINCE_HAUT_ARRIERE :
-                attente_fermeture_pince_en_haut(autom_id);
+            case MT_PRET_A_MONTER :
+                MT_montage_du_module(autom_id);
                 break;
-            case PREPARE_REDESCENTE_AVANT :
-            case PREPARE_REDESCENTE_ARRIERE :
-                ouvrir_pince_pour_redescenre(autom_id);
+            case MT_ASC_EN_HAUT :
+                MT_attrape_module_en_haut(autom_id);
                 break;
-            case ATTENTE_REDESCENTE_AVANT :
-            case ATTENTE_REDESCENTE_ARRIERE :
-                attente_ouverture_pince_pour_redescente(autom_id);
+            case MT_MODULE_ATTRAPE_EN_HAUT :
+                MT_ouvrir_pinces_bas_avant_redescente(autom_id);
                 break;
-            case ATTENTE_CYCLE_MONTAGE_AVANT_COMPLET :
-            case ATTENTE_CYCLE_MONTAGE_ARRIERE_COMPLET :
-                attente_rdescente_complete(autom_id);
+            case MT_PRET_A_REDESCENDRE :
+                MT_redescendre_ascensseur(autom_id);
+                break;
+            case MT_TOUR_COMPLETE :
+                break;
+            default :
                 break;
         }
     }

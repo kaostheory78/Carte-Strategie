@@ -59,7 +59,13 @@ extern "C" {
         LES_DEUX
     }_cote;
     
-//    typedef
+    typedef enum
+    {
+        PINCE_BAS = 0,
+        PINCE_HAUT,
+        ASCENSEUR,
+        RETOURNE_MODULE
+    }_type_actionneur;
     
 
     /**************************************************************************/
@@ -125,29 +131,20 @@ extern "C" {
                 
         /*** INIT ***/        
         START_ROBOT,
-        WAIT_PINCES_OUVERTES,
+        INIT_PINCES_OUVERTES,
         WAIT_INIT_ROBOT_COMPLETE,
         INIT_ROBOT_COMPLETE,
                 
         /*** RECHERCHE MODULE ***/
-                PROCESS_MODULE_READY,
-                RECHERCHE_MODULE_AVANT,
-                RECHERCHE_MODULE_ARRIERE,
-                MODULE_DETECTED_AVANT,
-                MODULE_DETECTED_ARRIERE,
-                ATTENTE_MONTEE_AVANT,
-                ATTENTE_MONTEE_ARRIERE,
-                ASC_AVANT_EN_MONTEE,
-                ASC_ARRIERE_EN_MONTEE,
-                FERMETURE_PINCE_HAUT_AVANT,
-                FERMETURE_PINCE_HAUT_ARRIERE,
-                PREPARE_REDESCENTE_AVANT,
-                PREPARE_REDESCENTE_ARRIERE,
-                ATTENTE_REDESCENTE_AVANT,
-                ATTENTE_REDESCENTE_ARRIERE,
-                ATTENTE_CYCLE_MONTAGE_AVANT_COMPLET,
-                ATTENTE_CYCLE_MONTAGE_ARRIERE_COMPLET,
-                TOUR_COMPLETE,
+        MONTAGE_TOUR_PRET,
+        MT_RECHERCHE_MODULE_EN_COURS,
+        MT_MODULE_DETECTE,
+        MT_MODULE_ATTRAPE,
+        MT_PRET_A_MONTER,
+        MT_ASC_EN_HAUT,
+        MT_MODULE_ATTRAPE_EN_HAUT,
+        MT_PRET_A_REDESCENDRE,
+        MT_TOUR_COMPLETE,
                 
 #endif
 
