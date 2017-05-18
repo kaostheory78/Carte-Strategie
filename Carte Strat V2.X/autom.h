@@ -125,6 +125,7 @@ extern "C" {
         NE_RIEN_FAIRE,   
         EN_ATTENTE_EVENT,
         CHECK_AX12_EVENT,
+        CHECK_SYNC_EVENT,
 
 #ifdef  PETIT_ROBOT
         // FLAG_ACTION DU PETIT ROBOT

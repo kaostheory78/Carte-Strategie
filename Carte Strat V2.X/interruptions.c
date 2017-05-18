@@ -351,6 +351,75 @@ void check_ax12_event(_autom_id autom_id)
     }
 }
 
+/**
+ * register_sync_event()
+ * @param autom_id           : autom watching event
+ * @param event_to_send      : event sent when sync complete
+ * @param timer_ms           : timer before sending event
+ * @param nb_event_registred : nb of event watched
+ * @param ...                : (autom_id, event) for each event registred
+ */
+void register_sync_event (_autom_id autom_id, _enum_flag_action event_to_send, uint32_t timer_ms, uint8_t nb_event_registred, ...)
+{
+    uint8_t i; 
+    
+    if (nb_event_registred <= MAX_SYNC_EVENT)
+    {
+        va_list liste_event;
+        va_start(liste_event, nb_event_registred);
+
+        sync_event[autom_id].autom_listening_event = autom_id;
+        sync_event[autom_id].event_to_send = event_to_send;
+        sync_event[autom_id].timer_ms = timer_ms;
+        sync_event[autom_id].nb_event_registred = nb_event_registred;
+
+        // Register events
+        for (i = 0 ; i < nb_event_registred ; i++)
+        {
+           sync_event[autom_id].event_regisred[i].autom_id = va_arg(liste_ax12, _autom_id);
+           sync_event[autom_id].event_regisred[i].event    = va_arg(liste_ax12, _enum_flag_action);
+        }
+
+        va_end(liste_event);
+
+        // Start listening event
+        arm_timer(autom_id, SYNC_EVENT_OBSERVER_DEFAULT_TIMER_MS, CHECK_SYNC_EVENT, true);
+    }    
+}
+
+/**
+ * check_sync_event()
+ * wait for event to synchronise between automs
+ * @param autom_id : id of the event listener
+ */
+void check_sync_event(_autom_id autom_id)
+{
+    bool event_reached = true;
+    uint8_t id_event = 0;
+    
+    for (id_event = 0 ; id_event < sync_event[autom_id].nb_event_registred ; id_event++)
+    {
+        // Check is condition is reached for all obvserved event
+        if (FLAG_ACTION[sync_event[autom_id].event_regisred[id_event].autom_id] != 
+                sync_event[autom_id].event_regisred[id_event].event)
+        {    
+            event_reached = false;
+        }
+    }
+    
+    // if all observed event have been reached
+    if (event_reached == true)
+    {
+        // event is send after the required time
+        arm_timer(sync_event[autom_id].autom_listening_event ,sync_event[autom_id].event_to_send, sync_event[autom_id].timer_ms, true);
+    }
+    else
+    {
+        // We're still waiting for the synchronisation
+        arm_timer(autom_id, SYNC_EVENT_OBSERVER_DEFAULT_TIMER_MS, CHECK_SYNC_EVENT, true);
+    }
+}
+
 /******************************************************************************/
 /************************** INTERRUPTION DES QEI ******************************/
 /******************************************************************************/

@@ -262,13 +262,16 @@ typedef struct
     //Evitement adversaire
     extern volatile _evitement EVITEMENT_ADV;
     
-    // FLAG Automs
     extern volatile __attribute__((near)) _compteur_temps_match CPT_TEMPS_MATCH;
     extern volatile _enum_couleurs COULEUR;
+    
+    // FLAG Automs
     extern volatile _enum_flag_action FLAG_ACTION[AUTOM_ID_MAX_NB];
     extern volatile _timer_event timer_event[AUTOM_ID_MAX_NB];
     extern volatile _ax12_event ax12_event[AUTOM_ID_MAX_NB];
+    extern volatile _sync_event sync_event[AUTOM_ID_MAX_NB];
 
+    // Ax12 variables
     extern volatile _ax12 ax12;
     extern volatile _Bool CHECK_LIMITATION_COURANT;
     

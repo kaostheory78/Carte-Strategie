@@ -71,6 +71,7 @@
     volatile _enum_flag_action FLAG_ACTION[AUTOM_ID_MAX_NB];
     volatile _timer_event timer_event[AUTOM_ID_MAX_NB];
     volatile _ax12_event ax12_event[AUTOM_ID_MAX_NB];
+    volatile _sync_event sync_event[AUTOM_ID_MAX_NB];
 
 
     int obstacle[30][20];

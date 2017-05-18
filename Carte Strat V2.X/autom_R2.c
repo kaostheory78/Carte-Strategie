@@ -318,7 +318,7 @@ void start_robot()
 }
 
 // ETAPE 2 : On descend l'ascenseur
-void attente_ouverture_pinces()
+void attente_ouverture_pinces() //TODO
 {
     static bool status_pinces_av = false;
     static bool status_pinces_ar = false;
@@ -349,7 +349,7 @@ void attente_ouverture_pinces()
 }
 
 // ETAPE3 : on attend que  tous les ax12 soient arrivés en position finales
-void wait_init_robot_complete()
+void wait_init_robot_complete() // TODO
 {
     static bool status_pinces_av = false;
     static bool status_pinces_ar = false;
