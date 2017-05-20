@@ -51,14 +51,27 @@ void strategie()
         EVITEMENT_ADV.actif = OFF;
         EVITEMENT_ADV.mode = STOP;
         
-        jack();
-        CPT_TEMPS_MATCH.actif = true;
+//        jack();
+//        CPT_TEMPS_MATCH.actif = true;
+//        
+//        init_position_robot(0., 0., 0.);
+//        delay_ms(2000);
+//        FLAG_ACTION[AUTOM_PRINCIPALE] = SR_START_ROBOT;
+//        
+//        while(FLAG_ACTION[AUTOM_PRINCIPALE] != MT_TOUR_COMPLETE);
         
-        init_position_robot(0., 0., 0.);
-        delay_ms(2000);
-        FLAG_ACTION[AUTOM_PRINCIPALE] = SR_START_ROBOT;
+//        while(1)
+//        {
+//            while(!SYS_JACK);
+//            envoit_pwm(MOTEUR_X, -100);
+//            while(SYS_JACK);
+//            envoit_pwm(MOTEUR_X, 0);
+//            while(!SYS_JACK);
+//            envoit_pwm(MOTEUR_X, 100);
+//            while(SYS_JACK);
+//            envoit_pwm(MOTEUR_X, 0);
+//        }
         
-        while(FLAG_ACTION[AUTOM_PRINCIPALE] != MT_TOUR_COMPLETE);
         //brake();
         //avancer_reculer(500, 100);
                   

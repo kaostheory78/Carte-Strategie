@@ -210,6 +210,10 @@ void conversion_string_to_function_code()
         {
             serialus_traitement_ax12();
         }
+//        else if (check_string(0, "mot"))
+//        {
+//            serialus_traitement_moteur();
+//        }
         else if (check_string(0, "list"))
         {
             serialus_traitement_list();
@@ -947,6 +951,59 @@ void serialus_traitement_ax12()
         list_serialus(SER_AX12);
     }
 }
+
+//void serialus_traitement_moteur()
+//{
+//    if (serialus.nb_param < 2)
+//    {
+//        print_manque_parametre();
+//        list_serialus(SER_MOTEUR);
+//    }
+//    else if (check_string(1, "X"))
+//    {
+//        if (check_nb_param(2))
+//        {
+//            if (check_est_un_nombre(serialus.buffer[2]))
+//            {
+//                uint8_t commande = (uint8_t) atoi((char *)serialus.buffer[2]);
+//
+//                if (check_coherence( commande > -100 && commande < 100) )
+//                {
+//                    envoit_pwm(MOTEUR_X, commande);
+//                }    
+//            }
+//        }
+//    }
+//    else if (check_string(1, "Y"))
+//    {
+//        if (check_nb_param(3))
+//        {
+//            if (check_est_un_nombre(serialus.buffer[3]))
+//            {
+//                uint8_t sens = (uint8_t) atoi((char *)serialus.buffer[3]);
+//                
+//                if (check_string(2, "on"))
+//                {
+//                    alimenter_moteur_Y()
+//                }
+//                else if (check_string(2, "off"))
+//                {
+//                    
+//                }
+//                else
+//                {
+//                    print_non_reconnu(2);
+//                    list_serialus(SER_MOTEUR);
+//                }
+//            }
+//        }
+//    }
+//    else
+//    {
+//        print_non_reconnu(1);
+//        list_serialus(SER_POSITION);
+//    }
+//}
 
 /**
  * Fonction qui traite toutes les frames relavtives au code "list" pour 

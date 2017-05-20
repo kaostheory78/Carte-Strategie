@@ -225,13 +225,13 @@ extern "C" {
     /**************************************************************************/
     /****************************** ODOMETRIE *********************************/
     /**************************************************************************/
-    #define _ENTRAXE_MM                  206.4
-    #define _DIAMETRE_ROUE_CODEUSE       0. //51.9715     //Toujours dans le sens de l'erreur : aler plus loin = diminuer D
-    #define _PERIMETRE_ROUE_MM           ( 128.)
+    #define _ENTRAXE_MM                  215.11541 // 206.4
+    #define _DIAMETRE_ROUE_CODEUSE       0.             //Toujours dans le sens de l'erreur : aler plus loin = diminuer D
+    #define _PERIMETRE_ROUE_MM           ( 136.98)
 
 
     //+COEF_D -> + a droite
-    #define  _COEF_D                    (double) 1.  //346  //1.00372
+    #define  _COEF_D                    (double) 1.0014  
     #define  _COEF_G                    (double) 1.
 
     /**************************************************************************/
@@ -325,8 +325,8 @@ extern "C" {
     #define _AVANCER_MOTEUR_G            0
     #define _RECULER_MOTEUR_G            1
 
-    #define _AVANCER_MOTEUR_X            0
-    #define _RECULER_MOTEUR_X            1
+    #define _AVANCER_MOTEUR_X            1
+    #define _RECULER_MOTEUR_X            0
 
     #define _AVANCER_MOTEUR_Y            0
     #define _RECULER_MOTEUR_Y            1

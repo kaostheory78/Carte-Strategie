@@ -197,7 +197,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void)
  * @param wait_for_event : est ce qu'on reconfigure le flag_action pour attendre sur la fin du 
  * timer ou non
  */
-void arm_timer(_autom_id id, uint32_t t_ms, uint8_t event, bool wait_for_event)
+void arm_timer_event(_autom_id id, uint32_t t_ms, uint8_t event, bool wait_for_event)
 {
     timer_event[id].timer_actif = false;
     timer_event[id].event = event;
@@ -216,7 +216,7 @@ void arm_timer(_autom_id id, uint32_t t_ms, uint8_t event, bool wait_for_event)
  * annule le timer en cours
  * @param id : id du timer (contexte d'appel)
  */
-void cancel_timer(_autom_id id)
+void cancel_timer_event(_autom_id id)
 {    
     timer_event[id].timer_actif = false;
 }
@@ -308,7 +308,7 @@ void register_multiple_ax12_event(uint8_t nb_ax12, _autom_id autom_id, _enum_fla
     va_end(liste_ax12);
     
     // Start listening event
-    arm_timer(autom_id, AX12_OBSERVER_DEFAULT_TIMER_MS, CHECK_AX12_EVENT, true);
+    arm_timer_event(autom_id, AX12_OBSERVER_DEFAULT_TIMER_MS, CHECK_AX12_EVENT, true);
 }
 
 /**
@@ -344,12 +344,12 @@ void check_ax12_event(_autom_id autom_id)
     if (event_reached == true)
     {
         // event is send after the required time
-        arm_timer(ax12_event[autom_id].autom_id, ax12_event[autom_id].time_to_throw_event, ax12_event[autom_id].event, true);
+        arm_timer_event(ax12_event[autom_id].autom_id, ax12_event[autom_id].time_to_throw_event, ax12_event[autom_id].event, true);
     }
     else
     {
         // We're still waiting for the ax12 to reach the target
-        arm_timer(autom_id, AX12_OBSERVER_DEFAULT_TIMER_MS, CHECK_AX12_EVENT, true);
+        arm_timer_event(autom_id, AX12_OBSERVER_DEFAULT_TIMER_MS, CHECK_AX12_EVENT, true);
     }
 }
 
@@ -385,7 +385,7 @@ void register_sync_event (_autom_id autom_id, _enum_flag_action event_to_send, u
         va_end(liste_event);
 
         // Start listening event
-        arm_timer(autom_id, SYNC_EVENT_OBSERVER_DEFAULT_TIMER_MS, CHECK_SYNC_EVENT, true);
+        arm_timer_event(autom_id, SYNC_EVENT_OBSERVER_DEFAULT_TIMER_MS, CHECK_SYNC_EVENT, true);
     }    
 }
 
@@ -413,12 +413,12 @@ void check_sync_event(_autom_id autom_id)
     if (event_reached == true)
     {
         // event is send after the required time
-        arm_timer(sync_event[autom_id].autom_listening_event, sync_event[autom_id].timer_ms, sync_event[autom_id].event_to_send, true);
+        arm_timer_event(sync_event[autom_id].autom_listening_event, sync_event[autom_id].timer_ms, sync_event[autom_id].event_to_send, true);
     }
     else
     {
         // We're still waiting for the synchronisation
-        arm_timer(autom_id, SYNC_EVENT_OBSERVER_DEFAULT_TIMER_MS, CHECK_SYNC_EVENT, true);
+        arm_timer_event(autom_id, SYNC_EVENT_OBSERVER_DEFAULT_TIMER_MS, CHECK_SYNC_EVENT, true);
     }
 }
 

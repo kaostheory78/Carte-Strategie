@@ -355,7 +355,7 @@ void MT_recherche_modules_pince(_cote cote)
     {
         // On attends 300 ms pour vérfier que le module est bien dans la pince
         // et que ce n'est pas un faux positif
-        arm_timer(cote, 300, MT_MODULE_DETECTE, true);
+        arm_timer_event(cote, 300, MT_MODULE_DETECTE, true);
     }
 }
 
@@ -469,8 +469,8 @@ void autom_20ms (void)
             break;
         case SR_ROBOT_READY :
 //            FLAG_ACTION = NE_RIEN_FAIRE;
-            arm_timer(AUTOM_AVANT, 2000, MONTAGE_TOUR_PRET, false);
-            arm_timer(AUTOM_ARRIERE, 2000, MONTAGE_TOUR_PRET, false);
+            arm_timer_event(AUTOM_AVANT, 2000, MONTAGE_TOUR_PRET, false);
+            arm_timer_event(AUTOM_ARRIERE, 2000, MONTAGE_TOUR_PRET, false);
             register_sync_event(AUTOM_PRINCIPALE, MT_TOUR_COMPLETE, 500, 2, 
                     AUTOM_AVANT,   MT_TOUR_COMPLETE,
                     AUTOM_ARRIERE, MT_TOUR_COMPLETE);

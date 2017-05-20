@@ -229,6 +229,7 @@ extern "C" {
     void serialus_traitement_position();
     void serialus_traitement_ax12();
     void serialus_traitement_list();
+    void serialus_traitement_moteur();
     
 #endif
     

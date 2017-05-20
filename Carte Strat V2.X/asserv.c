@@ -953,7 +953,6 @@ void asserv_orientation (void)
 
                 if (FLAG_ASSERV.type_deplacement == FAIRE_DES_TOURS && FLAG_ASSERV.vitesse_fin_nulle == OFF)
                 {
-                    printf("-> = %lf / %lf\n\r", ORIENTATION.actuelle, angle_restant);
                     FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
                 }
                 else

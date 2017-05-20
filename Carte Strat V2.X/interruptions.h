@@ -62,8 +62,8 @@ typedef struct
 /****************************** Prototypes ************************************/
 /******************************************************************************/
 
-void arm_timer(_autom_id id, uint32_t t_ms, uint8_t event, bool wait_for_event);
-void cancel_timer(_autom_id id);
+void arm_timer_event(_autom_id id, uint32_t t_ms, uint8_t event, bool wait_for_event);
+void cancel_timer_event(_autom_id id);
 void init_ax12_event(_autom_id autom_id);
 void register_ax12_event(uint8_t ax12_ID, _autom_id autom_id, _enum_flag_action event, uint32_t timer_ms);
 void register_multiple_ax12_event(uint8_t nb_ax12, _autom_id autom_id, _enum_flag_action event, uint32_t timer_ms, ...);

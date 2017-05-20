@@ -75,7 +75,7 @@ void init_system (void)
     for (autom_id = AUTOM_ID_MIN_NB ; autom_id < AUTOM_ID_MAX_NB ; autom_id++)
     {
        FLAG_ACTION[autom_id] = NE_RIEN_FAIRE; 
-       cancel_timer(autom_id);
+       cancel_timer_event(autom_id);
        init_ax12_event(autom_id);
     }
     

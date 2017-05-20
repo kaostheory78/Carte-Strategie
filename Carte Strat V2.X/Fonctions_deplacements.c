@@ -419,7 +419,7 @@ void _fdt (double angle, char last)
     printf("_fdt : angle = %lf, Orientation = %lf\n\r", angle, ORIENTATION.consigne);
 
 #ifdef PETIT_ROBOT
-    VITESSE_MAX.orientation = VITESSE_ANGLE_PAS;
+    VITESSE_MAX.orientation = VITESSE_ANGLE_PAS / 1.3;
     acc.acceleration.orientation.consigne = acc.acceleration.orientation.max;
     acc.deceleration.orientation.consigne = acc.deceleration.orientation.max;
 #endif
