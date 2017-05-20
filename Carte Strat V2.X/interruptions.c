@@ -147,6 +147,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
         
         // On coupe le couple de tous les ax12
         torque_enable_ax12(TOUS_LES_AX12, false);
+        print_statistique_ax12();
                 
         while(1);
     }
@@ -234,8 +235,8 @@ void check_timer_event()
         {
             if (CPT_TEMPS_MATCH.t_ms >= timer_event[autom_id].temps_echeance)
             {
-                timer_event[autom_id].timer_actif = false;
-                FLAG_ACTION[autom_id] = timer_event[autom_id].event;       
+                FLAG_ACTION[autom_id] = timer_event[autom_id].event; 
+                timer_event[autom_id].timer_actif = false;                    
             }
         }
     }  
@@ -333,6 +334,7 @@ void check_ax12_event(_autom_id autom_id)
             // otherwise the condition is not reached yet
             else
             {
+//                printf("\n\r check_ax12_event() ax12 %d is not arrived");
                 event_reached = false;
             }
         }
@@ -342,7 +344,7 @@ void check_ax12_event(_autom_id autom_id)
     if (event_reached == true)
     {
         // event is send after the required time
-        arm_timer(ax12_event[autom_id].autom_id, ax12_event[autom_id].event, ax12_event[autom_id].time_to_throw_event, true);
+        arm_timer(ax12_event[autom_id].autom_id, ax12_event[autom_id].time_to_throw_event, ax12_event[autom_id].event, true);
     }
     else
     {
@@ -376,8 +378,8 @@ void register_sync_event (_autom_id autom_id, _enum_flag_action event_to_send, u
         // Register events
         for (i = 0 ; i < nb_event_registred ; i++)
         {
-           sync_event[autom_id].event_regisred[i].autom_id = va_arg(liste_ax12, _autom_id);
-           sync_event[autom_id].event_regisred[i].event    = va_arg(liste_ax12, _enum_flag_action);
+           sync_event[autom_id].event_regisred[i].autom_id = va_arg(liste_event, _autom_id);
+           sync_event[autom_id].event_regisred[i].event    = va_arg(liste_event, _enum_flag_action);
         }
 
         va_end(liste_event);
@@ -411,12 +413,39 @@ void check_sync_event(_autom_id autom_id)
     if (event_reached == true)
     {
         // event is send after the required time
-        arm_timer(sync_event[autom_id].autom_listening_event ,sync_event[autom_id].event_to_send, sync_event[autom_id].timer_ms, true);
+        arm_timer(sync_event[autom_id].autom_listening_event, sync_event[autom_id].timer_ms, sync_event[autom_id].event_to_send, true);
     }
     else
     {
         // We're still waiting for the synchronisation
         arm_timer(autom_id, SYNC_EVENT_OBSERVER_DEFAULT_TIMER_MS, CHECK_SYNC_EVENT, true);
+    }
+}
+
+/**
+ * check_autom_events()
+ * THis function check all events (Timer, AX12, SYNC)
+ */
+void check_autom_events()
+{
+    _autom_id autom_id;
+    
+    check_timer_event();
+    
+    for (autom_id = AUTOM_ID_MIN_NB ; autom_id < AUTOM_ID_MAX_NB ; autom_id++)
+    {
+        // On check pour les principaux event
+        switch(FLAG_ACTION[autom_id])
+        {
+            case CHECK_AX12_EVENT :
+                check_ax12_event(autom_id);
+                break;
+            case CHECK_SYNC_EVENT :
+                check_sync_event(autom_id);
+                break;
+            default :
+                break;
+        }
     }
 }
 

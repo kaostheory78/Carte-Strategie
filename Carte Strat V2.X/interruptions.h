@@ -12,6 +12,8 @@
 /******************************** INCLUDES ************************************/
 /******************************************************************************/
 
+#include "autom.h"
+#include "gestion_AX12.h"
 #include "Config_robots.h"
 
 /******************************************************************************/
@@ -61,7 +63,7 @@ typedef struct
 /******************************************************************************/
 
 void arm_timer(_autom_id id, uint32_t t_ms, uint8_t event, bool wait_for_event);
-void void cancel_timer(_autom_id id);
+void cancel_timer(_autom_id id);
 void init_ax12_event(_autom_id autom_id);
 void register_ax12_event(uint8_t ax12_ID, _autom_id autom_id, _enum_flag_action event, uint32_t timer_ms);
 void register_multiple_ax12_event(uint8_t nb_ax12, _autom_id autom_id, _enum_flag_action event, uint32_t timer_ms, ...);
@@ -69,6 +71,7 @@ void check_ax12_event(_autom_id autom_id);
 void check_timer_event();
 void register_sync_event (_autom_id autom_id, _enum_flag_action event_to_send, uint32_t timer_ms, uint8_t nb_event_registred, ...);
 void check_sync_event(_autom_id autom_id);
+void check_autom_events();
 
 /**
  *  Interruption du Timer 1 : Asserv

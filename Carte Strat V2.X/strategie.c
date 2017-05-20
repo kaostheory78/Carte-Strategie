@@ -56,9 +56,9 @@ void strategie()
         
         init_position_robot(0., 0., 0.);
         delay_ms(2000);
-        FLAG_ACTION = START_ROBOT;
+        FLAG_ACTION[AUTOM_PRINCIPALE] = SR_START_ROBOT;
         
-        while(FLAG_ACTION != MT_TOUR_COMPLETE);
+        while(FLAG_ACTION[AUTOM_PRINCIPALE] != MT_TOUR_COMPLETE);
         //brake();
         //avancer_reculer(500, 100);
                   

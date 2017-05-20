@@ -222,12 +222,12 @@ void fermer_pinces_bas (_cote cote)
 {
     if (cote == AVANT || cote == LES_DEUX)
     {
-        angle_AX12(PINCE_BAS_AV, PINCE_POS_FERME, 100, SANS_ATTENTE);
+        angle_AX12(PINCE_BAS_AV, PINCE_POS_FERME, 600, SANS_ATTENTE);
     }
     
     if (cote == ARRIERE || cote == LES_DEUX)
     {
-        angle_AX12(PINCE_BAS_AR, PINCE_POS_FERME, 100, SANS_ATTENTE);
+        angle_AX12(PINCE_BAS_AR, PINCE_POS_FERME, 600, SANS_ATTENTE);
     }
 }
 
@@ -305,97 +305,28 @@ void monter_ascenseur (_cote cote)
 /******************/
 
 // ETAPE 1 : ou ouvre toutes les pinces
-void start_robot()
+void SR_start_robot()
 {
     ouvrir_pinces_bas(LES_DEUX);
     ouvrir_pinces_haut(LES_DEUX);
     
-    register_multiple_ax12_event(2, AUTOM_AVANT, INIT_PINCES_OUVERTES, 200, 
+    register_multiple_ax12_event(2, AUTOM_AVANT, SR_PINCES_OUVERTES, 200, 
             PINCE_BAS_AV, PINCE_HAUT_AV);
-    register_multiple_ax12_event(2, AUTOM_ARRIERE, INIT_PINCES_OUVERTES, 200, 
+    register_multiple_ax12_event(2, AUTOM_ARRIERE, SR_PINCES_OUVERTES, 200, 
             PINCE_BAS_AR, PINCE_HAUT_AR);
+    register_sync_event(AUTOM_PRINCIPALE, SR_ROBOT_READY, 0, 2, 
+            AUTOM_AVANT,   SR_ROBOT_READY, 
+            AUTOM_ARRIERE, SR_ROBOT_READY  );
     
 }
 
 // ETAPE 2 : On descend l'ascenseur
-void attente_ouverture_pinces() //TODO
+void SR_descendre_ascenseur(_cote cote) 
 {
-    static bool status_pinces_av = false;
-    static bool status_pinces_ar = false;
-    
-    if (status_pinces_av == false)
-    {
-        if (is_target_ax12_reachead(PINCE_BAS_AV))
-        {
-            status_pinces_av = true;
-            descendre_ascenseur (AVANT);
-        }
-    }
-    
-    if (status_pinces_ar == false)
-    {
-        if (is_target_ax12_reachead(PINCE_BAS_AR))
-        {
-            status_pinces_ar = true;
-            descendre_ascenseur (ARRIERE);
-        }
-    }
-    
-    if (status_pinces_av == true && status_pinces_ar == true)
-    {
-        arm_timer(200, WAIT_INIT_ROBOT_COMPLETE);
-        FLAG_ACTION = EN_ATTENTE_EVENT;    
-    }
+    descendre_ascenseur(cote);
+    register_ax12_event(getIdAx12(ASCENSEUR, cote), cote, SR_ROBOT_READY, 150);
 }
 
-// ETAPE3 : on attend que  tous les ax12 soient arrivés en position finales
-void wait_init_robot_complete() // TODO
-{
-    static bool status_pinces_av = false;
-    static bool status_pinces_ar = false;
-    static bool status_asc_av = false;
-    static bool status_asc_ar = false;
-    
-    if ( status_pinces_av == false)
-    {
-        if (is_target_ax12_reachead(PINCE_HAUT_AV) == true)
-        {
-            status_pinces_av = true;
-        }
-    }
-    
-    if ( status_pinces_ar == false)
-    {
-        if (is_target_ax12_reachead(PINCE_HAUT_AR) == true)
-        {
-            status_pinces_ar = true;
-        }
-    }
-    
-    if ( status_asc_av == false)
-    {
-        if (is_target_ax12_reachead(ASC_AVANT) == true)
-        {
-            status_asc_av = true;
-        }
-    }
-    
-    if ( status_asc_ar == false)
-    {
-        if (is_target_ax12_reachead(ASC_ARRIERE) == true)
-        {
-            status_asc_ar = true;
-        }
-    }
-    
-    if (status_pinces_av == true && status_pinces_ar == true 
-        && status_asc_av == true && status_asc_ar == true)
-    {
-        // Robot initialisé, on attends 400 ms pour lancer l'event
-        arm_timer(400, INIT_ROBOT_COMPLETE);
-        FLAG_ACTION = EN_ATTENTE_EVENT;
-    }
-}
 
 void montage_tour(_cote cote)
 {
@@ -466,7 +397,8 @@ void MT_ouverture_pince_haut_avant_montee (_cote cote)
     else // on monte la tour en hauteur
     {
         ouvrir_pinces_haut(cote);
-        register_ax12_event(getIdAx12(PINCE_HAUT, cote), cote, MT_PRET_A_MONTER, 0); 
+        FLAG_ACTION[cote] = MT_PRET_A_MONTER;
+//        register_ax12_event(getIdAx12(PINCE_HAUT, cote), cote, MT_PRET_A_MONTER, 0); 
     }
 }
 
@@ -523,52 +455,54 @@ void autom_20ms (void)
 {
     _autom_id autom_id;
 
-    check_timer_event();
+    check_autom_events();
     
     //fonction qui definit les actions
     switch (FLAG_ACTION[AUTOM_PRINCIPALE])
     {
         case NE_RIEN_FAIRE:
         case EN_ATTENTE_EVENT :
+            // do nothing
             break;
-        case CHECK_AX12_EVENT :
-            check_ax12_event(AUTOM_PRINCIPALE);
+        case SR_START_ROBOT :
+            SR_start_robot();
             break;
-        case START_ROBOT :
-            start_robot();
-            break;
-        case WAIT_PINCES_OUVERTES :
-            attente_ouverture_pinces();
-            break;
-        case WAIT_INIT_ROBOT_COMPLETE :
-            wait_init_robot_complete();
-            break;
-        case INIT_ROBOT_COMPLETE :
+        case SR_ROBOT_READY :
 //            FLAG_ACTION = NE_RIEN_FAIRE;
-            arm_timer(4000, MONTAGE_TOUR_PRET);
-            FLAG_ACTION = EN_ATTENTE_EVENT;
+            arm_timer(AUTOM_AVANT, 2000, MONTAGE_TOUR_PRET, false);
+            arm_timer(AUTOM_ARRIERE, 2000, MONTAGE_TOUR_PRET, false);
+            register_sync_event(AUTOM_PRINCIPALE, MT_TOUR_COMPLETE, 500, 2, 
+                    AUTOM_AVANT,   MT_TOUR_COMPLETE,
+                    AUTOM_ARRIERE, MT_TOUR_COMPLETE);
             break;
-        case MONTAGE_TOUR_PRET :
-            montage_tour();
+        case MT_TOUR_COMPLETE :
+            // do nothing
             break;
         default :
             break;
     }
     
-    for (autom_id = AUTOM_AVANT ; autom_id < AUTOM_ARRIERE ; autom_id++)
+    for (autom_id = AUTOM_AVANT ; autom_id <= AUTOM_ARRIERE ; autom_id++)
     {
         switch(FLAG_ACTION[autom_id])
         {
             // Event standard
             case NE_RIEN_FAIRE:
             case EN_ATTENTE_EVENT :
+                // do nothing
                 break;
-            case CHECK_AX12_EVENT :
-                check_ax12_event(autom_id);
+                
+            // Event Init Robot
+            case SR_PINCES_OUVERTES :
+                SR_descendre_ascenseur(autom_id);
+                break;
+            case SR_ROBOT_READY :
+                // do nothing (here to wait synchro)
                 break;
 
             // Event Montage tour
             case MONTAGE_TOUR_PRET :
+                montage_tour(autom_id);
                 break;
             case MT_RECHERCHE_MODULE_EN_COURS :
                 MT_recherche_modules_pince(autom_id);
@@ -592,6 +526,7 @@ void autom_20ms (void)
                 MT_redescendre_ascensseur(autom_id);
                 break;
             case MT_TOUR_COMPLETE :
+                // do nothing
                 break;
             default :
                 break;

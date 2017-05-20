@@ -122,23 +122,22 @@ extern "C" {
 
     typedef enum
     {
-        NE_RIEN_FAIRE,   
-        EN_ATTENTE_EVENT,
-        CHECK_AX12_EVENT,
-        CHECK_SYNC_EVENT,
+        NE_RIEN_FAIRE = 0,                      // 0
+        EN_ATTENTE_EVENT,                       // 1
+        CHECK_AX12_EVENT,                       // 2
+        CHECK_SYNC_EVENT,                       // 3
 
 #ifdef  PETIT_ROBOT
         // FLAG_ACTION DU PETIT ROBOT
                 
         /*** INIT ***/        
-        START_ROBOT,
-        INIT_PINCES_OUVERTES,
-        WAIT_INIT_ROBOT_COMPLETE,
-        INIT_ROBOT_COMPLETE,
+        SR_START_ROBOT,                         // 4
+        SR_PINCES_OUVERTES,                     // 5
+        SR_ROBOT_READY,                         // 6
                 
         /*** RECHERCHE MODULE ***/
-        MONTAGE_TOUR_PRET,
-        MT_RECHERCHE_MODULE_EN_COURS,
+        MONTAGE_TOUR_PRET,                      // 7
+        MT_RECHERCHE_MODULE_EN_COURS,           // 8
         MT_MODULE_DETECTE,
         MT_MODULE_ATTRAPE,
         MT_PRET_A_MONTER,
