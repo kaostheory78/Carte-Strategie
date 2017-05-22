@@ -97,18 +97,25 @@ extern "C" {
 #ifdef  PETIT_ROBOT
     #define PINCE_POS_REPLI                 848
     #define PINCE_POS_OUVERTE               630
-    #define PINCE_POS_ENTROUVERTE           575
+    #define PINCE_POS_ENTROUVERTE           585 //575
     #define PINCE_POS_FERME                 535  // 540
 
     #define ASC_AR_POS_BAS                     320    
-    #define ASC_AR_POS_INIT                    440 
+    #define ASC_AR_POS_INIT                    410 
     #define ASC_AR_POS_INIT_MAX                560
-    #define ASC_AR_POS_HAUT                    803 // 793
+    #define ASC_AR_POS_HAUT                    803 
+    #define ASC_AR_POS_DEPOSE                   530 //517
 
     #define ASC_AV_POS_BAS                     291    
-    #define ASC_AV_POS_INIT                    392
+    #define ASC_AV_POS_INIT                    340
     #define ASC_AV_POS_INIT_MAX                510
-    #define ASC_AV_POS_HAUT                    770 // 760
+    #define ASC_AV_POS_HAUT                    770 
+    #define ASC_AV_POS_DEPOSE                  488 //488
+
+    #define BITE_POS_INIT                       830
+    #define BITE_POS_RANGE                      305
+    #define BITE_POS_FERME                      320
+    #define BITE_POS_OUVERTE                    540 
             
 #endif
 
@@ -132,12 +139,13 @@ extern "C" {
                 
         /*** INIT ***/        
         SR_START_ROBOT,                         // 4
-        SR_PINCES_OUVERTES,                     // 5
-        SR_ROBOT_READY,                         // 6
+        SR_DEPOSE_MODULE_OUVERT,                // 5
+        SR_PINCES_OUVERTES,                     // 6
+        SR_ROBOT_READY,                         // 7
                 
         /*** RECHERCHE MODULE ***/
-        MONTAGE_TOUR_PRET,                      // 7
-        MT_RECHERCHE_MODULE_EN_COURS,           // 8
+        MONTAGE_TOUR_PRET,                      // 8
+        MT_RECHERCHE_MODULE_EN_COURS,           // 9
         MT_MODULE_DETECTE,
         MT_MODULE_ATTRAPE,
         MT_PRET_A_MONTER,
@@ -145,6 +153,26 @@ extern "C" {
         MT_MODULE_ATTRAPE_EN_HAUT,
         MT_PRET_A_REDESCENDRE,
         MT_TOUR_COMPLETE,
+                
+        /*** DEPOSE MODULE ****/
+        DX_START_DEPOSE,
+        D1_START_DEPOSE,
+        D2_START_DEPOSE,
+        D2_PINCE_BAS_OUVERTE,
+        D2_ASC_EN_HAUT,
+        D2_MODULE_ATTRAPE,
+        DX_PRET_A_DEPOSER,
+        DX_PRET_A_ALLER_EN_DEPOSE,
+        DX_ASCENSEUR_POS_DEPOSE, 
+        DX_MODULE_RELACHE,
+        DX_DEPOSE_FINIT,
+                
+        /*** CHOPPAGE FUSEE ***/
+        AF_ATTRAPE_FUSEE,
+        AF_CHOPAGE_MODULE_READY,
+        AF_MODULE_DETECTE,
+        AF_MODULE_ATTRAPE,
+        
                 
 #endif
 

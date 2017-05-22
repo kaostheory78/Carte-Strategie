@@ -225,14 +225,14 @@ extern "C" {
     /**************************************************************************/
     /****************************** ODOMETRIE *********************************/
     /**************************************************************************/
-    #define _ENTRAXE_MM                  215.11541 // 206.4
+    #define _ENTRAXE_MM                  215.2482793082149     // Si trop loin = diminuer entraxe
     #define _DIAMETRE_ROUE_CODEUSE       0.             //Toujours dans le sens de l'erreur : aler plus loin = diminuer D
     #define _PERIMETRE_ROUE_MM           ( 136.98)
 
 
     //+COEF_D -> + a droite
-    #define  _COEF_D                    (double) 1.0014  
-    #define  _COEF_G                    (double) 1.
+    #define  _COEF_D                    (double) (1.002855) 
+    #define  _COEF_G                    (double) (1.)
 
     /**************************************************************************/
     /******************************** ASSERV **********************************/
@@ -338,39 +338,31 @@ extern "C" {
 
     //La définition des ports relatif à chaque carte se trouve
     //Dans le fichier system.h
-
-    #define CAPT_PINCE_AV               CAPTEUR7
+   
+    #define CAPT_PINCE_AV               CAPTEUR6
     #define ETAT_CAPTEUR_PINCE_AV       ETAT_BAS
 
-    #define CAPT_PINCE_AR               CAPTEUR8
+    #define CAPT_PINCE_AR               CAPTEUR7
     #define ETAT_CAPTEUR_PINCE_AR       ETAT_BAS
-
-//    #define CAPT_PINCE_AV              CAPTEUR1
-//    #define CAPT_IR_ARRIERE_GAUCHE     CAPTEUR2
-//    #define CAPT_IR_ARRIERE_DROIT      CAPTEUR6
-//    #define CAPT_IR_ARRIERE_CENTRE     CAPTEUR7
-//    #define CAPT_US_DROIT              CAPTEUR5
-//    #define CAPT_US_GAUCHE             CAPTEUR4
-//    #define CAPT_US_BALISE             CAPTEUR8
 
     // Définition des standart pour la fonction évitement
     // ETAT : etat de detection du capteur (si il détecte à un : ETAT_HAUT)
     // NB : Si un capteur n'existe pas, le mettre à AUCUN et à ETAT_HAUT
-    #define _CAPT_ADV_AVANT_G            AUCUN            
-    #define _CAPT_ADV_AVANT_D            AUCUN
+    #define _CAPT_ADV_AVANT_G            CAPTEUR2            
+    #define _CAPT_ADV_AVANT_D            CAPTEUR1
     #define _CAPT_ADV_AVANT_C            AUCUN
 
-    #define _ETAT_ADV_AVANT_G            ETAT_HAUT
-    #define _ETAT_ADV_AVANT_D            ETAT_HAUT
+    #define _ETAT_ADV_AVANT_G            ETAT_BAS
+    #define _ETAT_ADV_AVANT_D            ETAT_BAS
     #define _ETAT_ADV_AVANT_C            ETAT_HAUT
 
-    #define _CAPT_ADV_ARRIERE_G          AUCUN
+    #define _CAPT_ADV_ARRIERE_G          CAPTEUR5
     #define _CAPT_ADV_ARRIERE_C          AUCUN
-    #define _CAPT_ADV_ARRIERE_D          AUCUN
+    #define _CAPT_ADV_ARRIERE_D          CAPTEUR8
 
-    #define _ETAT_ADV_ARRIERE_G          ETAT_HAUT
+    #define _ETAT_ADV_ARRIERE_G          ETAT_BAS
     #define _ETAT_ADV_ARRIERE_C          ETAT_HAUT
-    #define _ETAT_ADV_ARRIERE_D          ETAT_HAUT
+    #define _ETAT_ADV_ARRIERE_D          ETAT_BAS
 
     #define _CAPTEUR1_ANALOGIQUE        DIGITAL
     #define _CAPTEUR2_ANALOGIQUE        DIGITAL

@@ -193,9 +193,9 @@ extern "C" {
 
 
 #define ACTIV_INTER_TIMER1              1   // Timer asserv : 5 ms
-#define ACTIV_INTER_TIMER2              0   // Osef : TIMER 2 et 3 sur 32 bits    
-#define ACTIV_INTER_TIMER3              1   // Timer 90 secondes : fin de match
-#define ACTIV_INTER_TIMER4              1   // Timer Autom : 10 ms
+#define ACTIV_INTER_TIMER2              1   // Timer évitement : 10 ms     
+#define ACTIV_INTER_TIMER3              1   // Timer Autom : 20 ms
+#define ACTIV_INTER_TIMER4              1   // Timer scheduler temps de match : 100 ms
 #define ACTIV_INTER_TIMER5              1   // Timer debug : 200 ms
     
 #define ACTIV_INTER_I2C_MAITRE          0   // Pas implémenté pour le moment

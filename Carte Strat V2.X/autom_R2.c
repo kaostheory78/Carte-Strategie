@@ -21,6 +21,7 @@
 /******************************************************************************/
 
 static uint8_t modules_tour[LES_DEUX] = {0};
+static const uint8_t hauteur_tour_max = 3;
 
 /******************************************************************************/
 /***************************** FONCTIONS DIVERSES *****************************/
@@ -49,6 +50,9 @@ void jack()
     }
     
     while(SYS_JACK);
+    CPT_TEMPS_MATCH.actif = true;
+    init_position_robot(0., 0., 0.);
+    FLAG_ACTION[AUTOM_PRINCIPALE] = SR_START_ROBOT;
 }
 
 void allumer_pompes ()
@@ -147,7 +151,11 @@ void init_system_avant()
     const uint8_t tentatives_max = 5;
     uint8_t tentatives = 0;
     int16_t position_asc = 0;
-       
+    
+    angle_AX12(BITE_AV, BITE_POS_INIT, VITESSE_MAX_AX, SANS_ATTENTE);    
+    
+    delay_ms(1000);
+    
     do
     {
         position_asc = read_data(ASC_AVANT, LIRE_POSITION_ACTU);
@@ -176,6 +184,10 @@ void init_system_avant()
     // On range les pinces
     angle_AX12(PINCE_BAS_AV, PINCE_POS_REPLI, VITESSE_MAX_AX, SANS_ATTENTE);
     angle_AX12(PINCE_HAUT_AV, PINCE_POS_REPLI, VITESSE_MAX_AX, SANS_ATTENTE);
+    
+    delay_ms(850);
+    
+    angle_AX12(BITE_AV, BITE_POS_RANGE, VITESSE_MAX_AX, SANS_ATTENTE);
 }
 
 void init_system_arriere()
@@ -183,6 +195,9 @@ void init_system_arriere()
     const uint8_t tentatives_max = 5;
     uint8_t tentatives = 0;
     int16_t position_asc = 0;
+    
+    angle_AX12(BITE_AR, BITE_POS_INIT, VITESSE_MAX_AX, SANS_ATTENTE);
+    delay_ms(1000);
        
     do
     {
@@ -213,6 +228,10 @@ void init_system_arriere()
     // On range les pinces
     angle_AX12(PINCE_BAS_AR, PINCE_POS_REPLI, VITESSE_MAX_AX, SANS_ATTENTE);
     angle_AX12(PINCE_HAUT_AR, PINCE_POS_REPLI, VITESSE_MAX_AX, SANS_ATTENTE);
+    
+    delay_ms(850);
+    
+    angle_AX12(BITE_AR, BITE_POS_RANGE, VITESSE_MAX_AX, SANS_ATTENTE);
 }
 
 
@@ -235,12 +254,12 @@ void fermer_pinces_haut (_cote cote)
 {
     if (cote == AVANT || cote == LES_DEUX)
     {
-        angle_AX12(PINCE_HAUT_AV, PINCE_POS_FERME, 250, SANS_ATTENTE);
+        angle_AX12(PINCE_HAUT_AV, PINCE_POS_FERME, 500, SANS_ATTENTE);
     }
     
     if (cote == ARRIERE || cote == LES_DEUX)
     {
-        angle_AX12(PINCE_HAUT_AR, PINCE_POS_FERME, 250, SANS_ATTENTE);
+        angle_AX12(PINCE_HAUT_AR, PINCE_POS_FERME, 500, SANS_ATTENTE);
     }
 }
 
@@ -248,12 +267,12 @@ void ouvrir_pinces_bas (_cote cote)
 {
     if (cote == AVANT || cote == LES_DEUX)
     {
-        angle_AX12(PINCE_BAS_AV, PINCE_POS_OUVERTE, 512, SANS_ATTENTE);
+        angle_AX12(PINCE_BAS_AV, PINCE_POS_OUVERTE, VITESSE_MAX_AX, SANS_ATTENTE);
     }
     
     if (cote == ARRIERE || cote == LES_DEUX)
     {
-        angle_AX12(PINCE_BAS_AR, PINCE_POS_OUVERTE, 512, SANS_ATTENTE);
+        angle_AX12(PINCE_BAS_AR, PINCE_POS_OUVERTE, VITESSE_MAX_AX, SANS_ATTENTE);
     }
 }
 
@@ -261,12 +280,25 @@ void ouvrir_pinces_haut (_cote cote)
 {
     if (cote == AVANT || cote == LES_DEUX)
     {
-        angle_AX12(PINCE_HAUT_AV, PINCE_POS_ENTROUVERTE, 512, SANS_ATTENTE);
+        angle_AX12(PINCE_HAUT_AV, PINCE_POS_ENTROUVERTE, VITESSE_MAX_AX, SANS_ATTENTE);
     }
     
     if (cote == ARRIERE || cote == LES_DEUX)
     {
-        angle_AX12(PINCE_HAUT_AR, PINCE_POS_ENTROUVERTE, 512, SANS_ATTENTE);
+        angle_AX12(PINCE_HAUT_AR, PINCE_POS_ENTROUVERTE, VITESSE_MAX_AX, SANS_ATTENTE);
+    }
+}
+
+void repli_pince_haut(_cote cote)
+{
+    if (cote == AVANT || cote == LES_DEUX)
+    {
+        angle_AX12(PINCE_HAUT_AV, PINCE_POS_REPLI, VITESSE_MAX_AX, SANS_ATTENTE);
+    }
+    
+    if (cote == ARRIERE || cote == LES_DEUX)
+    {
+        angle_AX12(PINCE_HAUT_AR, PINCE_POS_REPLI, VITESSE_MAX_AX, SANS_ATTENTE);
     }
 }
 
@@ -274,12 +306,12 @@ void descendre_ascenseur (_cote cote)
 {
     if (cote == AVANT || cote == LES_DEUX)
     {
-        angle_AX12(ASC_AVANT, ASC_AV_POS_BAS, 250, SANS_ATTENTE);
+        angle_AX12(ASC_AVANT, ASC_AV_POS_BAS, 500, SANS_ATTENTE);
     }
     
     if (cote == ARRIERE || cote == LES_DEUX)
     {
-        angle_AX12(ASC_ARRIERE, ASC_AR_POS_BAS, 250, SANS_ATTENTE);
+        angle_AX12(ASC_ARRIERE, ASC_AR_POS_BAS, 500, SANS_ATTENTE);
     }
 }
 
@@ -287,12 +319,64 @@ void monter_ascenseur (_cote cote)
 {
     if (cote == AVANT || cote == LES_DEUX)
     {
-        angle_AX12(ASC_AVANT, ASC_AV_POS_HAUT, 250, SANS_ATTENTE);
+        angle_AX12(ASC_AVANT, ASC_AV_POS_HAUT, 500, SANS_ATTENTE);
     }
     
     if (cote == ARRIERE || cote == LES_DEUX)
     {
-        angle_AX12(ASC_ARRIERE, ASC_AR_POS_HAUT, 250, SANS_ATTENTE);
+        angle_AX12(ASC_ARRIERE, ASC_AR_POS_HAUT, 500, SANS_ATTENTE);
+    }
+}
+
+void depose_ascenseur (_cote cote)
+{
+    if (cote == AVANT || cote == LES_DEUX)
+    {
+        angle_AX12(ASC_AVANT, ASC_AV_POS_DEPOSE, 500, SANS_ATTENTE);
+    }
+    
+    if (cote == ARRIERE || cote == LES_DEUX)
+    {
+        angle_AX12(ASC_ARRIERE, ASC_AR_POS_DEPOSE, 500, SANS_ATTENTE);
+    }
+}
+
+void degage_depose_module(_cote cote)
+{
+    if (cote == AVANT || cote == LES_DEUX)
+    {
+        angle_AX12(BITE_AV, BITE_POS_INIT, VITESSE_MAX_AX, SANS_ATTENTE);
+    }
+    
+    if (cote == ARRIERE || cote == LES_DEUX)
+    {
+        angle_AX12(BITE_AR, BITE_POS_INIT, VITESSE_MAX_AX, SANS_ATTENTE);
+    }
+}
+
+void ouvrir_depose_module(_cote cote)
+{
+    if (cote == AVANT || cote == LES_DEUX)
+    {
+        angle_AX12(BITE_AV, BITE_POS_OUVERTE, 600, SANS_ATTENTE);
+    }
+    
+    if (cote == ARRIERE || cote == LES_DEUX)
+    {
+        angle_AX12(BITE_AR, BITE_POS_OUVERTE, 600, SANS_ATTENTE);
+    } 
+}
+
+void fermer_depose_module(_cote cote)
+{
+    if (cote == AVANT || cote == LES_DEUX)
+    {
+        angle_AX12(BITE_AV, BITE_POS_FERME, VITESSE_MAX_AX, SANS_ATTENTE);
+    }
+    
+    if (cote == ARRIERE || cote == LES_DEUX)
+    {
+        angle_AX12(BITE_AR, BITE_POS_FERME, VITESSE_MAX_AX, SANS_ATTENTE);
     }
 }
 
@@ -304,33 +388,44 @@ void monter_ascenseur (_cote cote)
 /*** INIT ROBOT ***/
 /******************/
 
-// ETAPE 1 : ou ouvre toutes les pinces
+// ETAPE 1 : ou ouvre les dépose modules
 void SR_start_robot()
 {
-    ouvrir_pinces_bas(LES_DEUX);
-    ouvrir_pinces_haut(LES_DEUX);
+    degage_depose_module(LES_DEUX);
+    register_ax12_event(BITE_AV, AUTOM_AVANT, SR_DEPOSE_MODULE_OUVERT, 500);
+    register_ax12_event(BITE_AR, AUTOM_ARRIERE, SR_DEPOSE_MODULE_OUVERT, 0);
     
-    register_multiple_ax12_event(2, AUTOM_AVANT, SR_PINCES_OUVERTES, 200, 
-            PINCE_BAS_AV, PINCE_HAUT_AV);
-    register_multiple_ax12_event(2, AUTOM_ARRIERE, SR_PINCES_OUVERTES, 200, 
-            PINCE_BAS_AR, PINCE_HAUT_AR);
     register_sync_event(AUTOM_PRINCIPALE, SR_ROBOT_READY, 0, 2, 
-            AUTOM_AVANT,   SR_ROBOT_READY, 
-            AUTOM_ARRIERE, SR_ROBOT_READY  );
-    
+        AUTOM_AVANT,   SR_ROBOT_READY, 
+        AUTOM_ARRIERE, SR_ROBOT_READY  );
 }
 
-// ETAPE 2 : On descend l'ascenseur
+// ETAPE 2 : On ouvre toutes les pinces 
+void SR_ouvrir_pinces (_cote cote)
+{
+    ouvrir_pinces_bas(cote);
+    ouvrir_pinces_haut(cote);
+    
+    register_multiple_ax12_event(2, cote, SR_PINCES_OUVERTES, 200, 
+            getIdAx12(PINCE_BAS, cote),
+            getIdAx12(PINCE_HAUT, cote));
+}
+
+// ETAPE 3 : On descend l'ascenseur, et on met le depose module a sa bonne position
 void SR_descendre_ascenseur(_cote cote) 
 {
     descendre_ascenseur(cote);
-    register_ax12_event(getIdAx12(ASCENSEUR, cote), cote, SR_ROBOT_READY, 150);
+    ouvrir_depose_module(cote);
+            
+    register_multiple_ax12_event(2, cote, SR_ROBOT_READY, 150, 
+        getIdAx12(ASCENSEUR, cote),
+        getIdAx12(RETOURNE_MODULE, cote));
 }
 
 
 void montage_tour(_cote cote)
 {
-    if (modules_tour[cote] < 3)
+    if (modules_tour[cote] < hauteur_tour_max)
     {
         FLAG_ACTION[cote] = MT_RECHERCHE_MODULE_EN_COURS;
     }
@@ -390,7 +485,7 @@ void MT_serrage_module_apres_detection(_cote cote)
 void MT_ouverture_pince_haut_avant_montee (_cote cote)
 {
     // Tour complète = montage finit
-    if (modules_tour[cote] >= 3)
+    if (modules_tour[cote] >= hauteur_tour_max) //TODO
     {
         FLAG_ACTION[cote] = MT_TOUR_COMPLETE;
     }
@@ -446,6 +541,131 @@ void MT_redescendre_ascensseur(_cote cote)
     register_ax12_event(getIdAx12(ASCENSEUR, cote), cote, MONTAGE_TOUR_PRET, 200); // Change event / timer
 }
 
+/**************************/
+/*** DEPOSE DES MODULES ***/
+/**************************/
+
+/** DEPOSE CAS 1 ***/
+void DX_depose_module(_cote cote)
+{
+    if (check_capteur_pince(cote))
+    {
+        FLAG_ACTION[cote] = D1_START_DEPOSE;
+    }
+    else if (modules_tour[cote] > 0)
+    {
+        FLAG_ACTION[cote] = D2_START_DEPOSE;
+    }
+    else
+    {
+        FLAG_ACTION[cote] = DX_DEPOSE_FINIT;
+    }
+}
+
+void D1_ouverture_pince_haut_avant_montee (_cote cote)
+{
+    ouvrir_pinces_haut(cote);
+    FLAG_ACTION[cote] = DX_PRET_A_ALLER_EN_DEPOSE; 
+}
+
+void D2_ouverture_pince_bas_avant_montee (_cote cote)
+{
+    ouvrir_pinces_bas(cote);
+    register_ax12_event(getIdAx12(PINCE_BAS, cote), cote, D2_PINCE_BAS_OUVERTE, 100);
+}
+
+void D2_monter_ascenseur(_cote cote)
+{
+    monter_ascenseur(cote);
+    register_ax12_event(getIdAx12(ASCENSEUR, cote), cote, D2_ASC_EN_HAUT, 400);
+}
+
+void D2_recup_module (_cote cote)
+{
+    fermer_pinces_bas(cote);
+    register_ax12_event(getIdAx12(PINCE_BAS, cote), cote, D2_MODULE_ATTRAPE, 400);
+}
+
+void D2_relacher_tour (_cote cote)
+{
+    ouvrir_pinces_haut(cote);
+    register_ax12_event(getIdAx12(PINCE_HAUT, cote), cote, DX_PRET_A_ALLER_EN_DEPOSE, 40);
+}
+
+void DX_positionnement_pour_depose(_cote cote)
+{
+    depose_ascenseur(cote);
+    register_ax12_event(getIdAx12(ASCENSEUR, cote), cote, DX_ASCENSEUR_POS_DEPOSE, 800);
+}
+
+void DX_resserage_tour(_cote cote)
+{
+    fermer_pinces_haut(cote);
+    fermer_depose_module(cote);
+    register_multiple_ax12_event(2, cote, DX_PRET_A_DEPOSER, 150, 
+        getIdAx12(PINCE_HAUT, cote),
+        getIdAx12(RETOURNE_MODULE, cote));
+}
+
+void DX_relache_module (_cote cote)
+{
+    ouvrir_pinces_bas(cote);
+    modules_tour[cote]--;
+    register_ax12_event(getIdAx12(PINCE_BAS, cote), cote, DX_MODULE_RELACHE, 400);
+}
+
+void DX_refermer_depose_module(_cote cote)
+{
+    ouvrir_depose_module(cote);
+    register_ax12_event(getIdAx12(PINCE_BAS, cote), cote, DX_DEPOSE_FINIT, 800);
+}
+
+
+/*********************/
+/*** ATTRAPE FUSEE ***/
+/*********************/
+
+void AF_choppage_module (_cote cote)
+{
+    if (modules_tour[cote] == 0)
+    {
+        repli_pince_haut(cote);
+        ouvrir_pinces_bas(cote);
+        ouvrir_depose_module(cote);
+        
+        register_multiple_ax12_event(3, cote, AF_CHOPAGE_MODULE_READY, 500,
+                getIdAx12(PINCE_BAS, cote),
+                getIdAx12(PINCE_BAS, cote),
+                getIdAx12(RETOURNE_MODULE, cote));
+    }
+    else
+    {
+        // TODO
+    }
+}
+
+void AF_detecte_module(_cote cote)
+{
+    if (check_capteur_pince(cote))
+    {
+        arm_timer_event(cote, 400, AF_MODULE_DETECTE, true);
+    }
+}
+
+void AF_attrape_module (_cote cote)
+{
+    // on vérufie qu'on a toujours un module deant soit
+    if (check_capteur_pince(cote))
+    {
+        fermer_pinces_bas(cote);
+        register_ax12_event(getIdAx12(PINCE_BAS, cote), cote, AF_MODULE_ATTRAPE, 500);
+    }
+    else
+    {
+        // TODO
+    }
+}
+
 /******************************************************************************/
 /******************************** FONCTION BOUCLE *****************************/
 /******************************************************************************/
@@ -469,11 +689,16 @@ void autom_20ms (void)
             break;
         case SR_ROBOT_READY :
 //            FLAG_ACTION = NE_RIEN_FAIRE;
-            arm_timer_event(AUTOM_AVANT, 2000, MONTAGE_TOUR_PRET, false);
-            arm_timer_event(AUTOM_ARRIERE, 2000, MONTAGE_TOUR_PRET, false);
-            register_sync_event(AUTOM_PRINCIPALE, MT_TOUR_COMPLETE, 500, 2, 
-                    AUTOM_AVANT,   MT_TOUR_COMPLETE,
-                    AUTOM_ARRIERE, MT_TOUR_COMPLETE);
+            
+//            arm_timer_event(AUTOM_AVANT, 2000, MONTAGE_TOUR_PRET, false);
+//            arm_timer_event(AUTOM_ARRIERE, 2000, MONTAGE_TOUR_PRET, false);
+//            register_sync_event(AUTOM_PRINCIPALE, MT_TOUR_COMPLETE, 500, 2, 
+//                    AUTOM_AVANT,   MT_TOUR_COMPLETE,
+//                    AUTOM_ARRIERE, MT_TOUR_COMPLETE);
+            
+            arm_timer_event(AUTOM_AVANT, 2000, AF_ATTRAPE_FUSEE, true);
+            arm_timer_event(AUTOM_ARRIERE, 2000, AF_ATTRAPE_FUSEE, true);
+            FLAG_ACTION[AUTOM_PRINCIPALE] = NE_RIEN_FAIRE;
             break;
         case MT_TOUR_COMPLETE :
             // do nothing
@@ -493,6 +718,9 @@ void autom_20ms (void)
                 break;
                 
             // Event Init Robot
+            case SR_DEPOSE_MODULE_OUVERT :
+                SR_ouvrir_pinces(autom_id);
+                break;
             case SR_PINCES_OUVERTES :
                 SR_descendre_ascenseur(autom_id);
                 break;
@@ -526,8 +754,57 @@ void autom_20ms (void)
                 MT_redescendre_ascensseur(autom_id);
                 break;
             case MT_TOUR_COMPLETE :
+                FLAG_ACTION[autom_id] = DX_START_DEPOSE;
                 // do nothing
                 break;
+                
+                
+            // Event Depose tour :
+            case DX_START_DEPOSE :
+                DX_depose_module(autom_id);
+                break;
+            case D1_START_DEPOSE :
+                D1_ouverture_pince_haut_avant_montee(autom_id);
+                break;
+            case D2_START_DEPOSE :
+                D2_ouverture_pince_bas_avant_montee(autom_id);
+                break;
+            case D2_PINCE_BAS_OUVERTE :
+                D2_monter_ascenseur(autom_id);
+                break;
+            case D2_ASC_EN_HAUT :
+                D2_recup_module(autom_id);
+                break;
+            case D2_MODULE_ATTRAPE :
+                D2_relacher_tour(autom_id);
+                break;
+            case DX_PRET_A_ALLER_EN_DEPOSE :
+                DX_positionnement_pour_depose(autom_id);
+                break;
+            case DX_ASCENSEUR_POS_DEPOSE :
+                DX_resserage_tour(autom_id);
+                break;
+            case DX_PRET_A_DEPOSER :
+                DX_relache_module(autom_id);
+                break;
+            case DX_MODULE_RELACHE :
+                DX_refermer_depose_module(autom_id);
+                break;
+            case DX_DEPOSE_FINIT :
+                arm_timer_event(autom_id, 2000, DX_START_DEPOSE, true);
+                break;
+                
+            // event attrape module
+            case AF_ATTRAPE_FUSEE :
+                AF_choppage_module(autom_id);
+                break;
+            case AF_CHOPAGE_MODULE_READY :
+                AF_detecte_module(autom_id);
+                break;
+            case AF_MODULE_DETECTE :
+                AF_attrape_module(autom_id);
+                break;
+                
             default :
                 break;
         }

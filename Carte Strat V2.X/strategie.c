@@ -47,18 +47,13 @@ void strategie()
         
     #ifdef PETIT_ROBOT
         
-//        CPT_TEMPS_MATCH.actif = true;
-        EVITEMENT_ADV.actif = OFF;
+        EVITEMENT_ADV.actif = ON;
         EVITEMENT_ADV.mode = STOP;
         
-//        jack();
-//        CPT_TEMPS_MATCH.actif = true;
-//        
-//        init_position_robot(0., 0., 0.);
-//        delay_ms(2000);
-//        FLAG_ACTION[AUTOM_PRINCIPALE] = SR_START_ROBOT;
-//        
-//        while(FLAG_ACTION[AUTOM_PRINCIPALE] != MT_TOUR_COMPLETE);
+        jack();
+       
+        
+        while(FLAG_ACTION[AUTOM_PRINCIPALE] != MT_TOUR_COMPLETE);
         
 //        while(1)
 //        {
@@ -71,9 +66,6 @@ void strategie()
 //            while(SYS_JACK);
 //            envoit_pwm(MOTEUR_X, 0);
 //        }
-        
-        //brake();
-        //avancer_reculer(500, 100);
                   
     #endif
 }

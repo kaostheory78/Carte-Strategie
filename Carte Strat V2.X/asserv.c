@@ -1246,7 +1246,7 @@ double fonction_PID (_enum_type_PID type)
 
 void calcul_position_robot (void)
 {
-    __attribute__((near)) static int32_t delta_o, delta_d;
+    __attribute__((near)) static double delta_o, delta_d;
     __attribute__((near)) static double d_X = 0., d_Y = 0.;
 
     get_valeur_codeur (CODEUR_D);

@@ -80,10 +80,16 @@ void grand_demi_cercle (int8_t sens_marche)
 
 void carre (int8_t sens_marche)
 {
-    rejoindre (500, 0  , sens_marche, 100);
-    rejoindre (500, 500, sens_marche, 100);
-    rejoindre (0  , 500, sens_marche, 100);
-    rejoindre (0  , 0  , sens_marche, 100);
+//    rejoindre (500, 0  , sens_marche, 100);
+//    rejoindre (500, 500, sens_marche, 100);
+//    rejoindre (0  , 500, sens_marche, 100);
+//    rejoindre (0  , 0  , sens_marche, 100);
+    rejoindre (2200, 0, sens_marche, 80);
+    delay_ms(5000);
+    rejoindre (2200, 500, sens_marche, 80);
+    rejoindre(1000, 500, sens_marche, 80);
+    rejoindre(1000, 0, sens_marche, 80);
+    rejoindre(2200, 0, sens_marche, 80);
 }
 
 /******************************************************************************/
