@@ -204,6 +204,7 @@ extern "C" {
     // Fonctions init
     void init_system_arriere();
     void init_system_avant();
+    uint8_t get_module_tour(_cote cote);
 #endif
 
 #ifdef  GROS_ROBOT

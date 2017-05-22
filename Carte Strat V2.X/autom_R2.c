@@ -21,7 +21,7 @@
 /******************************************************************************/
 
 static uint8_t modules_tour[LES_DEUX] = {0};
-static const uint8_t hauteur_tour_max = 3;
+static const uint8_t hauteur_tour_max = 2;
 
 /******************************************************************************/
 /***************************** FONCTIONS DIVERSES *****************************/
@@ -44,15 +44,11 @@ void jack()
     else
     {
         printf("\n\r checkup_com_ax12 FAILED");
-        // TODO - qu'est ce qu'on fait ??????
         init_system_avant();
         init_system_arriere();
     }
-    
-    while(SYS_JACK);
-    CPT_TEMPS_MATCH.actif = true;
-    init_position_robot(0., 0., 0.);
-    FLAG_ACTION[AUTOM_PRINCIPALE] = SR_START_ROBOT;
+       
+//    while(SYS_JACK);
 }
 
 void allumer_pompes ()
@@ -138,6 +134,22 @@ bool check_capteur_pince (_cote cote)
     }
     
     return result;
+}
+
+uint8_t get_module_tour(_cote cote)
+{
+    uint8_t nb_modules = 0;
+    
+    if (cote == AVANT || cote == LES_DEUX)
+    {
+        nb_modules += modules_tour[AVANT];
+    }
+    else if (cote == ARRIERE)
+    {
+        nb_modules += modules_tour[ARRIERE];
+    }
+    
+    return nb_modules;
 }
 
 /******************************************************************************/
@@ -689,16 +701,17 @@ void autom_20ms (void)
             break;
         case SR_ROBOT_READY :
 //            FLAG_ACTION = NE_RIEN_FAIRE;
+//            FLAG_ACTION[AUTOM_AVANT] = MONTAGE_TOUR_PRET;
             
-//            arm_timer_event(AUTOM_AVANT, 2000, MONTAGE_TOUR_PRET, false);
-//            arm_timer_event(AUTOM_ARRIERE, 2000, MONTAGE_TOUR_PRET, false);
-//            register_sync_event(AUTOM_PRINCIPALE, MT_TOUR_COMPLETE, 500, 2, 
-//                    AUTOM_AVANT,   MT_TOUR_COMPLETE,
-//                    AUTOM_ARRIERE, MT_TOUR_COMPLETE);
+            arm_timer_event(AUTOM_AVANT, 2000, MONTAGE_TOUR_PRET, false);
+            arm_timer_event(AUTOM_ARRIERE, 2000, MONTAGE_TOUR_PRET, false);
+            register_sync_event(AUTOM_PRINCIPALE, MT_TOUR_COMPLETE, 500, 2, 
+                    AUTOM_AVANT,   MT_TOUR_COMPLETE,
+                    AUTOM_ARRIERE, MT_TOUR_COMPLETE);
             
-            arm_timer_event(AUTOM_AVANT, 2000, AF_ATTRAPE_FUSEE, true);
-            arm_timer_event(AUTOM_ARRIERE, 2000, AF_ATTRAPE_FUSEE, true);
-            FLAG_ACTION[AUTOM_PRINCIPALE] = NE_RIEN_FAIRE;
+//            arm_timer_event(AUTOM_AVANT, 2000, AF_ATTRAPE_FUSEE, true);
+//            arm_timer_event(AUTOM_ARRIERE, 2000, AF_ATTRAPE_FUSEE, true);
+//            FLAG_ACTION[AUTOM_PRINCIPALE] = NE_RIEN_FAIRE;
             break;
         case MT_TOUR_COMPLETE :
             // do nothing
@@ -754,7 +767,6 @@ void autom_20ms (void)
                 MT_redescendre_ascensseur(autom_id);
                 break;
             case MT_TOUR_COMPLETE :
-                FLAG_ACTION[autom_id] = DX_START_DEPOSE;
                 // do nothing
                 break;
                 
@@ -791,7 +803,6 @@ void autom_20ms (void)
                 DX_refermer_depose_module(autom_id);
                 break;
             case DX_DEPOSE_FINIT :
-                arm_timer_event(autom_id, 2000, DX_START_DEPOSE, true);
                 break;
                 
             // event attrape module
