@@ -225,18 +225,18 @@ extern "C" {
     /**************************************************************************/
     /****************************** ODOMETRIE *********************************/
     /**************************************************************************/
-    #define _ENTRAXE_MM                  215.2482793082149     // Si trop loin = diminuer entraxe
+    #define _ENTRAXE_MM                  206.1959249750801     // Si trop loin = diminuer entraxe
     #define _DIAMETRE_ROUE_CODEUSE       0.             //Toujours dans le sens de l'erreur : aler plus loin = diminuer D
-    #define _PERIMETRE_ROUE_MM           ( 136.98)
+    #define _PERIMETRE_ROUE_MM           ( 130.782)
 
 
     //+COEF_D -> + a droite
     #define  _COEF_D                    (double) (1.002855) 
     #define  _COEF_G                    (double) (1.)
 
-    #define LARGEUR_ROBOT               0
-    #define LONGUEUR_ROBOT              0
-    #define DISTANCE_CENTRE_ROBOT_PINCE 0
+    #define LARGEUR_ROBOT               211.
+    #define LONGUEUR_ROBOT              188.
+    #define DISTANCE_CENTRE_ROBOT_PINCE 114.
 
     /**************************************************************************/
     /******************************** ASSERV **********************************/

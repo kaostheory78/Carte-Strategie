@@ -48,7 +48,7 @@ void jack()
         init_system_arriere();
     }
        
-//    while(SYS_JACK);
+    while(SYS_JACK);
 }
 
 void allumer_pompes ()
@@ -404,8 +404,8 @@ void fermer_depose_module(_cote cote)
 void SR_start_robot()
 {
     degage_depose_module(LES_DEUX);
-    register_ax12_event(BITE_AV, AUTOM_AVANT, SR_DEPOSE_MODULE_OUVERT, 500);
-    register_ax12_event(BITE_AR, AUTOM_ARRIERE, SR_DEPOSE_MODULE_OUVERT, 0);
+    register_ax12_event(BITE_AV, AUTOM_AVANT, SR_DEPOSE_MODULE_OUVERT, 200);
+    register_ax12_event(BITE_AR, AUTOM_ARRIERE, SR_DEPOSE_MODULE_OUVERT, 200);
     
     register_sync_event(AUTOM_PRINCIPALE, SR_ROBOT_READY, 0, 2, 
         AUTOM_AVANT,   SR_ROBOT_READY, 
@@ -462,7 +462,7 @@ void MT_recherche_modules_pince(_cote cote)
     {
         // On attends 300 ms pour vérfier que le module est bien dans la pince
         // et que ce n'est pas un faux positif
-        arm_timer_event(cote, 300, MT_MODULE_DETECTE, true);
+        arm_timer_event(cote, 100, MT_MODULE_DETECTE, true);
     }
 }
 

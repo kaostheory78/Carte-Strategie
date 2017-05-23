@@ -98,7 +98,7 @@ extern "C" {
     #define PINCE_POS_REPLI                 848
     #define PINCE_POS_OUVERTE               630
     #define PINCE_POS_ENTROUVERTE           585 //575
-    #define PINCE_POS_FERME                 535  // 540
+    #define PINCE_POS_FERME                 535   // new pinces 585
 
     #define ASC_AR_POS_BAS                     320    
     #define ASC_AR_POS_INIT                    410 
