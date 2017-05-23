@@ -68,7 +68,7 @@ void strategie()
         CPT_TEMPS_MATCH.actif = true;
         FLAG_ACTION[AUTOM_PRINCIPALE] = SR_START_ROBOT;
         
-        delay_ms(2000);
+        delay_ms(3000);
         
         // on va chercher le premier module
         rejoindre(1000, 600, MARCHE_AVANT, 100);
@@ -119,8 +119,8 @@ void strategie()
                 {
                     printf("\n\r on depose ARRIERE");
                     // on bourre le range module
-                    calage(-200, 25);
-                    avancer_reculer(40, 100);
+                    calage(-200, 100);
+                    avancer_reculer(50, 50);
 
                     // On initie une dépose
                     FLAG_ACTION[AUTOM_ARRIERE] = DX_INIT_DEPOSE;
@@ -132,7 +132,7 @@ void strategie()
                     printf("\n\r Depose finit");
                 }
                 
-                avancer_reculer(80, 100);
+                avancer_reculer(70, 100);
             }
             
             // dépose AVANT
@@ -154,8 +154,8 @@ void strategie()
                 if (FLAG_ACTION[AUTOM_AVANT] != DX_DEPOSE_FINIT)
                 {
                     // on bourre le range module
-                    calage(200, 25);
-                    avancer_reculer(-40, 100);
+                    calage(200, 100);
+                    avancer_reculer(-50, 50);
 
                     // On initie une dépose
                     FLAG_ACTION[AUTOM_AVANT] = DX_INIT_DEPOSE;
@@ -166,7 +166,7 @@ void strategie()
                 }
            
                 // truc pour coller le module 
-                avancer_reculer(-80, 100);
+                avancer_reculer(-70, 100);
             }
             calage(200, 25);
         }

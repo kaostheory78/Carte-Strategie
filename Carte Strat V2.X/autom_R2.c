@@ -555,7 +555,7 @@ void MT_ouverture_pince_haut_avant_montee (_cote cote)
 void MT_montage_du_module (_cote cote)
 {
     monter_ascenseur(cote);
-    register_ax12_event(getIdAx12(ASCENSEUR, cote), cote, MT_ASC_EN_HAUT , 500); // TODO : CHANGE EVENT, change timeout
+    register_ax12_event(getIdAx12(ASCENSEUR, cote), cote, MT_ASC_EN_HAUT , 200); // TODO : CHANGE EVENT, change timeout
 }
 
 /**
@@ -566,7 +566,7 @@ void MT_montage_du_module (_cote cote)
 void MT_attrape_module_en_haut (_cote cote)
 {
     fermer_pinces_haut(cote);
-    register_ax12_event(getIdAx12(PINCE_HAUT, cote), cote, MT_MODULE_ATTRAPE_EN_HAUT, 750); // TODO CHANGE timer
+    register_ax12_event(getIdAx12(PINCE_HAUT, cote), cote, MT_MODULE_ATTRAPE_EN_HAUT, 350); // TODO CHANGE timer
 }
 
 /**
@@ -622,13 +622,13 @@ void DINT_ouverture_pince_bas_avant_montee (_cote cote)
 void DINT_monter_ascenseur(_cote cote)
 {
     monter_ascenseur(cote);
-    register_ax12_event(getIdAx12(ASCENSEUR, cote), cote, DINT_ASC_EN_HAUT, 400);
+    register_ax12_event(getIdAx12(ASCENSEUR, cote), cote, DINT_ASC_EN_HAUT, 200);
 }
 
 void DINT_recup_module (_cote cote)
 {
     fermer_pinces_bas(cote);
-    register_ax12_event(getIdAx12(PINCE_BAS, cote), cote, DINT_MODULE_ATTRAPE, 400);
+    register_ax12_event(getIdAx12(PINCE_BAS, cote), cote, DINT_MODULE_ATTRAPE, 200);
 }
 
 void DINT_relacher_tour (_cote cote)
@@ -639,16 +639,16 @@ void DINT_relacher_tour (_cote cote)
 
 void DINT_descendre_tour(_cote cote)
 {
-    if (check_capteur_pince(cote))
-    {
+//    if (check_capteur_pince(cote))
+//    {
         descendre_ascenseur(cote);
-        register_ax12_event(getIdAx12(ASCENSEUR, cote), cote, DINT_TOUR_EN_BAS, 200);
-    }
-    else
-    {
-        modules_tour[cote]--;
-        FLAG_ACTION[cote] = DX_DEPOSE_FINIT;
-    }
+        register_ax12_event(getIdAx12(ASCENSEUR, cote), cote, DINT_TOUR_EN_BAS, 100);
+//    }
+//    else
+//    {
+//        modules_tour[cote]--;
+//        FLAG_ACTION[cote] = DX_DEPOSE_FINIT;
+//    }
 }
 
 void DINT_fermer_pince_haut(_cote cote)
