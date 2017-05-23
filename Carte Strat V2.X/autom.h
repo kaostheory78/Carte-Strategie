@@ -104,13 +104,15 @@ extern "C" {
     #define ASC_AR_POS_INIT                    410 
     #define ASC_AR_POS_INIT_MAX                560
     #define ASC_AR_POS_HAUT                    803 
-    #define ASC_AR_POS_DEPOSE                   530 //517
+    #define ASC_AR_POS_DEPOSE_BAS                   530 //530
+    #define ASC_AR_POS_DEPOSE_HAUT                   520 //530
 
     #define ASC_AV_POS_BAS                     291    
     #define ASC_AV_POS_INIT                    340
     #define ASC_AV_POS_INIT_MAX                510
     #define ASC_AV_POS_HAUT                    770 
-    #define ASC_AV_POS_DEPOSE                  488 //488
+    #define ASC_AV_POS_DEPOSE_BAS                  500 //488
+#define ASC_AV_POS_DEPOSE_HAUT                  585 //488
 
     #define BITE_POS_INIT                       830
     #define BITE_POS_RANGE                      305

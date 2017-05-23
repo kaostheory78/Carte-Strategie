@@ -274,6 +274,7 @@ typedef struct
 
     // Ax12 variables
     extern volatile _ax12 ax12;
+    extern volatile pos position_AX12[ID_MAX_AX12];
     extern volatile _Bool CHECK_LIMITATION_COURANT;
     
 #ifndef NO_SERIALUS

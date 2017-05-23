@@ -62,12 +62,13 @@ void strategie()
         
         // DEBUT DU MATCH
         while(!SYS_JACK);
+        delay_ms(1000);
         while(SYS_JACK);
         
         CPT_TEMPS_MATCH.actif = true;
         FLAG_ACTION[AUTOM_PRINCIPALE] = SR_START_ROBOT;
         
-        delay_ms(4000);
+        delay_ms(2000);
         
         // on va chercher le premier module
         rejoindre(1000, 600, MARCHE_AVANT, 100);
@@ -78,14 +79,14 @@ void strategie()
         passe_part(350,900, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
         passe_part(275,700, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
         passe_part(200,600, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-        delay_ms(2000);
+        delay_ms(500);
         
         // On va chercher le module monochrome au milieu 
         // (module 1 arrière)
 //        FLAG_ACTION[AUTOM_ARRIERE] = MONTAGE_TOUR_PRET;
         rejoindre(500, 800, MARCHE_ARRIERE, 100);
         rejoindre(500, 1100, MARCHE_ARRIERE, 100);
-        delay_ms(2000);
+        delay_ms(500);
         
         // on va chercher le module devant la zone de dépose
         // module 2 arrière
@@ -93,40 +94,51 @@ void strategie()
         inihibit_montage_tour[AUTOM_ARRIERE] = true;
         rejoindre(836, 1336, MARCHE_ARRIERE, 100);
         rejoindre(868, 1368, MARCHE_ARRIERE, 100);
-        delay_ms(4000);
         
         if (get_module_tour(LES_DEUX > 0))
         { 
             // dépose ARRIERE
             while ( (get_module_tour(ARRIERE) > 0) && (espace_libre_depose1 > 0) )
             {
+                printf("\n\r Depose ARRIERE");
                 // autom de montage finit
                 while( (FLAG_ACTION[AUTOM_ARRIERE] != MT_TOUR_COMPLETE) && 
                        (FLAG_ACTION[AUTOM_ARRIERE] != MT_RECHERCHE_MODULE_EN_COURS) &&
                        (FLAG_ACTION[AUTOM_ARRIERE] != DX_DEPOSE_FINIT) );
                 
+                printf("\n\r MT tour finit ARRIERE");
+                
                 // on s'assure qu'un module soit en bas pour bourrer le range module
                 FLAG_ACTION[AUTOM_ARRIERE] = DX_START_DEPOSE;
                 while( (FLAG_ACTION[AUTOM_ARRIERE] != DX_DEPOSE_READY) &&
                        (FLAG_ACTION[AUTOM_ARRIERE] != DX_DEPOSE_FINIT) );
+                
+                printf("\n\r START DEPOSE FINIT");
+                
+                if (FLAG_ACTION[AUTOM_ARRIERE] != DX_DEPOSE_FINIT)
+                {
+                    printf("\n\r on depose ARRIERE");
+                    // on bourre le range module
+                    calage(-200, 25);
+                    avancer_reculer(40, 100);
 
-                // on bourre le range module
-                calage(-100, 25);
-                avancer_reculer(20, 100);
+                    // On initie une dépose
+                    FLAG_ACTION[AUTOM_ARRIERE] = DX_INIT_DEPOSE;
+                    espace_libre_depose1--;
+
+                    // autom de montage finit
+                    while( FLAG_ACTION[AUTOM_ARRIERE] != DX_DEPOSE_FINIT );
+                    
+                    printf("\n\r Depose finit");
+                }
                 
-                // On initie une dépose
-                FLAG_ACTION[AUTOM_ARRIERE] = DX_INIT_DEPOSE;
-                
-                // autom de montage finit
-                while( FLAG_ACTION[AUTOM_ARRIERE] != DX_DEPOSE_FINIT );
-                
-                // truc pour coller le module 
                 avancer_reculer(80, 100);
             }
             
             // dépose AVANT
             while ( (get_module_tour(AUTOM_AVANT) > 0) && (espace_libre_depose1 > 0) )
             {
+                printf("\n\r Depose AVANT");
                 cibler(1500, 2000, 100);
                 
                 // autom de montage finit
@@ -139,19 +151,24 @@ void strategie()
                 while( (FLAG_ACTION[AUTOM_AVANT] != DX_DEPOSE_READY) &&
                        (FLAG_ACTION[AUTOM_AVANT] != DX_DEPOSE_FINIT) );
 
-                // on bourre le range module
-                calage(100, 25);
-                avancer_reculer(-20, 100);
-                
-                // On initie une dépose
-                FLAG_ACTION[AUTOM_AVANT] = DX_INIT_DEPOSE;
-                
-                // autom de montage finit
-                while( FLAG_ACTION[AUTOM_AVANT] != DX_DEPOSE_FINIT );
-                
+                if (FLAG_ACTION[AUTOM_AVANT] != DX_DEPOSE_FINIT)
+                {
+                    // on bourre le range module
+                    calage(200, 25);
+                    avancer_reculer(-40, 100);
+
+                    // On initie une dépose
+                    FLAG_ACTION[AUTOM_AVANT] = DX_INIT_DEPOSE;
+                    espace_libre_depose1--;
+
+                    // autom de montage finit
+                    while( FLAG_ACTION[AUTOM_AVANT] != DX_DEPOSE_FINIT );
+                }
+           
                 // truc pour coller le module 
                 avancer_reculer(-80, 100);
-            }          
+            }
+            calage(200, 25);
         }
         
         
