@@ -95,10 +95,10 @@ extern "C" {
     /**************************************************************************/
 
 #ifdef  PETIT_ROBOT
-    #define PINCE_POS_REPLI                 848
-    #define PINCE_POS_OUVERTE               630
-    #define PINCE_POS_ENTROUVERTE           585 //575
-    #define PINCE_POS_FERME                 535   // new pinces 585
+    #define PINCE_POS_REPLI                 900
+    #define PINCE_POS_OUVERTE               690
+    #define PINCE_POS_ENTROUVERTE           620 //575
+    #define PINCE_POS_FERME                 585   // new pinces 585
 
     #define ASC_AR_POS_BAS                     320    
     #define ASC_AR_POS_INIT                    410 

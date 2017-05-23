@@ -53,7 +53,7 @@ void strategie()
         EVITEMENT_ADV.actif = ON;
         EVITEMENT_ADV.mode = STOP;
         
-//        jack(); 
+        jack(); 
 //        while(1);
         
         // Calage
