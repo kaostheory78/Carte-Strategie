@@ -270,6 +270,7 @@ typedef struct
     extern volatile _timer_event timer_event[AUTOM_ID_MAX_NB];
     extern volatile _ax12_event ax12_event[AUTOM_ID_MAX_NB];
     extern volatile _sync_event sync_event[AUTOM_ID_MAX_NB];
+    extern volatile bool inihibit_montage_tour[LES_DEUX];
 
     // Ax12 variables
     extern volatile _ax12 ax12;

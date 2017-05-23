@@ -20,6 +20,7 @@
 /*************************** Variables Globales *******************************/
 /******************************************************************************/
 
+volatile bool inihibit_montage_tour[LES_DEUX] = {0};
 static uint8_t modules_tour[LES_DEUX] = {0};
 static const uint8_t hauteur_tour_max = 2;
 
@@ -144,7 +145,7 @@ uint8_t get_module_tour(_cote cote)
     {
         nb_modules += modules_tour[AVANT];
     }
-    else if (cote == ARRIERE)
+    else if (cote == ARRIERE || cote == LES_DEUX)
     {
         nb_modules += modules_tour[ARRIERE];
     }
@@ -497,7 +498,7 @@ void MT_serrage_module_apres_detection(_cote cote)
 void MT_ouverture_pince_haut_avant_montee (_cote cote)
 {
     // Tour complète = montage finit
-    if (modules_tour[cote] >= hauteur_tour_max) //TODO
+    if (modules_tour[cote] >= hauteur_tour_max || inihibit_montage_tour[cote] == true) //TODO
     {
         FLAG_ACTION[cote] = MT_TOUR_COMPLETE;
     }
@@ -560,48 +561,69 @@ void MT_redescendre_ascensseur(_cote cote)
 /** DEPOSE CAS 1 ***/
 void DX_depose_module(_cote cote)
 {
+    ouvrir_depose_module(cote);
     if (check_capteur_pince(cote))
     {
-        FLAG_ACTION[cote] = D1_START_DEPOSE;
+        register_ax12_event(getIdAx12(RETOURNE_MODULE, cote), cote, DX_DEPOSE_READY, 200);
     }
     else if (modules_tour[cote] > 0)
     {
-        FLAG_ACTION[cote] = D2_START_DEPOSE;
+        register_ax12_event(getIdAx12(RETOURNE_MODULE, cote), cote, DINT_START_DEPOSE, 200);
     }
     else
     {
-        FLAG_ACTION[cote] = DX_DEPOSE_FINIT;
+        register_ax12_event(getIdAx12(RETOURNE_MODULE, cote), cote, DX_DEPOSE_FINIT, 200);
     }
 }
 
-void D1_ouverture_pince_haut_avant_montee (_cote cote)
-{
-    ouvrir_pinces_haut(cote);
-    FLAG_ACTION[cote] = DX_PRET_A_ALLER_EN_DEPOSE; 
-}
-
-void D2_ouverture_pince_bas_avant_montee (_cote cote)
+void DINT_ouverture_pince_bas_avant_montee (_cote cote)
 {
     ouvrir_pinces_bas(cote);
-    register_ax12_event(getIdAx12(PINCE_BAS, cote), cote, D2_PINCE_BAS_OUVERTE, 100);
+    register_ax12_event(getIdAx12(PINCE_BAS, cote), cote, DINT_PINCE_BAS_OUVERTE, 100);
 }
 
-void D2_monter_ascenseur(_cote cote)
+void DINT_monter_ascenseur(_cote cote)
 {
     monter_ascenseur(cote);
-    register_ax12_event(getIdAx12(ASCENSEUR, cote), cote, D2_ASC_EN_HAUT, 400);
+    register_ax12_event(getIdAx12(ASCENSEUR, cote), cote, DINT_ASC_EN_HAUT, 400);
 }
 
-void D2_recup_module (_cote cote)
+void DINT_recup_module (_cote cote)
 {
     fermer_pinces_bas(cote);
-    register_ax12_event(getIdAx12(PINCE_BAS, cote), cote, D2_MODULE_ATTRAPE, 400);
+    register_ax12_event(getIdAx12(PINCE_BAS, cote), cote, DINT_MODULE_ATTRAPE, 400);
 }
 
-void D2_relacher_tour (_cote cote)
+void DINT_relacher_tour (_cote cote)
 {
     ouvrir_pinces_haut(cote);
-    register_ax12_event(getIdAx12(PINCE_HAUT, cote), cote, DX_PRET_A_ALLER_EN_DEPOSE, 40);
+    register_ax12_event(getIdAx12(PINCE_HAUT, cote), cote, DINT_PRET_A_DESCENDRE_TOUR, 40);
+}
+
+void DINT_descendre_tour(_cote cote)
+{
+    descendre_ascenseur(cote);
+    register_ax12_event(getIdAx12(ASCENSEUR, cote), cote, DINT_TOUR_EN_BAS, 200);
+}
+
+void DINT_fermer_pince_haut(_cote cote)
+{
+    fermer_pinces_haut(cote);
+    register_ax12_event(getIdAx12(PINCE_HAUT, cote), cote, DX_DEPOSE_READY, 300);
+}
+
+void DX_ouverture_pince_haut_avant_montee (_cote cote)
+{
+    if (check_capteur_pince(cote))
+    {
+        ouvrir_pinces_haut(cote);
+        FLAG_ACTION[cote] = DX_PRET_A_ALLER_EN_DEPOSE; 
+    }
+    else
+    {
+        FLAG_ACTION[cote] = DX_DEPOSE_READY;
+    }
+    
 }
 
 void DX_positionnement_pour_depose(_cote cote)
@@ -623,13 +645,14 @@ void DX_relache_module (_cote cote)
 {
     ouvrir_pinces_bas(cote);
     modules_tour[cote]--;
-    register_ax12_event(getIdAx12(PINCE_BAS, cote), cote, DX_MODULE_RELACHE, 400);
+    inihibit_montage_tour[cote] = false;
+    register_ax12_event(getIdAx12(PINCE_BAS, cote), cote, DX_DEPOSE_FINIT, 400);
 }
 
 void DX_refermer_depose_module(_cote cote)
 {
-    ouvrir_depose_module(cote);
-    register_ax12_event(getIdAx12(PINCE_BAS, cote), cote, DX_DEPOSE_FINIT, 800);
+//    ouvrir_depose_module(cote);
+//    register_ax12_event(getIdAx12(PINCE_BAS, cote), cote, DX_DEPOSE_FINIT, 800);
 }
 
 
@@ -775,20 +798,29 @@ void autom_20ms (void)
             case DX_START_DEPOSE :
                 DX_depose_module(autom_id);
                 break;
-            case D1_START_DEPOSE :
-                D1_ouverture_pince_haut_avant_montee(autom_id);
+            case DINT_START_DEPOSE :
+                DINT_ouverture_pince_bas_avant_montee(autom_id);
                 break;
-            case D2_START_DEPOSE :
-                D2_ouverture_pince_bas_avant_montee(autom_id);
+            case DINT_PINCE_BAS_OUVERTE :
+                DINT_monter_ascenseur(autom_id);
                 break;
-            case D2_PINCE_BAS_OUVERTE :
-                D2_monter_ascenseur(autom_id);
+            case DINT_ASC_EN_HAUT :
+                DINT_recup_module(autom_id);
                 break;
-            case D2_ASC_EN_HAUT :
-                D2_recup_module(autom_id);
+            case DINT_MODULE_ATTRAPE :
+                DINT_relacher_tour(autom_id);
                 break;
-            case D2_MODULE_ATTRAPE :
-                D2_relacher_tour(autom_id);
+            case DINT_PRET_A_DESCENDRE_TOUR :
+                DINT_descendre_tour(autom_id);
+                break;
+            case DINT_TOUR_EN_BAS :
+                DINT_fermer_pince_haut(autom_id);
+                break;
+            case DX_DEPOSE_READY :
+                // DO NOTHING
+                break;
+            case DX_INIT_DEPOSE :
+                DX_ouverture_pince_haut_avant_montee(autom_id);
                 break;
             case DX_PRET_A_ALLER_EN_DEPOSE :
                 DX_positionnement_pour_depose(autom_id);
