@@ -211,7 +211,7 @@ void calcul_modif_angle (uint8_t ID, float angle)
  */
 void synchro_AX12 (uint8_t ID, float angle, uint16_t vitesse, uint8_t attente)
 {
-    if (COULEUR == JAUNE)
+    if (COULEUR == BLEU)
     {
         if( decalage[ID].symetrique > 0)
         {

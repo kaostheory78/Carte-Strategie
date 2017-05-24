@@ -23,15 +23,15 @@
 
 uint8_t couleur_depart()
 {
-    if (SYS_COULEUR == 0)
-        return JAUNE;
+    if (SYS_COULEUR == 1)
+        return BLEU;
     else
-        return VERT;
+        return JAUNE;
 }
 
 double inversion_couleur (double param_inversable)
 {
-    if (COULEUR == JAUNE)
+    if (COULEUR == BLEU)
         return param_inversable;
     else
         return (- param_inversable);

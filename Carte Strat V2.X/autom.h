@@ -39,8 +39,8 @@ extern "C" {
      */
     typedef enum
     {
-        VERT,
-        JAUNE
+        JAUNE,
+        BLEU
     }_enum_couleurs;
     
     typedef enum

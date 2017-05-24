@@ -76,12 +76,20 @@ void strategie()
         /*** DEBUT MATCH ***/
         /*******************/
         
-        init_position_robot(710 + LARGEUR_ROBOT / 2., 360 - LONGUEUR_ROBOT / 2., 90);
         CPT_TEMPS_MATCH.actif = true;
-        arm_timer_event(AUTOM_PRINCIPALE, 500, SR_START_ROBOT, true);
+        arm_timer_event(AUTOM_PRINCIPALE, 700, SR_START_ROBOT, true);
+        
+        if (COULEUR == JAUNE)
+        {
+            init_position_robot(710 + LARGEUR_ROBOT / 2., 360 - LONGUEUR_ROBOT / 2., 90);
+        }
+        else
+        {
+            init_position_robot(1070 - LARGEUR_ROBOT / 2., 360 - LONGUEUR_ROBOT / 2., 90);
+        }
         
         // on va chercher le premier module
-        rejoindre (850, 430, MARCHE_AVANT, 100);
+        rejoindre (1000, 430, MARCHE_AVANT, 100);
         while(FLAG_ACTION[AUTOM_AVANT] != SR_ROBOT_READY);
         
         rejoindre(1000, 600, MARCHE_AVANT, 100);

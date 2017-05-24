@@ -70,7 +70,7 @@ void init_system (void)
     init_evitement();
 
     // AUTOMS
-    COULEUR = JAUNE;
+    COULEUR = BLEU;
     
     for (autom_id = AUTOM_ID_MIN_NB ; autom_id < AUTOM_ID_MAX_NB ; autom_id++)
     {
