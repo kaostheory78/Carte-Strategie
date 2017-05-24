@@ -664,6 +664,10 @@ void DX_ouverture_pince_haut_avant_montee (_cote cote)
     
 }
 
+/**
+ * on DX_PRET_A_ALLER_EN_DEPOSE
+ * @param cote
+ */
 void DX_positionnement_pour_depose(_cote cote)
 {
     if (position_AX12[getIdAx12(ASCENSEUR, cote)].point == get_asc_pos_depose_haut(cote))

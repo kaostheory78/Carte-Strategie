@@ -332,10 +332,10 @@ section                    address   length (PC units)   length (bytes) (dec)
 .text                        0x200              0x45d6          0x68c1  (26817)
 .text                       0x47d6              0x99f8          0xe6f4  (59124)
 .dinit                      0xe1ce               0x8e0           0xd50  (3408)
-.text                       0xeaae              0x136e          0x1d25  (7461)
-.init.delay32               0xfe1c                0x1c            0x2a  (42)
+.text                       0xeaae              0x14a0          0x1ef0  (7920)
+.init.delay32               0xff4e                0x1c            0x2a  (42)
 
-                 Total program memory used (bytes):        0x17a54  (96852) 73%
+                 Total program memory used (bytes):        0x17c1f  (97311) 74%
 
 
 Ivt Memory  [Origin = 0x4, Length = 0xfc]
@@ -873,41 +873,41 @@ External Symbols in Program Memory (by address):
                   0x00e05e                  _autom_20ms
                   0x00e1c2                  _autom_avant
                   0x00e1c8                  _autom_arriere
-                  0x00eaae                  _init_system
-                  0x00eb24                  _config_timer_5ms
-                  0x00eb44                  _config_timer_10ms
-                  0x00eb64                  _config_timer_20ms
-                  0x00eb82                  _config_timer_100ms
-                  0x00eba2                  _config_timer_200ms
-                  0x00ebc0                  _init_clock
-                  0x00ec22                  _init_compteur_temps_match
-                  0x00ec34                  _ConfigMapping
-                  0x00ec94                  _ConfigPorts
-                  0x00edbc                  _ConfigInterrupt
-                  0x00f04c                  _ConfigADC
-                  0x00f052                  _strategie
-                  0x00f4b0                  _depose
-                  0x00f568                  _homologation
-                  0x00f586                  _reglage_odometrie
-                  0x00f5ec                  _InitUART
-                  0x00f694                  _calcul_baud
-                  0x00f754                  _modifier_vitesse_com_uart
-                  0x00f780                  _vider_buffer_reception_uart
-                  0x00f7ae                  _PutcUART
-                  0x00f7f2                  _init_evitement
-                  0x00f81e                  _check_evitement_avant
-                  0x00f862                  _check_evitement_arriere
-                  0x00f8a6                  _check_evitement
-                  0x00f8dc                  _ajustement_evitement_autonome
-                  0x00f8e2                  _evitement
-                  0x00f9ae                  _ConfigPWM
-                  0x00f9f2                  _envoit_pwm
-                  0x00fb46                  _alimenter_moteur_Y
-                  0x00fb68                  _ConfigQEI
-                  0x00fbba                  _get_valeur_codeur
-                  0x00fcaa                  _debug
-                  0x00fde0                  _main
-                  0x00fe1c                  ___delay32
+                  0x00eaae                  _strategie
+                  0x00f03e                  _depose
+                  0x00f0f6                  _homologation
+                  0x00f114                  _reglage_odometrie
+                  0x00f17a                  _init_system
+                  0x00f1f0                  _config_timer_5ms
+                  0x00f210                  _config_timer_10ms
+                  0x00f230                  _config_timer_20ms
+                  0x00f24e                  _config_timer_100ms
+                  0x00f26e                  _config_timer_200ms
+                  0x00f28c                  _init_clock
+                  0x00f2ee                  _init_compteur_temps_match
+                  0x00f300                  _ConfigMapping
+                  0x00f360                  _ConfigPorts
+                  0x00f488                  _ConfigInterrupt
+                  0x00f718                  _ConfigADC
+                  0x00f71e                  _InitUART
+                  0x00f7c6                  _calcul_baud
+                  0x00f886                  _modifier_vitesse_com_uart
+                  0x00f8b2                  _vider_buffer_reception_uart
+                  0x00f8e0                  _PutcUART
+                  0x00f924                  _init_evitement
+                  0x00f950                  _check_evitement_avant
+                  0x00f994                  _check_evitement_arriere
+                  0x00f9d8                  _check_evitement
+                  0x00fa0e                  _ajustement_evitement_autonome
+                  0x00fa14                  _evitement
+                  0x00fae0                  _ConfigPWM
+                  0x00fb24                  _envoit_pwm
+                  0x00fc78                  _alimenter_moteur_Y
+                  0x00fc9a                  _ConfigQEI
+                  0x00fcec                  _get_valeur_codeur
+                  0x00fddc                  _debug
+                  0x00ff12                  _main
+                  0x00ff4e                  ___delay32
                   0xf80000                  __FBS.sec
                   0xf80002                  __FSS.sec
                   0xf80004                  __FGS.sec
@@ -917,12 +917,12 @@ External Symbols in Program Memory (by name):
                   0x00e030                  _AF_attrape_module
                   0x00e014                  _AF_detecte_module
                   0x00dfbc                  _AF_prepare_fusee
-                  0x00f04c                  _ConfigADC
-                  0x00edbc                  _ConfigInterrupt
-                  0x00ec34                  _ConfigMapping
-                  0x00f9ae                  _ConfigPWM
-                  0x00ec94                  _ConfigPorts
-                  0x00fb68                  _ConfigQEI
+                  0x00f718                  _ConfigADC
+                  0x00f488                  _ConfigInterrupt
+                  0x00f300                  _ConfigMapping
+                  0x00fae0                  _ConfigPWM
+                  0x00f360                  _ConfigPorts
+                  0x00fc9a                  _ConfigQEI
                   0x00debe                  _DINT_descendre_tour
                   0x00deda                  _DINT_fermer_pince_haut
                   0x00de6a                  _DINT_monter_ascenseur
@@ -935,7 +935,7 @@ External Symbols in Program Memory (by name):
                   0x00dfb4                  _DX_refermer_depose_module
                   0x00df84                  _DX_relache_module
                   0x00df4c                  _DX_resserage_tour
-                  0x00f5ec                  _InitUART
+                  0x00f71e                  _InitUART
                   0x007338                  _MAJ_obstacle
                   0x008f4a                  _MM_TO_TICK
                   0x00ddaa                  _MT_attrape_module_en_haut
@@ -946,7 +946,7 @@ External Symbols in Program Memory (by name):
                   0x00dde0                  _MT_redescendre_ascensseur
                   0x00dd22                  _MT_serrage_module_apres_detection
                   0x00cf8e                  _Ping
-                  0x00f7ae                  _PutcUART
+                  0x00f8e0                  _PutcUART
                   0x00dca8                  _SR_descendre_ascenseur
                   0x00dc70                  _SR_ouvrir_pinces
                   0x00dc34                  _SR_start_robot
@@ -999,7 +999,7 @@ External Symbols in Program Memory (by name):
                   0x003532                  ___dPutfld_cdnopuxX
                   0x003532                  ___dPutfld_fF
                   0x003532                  ___dPutfld_s
-                  0x00fe1c                  ___delay32
+                  0x00ff4e                  ___delay32
                   0x000c1a                  ___divdf3
                   0x0014c8                  ___divdi3
                   0x004786                  ___divsi3
@@ -1084,8 +1084,8 @@ External Symbols in Program Memory (by name):
                   0x004b10                  _action_evitement
                   0x00b00a                  _action_reception_serialus
                   0x006f20                  _aiguillage_evitement
-                  0x00f8dc                  _ajustement_evitement_autonome
-                  0x00fb46                  _alimenter_moteur_Y
+                  0x00fa0e                  _ajustement_evitement_autonome
+                  0x00fc78                  _alimenter_moteur_Y
                   0x00d052                  _allumer_LED_AX12
                   0x00d74c                  _allumer_pompes
                   0x00cdf4                  _angle_AX12
@@ -1112,7 +1112,7 @@ External Symbols in Program Memory (by name):
                   0x004e5a                  _calage_teta
                   0x0097f8                  _calcul_acceleration_orientation
                   0x00955c                  _calcul_acceleration_position
-                  0x00f694                  _calcul_baud
+                  0x00f7c6                  _calcul_baud
                   0x00d452                  _calcul_checksum
                   0x00d4b4                  _calcul_checksum_variadic
                   0x009972                  _calcul_distance_consigne_XY
@@ -1132,9 +1132,9 @@ External Symbols in Program Memory (by name):
                   0x00c6a4                  _check_erreur_serialus
                   0x00c4ce                  _check_est_un_nombre
                   0x00c594                  _check_est_un_nombre_flottant
-                  0x00f8a6                  _check_evitement
-                  0x00f862                  _check_evitement_arriere
-                  0x00f81e                  _check_evitement_avant
+                  0x00f9d8                  _check_evitement
+                  0x00f994                  _check_evitement_arriere
+                  0x00f950                  _check_evitement_avant
                   0x00c538                  _check_id_ax12
                   0x00c74a                  _check_nb_param
                   0x00c630                  _check_sont_des_nombres
@@ -1146,11 +1146,11 @@ External Symbols in Program Memory (by name):
                   0x004b16                  _cibler
                   0x00d60e                  _clean_des_erreurs_ax12
                   0x00d2ac                  _commande_AX12
-                  0x00eb82                  _config_timer_100ms
-                  0x00eb44                  _config_timer_10ms
-                  0x00eba2                  _config_timer_200ms
-                  0x00eb64                  _config_timer_20ms
-                  0x00eb24                  _config_timer_5ms
+                  0x00f24e                  _config_timer_100ms
+                  0x00f210                  _config_timer_10ms
+                  0x00f26e                  _config_timer_200ms
+                  0x00f230                  _config_timer_20ms
+                  0x00f1f0                  _config_timer_5ms
                   0x00cf44                  _configurer_status_returning_level
                   0x00cf6a                  _configurer_temps_de_reponse_AX12
                   0x005a0e                  _conversion_direction
@@ -1160,11 +1160,11 @@ External Symbols in Program Memory (by name):
                   0x000c02                  _cos
                   0x000c02                  _cosl
                   0x0047d6                  _couleur_depart
-                  0x00fcaa                  _debug
+                  0x00fddc                  _debug
                   0x00db98                  _degage_depose_module
                   0x005638                  _deplacement
                   0x00803e                  _deplacement_arriere
-                  0x00f4b0                  _depose
+                  0x00f03e                  _depose
                   0x00db08                  _depose_ascenseur_from_bas
                   0x00db3c                  _depose_ascenseur_from_haut
                   0x00daa0                  _descendre_ascenseur
@@ -1173,10 +1173,10 @@ External Symbols in Program Memory (by name):
                   0x0057d4                  _distance
                   0x004094                  _div
                   0x008f78                  _ecretage_consignes
-                  0x00f9f2                  _envoit_pwm
+                  0x00fb24                  _envoit_pwm
                   0x00d06e                  _eteindre_LED_AX12
                   0x00d75c                  _eteindre_pompe
-                  0x00f8e2                  _evitement
+                  0x00fa14                  _evitement
                   0x007136                  _evitement_hugo
                   0x00517e                  _faire_des_tours
                   0x0020aa                  _fclose
@@ -1198,24 +1198,24 @@ External Symbols in Program Memory (by name):
                   0x00db70                  _get_asc_pos_depose_haut
                   0x00d81c                  _get_module_tour
                   0x008f3c                  _get_orientation
-                  0x00fbba                  _get_valeur_codeur
+                  0x00fcec                  _get_valeur_codeur
                   0x00497e                  _grand_demi_cercle
-                  0x00f568                  _homologation
+                  0x00f0f6                  _homologation
                   0x008c1e                  _init_X
                   0x008c48                  _init_Y
                   0x00055e                  _init_ax12_event
                   0x00ca94                  _init_clignotement
-                  0x00ebc0                  _init_clock
+                  0x00f28c                  _init_clock
                   0x008cc0                  _init_commande_moteur
-                  0x00ec22                  _init_compteur_temps_match
+                  0x00f2ee                  _init_compteur_temps_match
                   0x00cb00                  _init_decalage_AX12
-                  0x00f7f2                  _init_evitement
+                  0x00f924                  _init_evitement
                   0x00585c                  _init_evitement_hugo
                   0x008bc0                  _init_flag_asserv
                   0x008c74                  _init_orientation
                   0x00cb06                  _init_position_AX12
                   0x008bf4                  _init_position_robot
-                  0x00eaae                  _init_system
+                  0x00f17a                  _init_system
                   0x00d8f2                  _init_system_arriere
                   0x00d850                  _init_system_avant
                   0x0047ea                  _inversion_couleur
@@ -1228,12 +1228,12 @@ External Symbols in Program Memory (by name):
                   0x00d5b2                  _lecture_position_AX12
                   0x00c7d0                  _list_serialus
                   0x005a42                  _longement
-                  0x00fde0                  _main
+                  0x00ff12                  _main
                   0x004246                  _malloc
                   0x00429a                  _memchr
                   0x0042ae                  _memcpy
                   0x00d012                  _mode_rotation_AX12
-                  0x00f754                  _modifier_vitesse_com_uart
+                  0x00f886                  _modifier_vitesse_com_uart
                   0x00dce0                  _montage_tour
                   0x00dad4                  _monter_ascenseur
                   0x004b8c                  _orienter
@@ -1268,7 +1268,7 @@ External Symbols in Program Memory (by name):
                   0x0005c6                  _register_multiple_ax12_event
                   0x0006d4                  _register_sync_event
                   0x00a7e0                  _reglage_PID
-                  0x00f586                  _reglage_odometrie
+                  0x00f114                  _reglage_odometrie
                   0x00d6f2                  _reinit_alim_ax12
                   0x008cda                  _reinit_asserv
                   0x00d274                  _reinit_buffer
@@ -1291,7 +1291,7 @@ External Symbols in Program Memory (by name):
                   0x00d76a                  _son_evitement
                   0x001286                  _sqrt
                   0x001286                  _sqrtl
-                  0x00f052                  _strategie
+                  0x00eaae                  _strategie
                   0x0042bc                  _strchr
                   0x0042d4                  _strlen
                   0x00cd6a                  _synchro_AX12
@@ -1306,7 +1306,7 @@ External Symbols in Program Memory (by name):
                   0x00b0b0                  _traitement_serialus
                   0x004806                  _trapeze
                   0x009b8e                  _unbrake
-                  0x00f780                  _vider_buffer_reception_uart
+                  0x00f8b2                  _vider_buffer_reception_uart
                   0x00213a                  fclose.XX_elo:_closeall
                   0x0033a2                  printf_cdfFnopsuxXL.XXedo:_prout
 
@@ -1775,7 +1775,7 @@ __FUID3
  *(.comment)
  .comment         0x000000         0x5e c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\liblega-c-elf.a(xfiles.XX_eo)
 
-.debug_info       0x000000      0x15e92
+.debug_info       0x000000      0x15e94
  *(.debug_info)
  .debug_info      0x000000       0x1dd7 build/default/production/Fonctions_deplacements.o
  .debug_info      0x001dd7        0xd46 build/default/production/Uart.o
@@ -1788,14 +1788,14 @@ __FUID3
  .debug_info      0x008d0c       0x2c1a build/default/production/interruptions.o
  .debug_info      0x00b926        0xf3c build/default/production/main.o
  .debug_info      0x00c862        0xa6a build/default/production/pwm.o
- .debug_info      0x00d2cc        0xc6f build/default/production/strategie.o
- .debug_info      0x00df3b       0x57b0 build/default/production/system.o
- .debug_info      0x0136eb       0x185b build/default/production/Serialus.o
- .debug_info      0x014f46        0xdeb build/default/production/evitement.o
- .debug_info      0x015d31        0x161 build/default/production/autom_virtual.o
+ .debug_info      0x00d2cc        0xc71 build/default/production/strategie.o
+ .debug_info      0x00df3d       0x57b0 build/default/production/system.o
+ .debug_info      0x0136ed       0x185b build/default/production/Serialus.o
+ .debug_info      0x014f48        0xdeb build/default/production/evitement.o
+ .debug_info      0x015d33        0x161 build/default/production/autom_virtual.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000       0x190c
+.debug_abbrev     0x000000       0x18f7
  *(.debug_abbrev)
  .debug_abbrev    0x000000        0x26d build/default/production/Fonctions_deplacements.o
  .debug_abbrev    0x00026d        0x16c build/default/production/Uart.o
@@ -1808,13 +1808,13 @@ __FUID3
  .debug_abbrev    0x000d89        0x269 build/default/production/interruptions.o
  .debug_abbrev    0x000ff2        0x149 build/default/production/main.o
  .debug_abbrev    0x00113b        0x110 build/default/production/pwm.o
- .debug_abbrev    0x00124b        0x12d build/default/production/strategie.o
- .debug_abbrev    0x001378        0x1b4 build/default/production/system.o
- .debug_abbrev    0x00152c        0x25d build/default/production/Serialus.o
- .debug_abbrev    0x001789        0x164 build/default/production/evitement.o
- .debug_abbrev    0x0018ed         0x1f build/default/production/autom_virtual.o
+ .debug_abbrev    0x00124b        0x118 build/default/production/strategie.o
+ .debug_abbrev    0x001363        0x1b4 build/default/production/system.o
+ .debug_abbrev    0x001517        0x25d build/default/production/Serialus.o
+ .debug_abbrev    0x001774        0x164 build/default/production/evitement.o
+ .debug_abbrev    0x0018d8         0x1f build/default/production/autom_virtual.o
 
-.debug_line       0x000000       0x24b8
+.debug_line       0x000000       0x24e4
  *(.debug_line)
  .debug_line      0x000000        0x85e build/default/production/Fonctions_deplacements.o
  .debug_line      0x00085e        0x166 build/default/production/Uart.o
@@ -1827,13 +1827,13 @@ __FUID3
  .debug_line      0x0015cb        0x250 build/default/production/interruptions.o
  .debug_line      0x00181b        0x13b build/default/production/main.o
  .debug_line      0x001956        0x13f build/default/production/pwm.o
- .debug_line      0x001a95        0x15d build/default/production/strategie.o
- .debug_line      0x001bf2        0x295 build/default/production/system.o
- .debug_line      0x001e87        0x492 build/default/production/Serialus.o
- .debug_line      0x002319        0x185 build/default/production/evitement.o
- .debug_line      0x00249e         0x1a build/default/production/autom_virtual.o
+ .debug_line      0x001a95        0x189 build/default/production/strategie.o
+ .debug_line      0x001c1e        0x295 build/default/production/system.o
+ .debug_line      0x001eb3        0x492 build/default/production/Serialus.o
+ .debug_line      0x002345        0x185 build/default/production/evitement.o
+ .debug_line      0x0024ca         0x1a build/default/production/autom_virtual.o
 
-.debug_frame      0x000000       0x240e
+.debug_frame      0x000000       0x241c
  *(.debug_frame)
  .debug_frame     0x000000        0x5aa build/default/production/Fonctions_deplacements.o
  .debug_frame     0x0005aa         0xa0 build/default/production/Uart.o
@@ -1845,12 +1845,12 @@ __FUID3
  .debug_frame     0x0015ba        0x35e build/default/production/interruptions.o
  .debug_frame     0x001918         0x5a build/default/production/main.o
  .debug_frame     0x001972         0x6e build/default/production/pwm.o
- .debug_frame     0x0019e0        0x130 build/default/production/strategie.o
- .debug_frame     0x001b10        0x164 build/default/production/system.o
- .debug_frame     0x001c74        0x6de build/default/production/Serialus.o
- .debug_frame     0x002352         0xbc build/default/production/evitement.o
+ .debug_frame     0x0019e0        0x13e build/default/production/strategie.o
+ .debug_frame     0x001b1e        0x164 build/default/production/system.o
+ .debug_frame     0x001c82        0x6de build/default/production/Serialus.o
+ .debug_frame     0x002360         0xbc build/default/production/evitement.o
 
-.debug_str        0x000000        0xa45
+.debug_str        0x000000        0xa30
  *(.debug_str)
  .debug_str       0x000000        0x1ea build/default/production/Fonctions_deplacements.o
  .debug_str       0x0001ea         0x58 build/default/production/Uart.o
@@ -1862,10 +1862,10 @@ __FUID3
  .debug_str       0x0004e2        0x1a5 build/default/production/interruptions.o
  .debug_str       0x000687         0x13 build/default/production/main.o
  .debug_str       0x00069a         0x44 build/default/production/pwm.o
- .debug_str       0x0006de         0x55 build/default/production/strategie.o
- .debug_str       0x000733        0x29d build/default/production/system.o
- .debug_str       0x0009d0         0x40 build/default/production/Serialus.o
- .debug_str       0x000a10         0x35 build/default/production/evitement.o
+ .debug_str       0x0006de         0x40 build/default/production/strategie.o
+ .debug_str       0x00071e        0x29d build/default/production/system.o
+ .debug_str       0x0009bb         0x40 build/default/production/Serialus.o
+ .debug_str       0x0009fb         0x35 build/default/production/evitement.o
 
 .debug_loc
  *(.debug_loc)
@@ -3747,50 +3747,50 @@ __c30_signature
 .dinit            0x00e1ce        0x8e0
  .dinit           0x00e1ce        0x8e0 data_init
 
-.text             0x00eaae       0x136e
- .text            0x00eaae        0x5a4 build/default/production/system.o
-                  0x00eaae                  _init_system
-                  0x00eb24                  _config_timer_5ms
-                  0x00eb44                  _config_timer_10ms
-                  0x00eb64                  _config_timer_20ms
-                  0x00eb82                  _config_timer_100ms
-                  0x00eba2                  _config_timer_200ms
-                  0x00ebc0                  _init_clock
-                  0x00ec22                  _init_compteur_temps_match
-                  0x00ec34                  _ConfigMapping
-                  0x00ec94                  _ConfigPorts
-                  0x00edbc                  _ConfigInterrupt
-                  0x00f04c                  _ConfigADC
- .text            0x00f052        0x59a build/default/production/strategie.o
-                  0x00f052                  _strategie
-                  0x00f4b0                  _depose
-                  0x00f568                  _homologation
-                  0x00f586                  _reglage_odometrie
- .text            0x00f5ec        0x206 build/default/production/Uart.o
-                  0x00f5ec                  _InitUART
-                  0x00f694                  _calcul_baud
-                  0x00f754                  _modifier_vitesse_com_uart
-                  0x00f780                  _vider_buffer_reception_uart
-                  0x00f7ae                  _PutcUART
- .text            0x00f7f2        0x1bc build/default/production/evitement.o
-                  0x00f7f2                  _init_evitement
-                  0x00f81e                  _check_evitement_avant
-                  0x00f862                  _check_evitement_arriere
-                  0x00f8a6                  _check_evitement
-                  0x00f8dc                  _ajustement_evitement_autonome
-                  0x00f8e2                  _evitement
- .text            0x00f9ae        0x1ba build/default/production/pwm.o
-                  0x00f9ae                  _ConfigPWM
-                  0x00f9f2                  _envoit_pwm
-                  0x00fb46                  _alimenter_moteur_Y
- .text            0x00fb68        0x142 build/default/production/codeurs.o
-                  0x00fb68                  _ConfigQEI
-                  0x00fbba                  _get_valeur_codeur
- .text            0x00fcaa        0x136 build/default/production/debug.o
-                  0x00fcaa                  _debug
- .text            0x00fde0         0x3c build/default/production/main.o
-                  0x00fde0                  _main
+.text             0x00eaae       0x14a0
+ .text            0x00eaae        0x6cc build/default/production/strategie.o
+                  0x00eaae                  _strategie
+                  0x00f03e                  _depose
+                  0x00f0f6                  _homologation
+                  0x00f114                  _reglage_odometrie
+ .text            0x00f17a        0x5a4 build/default/production/system.o
+                  0x00f17a                  _init_system
+                  0x00f1f0                  _config_timer_5ms
+                  0x00f210                  _config_timer_10ms
+                  0x00f230                  _config_timer_20ms
+                  0x00f24e                  _config_timer_100ms
+                  0x00f26e                  _config_timer_200ms
+                  0x00f28c                  _init_clock
+                  0x00f2ee                  _init_compteur_temps_match
+                  0x00f300                  _ConfigMapping
+                  0x00f360                  _ConfigPorts
+                  0x00f488                  _ConfigInterrupt
+                  0x00f718                  _ConfigADC
+ .text            0x00f71e        0x206 build/default/production/Uart.o
+                  0x00f71e                  _InitUART
+                  0x00f7c6                  _calcul_baud
+                  0x00f886                  _modifier_vitesse_com_uart
+                  0x00f8b2                  _vider_buffer_reception_uart
+                  0x00f8e0                  _PutcUART
+ .text            0x00f924        0x1bc build/default/production/evitement.o
+                  0x00f924                  _init_evitement
+                  0x00f950                  _check_evitement_avant
+                  0x00f994                  _check_evitement_arriere
+                  0x00f9d8                  _check_evitement
+                  0x00fa0e                  _ajustement_evitement_autonome
+                  0x00fa14                  _evitement
+ .text            0x00fae0        0x1ba build/default/production/pwm.o
+                  0x00fae0                  _ConfigPWM
+                  0x00fb24                  _envoit_pwm
+                  0x00fc78                  _alimenter_moteur_Y
+ .text            0x00fc9a        0x142 build/default/production/codeurs.o
+                  0x00fc9a                  _ConfigQEI
+                  0x00fcec                  _get_valeur_codeur
+ .text            0x00fddc        0x136 build/default/production/debug.o
+                  0x00fddc                  _debug
+ .text            0x00ff12         0x3c build/default/production/main.o
+                  0x00ff12                  _main
 
-.init.delay32     0x00fe1c         0x1c
- .init.delay32    0x00fe1c         0x1c c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
-                  0x00fe1c                  ___delay32
+.init.delay32     0x00ff4e         0x1c
+ .init.delay32    0x00ff4e         0x1c c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
+                  0x00ff4e                  ___delay32
