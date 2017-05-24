@@ -146,6 +146,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
         IPC7bits.U2RXIP = 7;     
         
         // On coupe le couple de tous les ax12
+        eteindre_LED_AX12(TOUS_LES_AX12);
         torque_enable_ax12(TOUS_LES_AX12, false);
         print_statistique_ax12();
                 

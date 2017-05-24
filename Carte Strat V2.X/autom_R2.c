@@ -442,8 +442,8 @@ void fermer_depose_module(_cote cote)
 void SR_start_robot()
 {
     degage_depose_module(LES_DEUX);
-    register_ax12_event(BITE_AV, AUTOM_AVANT, SR_DEPOSE_MODULE_OUVERT, 200);
-    register_ax12_event(BITE_AR, AUTOM_ARRIERE, SR_DEPOSE_MODULE_OUVERT, 200);
+    register_ax12_event(BITE_AV, AUTOM_AVANT, SR_DEPOSE_MODULE_OUVERT, 0);
+    register_ax12_event(BITE_AR, AUTOM_ARRIERE, SR_DEPOSE_MODULE_OUVERT, 0);
     
     register_sync_event(AUTOM_PRINCIPALE, SR_ROBOT_READY, 0, 2, 
         AUTOM_AVANT,   SR_ROBOT_READY, 
@@ -456,7 +456,7 @@ void SR_ouvrir_pinces (_cote cote)
     ouvrir_pinces_bas(cote);
     ouvrir_pinces_haut(cote);
     
-    register_multiple_ax12_event(2, cote, SR_PINCES_OUVERTES, 200, 
+    register_multiple_ax12_event(2, cote, SR_PINCES_OUVERTES, 100, 
             getIdAx12(PINCE_BAS, cote),
             getIdAx12(PINCE_HAUT, cote));
 }
@@ -467,7 +467,7 @@ void SR_descendre_ascenseur(_cote cote)
     descendre_ascenseur(cote);
     ouvrir_depose_module(cote);
             
-    register_multiple_ax12_event(2, cote, SR_ROBOT_READY, 150, 
+    register_multiple_ax12_event(2, cote, SR_ROBOT_READY, 50, 
         getIdAx12(ASCENSEUR, cote),
         getIdAx12(RETOURNE_MODULE, cote));
 }
@@ -703,36 +703,67 @@ void DX_refermer_depose_module(_cote cote)
 
 
 /*********************/
+/*** INTERRACTIONS ***/
+/*********************/
+
+/**
+ * on AF_PREPARE_FUSEE
+ * @param cote
+ */
+void AF_prepare_fusee (_cote cote)
+{
+    repli_pince_haut(cote);
+    ouvrir_pinces_bas(cote);
+    descendre_ascenseur(cote);
+    ouvrir_depose_module(cote);
+
+    register_multiple_ax12_event(4, cote, AF_CHOPAGE_MODULE_READY, 500,
+            getIdAx12(PINCE_BAS, cote),
+            getIdAx12(PINCE_BAS, cote),
+            getIdAx12(RETOURNE_MODULE, cote),
+            getIdAx12(ASCENSEUR, cote));
+}
+
+
+/*********************/
 /*** ATTRAPE FUSEE ***/
 /*********************/
 
-void AF_choppage_module (_cote cote)
-{
-    if (modules_tour[cote] == 0)
-    {
-        repli_pince_haut(cote);
-        ouvrir_pinces_bas(cote);
-        ouvrir_depose_module(cote);
-        
-        register_multiple_ax12_event(3, cote, AF_CHOPAGE_MODULE_READY, 500,
-                getIdAx12(PINCE_BAS, cote),
-                getIdAx12(PINCE_BAS, cote),
-                getIdAx12(RETOURNE_MODULE, cote));
-    }
-    else
-    {
-        // TODO
-    }
-}
+//void AF_choppage_module (_cote cote)
+//{
+//    if (modules_tour[cote] == 0)
+//    {
+//        repli_pince_haut(cote);
+//        ouvrir_pinces_bas(cote);
+//        ouvrir_depose_module(cote);
+//        
+//        register_multiple_ax12_event(3, cote, AF_CHOPAGE_MODULE_READY, 500,
+//                getIdAx12(PINCE_BAS, cote),
+//                getIdAx12(PINCE_BAS, cote),
+//                getIdAx12(RETOURNE_MODULE, cote));
+//    }
+//    else
+//    {
+//        // TODO
+//    }
+//}
 
+/**
+ * on AF_ATTRAPE_FUSEE
+ * @param cote
+ */
 void AF_detecte_module(_cote cote)
 {
     if (check_capteur_pince(cote))
     {
-        arm_timer_event(cote, 400, AF_MODULE_DETECTE, true);
+        arm_timer_event(cote, 100, AF_MODULE_DETECTE, true);
     }
 }
 
+/**
+ * on AF_MODULE_DETECTE
+ * @param cote
+ */
 void AF_attrape_module (_cote cote)
 {
     // on vérufie qu'on a toujours un module deant soit
@@ -743,7 +774,7 @@ void AF_attrape_module (_cote cote)
     }
     else
     {
-        // TODO
+        FLAG_ACTION[cote] = AF_ATTRAPE_FUSEE;
     }
 }
 
@@ -884,14 +915,20 @@ void autom_20ms (void)
                 break;
                 
             // event attrape module
-            case AF_ATTRAPE_FUSEE :
-                AF_choppage_module(autom_id);
+            case AF_PREPARE_FUSEE :
+                AF_prepare_fusee(autom_id);
                 break;
             case AF_CHOPAGE_MODULE_READY :
+                // Do nothing
+                break;
+            case AF_ATTRAPE_FUSEE :
                 AF_detecte_module(autom_id);
                 break;
             case AF_MODULE_DETECTE :
                 AF_attrape_module(autom_id);
+                break;
+            case AF_MODULE_ATTRAPE :
+                // Do nothing
                 break;
                 
             default :

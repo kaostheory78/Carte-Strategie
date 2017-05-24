@@ -97,7 +97,7 @@ extern "C" {
 #ifdef  PETIT_ROBOT
     #define PINCE_POS_REPLI                 900
     #define PINCE_POS_OUVERTE               690
-    #define PINCE_POS_ENTROUVERTE           620 //575
+    #define PINCE_POS_ENTROUVERTE           625 //575
     #define PINCE_POS_FERME                 585   // new pinces 585
 
     #define ASC_AR_POS_BAS                     320    
@@ -173,6 +173,7 @@ extern "C" {
         DX_DEPOSE_FINIT,
                 
         /*** CHOPPAGE FUSEE ***/
+        AF_PREPARE_FUSEE,
         AF_ATTRAPE_FUSEE,
         AF_CHOPAGE_MODULE_READY,
         AF_MODULE_DETECTE,
