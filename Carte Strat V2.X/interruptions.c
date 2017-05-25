@@ -114,7 +114,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
  */
 void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
 {  
-    if (CPT_TEMPS_MATCH.t_ms >= 90000UL)
+    if (CPT_TEMPS_MATCH.t_ms >= 89000UL)
     {
         PORTCbits.RC5 = 0;
 
@@ -144,6 +144,14 @@ void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void)
         // Depuis ici
         IPC7bits.U2TXIP	= 7;
         IPC7bits.U2RXIP = 7;     
+        
+     #ifdef GROS_ROBOT
+        // On lance la fusée
+        launch_fusee();
+        delay_ms(3000);
+    #endif
+
+        
         
         // On coupe le couple de tous les ax12
         eteindre_LED_AX12(TOUS_LES_AX12);

@@ -20,10 +20,6 @@
 /********************* DECLARATION DES VARIABLES GLOBALES *********************/
 /******************************************************************************/
 
-static uint8_t espace_libre_depose1 = 6;
-
-void depose (_cote cote);
-
 /******************************************************************************/
 /******************************************************************************/
 /******************************************************************************/
@@ -37,22 +33,75 @@ void strategie()
     
     #ifdef GROS_ROBOT
 
-
-        // Inits avant démarage du robot :
-        init_jack();
+//    angle_AX12(3, 1023, 20, SANS_ATTENTE);
         
-        while(!SYS_JACK);
-
         // Démarage du match
         CPT_TEMPS_MATCH.actif = true;
-        EVITEMENT_ADV.actif = OFF;
+        EVITEMENT_ADV.actif = ON;
         EVITEMENT_ADV.mode = STOP;
         
-        brake();
-
+        while(1);
+        
+        delay_ms(12000);
+        
+        if (COULEUR == JAUNE)
+        {
+            init_position_robot(1070 - LARGEUR_ROBOT / 2., LONGUEUR_ROBOT / 2., 90);
+            
+            // On s'éloigne en s'écartant de la bascule
+            rejoindre(get_X(), 540 - 80, MARCHE_AVANT, 50);
+        }
+        else
+        {
+            init_position_robot(710 + LARGEUR_ROBOT / 2. + 18, LONGUEUR_ROBOT / 2., 90);
+            
+            // On s'éloigne en s'écartant de la bascule
+            rejoindre(get_X() + 20, 540 - 80, MARCHE_AVANT, 50);
+        }
+        
+        // on s'aligne avec le tas
+        rejoindre(1040, 540 - 80, MARCHE_AVANT, 100);
+        cibler(650, 540 - 80, 100);
+        
+        // On aspire
+        bite_aspiration();
+        turbine_mode_aspiration();
+        delay_ms(500);
+        avancer_reculer(30, 60);
+        allumer_turbine();
+        delay_ms(800);
+        orienter(get_orientation() +8, 50);
+        orienter(get_orientation() - 16, 50);
+        delay_ms(600);
+        bite_init();
+        delay_ms(800);
+        eteindre_turbine();
+        
+        
+        // Direction dépose
+        passe_part(985, 857, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+        passe_part(680, 920, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        passe_part(260, 600, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        EVITEMENT_ADV.actif = OFF;
+        passe_part(177, 480, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+        
+        // on cible la dépose
+        cibler(200, 0, 100);
+        delay_ms(100);
+        
+        turbine_mode_soufflage();
+        bite_soufflage();
+        delay_ms(600);
+        allumer_turbine();
+        delay_ms(3000);
+        eteindre_turbine();
+        EVITEMENT_ADV.actif = ON;
+        
+        
+        
         
 
-        delay_ms(1000);   
+        
     #endif
 
         
@@ -61,7 +110,6 @@ void strategie()
         EVITEMENT_ADV.actif = ON;
         EVITEMENT_ADV.mode = STOP;
         
-        jack(); 
         
         // Calage
 //        init_position_robot(1070 - LARGEUR_ROBOT /2., 94, 90); // TODO à adapter  
@@ -77,22 +125,38 @@ void strategie()
         /*******************/
         
         CPT_TEMPS_MATCH.actif = true;
-        arm_timer_event(AUTOM_PRINCIPALE, 700, SR_START_ROBOT, true);
+        
         
         if (COULEUR == JAUNE)
         {
-            init_position_robot(710 + LARGEUR_ROBOT / 2., 360 - LONGUEUR_ROBOT / 2., 90);
+            // décalé de 9 mm
+            init_position_robot(710 + LARGEUR_ROBOT / 2. + 18, 360 - LONGUEUR_ROBOT / 2., 90);
+            
+            rejoindre (860, 450, MARCHE_AVANT, 100); //850
+            FLAG_ACTION[AUTOM_PRINCIPALE] = SR_START_ROBOT;
+//            FLAG_ACTION[AUTOM_PRINCIPALE] = SR_START_ROBOT_DIFFERE;
+//            FLAG_ACTION[AUTOM_AVANT] = SR_START_ROBOT_COTE;
+            
         }
         else
         {
             init_position_robot(1070 - LARGEUR_ROBOT / 2., 360 - LONGUEUR_ROBOT / 2., 90);
+            arm_timer_event(AUTOM_PRINCIPALE, 1000, SR_START_ROBOT, true);
+            
+            // on sort de la zone de départ
+            rejoindre(get_X(), 440, MARCHE_AVANT, 100);
         }
+            
         
-        // on va chercher le premier module
-        rejoindre (1000, 430, MARCHE_AVANT, 100);
         while(FLAG_ACTION[AUTOM_AVANT] != SR_ROBOT_READY);
         
+        // on va chercher le premier module
         rejoindre(1000, 600, MARCHE_AVANT, 100);
+        
+//        if (COULEUR == JAUNE)
+//        {
+//            FLAG_ACTION[AUTOM_ARRIERE] = SR_START_ROBOT_COTE;
+//        }
        
         // On va chercher le module monochrome avec les pinces avant
         passe_part(700,900, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
@@ -236,6 +300,7 @@ void strategie()
         passe_part(1150, 340, MARCHE_ARRIERE, 80, MILIEU_TRAJECTOIRE);
         //        passe_part(1150, LONGUEUR_ROBOT / 2. + 25, MARCHE_ARRIERE, 100, MILIEU_TRAJECTOIRE);
         
+        //FIXME Evitement ADV à réactiver plus longtemps
         EVITEMENT_ADV.actif = OFF;
         while(FLAG_ACTION[AUTOM_ARRIERE] != AF_CHOPAGE_MODULE_READY);
         FLAG_ACTION[AUTOM_ARRIERE] = AF_ATTRAPE_FUSEE;
@@ -243,7 +308,7 @@ void strategie()
         
         calage (-400, 40);
         delay_ms(500);
-        rejoindre(1150, 270, MARCHE_AVANT, 100);
+        rejoindre(1150, 270, MARCHE_AVANT, 100); //FIXME : tourne pas bien
         
         // on prend le deuxième module dans la fusée
         cibler(1150, 40, 100);
@@ -288,48 +353,6 @@ void strategie()
         while( FLAG_ACTION[AUTOM_AVANT] != DX_DEPOSE_FINIT );   
                   
     #endif
-}
-
-void depose (_cote cote)
-{
-    int8_t sens = 1;
-    
-    if (cote == AVANT)
-    {
-        sens = 1;
-    }
-    else
-    {
-        sens = -1;
-    }
-    
-    // autom de montage finit
-    while( (FLAG_ACTION[cote] != MT_TOUR_COMPLETE) && 
-           (FLAG_ACTION[cote] != MT_RECHERCHE_MODULE_EN_COURS) &&
-           (FLAG_ACTION[cote] != DX_DEPOSE_FINIT) );
-    
-    // on s'assure qu'un module soit en bas pour bourrer le range module
-    FLAG_ACTION[cote] = DX_START_DEPOSE;
-    while( (FLAG_ACTION[cote] != DX_DEPOSE_READY) &&
-           (FLAG_ACTION[cote] != DX_DEPOSE_FINIT) );
-
-    if (FLAG_ACTION[cote] != DX_DEPOSE_FINIT)
-    {
-        // on bourre le range module
-//        rejoindre(868, 1368, cote * MARCHE_AVANT, 100);
-        calage(sens * 200, 100);
-        
-        // on s'éloigne
-//        rejoindre(820, 1320, cote * MARCHE_ARRIERE, 100);
-        avancer_reculer(sens * (0-50), 50);
-
-        // On initie une dépose
-        FLAG_ACTION[cote] = DX_INIT_DEPOSE;
-        espace_libre_depose1--;
-
-        // autom de montage finit
-        while( FLAG_ACTION[cote] != DX_DEPOSE_FINIT );
-    }    
 }
 
 

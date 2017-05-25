@@ -746,7 +746,7 @@ void asserv_distance(void)
     __attribute__((near)) static double distance_freinage_anticipation = 0.;
     __attribute__((near)) static double coef_distance_freinage = 0.075;
     __attribute__((near)) static double fenetre_arrivee = 30 * TICKS_PAR_MM;
-    __attribute__((near)) static double distance_min_passe_part = 150 * TICKS_PAR_MM;
+    __attribute__((near)) static double distance_min_passe_part = (150 * TICKS_PAR_MM);
     
     // on sauvegarde l'erreur de distance du cycle précédent avant que la valeur ne soit écrasé
     // Par le calcul de la fonction_PID(ASSERV_POSITION)
@@ -845,7 +845,7 @@ void asserv_distance(void)
     }
     else // vitesse fin non nulle
     {
-         if (FLAG_ASSERV.sens_deplacement * distance_restante < distance_min_passe_part) //150
+         if (abs(FLAG_ASSERV.sens_deplacement * distance_restante) < distance_min_passe_part) //150
          {
              FLAG_ASSERV.etat_angle = ANGLE_ATTEINT;
              FLAG_ASSERV.etat_distance = DISTANCE_ATTEINTE;
@@ -1222,7 +1222,7 @@ double fonction_PID (_enum_type_PID type)
             if (FLAG_ASSERV.phase_deceleration_distance == PHASE_NORMAL)
             {
                 #ifdef PETIT_ROBOT
-                    KP_hybride *= 0.1; //0.2
+                    KP_hybride *= 0.5; //0.2
                 #else
                     KP_hybride *= 0.05;
                 #endif

@@ -16,6 +16,8 @@
 
 #include "system.h"
 
+#ifdef PETIT_ROBOT
+
 /******************************************************************************/
 /*************************** Variables Globales *******************************/
 /******************************************************************************/
@@ -27,8 +29,6 @@ static const uint8_t hauteur_tour_max = 2;
 /******************************************************************************/
 /***************************** FONCTIONS DIVERSES *****************************/
 /******************************************************************************/
-
-#ifdef PETIT_ROBOT
 
 void jack()
 {
@@ -473,6 +473,20 @@ void SR_descendre_ascenseur(_cote cote)
 }
 
 
+// ETAPE 1 : ou ouvre les d�pose modules
+void SR_start_robot_differe()
+{    
+    register_sync_event(AUTOM_PRINCIPALE, SR_ROBOT_READY, 0, 2, 
+        AUTOM_AVANT,   SR_ROBOT_READY, 
+        AUTOM_ARRIERE, SR_ROBOT_READY  );
+}
+
+void SR_start_robot_cote(_cote cote)
+{
+    degage_depose_module(cote);
+    register_ax12_event(getIdAx12(RETOURNE_MODULE, cote), cote, SR_DEPOSE_MODULE_OUVERT, 0);
+}
+
 void montage_tour(_cote cote)
 {
     if (modules_tour[cote] < hauteur_tour_max)
@@ -803,6 +817,9 @@ void autom_20ms (void)
         case SR_START_ROBOT :
             SR_start_robot();
             break;
+        case SR_START_ROBOT_DIFFERE :
+            SR_start_robot_differe();
+            break;
         case SR_ROBOT_READY :
 //            FLAG_ACTION = NE_RIEN_FAIRE;
 //            FLAG_ACTION[AUTOM_AVANT] = MONTAGE_TOUR_PRET;
@@ -835,6 +852,9 @@ void autom_20ms (void)
                 break;
                 
             // Event Init Robot
+            case SR_START_ROBOT_COTE :
+                SR_start_robot_cote(autom_id);
+                break;
             case SR_DEPOSE_MODULE_OUVERT :
                 SR_ouvrir_pinces(autom_id);
                 break;

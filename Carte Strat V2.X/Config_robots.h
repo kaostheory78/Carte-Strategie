@@ -33,7 +33,7 @@ extern "C" {
 //#define UTILISATION_CARTE_BALISE
     
 //#define NO_SERIALUS
-//#define DEBUG_ACTIF
+#define DEBUG_ACTIF
 
 #define _Pi                             3.14159265359
    
@@ -46,40 +46,43 @@ extern "C" {
     /**************************************************************************/
     /****************************** ODOMETRIE *********************************/
     /**************************************************************************/
-    #define _ENTRAXE_MM                  308.264 //308.2     //Pas assez tourné -> augmenter entraxe
-    #define _DIAMETRE_ROUE_CODEUSE       0
-    #define _PERIMETRE_ROUE_MM           194.455 //194.455      // Si distance parcourue trop grande -> Augmenter la taille des roues
+    #define _ENTRAXE_MM                  287.8      //Pas assez tourné -> augmenter entraxe
+    #define _DIAMETRE_ROUE_CODEUSE       42.
+    #define _PERIMETRE_ROUE_MM           (_DIAMETRE_ROUE_CODEUSE * _Pi) //194.455      // Si distance parcourue trop grande -> Augmenter la taille des roues
 
         //+COEF_D -> + a droite
-    #define  _COEF_G                    (double) 1.00515 //1.00531 474
+    #define  _COEF_G                    (double) 1. //1.00531 474
     #define  _COEF_D                    (double) 1.
+
+    #define LARGEUR_ROBOT               315.
+    #define LONGUEUR_ROBOT              165.
 
 
     /**************************************************************************/
     /******************************** ASSERV **********************************/
     /**************************************************************************/
         //Association distance - Vitesse - Accélérations max
-    #define _VITESSE_CONSIGNE_MAX_MM     2.5
+    #define _VITESSE_CONSIGNE_MAX_MM     3.
     #define _VITESSE_DISTANCE_MIN        0.75
-    #define _VITESSE_MAX_MM_TENSION      6.
+    #define _VITESSE_MAX_MM_TENSION      4.
     #define _DISTANCE_CONSIGNE_MM        500. 
 
-    #define _ACC_POSITION_CONSIGNE       3.
-    #define _DCC_POSITION_CONSIGNE       4. //8
-    #define _ACC_POSITION_MIN            1.5
-    #define _DCC_POSITION_MIN            1.5
+    #define _ACC_POSITION_CONSIGNE       1.5
+    #define _DCC_POSITION_CONSIGNE       1.5 //8
+    #define _ACC_POSITION_MIN            0.5
+    #define _DCC_POSITION_MIN            0.5
 
     #define _COEF_FREINAGE              1.25
 
         //Association Angle - Vitesse - Accélérations max
-    #define _VITESSE_ANGLE_MAX           0.02 //0.02
-    #define _VITESSE_ANGLE_MIN           0.005
+    #define _VITESSE_ANGLE_MAX           0.01 //0.02
+    #define _VITESSE_ANGLE_MIN           0.0005
     #define _ORIENTATION_CONSIGNE_DEG    90.
 
-    #define _ACC_ORIENTATION_CONSIGNE    4.
-    #define _DCC_ORIENTATION_CONSIGNE    6.
-    #define _ACC_ORIENTATION_MIN         2.
-    #define _DCC_ORIENTATION_MIN         3.
+    #define _ACC_ORIENTATION_CONSIGNE    1.5
+    #define _DCC_ORIENTATION_CONSIGNE    1.5
+    #define _ACC_ORIENTATION_MIN         1.
+    #define _DCC_ORIENTATION_MIN         1.
 
         //Autres réglages asserv
     #define _SEUIL_IMMOBILITE            100ULL //200
@@ -91,9 +94,9 @@ extern "C" {
     /**************************************************************************/
    
     //PID
-    #define _VITESSE_DIS_KP              0.45  //0.4
-    #define _VITESSE_DIS_KI              0.02 //0.02
-    #define _VITESSE_DIS_KD              0.25 //0.2
+    #define _VITESSE_DIS_KP              0.9  //0.6
+    #define _VITESSE_DIS_KI              0.06 //0.08
+    #define _VITESSE_DIS_KD              0.4 //0.4
 
     #define _POSITION_KP                 1.
     #define _POSITION_KI                 0.
@@ -103,21 +106,22 @@ extern "C" {
     #define _ORIENTATION_KI              0.
     #define _ORIENTATION_KD              0.
 
-    #define KP_BRAKE                    0.05
-    #define KI_BRAKE                    0.0001
-    #define KD_BRAKE                    0.5
+    #define KD_BRAKE                    0.05 // EN vrai c'est KP
+    #define KI_BRAKE                    0.002
+    #define KP_BRAKE                    0.09 // En vrai c'est KD
+    
 
     /**************************************************************************/
     /******************************* TENSIONS *********************************/
     /**************************************************************************/
 
     //Tensions d'alimentations
-    #define _TENSION_MOTEUR_DROIT        24L
-    #define _TENSION_MOTEUR_GAUCHE       24L
+    #define _TENSION_MOTEUR_DROIT        12L
+    #define _TENSION_MOTEUR_GAUCHE       12L
 
     #define _TENSION_MOTEUR_X            12L
 
-    #define _TENSION_SORTIE_PTN          34L 
+    #define _TENSION_SORTIE_PTN          17L 
 
     #define _CKECK_LIMITATION_COURANT    true 
 
@@ -130,8 +134,8 @@ extern "C" {
     //Paramètres codeurs, et moteurs
     #define _RAPPORT_REDUCTION           1U
 
-    #define _CODEUR_D_NB_IMP             3600U
-    #define _CODEUR_G_NB_IMP             3600U
+    #define _CODEUR_D_NB_IMP             2000U
+    #define _CODEUR_G_NB_IMP             2000U
 
     #define _RESOLUTION_LOGICIELLE       1LL
 
@@ -150,8 +154,8 @@ extern "C" {
     #define _SENS_ROT_D                  -1L
     #define _SENS_ROT_G                  1L
 
-    #define _AVANCER_MOTEUR_D            1
-    #define _RECULER_MOTEUR_D            0
+    #define _AVANCER_MOTEUR_D            0
+    #define _RECULER_MOTEUR_D            1
 
     #define _AVANCER_MOTEUR_G            1
     #define _RECULER_MOTEUR_G            0
@@ -171,30 +175,26 @@ extern "C" {
     //La définition des ports relatif à chaque carte se trouve
     //Dans le fichier system.h
     
-    #define CAPT_US_BALISE              CAPTEUR1
-    #define CAPT_GOBELET_D              CAPTEUR3
-    #define CAPT_GOBELET_G              CAPTEUR4
-    #define CAPT_US_ARRIERE             CAPTEUR7
-    #define CAPT_US_AV_GAUCHE           CAPTEUR2
-    #define CAPT_US_AV_DROIT            CAPTEUR8
+    #define CAPT_TUBE                   CAPTEUR8
+    #define ETAT_CAPT_TUBE              ETAT_BAS
 
     // Définition des standart pour la fonction évitement
     // ETAT : etat de detection du capteur (si il détecte à un : ETAT_HAUT)
     // NB : Si un capteur n'existe pas, le mettre à AUCUN et à ETAT_HAUT
-    #define _CAPT_ADV_AVANT_G           AUCUN            
-    #define _CAPT_ADV_AVANT_D           AUCUN
+    #define _CAPT_ADV_AVANT_G           CAPTEUR8            
+    #define _CAPT_ADV_AVANT_D           CAPTEUR6
     #define _CAPT_ADV_AVANT_C           AUCUN
 
-    #define _ETAT_ADV_AVANT_G           ETAT_HAUT
-    #define _ETAT_ADV_AVANT_D           ETAT_HAUT
+    #define _ETAT_ADV_AVANT_G           ETAT_BAS
+    #define _ETAT_ADV_AVANT_D           ETAT_BAS
     #define _ETAT_ADV_AVANT_C           ETAT_HAUT
 
     #define _CAPT_ADV_ARRIERE_G         AUCUN
-    #define _CAPT_ADV_ARRIERE_C         AUCUN
+    #define _CAPT_ADV_ARRIERE_C         CAPTEUR5
     #define _CAPT_ADV_ARRIERE_D         AUCUN
 
     #define _ETAT_ADV_ARRIERE_G         ETAT_HAUT
-    #define _ETAT_ADV_ARRIERE_C         ETAT_HAUT
+    #define _ETAT_ADV_ARRIERE_C         ETAT_BAS
     #define _ETAT_ADV_ARRIERE_D         ETAT_HAUT
 
     #define INCLINOMETRE                CAPTEUR5

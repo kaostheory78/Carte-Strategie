@@ -31,7 +31,7 @@ uint8_t couleur_depart()
 
 double inversion_couleur (double param_inversable)
 {
-    if (COULEUR == BLEU)
+    if (COULEUR == JAUNE)
         return param_inversable;
     else
         return (- param_inversable);
@@ -480,8 +480,9 @@ _enum_erreur_asserv _rejoindre (double x, double y, int8_t sens_marche, double p
     acc.acceleration.orientation.consigne = acc.deceleration.orientation.max;
     acc.deceleration.orientation.consigne = acc.deceleration.orientation.max;
 #else
-    VITESSE_MAX.orientation = VITESSE_ANGLE_PAS / 2;
-    calcul_acceleration_orientation();
+    VITESSE_MAX.orientation = VITESSE_ANGLE_PAS;
+    acc.acceleration.orientation.consigne = acc.deceleration.orientation.max;
+    acc.deceleration.orientation.consigne = acc.deceleration.orientation.max;
 #endif
 
 

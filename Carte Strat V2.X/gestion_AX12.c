@@ -62,12 +62,6 @@ void init_decalage_AX12 (void)      //Declaration de l'enchainement de montage d
 {
     //US
 #ifdef GROS_ROBOT
-    decalage[AX_US].angle = 0;
-    decalage[AX_US].position = 512;
-    decalage[AX_US].etat = INDEPENDANT;
-    decalage[AX_US].suivant = AUCUN_AX;
-    decalage[AX_US].sens_rotation = ROT_EN_HAUT;
-    decalage[AX_US].symetrique = PAS_DE_SYMETRIQUE;
 
 #endif
 #ifdef PETIT_ROBOT
@@ -91,9 +85,6 @@ void init_position_AX12 (void)      //Force l'état premier des AX12 à l'angle 0
     
 #ifdef GROS_ROBOT
     //us
-    position_AX12[AX_US].present = true;
-    position_AX12[AX_US].angle   = 0;
-    position_AX12[AX_US].point   = 512;   
 #endif
     
 #ifdef PETIT_ROBOT

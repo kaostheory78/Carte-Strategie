@@ -84,9 +84,9 @@ extern "C" {
 #endif
 
 #ifdef  GROS_ROBOT
-    #define AX_US                   17
-    #define AX_US_DROIT             23
-    #define AX_US_GAUCHE            4
+    #define AX_TURBINE              7
+    #define AX_BIELE                3
+    #define AX_FUSEE                6
 
 #endif
 
@@ -122,7 +122,15 @@ extern "C" {
 #endif
 
 #ifdef GROS_ROBOT
-
+#define TURBINE_SOUFLLE_POS                     212
+#define TURBINE_ASPIRE_POS                      827
+    
+#define BITE_EN_HAUT                            790 // 768
+#define BITE_DEPOSE                             720
+#define BITE_EN_BAS                             516
+    
+#define FUSEE_VEROUILLEE                        360
+#define FUSEE_OUVERTE                           0
 #endif
 
     /**************************************************************************/
@@ -141,6 +149,8 @@ extern "C" {
                 
         /*** INIT ***/        
         SR_START_ROBOT,                         // 4
+        SR_START_ROBOT_DIFFERE,
+        SR_START_ROBOT_COTE,
         SR_DEPOSE_MODULE_OUVERT,                // 5
         SR_PINCES_OUVERTES,                     // 6
         SR_ROBOT_READY,                         // 7
@@ -222,7 +232,15 @@ extern "C" {
     void init_jack();
     void init_depart();
 
-    void rotation_us_avant();;
+    void turbine_mode_soufflage();
+    void turbine_mode_aspiration();
+    void bite_aspiration();
+    void bite_soufflage();
+    void bite_init();
+    void allumer_turbine();
+    void eteindre_turbine();
+    void launch_fusee();
+
     
     //Fonction AX12
 

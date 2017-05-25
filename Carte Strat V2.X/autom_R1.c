@@ -29,63 +29,8 @@ void son_evitement (uint8_t melodie)
     //commande_AX12(100, _4PARAM, WRITE_DATA, 0x28, melodie);
 }
 
-void rotation_us(void)
-{
-    static char sens = 0;
-    static float angle = 0.;
-   // if (read_data(AX_US, LIRE_MOUV_FLAG) == 0)
-   // {
-        if (sens == 0)
-        {
-            synchro_AX12(AX_US, angle, 1023, SANS_ATTENTE);
-            angle -= 6;
-            if (angle < -60)
-                sens = 1;
-        }
-        else
-        {
-            synchro_AX12(AX_US, angle, 1023, SANS_ATTENTE);
-            angle += 6;
-            if (angle > 60)
-            sens = 0;
-        }
-   // }
-}
 
-void rotation_us_avant ()
-{
-    static char sens_D = 0, sens_G = 0;
-    static uint16_t position_D = 0, position_G = 0;
 
-    if (sens_D == 0)
-    {
-        position_D += 10;
-        if (position_D > 876)
-            sens_D = 1;
-    }
-    else
-    {
-        position_D -= 10;
-        if (position_D < 703)
-            sens_D = 0;
-    }
-
-    if (sens_G == 0)
-    {
-        position_G += 10;
-        if (position_G > 666)
-            sens_G = 1;
-    }
-    else
-    {
-        position_G -= 10;
-        if (position_G < 512)
-            sens_G = 0;
-    }
-
-    angle_AX12(AX_US_DROIT, position_D, 1023, SANS_ATTENTE);
-    angle_AX12(AX_US_GAUCHE, position_G, 1023, SANS_ATTENTE);
-}
 
 //uint8_t inversion_autom (uint8_t cote)
 //{
@@ -119,7 +64,53 @@ void rotation_us_avant ()
 /********************************  FONCTION AX12  *****************************/
 /******************************************************************************/
 
+void turbine_mode_soufflage()
+{
+    angle_AX12(AX_TURBINE, TURBINE_SOUFLLE_POS, 1023, SANS_ATTENTE);
+}
 
+void turbine_mode_aspiration()
+{
+    angle_AX12(AX_TURBINE, TURBINE_ASPIRE_POS, 1023, SANS_ATTENTE);
+}
+
+void bite_aspiration()
+{
+    angle_AX12(AX_BIELE, BITE_EN_BAS, 1023, SANS_ATTENTE);
+}
+
+void bite_soufflage()
+{
+    angle_AX12(AX_BIELE, BITE_EN_BAS, BITE_DEPOSE, SANS_ATTENTE);
+}
+
+void bite_init()
+{
+    angle_AX12(AX_BIELE, BITE_EN_HAUT, 1023, SANS_ATTENTE);
+}
+
+void allumer_turbine()
+{
+    if (_SYS_STRAT == 1)
+    {
+        envoit_pwm(MOTEUR_X, 100);
+    } 
+}
+
+void eteindre_turbine()
+{
+    envoit_pwm(MOTEUR_X, 0);
+}
+
+void init_fusee()
+{
+    angle_AX12(AX_FUSEE, FUSEE_VEROUILLEE, 1023, SANS_ATTENTE);
+}
+
+void launch_fusee()
+{
+    angle_AX12(AX_FUSEE, FUSEE_OUVERTE, 30, SANS_ATTENTE);
+}
 
 /******************************************************************************/
 /**************************** FONCTIONS D'INITS *******************************/
@@ -129,6 +120,21 @@ void rotation_us_avant ()
 void init_jack()
 {
     allumer_LED_AX12(TOUS_LES_AX12);
+}
+
+void jack()
+{
+    allumer_LED_AX12(TOUS_LES_AX12);
+    torque_enable_ax12(TOUS_LES_AX12, true);
+
+    while(!SYS_JACK);
+    
+    init_fusee();
+    bite_init();
+    
+    delay_ms(500);
+       
+    while(SYS_JACK);
 }
 
 void init_depart()
@@ -147,33 +153,20 @@ void init_depart()
 
 void autom_20ms (void)
 {
-    static uint8_t compteur_checkup_ax12 = 0;
+//    _autom_id autom_id;
+
+    check_autom_events();
     
     //fonction qui definit les actions
-    switch (FLAG_ACTION)
+    switch (FLAG_ACTION[AUTOM_PRINCIPALE])
     {
         case NE_RIEN_FAIRE:
+        case EN_ATTENTE_EVENT :
+            // do nothing
             break;
+
         default :
             break;
-    }
-    
-    // Rotation des us pour la détection adversaire
-    if (EVITEMENT_ADV.actif == true && EVITEMENT_ADV.detection == OFF)
-    {
-        if (EVITEMENT_ADV.sens == MARCHE_AVANT)
-            rotation_us_avant();
-        else
-            rotation_us();
-    }
-    //else
-        //position standart
-    
-    // Checkup que les ax12 vont bien toutes les 500 ms
-    compteur_checkup_ax12++;
-    if (compteur_checkup_ax12 == 25) // 500 ms
-    {
-        checkup_com_ax12();
     }
     
 }
