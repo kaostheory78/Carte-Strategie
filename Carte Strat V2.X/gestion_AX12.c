@@ -84,6 +84,9 @@ void init_position_AX12 (void)      //Force l'état premier des AX12 à l'angle 0
     }
     
 #ifdef GROS_ROBOT
+    position_AX12[AX_FUSEE].present = true;
+    position_AX12[AX_BIELE].present = true;
+    position_AX12[AX_TURBINE].present = true;
     //us
 #endif
     

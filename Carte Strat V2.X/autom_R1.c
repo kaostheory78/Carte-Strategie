@@ -67,34 +67,64 @@ void son_evitement (uint8_t melodie)
 void turbine_mode_soufflage()
 {
     angle_AX12(AX_TURBINE, TURBINE_SOUFLLE_POS, 1023, SANS_ATTENTE);
+    
+    while (ax12.erreur != PAS_D_ERREUR)
+    {
+        delay_ms(100);
+        angle_AX12(AX_TURBINE, TURBINE_SOUFLLE_POS, 1023, SANS_ATTENTE);
+    }
 }
 
 void turbine_mode_aspiration()
 {
     angle_AX12(AX_TURBINE, TURBINE_ASPIRE_POS, 1023, SANS_ATTENTE);
+    
+    while (ax12.erreur != PAS_D_ERREUR)
+    {
+        delay_ms(100);
+       angle_AX12(AX_TURBINE, TURBINE_ASPIRE_POS, 1023, SANS_ATTENTE);
+    }
 }
 
 void bite_aspiration()
 {
-    angle_AX12(AX_BIELE, BITE_EN_BAS, 1023, SANS_ATTENTE);
+    angle_AX12(AX_BIELE, BITE_EN_BAS, 1023, SANS_ATTENTE); // 1023
+    
+    while (ax12.erreur != PAS_D_ERREUR)
+    {
+        delay_ms(100);
+        angle_AX12(AX_BIELE, BITE_EN_BAS, 1023, SANS_ATTENTE);
+    }
 }
 
 void bite_soufflage()
 {
     angle_AX12(AX_BIELE, BITE_DEPOSE, 40, SANS_ATTENTE);
+    
+    while (ax12.erreur != PAS_D_ERREUR)
+    {
+        delay_ms(100);
+        angle_AX12(AX_BIELE, BITE_DEPOSE, 40, SANS_ATTENTE);
+    }
 }
 
 void bite_init()
 {
     angle_AX12(AX_BIELE, BITE_EN_HAUT, 1023, SANS_ATTENTE);
+    
+    while (ax12.erreur != PAS_D_ERREUR)
+    {
+        delay_ms(100);
+        angle_AX12(AX_BIELE, BITE_EN_HAUT, 1023, SANS_ATTENTE);
+    }
 }
 
 void allumer_turbine()
 {
-    if (_SYS_STRAT == 1)
-    {
-        envoit_pwm(MOTEUR_X, 100);
-    } 
+//    if (_SYS_STRAT == 1)
+//    {
+    envoit_pwm(MOTEUR_X, 100);
+//    } 
 }
 
 void eteindre_turbine()

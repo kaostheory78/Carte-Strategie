@@ -40,10 +40,17 @@ void strategie()
         EVITEMENT_ADV.actif = ON;
         EVITEMENT_ADV.mode = STOP;
         
-//        while(1);
+//        while(1)
+//        {
+//            bite_init();
+//            delay_ms(1000);
+//            bite_aspiration();
+//            delay_ms(1000);
+//        }
         
         turbine_mode_aspiration();
-        delay_ms(15000);
+        delay_ms(14500);
+        turbine_mode_aspiration();
         
         if (COULEUR == JAUNE)
         {
@@ -62,17 +69,18 @@ void strategie()
         
         // on va derrière le tas
         rejoindre(get_X() + 30, 850, MARCHE_AVANT, 100);
-//        rejoindre(950, 850, MARCHE_AVANT, 100);
+        
+        EVITEMENT_ADV.actif = OFF;
+        cibler(370, 850, 100);
+        EVITEMENT_ADV.actif = ON;
         rejoindre(370, 850, MARCHE_AVANT, 100);
         
         if (COULEUR == JAUNE)
         {
-//            rejoindre(310, 570 + 80, MARCHE_AVANT, 100);
             cibler(650, 540, 100);
         }
         else
         {
-//            rejoindre(310, 570 - 80, MARCHE_AVANT, 100);
             cibler(650, 500, 100);
         }
         
@@ -84,7 +92,7 @@ void strategie()
         allumer_turbine();
         delay_ms(800);
         avancer_reculer(120, 60);
-        orienter(get_orientation() +12, 100);
+        orienter(get_orientation() +20, 100);
         orienter(get_orientation() - 50, 70);
         delay_ms(600);
         bite_init();
@@ -95,13 +103,13 @@ void strategie()
         // Dépose
         if (COULEUR == JAUNE)
         {
-           cibler(280, 0, 100); 
+           cibler(320, 0, 100); 
         }
         else
         {
             cibler(200, 0, 100);
         }
-        
+        turbine_mode_soufflage();
         delay_ms(100);
         
         /*******************************/
@@ -111,13 +119,13 @@ void strategie()
         EVITEMENT_ADV.actif = OFF;
         turbine_mode_soufflage();
         bite_soufflage();
-        delay_ms(1000);
+        delay_ms(1200);
         allumer_turbine();
-        delay_ms(4000);
+        delay_ms(2000);
         eteindre_turbine();    
         bite_init();
         
-        delay_ms(3000);
+        delay_ms(200);
         
             
         /*******************************/
@@ -134,15 +142,16 @@ void strategie()
             // On aspire
             EVITEMENT_ADV.actif = OFF;
             bite_aspiration();
+            turbine_mode_aspiration();
             delay_ms(500);
             allumer_turbine();
             delay_ms(800);
-            avancer_reculer(250, 60);
+            avancer_reculer(260, 60);
             orienter(get_orientation() +50, 100);
-            orienter(get_orientation() - 80, 80);
+            orienter(get_orientation() - 30, 80);
             delay_ms(600);
             bite_init();
-            delay_ms(2000);
+            delay_ms(500);
             eteindre_turbine();
 
             delay_ms(500);
@@ -158,21 +167,22 @@ void strategie()
             // Dépose
             if (COULEUR == JAUNE)
             {
-               cibler(240, 0, 100); 
+               cibler(320, 0, 100); 
             }
             else
             {
                 cibler(200, 0, 100);
             }
-
+            
+            turbine_mode_soufflage();
             delay_ms(100);
 
             EVITEMENT_ADV.actif = OFF;
             turbine_mode_soufflage();
             bite_soufflage();
-            delay_ms(1000);
+            delay_ms(1200);
             allumer_turbine();
-            delay_ms(4000);
+            delay_ms(2000);
             eteindre_turbine();    
             bite_init();
         }
