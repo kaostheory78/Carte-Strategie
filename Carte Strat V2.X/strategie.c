@@ -40,9 +40,10 @@ void strategie()
         EVITEMENT_ADV.actif = ON;
         EVITEMENT_ADV.mode = STOP;
         
-        while(1);
+//        while(1);
         
-        delay_ms(12000);
+        turbine_mode_aspiration();
+        delay_ms(15000);
         
         if (COULEUR == JAUNE)
         {
@@ -59,49 +60,123 @@ void strategie()
             rejoindre(get_X() + 20, 540 - 80, MARCHE_AVANT, 50);
         }
         
-        // on s'aligne avec le tas
-        rejoindre(1040, 540 - 80, MARCHE_AVANT, 100);
-        cibler(650, 540 - 80, 100);
+        // on va derrière le tas
+        rejoindre(get_X() + 30, 850, MARCHE_AVANT, 100);
+//        rejoindre(950, 850, MARCHE_AVANT, 100);
+        rejoindre(370, 850, MARCHE_AVANT, 100);
         
+        if (COULEUR == JAUNE)
+        {
+//            rejoindre(310, 570 + 80, MARCHE_AVANT, 100);
+            cibler(650, 540, 100);
+        }
+        else
+        {
+//            rejoindre(310, 570 - 80, MARCHE_AVANT, 100);
+            cibler(650, 500, 100);
+        }
+        
+          
         // On aspire
+        EVITEMENT_ADV.actif = OFF;
         bite_aspiration();
-        turbine_mode_aspiration();
         delay_ms(500);
-        avancer_reculer(30, 60);
         allumer_turbine();
         delay_ms(800);
-        orienter(get_orientation() +8, 50);
-        orienter(get_orientation() - 16, 50);
+        avancer_reculer(120, 60);
+        orienter(get_orientation() +12, 100);
+        orienter(get_orientation() - 50, 70);
         delay_ms(600);
         bite_init();
-        delay_ms(800);
+        delay_ms(2000);
+        EVITEMENT_ADV.actif = ON;
         eteindre_turbine();
         
+        // Dépose
+        if (COULEUR == JAUNE)
+        {
+           cibler(280, 0, 100); 
+        }
+        else
+        {
+            cibler(200, 0, 100);
+        }
         
-        // Direction dépose
-        passe_part(985, 857, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-        passe_part(680, 920, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-        passe_part(260, 600, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-        EVITEMENT_ADV.actif = OFF;
-        passe_part(177, 480, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-        
-        // on cible la dépose
-        cibler(200, 0, 100);
         delay_ms(100);
         
+        /*******************************/
+        /*** SOUFLAGE DU PREMIER TAS ***/
+        /*******************************/
+
+        EVITEMENT_ADV.actif = OFF;
         turbine_mode_soufflage();
         bite_soufflage();
-        delay_ms(600);
+        delay_ms(1000);
         allumer_turbine();
+        delay_ms(4000);
+        eteindre_turbine();    
+        bite_init();
+        
         delay_ms(3000);
-        eteindre_turbine();
-        EVITEMENT_ADV.actif = ON;
         
+            
+        /*******************************/
+        /*** ALLER - RETOUR GROS TAS ***/
+        /*******************************/
         
-        
-        
+        while(1)
+        {
+            /* on va au gros tas */
+            turbine_mode_aspiration();
+            EVITEMENT_ADV.actif = ON;
+            rejoindre(get_X(), 2000 - 900, MARCHE_AVANT, 100 );
 
-        
+            // On aspire
+            EVITEMENT_ADV.actif = OFF;
+            bite_aspiration();
+            delay_ms(500);
+            allumer_turbine();
+            delay_ms(800);
+            avancer_reculer(250, 60);
+            orienter(get_orientation() +50, 100);
+            orienter(get_orientation() - 80, 80);
+            delay_ms(600);
+            bite_init();
+            delay_ms(2000);
+            eteindre_turbine();
+
+            delay_ms(500);
+
+            /***************************/
+            /*** SOUFLAGE DES BALLES ***/
+            /***************************/
+
+            cibler(370, 850, 100);
+            EVITEMENT_ADV.actif = ON;
+            rejoindre(370, 850, MARCHE_AVANT, 100);
+
+            // Dépose
+            if (COULEUR == JAUNE)
+            {
+               cibler(240, 0, 100); 
+            }
+            else
+            {
+                cibler(200, 0, 100);
+            }
+
+            delay_ms(100);
+
+            EVITEMENT_ADV.actif = OFF;
+            turbine_mode_soufflage();
+            bite_soufflage();
+            delay_ms(1000);
+            allumer_turbine();
+            delay_ms(4000);
+            eteindre_turbine();    
+            bite_init();
+        }
+   
     #endif
 
         
@@ -132,7 +207,7 @@ void strategie()
             // décalé de 9 mm
             init_position_robot(710 + LARGEUR_ROBOT / 2. + 18, 360 - LONGUEUR_ROBOT / 2., 90);
             
-            rejoindre (860, 450, MARCHE_AVANT, 100); //850
+            rejoindre (870, 440, MARCHE_AVANT, 100); //860 450
             FLAG_ACTION[AUTOM_PRINCIPALE] = SR_START_ROBOT;
 //            FLAG_ACTION[AUTOM_PRINCIPALE] = SR_START_ROBOT_DIFFERE;
 //            FLAG_ACTION[AUTOM_AVANT] = SR_START_ROBOT_COTE;
@@ -163,7 +238,7 @@ void strategie()
         inihibit_montage_tour[AUTOM_AVANT] = true;
         passe_part(350,900, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
         passe_part(275,700, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-        passe_part(200,600, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+        passe_part(200,600, MARCHE_AVANT, 70, FIN_TRAJECTOIRE);
         delay_ms(200);
         
         // On va chercher le module polychrome au milieu 
@@ -234,6 +309,10 @@ void strategie()
 
 
             }
+            else
+            {
+                avancer_reculer(70, 75);
+            }
         
             // on dépose quand les modules sont en bas
             if (get_module_tour(AVANT) > 0 ) 
@@ -282,6 +361,10 @@ void strategie()
                     FLAG_ACTION[AUTOM_AVANT] = AF_PREPARE_FUSEE;
                 }
             }
+            else
+            {
+                avancer_reculer(-70, 75);
+            }
             
         }
         
@@ -308,7 +391,9 @@ void strategie()
         
         calage (-400, 40);
         delay_ms(500);
+        EVITEMENT_ADV.actif = ON;
         rejoindre(1150, 270, MARCHE_AVANT, 100); //FIXME : tourne pas bien
+        EVITEMENT_ADV.actif = OFF;
         
         // on prend le deuxième module dans la fusée
         cibler(1150, 40, 100);

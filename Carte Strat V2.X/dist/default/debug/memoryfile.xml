@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <executable name="dist/default/production/Carte_Strat_V2.X.production.elf">
+  <executable name="dist/default/debug/Carte_Strat_V2.X.debug.elf">
     <memory name="data">
       <units>bytes</units>
       <length>16384</length>
-      <used>8146</used>
-      <free>8238</free>
+      <used>8226</used>
+      <free>8158</free>
     </memory>
     <memory name="program">
       <units>bytes</units>
       <length>131328</length>
-      <used>90204</used>
-      <free>41124</free>
+      <used>90138</used>
+      <free>41190</free>
     </memory>
   </executable>
 </project>

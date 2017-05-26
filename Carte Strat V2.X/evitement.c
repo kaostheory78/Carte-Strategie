@@ -95,16 +95,24 @@ void ajustement_evitement_autonome()
 
 void evitement()
 {
-    static uint16_t compteur = 0;
+    static uint16_t compteur_avant_deblocage = 0;
+    static uint16_t filtre_detection = 0;
     static _Bool  evitement_en_cours = false;
     
     if (EVITEMENT_ADV.actif == ON)
     {
         ajustement_evitement_autonome();
         
-        if (check_evitement() && EVITEMENT_ADV.detection == OFF)
+        // On filtre le signal reçu pour éliminer les feux positifs (70 ms)
+        if (check_evitement() && EVITEMENT_ADV.detection == OFF && filtre_detection < 7)
         {
-            compteur = 0;
+            filtre_detection++;
+        }
+        // obstacle confirmé : on brake
+        else if (check_evitement() && EVITEMENT_ADV.detection == OFF )
+        {
+            
+            compteur_avant_deblocage = 0;
             evitement_en_cours = false;
             EVITEMENT_ADV.detection = ON;
             FLAG_ASSERV.erreur = EVITEMENT;
@@ -112,13 +120,14 @@ void evitement()
         }
         else if (EVITEMENT_ADV.detection == ON && EVITEMENT_ADV.mode == STOP)
         {
-            compteur++;
-            if (compteur >  20)
+            compteur_avant_deblocage++;
+            if (compteur_avant_deblocage >  20)
             {
-                compteur = 20;
+                compteur_avant_deblocage = 20;
                 if (check_evitement() == false)
                 {
                     EVITEMENT_ADV.detection = OFF;
+                    filtre_detection = 0;
                     unbrake();
                 }   
             }
@@ -127,11 +136,12 @@ void evitement()
         {
             if (evitement_en_cours == false)
             {
-                compteur++;
-                if (compteur > 40)
+                compteur_avant_deblocage++;
+                if (compteur_avant_deblocage > 40)
                 {
                     evitement_en_cours = true;
-                    compteur = 0;
+                    compteur_avant_deblocage = 0;
+                    filtre_detection = 0;
                     fin_deplacement_avec_brake(); // pas de brake avant ... on faisait un fin_deplacement_sans_brake
                 }
             }
@@ -139,6 +149,7 @@ void evitement()
         else if (EVITEMENT_ADV.detection == ON)
         {
             EVITEMENT_ADV.detection = OFF;
+            filtre_detection = 0;
             unbrake();
         }
     }

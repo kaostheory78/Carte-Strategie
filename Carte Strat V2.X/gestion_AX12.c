@@ -366,7 +366,6 @@ uint8_t Ping (uint8_t ID)
     }
     else
     {
-        printf("\n\rPing for ax %d FAILED", ID);
         return PAS_DE_REPONSE;
     }
 }

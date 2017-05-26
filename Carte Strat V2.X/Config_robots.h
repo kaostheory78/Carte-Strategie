@@ -25,15 +25,15 @@ extern "C" {
 /***************************** Defines ****************************************/
 /******************************************************************************/
 
-#define PETIT_ROBOT
-//#define GROS_ROBOT
+//#define PETIT_ROBOT
+#define GROS_ROBOT
 //#define GROS_ROBOT_BOTIK
 //#define PETIT_ROBOT_BOTIK
 //#define ROBOT_TEST
 //#define UTILISATION_CARTE_BALISE
     
 //#define NO_SERIALUS
-#define DEBUG_ACTIF
+//#define DEBUG_ACTIF
 
 #define _Pi                             3.14159265359
    

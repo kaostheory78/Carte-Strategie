@@ -81,7 +81,7 @@ void bite_aspiration()
 
 void bite_soufflage()
 {
-    angle_AX12(AX_BIELE, BITE_EN_BAS, BITE_DEPOSE, SANS_ATTENTE);
+    angle_AX12(AX_BIELE, BITE_DEPOSE, 40, SANS_ATTENTE);
 }
 
 void bite_init()

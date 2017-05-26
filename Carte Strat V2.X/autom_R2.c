@@ -473,7 +473,7 @@ void SR_descendre_ascenseur(_cote cote)
 }
 
 
-// ETAPE 1 : ou ouvre les dï¿½pose modules
+// ETAPE 1 : ou ouvre les dépose modules
 void SR_start_robot_differe()
 {    
     register_sync_event(AUTOM_PRINCIPALE, SR_ROBOT_READY, 0, 2, 
@@ -615,14 +615,17 @@ void DX_depose_module(_cote cote)
     ouvrir_depose_module(cote);
     if (check_capteur_pince(cote))
     {
-        register_ax12_event(getIdAx12(RETOURNE_MODULE, cote), cote, DX_DEPOSE_READY, 200);
+        arm_timer_event(cote, 800, DX_DEPOSE_READY, true);
+//        register_ax12_event(getIdAx12(RETOURNE_MODULE, cote), cote, DX_DEPOSE_READY, 200);
     }
     else if (modules_tour[cote] > 0)
     {
-        register_ax12_event(getIdAx12(RETOURNE_MODULE, cote), cote, DINT_START_DEPOSE, 200);
+        arm_timer_event(cote, 800, DINT_START_DEPOSE, true);
+//        register_ax12_event(getIdAx12(RETOURNE_MODULE, cote), cote, DINT_START_DEPOSE, 200);
     }
     else
     {
+        arm_timer_event(cote, 800, DX_DEPOSE_FINIT, true);
         register_ax12_event(getIdAx12(RETOURNE_MODULE, cote), cote, DX_DEPOSE_FINIT, 200);
     }
 }
@@ -700,9 +703,12 @@ void DX_resserage_tour(_cote cote)
 {
     fermer_pinces_haut(cote);
     fermer_depose_module(cote);
-    register_multiple_ax12_event(2, cote, DX_PRET_A_DEPOSER, 150, 
-        getIdAx12(PINCE_HAUT, cote),
-        getIdAx12(RETOURNE_MODULE, cote));
+    
+    register_multiple_ax12_event(1, cote, DX_PRET_A_DEPOSER, 150, 
+        getIdAx12(PINCE_HAUT, cote));
+//    register_multiple_ax12_event(2, cote, DX_PRET_A_DEPOSER, 150, 
+//        getIdAx12(PINCE_HAUT, cote),
+//        getIdAx12(RETOURNE_MODULE, cote));
 }
 
 void DX_relache_module (_cote cote)
@@ -730,10 +736,10 @@ void DX_refermer_depose_module(_cote cote)
  */
 void AF_prepare_fusee (_cote cote)
 {
+    ouvrir_depose_module(cote);
     repli_pince_haut(cote);
     ouvrir_pinces_bas(cote);
     descendre_ascenseur(cote);
-    ouvrir_depose_module(cote);
 
     register_multiple_ax12_event(4, cote, AF_CHOPAGE_MODULE_READY, 500,
             getIdAx12(PINCE_BAS, cote),
@@ -862,6 +868,7 @@ void autom_20ms (void)
                 SR_descendre_ascenseur(autom_id);
                 break;
             case SR_ROBOT_READY :
+//                arm_timer_event(autom_id, 200, MONTAGE_TOUR_PRET, false);
                 // do nothing (here to wait synchro)
                 break;
 
