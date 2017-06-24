@@ -25,8 +25,8 @@ extern "C" {
 /***************************** Defines ****************************************/
 /******************************************************************************/
 
-//#define PETIT_ROBOT
-#define GROS_ROBOT
+#define PETIT_ROBOT
+//#define GROS_ROBOT
 //#define GROS_ROBOT_BOTIK
 //#define PETIT_ROBOT_BOTIK
 //#define ROBOT_TEST

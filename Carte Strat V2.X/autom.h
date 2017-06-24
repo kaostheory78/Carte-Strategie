@@ -96,7 +96,7 @@ extern "C" {
 
 #ifdef  PETIT_ROBOT
     #define PINCE_POS_REPLI                 900
-    #define PINCE_POS_OUVERTE               675
+    #define PINCE_POS_OUVERTE               665 //675
     #define PINCE_POS_ENTROUVERTE           628 //625
     #define PINCE_POS_FERME                 585   // new pinces 585
 
@@ -104,7 +104,7 @@ extern "C" {
     #define ASC_AR_POS_INIT                    410 
     #define ASC_AR_POS_INIT_MAX                560
     #define ASC_AR_POS_HAUT                    803 
-    #define ASC_AR_POS_DEPOSE_BAS                   540 //530
+    #define ASC_AR_POS_DEPOSE_BAS                   565 //530
     #define ASC_AR_POS_DEPOSE_HAUT                   520 //530
 
     #define ASC_AV_POS_BAS                     291    
@@ -112,12 +112,12 @@ extern "C" {
     #define ASC_AV_POS_INIT_MAX                510
     #define ASC_AV_POS_HAUT                    770 
     #define ASC_AV_POS_DEPOSE_BAS                  500 //488
-#define ASC_AV_POS_DEPOSE_HAUT                  585 //488
+    #define ASC_AV_POS_DEPOSE_HAUT                  585 //488
 
     #define BITE_POS_INIT                       830
     #define BITE_POS_RANGE                      305
-    #define BITE_POS_FERME                      320
-    #define BITE_POS_OUVERTE                    540 
+    #define BITE_POS_FERME                      340 // 320
+    #define BITE_POS_OUVERTE                    540  // 540
             
 #endif
 

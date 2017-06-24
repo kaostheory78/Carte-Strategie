@@ -24,6 +24,145 @@
 /******************************************************************************/
 /******************************************************************************/
 
+
+void test_autom()
+{
+        init_position_robot(0, 0, 0);
+//        FLAG_ACTION[AUTOM_PRINCIPALE] = SR_START_ROBOT;
+//        while(FLAG_ACTION[AUTOM_PRINCIPALE] != MT_TOUR_COMPLETE);
+//        
+//        while(get_module_tour(LES_DEUX) > 0)
+//        {
+//        
+//            // on dépose le premier module à l'arrière du robot
+//            if (get_module_tour(ARRIERE) > 0 ) 
+//            {
+//                
+//                orienter(0, 100);
+//
+//                // on attetnds que l'autom de montage finit
+//                // normalement c'est déjà le cas
+//                while( (FLAG_ACTION[AUTOM_ARRIERE] != MT_TOUR_COMPLETE) && 
+//                       (FLAG_ACTION[AUTOM_ARRIERE] != MT_RECHERCHE_MODULE_EN_COURS) &&
+//                       (FLAG_ACTION[AUTOM_ARRIERE] != DX_DEPOSE_FINIT) &&
+//                       (FLAG_ACTION[AUTOM_ARRIERE] != DX_DEPOSE_READY) );
+//
+//                // on s'assure qu'un module soit en bas pour bourrer le range module
+//                if (FLAG_ACTION[AUTOM_ARRIERE] == MT_TOUR_COMPLETE || FLAG_ACTION[AUTOM_ARRIERE] == MT_RECHERCHE_MODULE_EN_COURS)
+//                {
+//                    FLAG_ACTION[AUTOM_ARRIERE] = DX_START_DEPOSE;
+//                }             
+//                while( (FLAG_ACTION[AUTOM_ARRIERE] != DX_DEPOSE_READY) &&
+//                       (FLAG_ACTION[AUTOM_ARRIERE] != DX_DEPOSE_FINIT) );
+//
+//                if (FLAG_ACTION[AUTOM_ARRIERE] != DX_DEPOSE_FINIT)
+//                {
+//                    // on bourre le range module
+//                    avancer_reculer(-40, 50);
+//
+//                    // on s'éloigne
+//                    avancer_reculer(50, 50);
+//
+//                    // On initie une dépose
+//                    FLAG_ACTION[AUTOM_ARRIERE] = DX_INIT_DEPOSE;
+//
+//                    // autom de montage finit
+//                    while( FLAG_ACTION[AUTOM_ARRIERE] != DX_DEPOSE_FINIT );
+//                }    
+//                avancer_reculer(70, 75);
+//
+//                if (get_module_tour(ARRIERE) > 0)
+//                {
+//                   // On commence à recharcher les pinces
+//                    FLAG_ACTION[AUTOM_ARRIERE] = DX_START_DEPOSE; 
+//                }
+//                else
+//                {
+//                    FLAG_ACTION[AUTOM_ARRIERE] = AF_PREPARE_FUSEE;
+//                }
+//
+//
+//            }
+//            else
+//            {
+//                avancer_reculer(70, 75);
+//            }
+//        
+//            // on dépose quand les modules sont en bas
+//            if (get_module_tour(AVANT) > 0 ) 
+//            {
+//                // on se met en position pour déposer
+//                orienter(180, 100);
+//
+//                // on attetnds que l'autom de montage finit
+//                // normalement c'est déjà le cas
+//                while( (FLAG_ACTION[AUTOM_AVANT] != MT_TOUR_COMPLETE) && 
+//                       (FLAG_ACTION[AUTOM_AVANT] != MT_RECHERCHE_MODULE_EN_COURS) &&
+//                       (FLAG_ACTION[AUTOM_AVANT] != DX_DEPOSE_FINIT) &&
+//                       (FLAG_ACTION[AUTOM_AVANT] != DX_DEPOSE_READY) );
+//                
+//                // on s'assure qu'un module soit en bas pour bourrer le range module
+//                if (FLAG_ACTION[AUTOM_AVANT] == MT_TOUR_COMPLETE || FLAG_ACTION[AUTOM_AVANT] == MT_RECHERCHE_MODULE_EN_COURS)
+//                {
+//                    FLAG_ACTION[AUTOM_AVANT] = DX_START_DEPOSE;
+//                }             
+//                while( (FLAG_ACTION[AUTOM_AVANT] != DX_DEPOSE_READY) &&
+//                       (FLAG_ACTION[AUTOM_AVANT] != DX_DEPOSE_FINIT) );
+//
+//                if (FLAG_ACTION[AUTOM_AVANT] != DX_DEPOSE_FINIT)
+//                {
+//                    // on bourre le range module
+//                    calage(200, 75);
+//
+//                    // on s'éloigne
+//                    avancer_reculer(-50, 50);
+//
+//                    // On initie une dépose
+//                    FLAG_ACTION[AUTOM_AVANT] = DX_INIT_DEPOSE;
+//
+//                    // autom de montage finit
+//                    while( FLAG_ACTION[AUTOM_AVANT] != DX_DEPOSE_FINIT );
+//                }    
+//                avancer_reculer(-70, 75);
+//
+//                if (get_module_tour(AVANT) > 0)
+//                {
+//                   // On commence à recharcher les pinces
+//                    FLAG_ACTION[AUTOM_AVANT] = DX_START_DEPOSE; 
+//                }
+//                else
+//                {
+//                    FLAG_ACTION[AUTOM_AVANT] = AF_PREPARE_FUSEE;
+//                }
+//            }
+//            else
+//            {
+//                avancer_reculer(-70, 75);
+//            }
+//            
+//        }
+        
+        FLAG_ACTION[AUTOM_PRINCIPALE] = SR_START_ROBOT;
+        delay_ms(3000);
+        FLAG_ACTION[AUTOM_AVANT] = AF_PREPARE_FUSEE;
+        FLAG_ACTION[AUTOM_ARRIERE] = AF_PREPARE_FUSEE;
+        FLAG_ACTION[AUTOM_PRINCIPALE] = MT_TOUR_COMPLETE;
+        
+        while(FLAG_ACTION[AUTOM_ARRIERE] != AF_CHOPAGE_MODULE_READY);
+        FLAG_ACTION[AUTOM_ARRIERE] = AF_ATTRAPE_FUSEE;
+        
+        avancer_reculer (-100, 40);
+        delay_ms(500);
+        rejoindre(get_X() + 150, get_Y(), MARCHE_AVANT, 100); //FIXME : tourne pas bien
+        
+        // on prend le deuxième module dans la fusée
+        orienter(180, 100);
+        while(FLAG_ACTION[AUTOM_AVANT] != AF_CHOPAGE_MODULE_READY);
+        FLAG_ACTION[AUTOM_AVANT] = AF_ATTRAPE_FUSEE;
+        avancer_reculer(100, 40);
+        delay_ms(500);
+}
+
 void strategie()
 {
 //    uint8_t espace_libre_depose1 = 6;
@@ -195,21 +334,14 @@ void strategie()
         EVITEMENT_ADV.actif = ON;
         EVITEMENT_ADV.mode = STOP;
         
-        
-        // Calage
-//        init_position_robot(1070 - LARGEUR_ROBOT /2., 94, 90); // TODO à adapter  
-//        rejoindre(950, 360 - LONGUEUR_ROBOT / 2., MARCHE_AVANT, 100);
-//        cibler(1000, 600, 100); // On cible le premier module  
-        
-//        while(!SYS_JACK);
-//        delay_ms(1000);
-//        while(SYS_JACK);
-        
         /*******************/
         /*** DEBUT MATCH ***/
         /*******************/
         
         CPT_TEMPS_MATCH.actif = true;
+        
+//        test_autom();
+//        while(1);
         
         
         if (COULEUR == JAUNE)
@@ -294,10 +426,10 @@ void strategie()
                 if (FLAG_ACTION[AUTOM_ARRIERE] != DX_DEPOSE_FINIT)
                 {
                     // on bourre le range module
-                    calage(-200, 75);
+                    calage(-260, 75);
 
                     // on s'éloigne
-                    avancer_reculer(50, 50);
+                    avancer_reculer(60, 50);
 
                     // On initie une dépose
                     FLAG_ACTION[AUTOM_ARRIERE] = DX_INIT_DEPOSE;
@@ -305,7 +437,7 @@ void strategie()
                     // autom de montage finit
                     while( FLAG_ACTION[AUTOM_ARRIERE] != DX_DEPOSE_FINIT );
                 }    
-                avancer_reculer(70, 75);
+                avancer_reculer(90, 75);
 
                 if (get_module_tour(ARRIERE) > 0)
                 {
@@ -348,10 +480,10 @@ void strategie()
                 if (FLAG_ACTION[AUTOM_AVANT] != DX_DEPOSE_FINIT)
                 {
                     // on bourre le range module
-                    calage(200, 75);
+                    calage(260, 75);
 
                     // on s'éloigne
-                    avancer_reculer(-50, 50);
+                    avancer_reculer(-60, 50);
 
                     // On initie une dépose
                     FLAG_ACTION[AUTOM_AVANT] = DX_INIT_DEPOSE;
@@ -359,7 +491,7 @@ void strategie()
                     // autom de montage finit
                     while( FLAG_ACTION[AUTOM_AVANT] != DX_DEPOSE_FINIT );
                 }    
-                avancer_reculer(-70, 75);
+                avancer_reculer(-90, 75);
 
                 if (get_module_tour(AVANT) > 0)
                 {
@@ -395,14 +527,17 @@ void strategie()
         
         //FIXME Evitement ADV à réactiver plus longtemps
         EVITEMENT_ADV.actif = OFF;
+        passe_part(1150, 200, MARCHE_ARRIERE, 80, FIN_TRAJECTOIRE);
         while(FLAG_ACTION[AUTOM_ARRIERE] != AF_CHOPAGE_MODULE_READY);
         FLAG_ACTION[AUTOM_ARRIERE] = AF_ATTRAPE_FUSEE;
-        passe_part(1150, 200, MARCHE_ARRIERE, 80, FIN_TRAJECTOIRE);
+        
+        // on cible la fusée
+        cibler(1150, 2000, 100);
         
         calage (-400, 40);
         delay_ms(500);
         EVITEMENT_ADV.actif = ON;
-        rejoindre(1150, 270, MARCHE_AVANT, 100); //FIXME : tourne pas bien
+        rejoindre(get_X(), get_Y() + 150., MARCHE_AVANT, 100); //FIXME : tourne pas bien
         EVITEMENT_ADV.actif = OFF;
         
         // on prend le deuxième module dans la fusée
@@ -428,24 +563,28 @@ void strategie()
         //TODO Init Teta + Y ?
    
         // on recule pour déposer
-        avancer_reculer(60, 100);
+        avancer_reculer(30, 100);
         
         // on dépose le premier module
         FLAG_ACTION[AUTOM_ARRIERE] = DX_INIT_DEPOSE;
         while( FLAG_ACTION[AUTOM_ARRIERE] != DX_DEPOSE_FINIT );
         
-        avancer_reculer(30, 75);
+        avancer_reculer(70, 75);
         cibler (1500, 2000, 100);
         
         // on tasse (on est à l'endroit)
         calage(300, 50);
         
         // on recule pour déposer
-        avancer_reculer(-60, 75);
+        avancer_reculer(-50, 75);
         
         // on dépose le deuxième module module
         FLAG_ACTION[AUTOM_AVANT] = DX_INIT_DEPOSE;
-        while( FLAG_ACTION[AUTOM_AVANT] != DX_DEPOSE_FINIT );   
+        while( FLAG_ACTION[AUTOM_AVANT] != DX_DEPOSE_FINIT );  
+        
+        // on bourre le range module
+        calage(100, 75);
+        avancer_reculer(-100, 50);
                   
     #endif
 }
